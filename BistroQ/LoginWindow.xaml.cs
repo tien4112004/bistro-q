@@ -1,4 +1,5 @@
 using BistroQ.Contracts.Services;
+using BistroQ.Core.Contracts.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -31,7 +32,30 @@ public sealed partial class LoginWindow : Window
 
     private async void LoginButton_Click(object sender, RoutedEventArgs e)
     {
-        await App.GetService<IActivationService>().ActivateAsync(e);
-        this.Close();
+        try
+        {
+            LoginButton.IsEnabled = false;
+
+            var result = await App.GetService<IAuthService>().LoginAsync(UsernameTextBox.Text, PasswordBox.Password);
+
+            if (!result.Success)
+            {
+                ErrorMessageText.Text = result.Message;
+                ErrorMessageText.Visibility = Visibility.Visible;
+                return;
+            }
+
+            await App.GetService<IActivationService>().ActivateAsync(e);
+            this.Close();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessageText.Text = "An error occurred. Please try again.";
+            ErrorMessageText.Visibility = Visibility.Visible;
+        }
+        finally
+        {
+            LoginButton.IsEnabled = true;
+        }
     }
 }

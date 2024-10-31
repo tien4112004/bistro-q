@@ -2,6 +2,7 @@ using BistroQ.Activation;
 using BistroQ.Contracts.Services;
 using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Services;
+using BistroQ.Core.Services.Mock;
 using BistroQ.Helpers;
 using BistroQ.Models;
 using BistroQ.Services;
@@ -67,6 +68,8 @@ public partial class App : Application
 
             // Core Services
             services.AddSingleton<IFileService, FileService>();
+            services.AddTransient<IAuthService, MockAuthService>();
+            services.AddSingleton<ITokenStorageService, TokenXmlStorageService>();
 
             // Views and ViewModels
             services.AddTransient<MainViewModel>();
