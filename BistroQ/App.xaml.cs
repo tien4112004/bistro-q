@@ -1,4 +1,4 @@
-﻿using BistroQ.Activation;
+using BistroQ.Activation;
 using BistroQ.Contracts.Services;
 using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Services;
@@ -88,10 +88,12 @@ public partial class App : Application
         // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
     }
 
-    protected async override void OnLaunched(LaunchActivatedEventArgs args)
+    protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);
 
-        await App.GetService<IActivationService>().ActivateAsync(args);
+        new LoginWindow().Activate();
+
+        //await App.GetService<IActivationService>().ActivateAsync(args);
     }
 }
