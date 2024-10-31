@@ -35,6 +35,10 @@ public sealed partial class LoginWindow : Window
         try
         {
             LoginButton.IsEnabled = false;
+            ErrorMessageText.Visibility = Visibility.Collapsed;
+            TextLogin.Visibility = Visibility.Collapsed;
+            LoginProgressRing.IsActive = true;
+
 
             var result = await App.GetService<IAuthService>().LoginAsync(UsernameTextBox.Text, PasswordBox.Password);
 
@@ -48,7 +52,7 @@ public sealed partial class LoginWindow : Window
             await App.GetService<IActivationService>().ActivateAsync(e);
             this.Close();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             ErrorMessageText.Text = "An error occurred. Please try again.";
             ErrorMessageText.Visibility = Visibility.Visible;
@@ -56,6 +60,8 @@ public sealed partial class LoginWindow : Window
         finally
         {
             LoginButton.IsEnabled = true;
+            TextLogin.Visibility = Visibility.Visible;
+            LoginProgressRing.IsActive = false;
         }
     }
 }

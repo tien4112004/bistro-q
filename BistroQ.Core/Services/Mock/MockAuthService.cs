@@ -21,6 +21,8 @@ public class MockAuthService : IAuthService
 
     public async Task<(bool Success, string Message)> LoginAsync(string username, string password)
     {
+        await Task.Delay(1000);
+
         // Mock login
         if (username == "test" && password == "test")
         {
