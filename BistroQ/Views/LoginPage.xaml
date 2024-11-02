@@ -47,12 +47,14 @@
             <TextBox
                 Text="{x:Bind ViewModel.Username, Mode=TwoWay}"
                 PlaceholderText="Username"
+                KeyDown="Text_KeyDown"
                 Height="40"/>
 
             <!-- Password -->
             <PasswordBox
                 Password="{x:Bind ViewModel.Password, Mode=TwoWay}"
                 PlaceholderText="Password"
+                KeyDown="Text_KeyDown"
                 Height="40"/>
 
             <!-- Remember Me -->

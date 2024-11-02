@@ -41,5 +41,11 @@ public sealed partial class LoginPage : Page
         _window.Close();
     }
 
-    
+    private void Text_KeyDown(object sender, KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter)
+        {
+            ViewModel.LoginCommand.Execute(null);
+        }
+    }
 }

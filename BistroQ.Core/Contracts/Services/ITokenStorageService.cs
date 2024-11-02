@@ -10,9 +10,11 @@ public interface ITokenStorageService
 {
     Task SaveTokensAsync(AuthResult result);
 
+    Task SaveAccessToken(string accessToken);
+
     Task<string> GetAccessToken();
 
-    Task<string> GetRefreshToken();
+    Task<(string refreshToken, string userId)> GetRefreshToken();
 
     Task ClearTokensAsync();
 }

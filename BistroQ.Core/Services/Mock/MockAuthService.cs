@@ -11,8 +11,8 @@ namespace BistroQ.Core.Services.Mock;
 public class MockAuthService : IAuthService
 {
     private readonly ITokenStorageService _tokenStorageService;
-    private const int TOKEN_EXPIRE_TIME = 5;
-    private const int REF_TOKEN_EXPIRE_TIME= 60;
+    private const int TOKEN_EXPIRE_TIME = 1;
+    private const int REF_TOKEN_EXPIRE_TIME= 2;
 
     public MockAuthService(ITokenStorageService tokenStorageService)
     {
@@ -21,15 +21,15 @@ public class MockAuthService : IAuthService
 
     public async Task<(bool Success, string Message)> LoginAsync(string username, string password)
     {
-        await Task.Delay(2000);
+        await Task.Delay(1000);
 
         // Mock login
         if (username == "test" && password == "test")
         {
             var result = new AuthResult
             {
-                AccessToken = DateTime.Now.AddMinutes(TOKEN_EXPIRE_TIME).ToString(),
-                RefreshToken = DateTime.Now.AddMinutes(REF_TOKEN_EXPIRE_TIME).ToString(),
+                AccessToken = "1," + DateTime.Now.AddMinutes(TOKEN_EXPIRE_TIME).ToString(),
+                RefreshToken = "1," + DateTime.Now.AddMinutes(REF_TOKEN_EXPIRE_TIME).ToString(),
                 UserId = "1",
                 Role = "Admin"
             };
@@ -44,8 +44,33 @@ public class MockAuthService : IAuthService
         return (true, "Login successful");
     }
 
-    public Task<string> RefreshTokenAsync(string userId, string refreshToken)
+
+    public async Task RefreshTokenAsync()
     {
-        throw new NotImplementedException();
+        var (refreshToken, userId) = await _tokenStorageService.GetRefreshToken();
+        var tokens = refreshToken.Split(',');
+
+        var userIdFromToken = tokens[0];
+        var expireTime = DateTime.Parse(tokens[1]);
+
+        if (userIdFromToken != userId)
+        {
+            throw new Exception("Unauthorized");
+        }
+        else if (expireTime < DateTime.Now)
+        {
+            throw new Exception("TokenExpired");
+        }
+        else
+        {
+            var accessToken = "1," + DateTime.Now.AddMinutes(TOKEN_EXPIRE_TIME).ToString();
+
+            await _tokenStorageService.SaveAccessToken(accessToken);
+        }
+    }
+
+    public async Task LogoutAsync()
+    {
+        await _tokenStorageService.ClearTokensAsync();
     }
 }
