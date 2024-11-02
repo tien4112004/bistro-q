@@ -2,7 +2,6 @@
 using BistroQ.Contracts.Services;
 using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Services;
-using BistroQ.Helpers;
 using BistroQ.Models;
 using BistroQ.Services;
 using BistroQ.ViewModels;
@@ -40,7 +39,10 @@ public partial class App : Application
 
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    public static UIElement? AppTitlebar { get; set; }
+    public static UIElement? AppTitlebar
+    {
+        get; set;
+    }
 
     public App()
     {
@@ -67,12 +69,17 @@ public partial class App : Application
 
             // Core Services
             services.AddSingleton<IFileService, FileService>();
+            services.AddHttpClient();
 
             // Views and ViewModels
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainPage>();
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
+            //services.AddTransient<AdminZoneViewModel>();
+            //services.AddTransient<AdminZonePage>();
+
+            //services.AddScoped<IZoneDataService, ZoneDataService>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
