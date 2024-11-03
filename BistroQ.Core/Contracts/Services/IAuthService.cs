@@ -11,7 +11,9 @@ public interface IAuthService
 {
     Task<(bool Success, string Message)> LoginAsync(string username, string password);
 
-    Task RefreshTokenAsync();
+    Task<string> RefreshTokenAsync();
 
     Task LogoutAsync();
+
+    Task<string?> GetTokenAsync();
 }

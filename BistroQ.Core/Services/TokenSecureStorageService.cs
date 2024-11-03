@@ -1,6 +1,7 @@
 using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Dtos;
 using BistroQ.Core.Models;
+using BistroQ.Core.Models.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -91,6 +92,11 @@ public class TokenSecureStorageService : ITokenStorageService
                 return _fileService.Read<Dictionary<string, string>>(_folderPath, _fileName);
             });
 
+            if (tokens == null || !tokens.ContainsKey("AccessToken"))
+            {
+                throw new TokenStorageException("No access token found");
+            }
+
             return await DecryptData(tokens["AccessToken"]);
         }
         finally
@@ -109,6 +115,11 @@ public class TokenSecureStorageService : ITokenStorageService
             {
                 return _fileService.Read<Dictionary<string, string>>(_folderPath, _fileName);
             });
+
+            if (tokens == null || !tokens.ContainsKey("AccessToken") || !tokens.ContainsKey("UserId"))
+            {
+                throw new TokenStorageException("No tokens found");
+            }
 
             return (
                 await DecryptData(tokens["RefreshToken"]),
@@ -131,6 +142,10 @@ public class TokenSecureStorageService : ITokenStorageService
             {
                 return _fileService.Read<Dictionary<string, string>>(_folderPath, _fileName);
             });
+            if (result == null)
+            {
+                throw new TokenStorageException("No tokens found");
+            }
 
             result["AccessToken"] = await EncryptData(accessToken);
 
@@ -147,6 +162,9 @@ public class TokenSecureStorageService : ITokenStorageService
 
     private Task<string> EncryptData(string data)
     {
+        if (string.IsNullOrEmpty(data))
+            throw new ArgumentNullException(nameof(data));
+
         var jsonData = JsonSerializer.Serialize(data);
         byte[] dataBytes = Encoding.UTF8.GetBytes(jsonData);
         byte[] _entrophy = Encoding.UTF8.GetBytes("BistroQ");
@@ -164,6 +182,9 @@ public class TokenSecureStorageService : ITokenStorageService
 
     private Task<string> DecryptData(string data)
     {
+        if (string.IsNullOrEmpty(data))
+            throw new ArgumentNullException(nameof(data));
+
         byte[] byteData = Convert.FromBase64String(data);
 
         // Decrypt using DPAPI

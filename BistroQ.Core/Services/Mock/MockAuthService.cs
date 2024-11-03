@@ -1,6 +1,7 @@
 using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Dtos;
 using BistroQ.Core.Models;
+using BistroQ.Core.Models.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,7 @@ public class MockAuthService : IAuthService
     }
 
 
-    public async Task RefreshTokenAsync()
+    public async Task<string> RefreshTokenAsync()
     {
         var (refreshToken, userId) = await _tokenStorageService.GetRefreshToken();
         var tokens = refreshToken.Split(',');
@@ -56,17 +57,19 @@ public class MockAuthService : IAuthService
 
         if (userIdFromToken != userId)
         {
-            throw new Exception("Unauthorized");
+            throw new UnauthorizedException("Unauthorized");
         }
         else if (expireTime < DateTime.Now)
         {
-            throw new Exception("TokenExpired");
+            throw new TokenExpiredException("TokenExpired");
         }
         else
         {
             var accessToken = "1," + DateTime.Now.AddMinutes(TOKEN_EXPIRE_TIME).ToString();
 
             await _tokenStorageService.SaveAccessToken(accessToken);
+
+            return accessToken;
         }
     }
 
@@ -74,4 +77,32 @@ public class MockAuthService : IAuthService
     {
         await _tokenStorageService.ClearTokensAsync();
     }
+
+    public async Task<string?> GetTokenAsync()
+    {
+        try
+        {
+            var token = await _tokenStorageService.GetAccessToken();
+
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new UnauthorizedException("Unauthorized");
+            }
+            else if (DateTime.Parse(token.Split(',')[1]) > DateTime.Now)
+            {
+                return token;
+            }
+            else
+            {
+                return await RefreshTokenAsync();
+            }
+        }
+        catch (Exception)
+        {
+            await LogoutAsync();
+
+            throw;
+        }
+    }
+
 }

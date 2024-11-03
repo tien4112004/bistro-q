@@ -25,31 +25,16 @@ public sealed partial class MainPage : Page
     private async void Button_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         try
-        {   
-            var token = await _tokenStorageService.GetAccessToken();
-
-            if (string.IsNullOrEmpty(token))
-            {
-                Text.Text = "Not logged in";
-            }
-            else if (DateTime.Parse(token.Split(',')[1]) > DateTime.Now)
-            {
-                Text.Text = "Logged in";
-            }
-            else
-            {
-                Text.Text = "Token expired! Refresh It";
-
-                await _authService.RefreshTokenAsync();
-            }
-        }
-        catch (Exception)
         {
-            Text.Text = "Refresh token expired! Logging out...";
+            await _authService.GetTokenAsync();
+        }
+        catch (Exception ex)
+        {
+            Text.Text = ex.Message;
 
             await Task.Delay(2000);
 
-            await _authService.LogoutAsync();
+            App.MainWindow.Close();
         }
     }
 }
