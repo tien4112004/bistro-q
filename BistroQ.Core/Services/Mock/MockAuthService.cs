@@ -1,4 +1,5 @@
 using BistroQ.Core.Contracts.Services;
+using BistroQ.Core.Dtos;
 using BistroQ.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ public class MockAuthService : IAuthService
         // Mock login
         if (username == "test" && password == "test")
         {
-            var result = new AuthResult
+            var result = new LoginResult
             {
                 AccessToken = "1," + DateTime.Now.AddMinutes(TOKEN_EXPIRE_TIME).ToString(),
                 RefreshToken = "1," + DateTime.Now.AddMinutes(REF_TOKEN_EXPIRE_TIME).ToString(),

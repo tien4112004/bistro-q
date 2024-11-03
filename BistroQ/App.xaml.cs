@@ -69,7 +69,7 @@ public partial class App : Application
             // Core Services
             services.AddSingleton<IFileService, FileService>();
             services.AddTransient<IAuthService, MockAuthService>();
-            services.AddSingleton<ITokenStorageService, TokenJsonStorageService>();
+            services.AddSingleton<ITokenStorageService, TokenSecureStorageService>();
 
             // Views and ViewModels
             services.AddTransient<MainViewModel>();

@@ -1,4 +1,5 @@
 using BistroQ.Core.Contracts.Services;
+using BistroQ.Core.Dtos;
 using BistroQ.Core.Helpers;
 using BistroQ.Core.Models;
 using System;
@@ -24,7 +25,7 @@ public class TokenJsonStorageService : ITokenStorageService
         _fileName = "tokens.json";
     }
 
-    public Task SaveTokensAsync(AuthResult authResult)
+    public Task SaveTokensAsync(LoginResult authResult)
     {
         var tokens = new Dictionary<string, string>
         {
