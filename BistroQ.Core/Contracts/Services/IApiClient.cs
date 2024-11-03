@@ -11,8 +11,8 @@ public interface IApiClient
     /// <typeparam name="T">The return type of the request to the REST API.</typeparam>
     /// <param name="url">The URL to send the POST request to.</param>
     /// <param name="contentValue">The content to include in the POST request.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-    Task PostAsync<T>(string url, object contentValue);
+    /// <returns>A task that represents the asynchronous operation, containing the response of type <typeparamref name="T"/>.</returns>
+    Task<T> PostAsync<T>(string url, object contentValue);
 
     /// <summary>
     /// Sends a PUT request to the specified URL with the given content.
@@ -20,21 +20,23 @@ public interface IApiClient
     /// <typeparam name="T">The return type of the request to the REST API.</typeparam>
     /// <param name="url">The URL to send the PUT request to.</param>
     /// <param name="contentValue">The content to include in the PUT request.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-    Task PutAsync<T>(string url, object contentValue);
+    /// <returns>A task that represents the asynchronous operation, containing the response of type <typeparamref name="T"/>.</returns>
+    Task<T> PutAsync<T>(string url, object contentValue);
 
     /// <summary>
     /// Sends a GET request to the specified URL and returns the response.
     /// </summary>
     /// <typeparam name="T">The return type of the request to the REST API.</typeparam>
     /// <param name="url">The URL to send the GET request to.</param>
+    /// <param name="contentValue">The content to include in the POST request.</param>
     /// <returns>A task that represents the asynchronous operation, containing the response of type <typeparamref name="T"/>.</returns>
-    Task<T> GetAsync<T>(string url);
+    Task<T> GetAsync<T>(string url, object contentValue);
 
     /// <summary>
     /// Sends a DELETE request to the specified URL.
     /// </summary>
     /// <param name="url">The URL to send the DELETE request to.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-    Task DeleteAsync(string url);
+    /// <param name="contentValue">The content to include in the DELETE request.</param
+    /// <returns>A task that represents the asynchronous operation, containing the response of type <typeparamref name="T"/>.</returns>
+    Task<T> DeleteAsync<T>(string url, object contentValue);
 }
