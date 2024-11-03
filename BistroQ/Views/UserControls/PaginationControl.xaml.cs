@@ -63,6 +63,16 @@ public partial class PaginationControl : UserControl
         }
     }
 
+    private void FirstPageButton_Click(object sender, RoutedEventArgs e)
+    {
+        Pagination.CurrentPage = 1;
+    }
+
+    private void LastPageButton_Click(object sender, RoutedEventArgs e)
+    {
+        Pagination.CurrentPage = Pagination.TotalPages;
+    }
+
     private void RowsPerPageSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (sender is ComboBox comboBox && comboBox.SelectedItem is ComboBoxItem item)
