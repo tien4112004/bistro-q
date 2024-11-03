@@ -1,4 +1,6 @@
-﻿namespace BistroQ.Core.Contracts.Services;
+﻿using BistroQ.Core.Dtos;
+
+namespace BistroQ.Core.Contracts.Services;
 
 // <summary>
 /// Interface for making HTTP requests to a REST API.
@@ -12,7 +14,7 @@ public interface IApiClient
     /// <param name="url">The URL to send the POST request to.</param>
     /// <param name="contentValue">The content to include in the POST request.</param>
     /// <returns>A task that represents the asynchronous operation, containing the response of type <typeparamref name="T"/>.</returns>
-    Task<T> PostAsync<T>(string url, object contentValue);
+    Task<ApiResponse<T>> PostAsync<T>(string url, object contentValue);
 
     /// <summary>
     /// Sends a PUT request to the specified URL with the given content.
@@ -21,7 +23,7 @@ public interface IApiClient
     /// <param name="url">The URL to send the PUT request to.</param>
     /// <param name="contentValue">The content to include in the PUT request.</param>
     /// <returns>A task that represents the asynchronous operation, containing the response of type <typeparamref name="T"/>.</returns>
-    Task<T> PutAsync<T>(string url, object contentValue);
+    Task<ApiResponse<T>> PutAsync<T>(string url, object contentValue);
 
     /// <summary>
     /// Sends a GET request to the specified URL and returns the response.
@@ -30,7 +32,7 @@ public interface IApiClient
     /// <param name="url">The URL to send the GET request to.</param>
     /// <param name="contentValue">The content to include in the POST request.</param>
     /// <returns>A task that represents the asynchronous operation, containing the response of type <typeparamref name="T"/>.</returns>
-    Task<T> GetAsync<T>(string url, object contentValue);
+    Task<ApiResponse<T>> GetAsync<T>(string url, object contentValue);
 
     /// <summary>
     /// Sends a DELETE request to the specified URL.
@@ -38,5 +40,5 @@ public interface IApiClient
     /// <param name="url">The URL to send the DELETE request to.</param>
     /// <param name="contentValue">The content to include in the DELETE request.</param
     /// <returns>A task that represents the asynchronous operation, containing the response of type <typeparamref name="T"/>.</returns>
-    Task<T> DeleteAsync<T>(string url, object contentValue);
+    Task<ApiResponse<T>> DeleteAsync<T>(string url, object contentValue);
 }

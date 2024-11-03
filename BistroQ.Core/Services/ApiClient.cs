@@ -1,4 +1,5 @@
 ﻿using BistroQ.Core.Contracts.Services;
+using BistroQ.Core.Dtos;
 using Newtonsoft.Json;
 using System.Text;
 using System.Web;
@@ -21,7 +22,7 @@ public class ApiClient : IApiClient
         }
     }
 
-    public async Task<T> PostAsync<T>(string url, object contentValue)
+    public async Task<ApiResponse<T>> PostAsync<T>(string url, object contentValue)
     {
         var request = new StringContent(
             JsonConvert.SerializeObject(contentValue),
@@ -33,7 +34,7 @@ public class ApiClient : IApiClient
         return await HandleResponse<T>(response);
     }
 
-    public async Task<T> PutAsync<T>(string url, object contentValue)
+    public async Task<ApiResponse<T>> PutAsync<T>(string url, object contentValue)
     {
         var request = new StringContent(
             JsonConvert.SerializeObject(contentValue),
@@ -45,14 +46,14 @@ public class ApiClient : IApiClient
         return await HandleResponse<T>(response);
     }
 
-    public async Task<T> GetAsync<T>(string url, object queryParams = null)
+    public async Task<ApiResponse<T>> GetAsync<T>(string url, object queryParams = null)
     {
         var finalUrl = BuildUrlWithQueryParams(url, queryParams);
         var response = await _httpClient.GetAsync(finalUrl);
         return await HandleResponse<T>(response);
     }
 
-    public async Task<T> DeleteAsync<T>(string url, object queryParams = null)
+    public async Task<ApiResponse<T>> DeleteAsync<T>(string url, object queryParams = null)
     {
         var finalUrl = BuildUrlWithQueryParams(url, queryParams);
         var response = await _httpClient.DeleteAsync(finalUrl);
@@ -75,28 +76,34 @@ public class ApiClient : IApiClient
             : $"{baseUrl}?{queryString}";
     }
 
-    private static async Task<T> HandleResponse<T>(HttpResponseMessage response)
+    private static async Task<ApiResponse<T>> HandleResponse<T>(HttpResponseMessage response)
     {
         var resultContentString = await response.Content.ReadAsStringAsync();
 
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new HttpRequestException(
-                $"Request failed with status code {response.StatusCode}: {resultContentString}"
-            );
-        }
-
         try
         {
-            return JsonConvert.DeserializeObject<T>(resultContentString)
-                ?? throw new JsonException("Deserialization resulted in null object");
+            var res = JsonConvert.DeserializeObject<ApiResponse<T>>(resultContentString);
+
+            if (res == null)
+            {
+                return new ApiResponse<T>{
+                    Success = false,
+                    Message = "Empty response",
+                    StatusCode = (int)response.StatusCode
+                };
+            }
+
+            return res;
         }
         catch (JsonException ex)
         {
-            throw new JsonException(
-                $"Failed to deserialize response content: {resultContentString}",
-                ex
-            );
+            return new ApiResponse<T>
+            {
+                Success = false,
+                Message = "Failed to process response",
+                Error = ex.Message,
+                StatusCode = (int)response.StatusCode
+            };
         }
     }
 }
