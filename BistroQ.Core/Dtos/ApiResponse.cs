@@ -16,4 +16,6 @@ public class ApiResponse<T>
     public string Error { get; set; }
 
     public int StatusCode { get; set; }
+
+    public Pagination Pagination { get; set; }
 }

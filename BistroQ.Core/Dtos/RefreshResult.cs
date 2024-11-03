@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BistroQ.Core.Services;
+namespace BistroQ.Core.Dtos;
 
-public class AuthService
+public class RefreshResult
 {
-
+    public string AccessToken { get; set; }
 }

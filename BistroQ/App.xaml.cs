@@ -2,6 +2,8 @@ using BistroQ.Activation;
 using BistroQ.Contracts.Services;
 using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Services;
+using BistroQ.Core.Services.Auth;
+using BistroQ.Core.Services.Http;
 using BistroQ.Core.Services.Mock;
 using BistroQ.Helpers;
 using BistroQ.Models;
@@ -12,6 +14,7 @@ using BistroQ.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
+using Windows.ApplicationModel.Search;
 
 namespace BistroQ;
 
@@ -66,9 +69,21 @@ public partial class App : Application
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
 
+            // Http
+            services.AddTransient<AuthenticationDelegatingHandler>();
+            services.AddHttpClient<IApiClient, ApiClient>(client =>
+            {
+                client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_BASE_URI") ?? "http://localhost:5256");
+            })
+            .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
+            services.AddHttpClient<IPublicApiClient, PublicApiClient>(client =>
+            {
+                client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_BASE_URI") ?? "http://localhost:5256");
+            });
+
             // Core Services
             services.AddSingleton<IFileService, FileService>();
-            services.AddTransient<IAuthService, MockAuthService>();
+            services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<ITokenStorageService, TokenSecureStorageService>();
 
             // Views and ViewModels

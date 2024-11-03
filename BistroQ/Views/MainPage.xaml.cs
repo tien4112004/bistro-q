@@ -1,4 +1,5 @@
 using BistroQ.Core.Contracts.Services;
+using BistroQ.Core.Models.Entities;
 using BistroQ.ViewModels;
 
 using Microsoft.UI.Xaml.Controls;
@@ -8,15 +9,13 @@ namespace BistroQ.Views;
 
 public sealed partial class MainPage : Page
 {
-    private readonly IAuthService _authService;
-    private readonly ITokenStorageService _tokenStorageService;
+    private readonly IApiClient _apiClient;
 
     public MainViewModel ViewModel { get; }
 
     public MainPage()
     {
-        _authService = App.GetService<IAuthService>();
-        _tokenStorageService = App.GetService<ITokenStorageService>();
+        _apiClient = App.GetService<IApiClient>();
         ViewModel = App.GetService<MainViewModel>();
         InitializeComponent();
     }
@@ -26,7 +25,18 @@ public sealed partial class MainPage : Page
     {
         try
         {
-            await _authService.GetTokenAsync();
+            var res = await _apiClient.GetAsync<Product>($"api/Product/{Index.Text}", null);
+
+            if (res.Success)
+            {
+                Text.Text = $"Product Name: {res.Data.Name}";
+
+            }
+            else
+            {
+                Text.Text = $"Error: {res.Message}";
+
+            }
         }
         catch (Exception ex)
         {

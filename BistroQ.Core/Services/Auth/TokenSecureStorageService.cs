@@ -10,7 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace BistroQ.Core.Services;
+namespace BistroQ.Core.Services.Auth;
 
 public class TokenSecureStorageService : ITokenStorageService
 {
@@ -166,12 +166,12 @@ public class TokenSecureStorageService : ITokenStorageService
             throw new ArgumentNullException(nameof(data));
 
         var jsonData = JsonSerializer.Serialize(data);
-        byte[] dataBytes = Encoding.UTF8.GetBytes(jsonData);
-        byte[] _entrophy = Encoding.UTF8.GetBytes("BistroQ");
+        var dataBytes = Encoding.UTF8.GetBytes(jsonData);
+        var _entrophy = Encoding.UTF8.GetBytes("BistroQ");
 
         // Encrypt using DPAPI
 #pragma warning disable CA1416 // Validate platform compatibility
-        byte[] encryptedData = ProtectedData.Protect(
+        var encryptedData = ProtectedData.Protect(
             dataBytes,
             _entrophy,
             DataProtectionScope.CurrentUser
@@ -185,18 +185,18 @@ public class TokenSecureStorageService : ITokenStorageService
         if (string.IsNullOrEmpty(data))
             throw new ArgumentNullException(nameof(data));
 
-        byte[] byteData = Convert.FromBase64String(data);
+        var byteData = Convert.FromBase64String(data);
 
         // Decrypt using DPAPI
 #pragma warning disable CA1416 // Validate platform compatibility
-        byte[] decryptedData = ProtectedData.Unprotect(
+        var decryptedData = ProtectedData.Unprotect(
             byteData,
             _entrophy,
             DataProtectionScope.CurrentUser
         );
 
-        string jsonData = Encoding.UTF8.GetString(decryptedData);
-        string dataString = JsonSerializer.Deserialize<string>(jsonData);
+        var jsonData = Encoding.UTF8.GetString(decryptedData);
+        var dataString = JsonSerializer.Deserialize<string>(jsonData);
 
         return Task.FromResult(dataString);
     }

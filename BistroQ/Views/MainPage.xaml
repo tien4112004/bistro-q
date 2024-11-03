@@ -7,6 +7,8 @@
     mc:Ignorable="d">
 
     <StackPanel x:Name="ContentArea" Margin="10">
+        <TextBox x:Name="Index" PlaceholderText="Product Index"/>
+
         <Button Content="Test Refresh Token" 
                 Click="Button_Click" 
                 x:Name="Button" 

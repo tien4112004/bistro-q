@@ -1,25 +1,18 @@
-﻿using BistroQ.Core.Contracts.Services;
+using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Dtos;
 using Newtonsoft.Json;
 using System.Text;
 using System.Web;
 
-namespace BistroQ.Core.Services;
+namespace BistroQ.Core.Services.Http;
 
-public class ApiClient : IApiClient
+public class BaseApiClient : IBaseApiClient
 {
     private readonly HttpClient _httpClient;
-    private readonly string _apiBaseUri;
 
-    public ApiClient(HttpClient httpClient)
+    public BaseApiClient(HttpClient httpClient)
     {
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        _apiBaseUri = Environment.GetEnvironmentVariable("API_BASE_URI") ?? "http://localhost:5256";
-
-        if (_httpClient.BaseAddress == null)
-        {
-            _httpClient.BaseAddress = new Uri(_apiBaseUri);
-        }
     }
 
     public async Task<ApiResponse<T>> PostAsync<T>(string url, object contentValue)
@@ -86,7 +79,8 @@ public class ApiClient : IApiClient
 
             if (res == null)
             {
-                return new ApiResponse<T>{
+                return new ApiResponse<T>
+                {
                     Success = false,
                     Message = "Empty response",
                     StatusCode = (int)response.StatusCode

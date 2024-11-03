@@ -57,11 +57,6 @@
                 KeyDown="Text_KeyDown"
                 Height="40"/>
 
-            <!-- Remember Me -->
-            <CheckBox x:Name="RememberMeCheckBox" 
-              Content="Remember me"
-              Margin="0,5,0,0"/>
-
             <!-- Login Button -->
             <Button 
                  Style="{StaticResource AccentButtonStyle}"

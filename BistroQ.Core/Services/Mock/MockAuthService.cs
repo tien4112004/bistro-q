@@ -14,7 +14,7 @@ public class MockAuthService : IAuthService
 {
     private readonly ITokenStorageService _tokenStorageService;
     private const int TOKEN_EXPIRE_TIME = 1;
-    private const int REF_TOKEN_EXPIRE_TIME= 2;
+    private const int REF_TOKEN_EXPIRE_TIME = 2;
 
     public MockAuthService(ITokenStorageService tokenStorageService)
     {

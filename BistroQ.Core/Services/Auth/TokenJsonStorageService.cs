@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BistroQ.Core.Services;
+namespace BistroQ.Core.Services.Auth;
 
 public class TokenJsonStorageService : ITokenStorageService
 {
@@ -35,7 +35,7 @@ public class TokenJsonStorageService : ITokenStorageService
             { "Role", authResult.Role }
         };
 
-        _fileService.Save(_folderPath, _fileName ,tokens);
+        _fileService.Save(_folderPath, _fileName, tokens);
 
         return Task.CompletedTask;
     }
