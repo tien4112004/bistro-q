@@ -56,7 +56,7 @@ public class LoginForm : ValidatorBase
             return value.Validate(
                 v => ValidationRules.StringRules.NotEmpty(v, "Username"),
                 v => ValidationRules.StringRules.MinLength(v, 3, "Username")
-            ).FirstOrDefault(r => !r.IsValid);
+            ).Where(r => !r.IsValid).ToList();
         });
     }
 
@@ -65,7 +65,7 @@ public class LoginForm : ValidatorBase
         {
             return value.Validate(
                 v => ValidationRules.StringRules.NotEmpty(v, "Password")
-            ).FirstOrDefault(r => !r.IsValid);
+            ).Where(r => !r.IsValid).ToList();
         });
     }
 

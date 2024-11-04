@@ -16,7 +16,7 @@ public class ValidatorBase : INotifyPropertyChanged, INotifyDataErrorInfo
     private readonly Dictionary<string, List<string>> _errors = new();
     public Dictionary<string, List<string>> Errors => _errors;
 
-    private readonly Dictionary<string, Func<object?, (bool IsValid, string Message)>> _validators = new();
+    private readonly Dictionary<string, Func<object?, List<(bool IsValid, string Message)>>> _validators = new();
 
     public bool HasErrors => _errors.Any();
 
@@ -51,7 +51,7 @@ public class ValidatorBase : INotifyPropertyChanged, INotifyDataErrorInfo
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    protected void AddValidator(string propertyName, Func<object?, (bool IsValue, string Message)> validator)
+    protected void AddValidator(string propertyName, Func<object?, List<(bool IsValue, string Message)>> validator)
     {
         _validators[propertyName] = validator;
     }
@@ -62,11 +62,14 @@ public class ValidatorBase : INotifyPropertyChanged, INotifyDataErrorInfo
         {
             var errors = new List<string>();
 
-            var (isValid, message) = _validators[propertyName].Invoke(value);
+            var messages = _validators[propertyName].Invoke(value);
 
-            if (!isValid)
+            foreach (var (isValid, message) in messages)
             {
-                errors.Add(message);
+                if (!isValid)
+                {
+                    errors.Add(message);
+                }
             }
 
             UpdateErrors(propertyName, errors);
