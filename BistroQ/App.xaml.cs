@@ -104,6 +104,7 @@ public partial class App : Application
             services.AddTransient<AdminZoneEditPage>();
 
             services.AddScoped<IZoneDataService, ZoneDataService>();
+            services.AddScoped<IAdminZoneService, AdminZoneService>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

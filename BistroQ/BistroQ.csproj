@@ -15,6 +15,9 @@
     <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Services\IAdminZoneService.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Views\AdminZone\AdminZoneAddPage.xaml" />
     <None Remove="Views\UserControls\PaginationControl.xaml" />
     <None Remove="LoginWindow.xaml" />
@@ -22,6 +25,10 @@
 
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Contracts\Services\IAdminZoneService.cs" />
   </ItemGroup>
 
   <ItemGroup>

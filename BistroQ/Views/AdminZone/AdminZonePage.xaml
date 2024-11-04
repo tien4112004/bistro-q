@@ -14,7 +14,7 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
         <StackPanel x:Name="AdminZonePage_Buttons" Orientation="Horizontal" Grid.Row="0">
-            <Button Style="{StaticResource AccentButtonStyle}" Click="AddButton_Click" Margin="0,0,8,0">
+            <Button Style="{StaticResource AccentButtonStyle}" Command="{x:Bind ViewModel.AddCommand}" Margin="0,0,8,0">
 			    <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Glyph="&#xE710;" FontFamily="Segoe MDL2 Assets" />
@@ -22,7 +22,7 @@
                     </StackPanel>
                 </Button.Content>
 		    </Button>
-            <Button Click="EditButton_Click" Margin="0,0,8,0">
+            <Button Command="{x:Bind ViewModel.EditCommand}" Margin="0,0,8,0">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Glyph="&#xE70F;" FontFamily="Segoe MDL2 Assets" />
@@ -30,7 +30,7 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <Button Click="DeleteButton_Click"  Margin="0,0,8,0">
+            <Button Command="{x:Bind ViewModel.DeleteCommand}" Margin="0,0,8,0">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Glyph="&#xE74D;" FontFamily="Segoe MDL2 Assets" />
@@ -44,6 +44,7 @@
             AutoGenerateColumns="False"
             GridLinesVisibility="Horizontal"
             ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+            SelectedItem="{x:Bind ViewModel.SelectedZone, Mode=TwoWay}"
             Grid.Row="1">
 			<controls:DataGrid.Resources>
 				<SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />

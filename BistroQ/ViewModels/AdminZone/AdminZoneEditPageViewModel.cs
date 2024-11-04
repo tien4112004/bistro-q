@@ -11,7 +11,7 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
     public ZoneDto Zone { get; set; }
     [ObservableProperty]
     private UpdateZoneRequestDto request;
-    private AdminZoneEditPageViewModel ViewModel;
+    public AdminZoneEditPageViewModel ViewModel;
 
     private readonly IZoneDataService _zoneDataService;
 
