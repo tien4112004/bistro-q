@@ -53,37 +53,19 @@ public class LoginForm : ValidatorBase
     {
         AddValidator(nameof(Username), (value) =>
         {
-            var username = value as string;
-            if (string.IsNullOrWhiteSpace(username))
-            {
-                return (false, "Username is required");
-            }
-
-            return (true, string.Empty);
-        });
-
-        AddValidator(nameof(Username), (value) =>
-        {
-            var username = value as string;
-            if (username.Length < 3)
-            {
-                return (false, "Username must be at least 3 characters long");
-            }
-
-            return (true, string.Empty);
+            return value.Validate(
+                v => ValidationRules.StringRules.NotEmpty(v, "Username"),
+                v => ValidationRules.StringRules.MinLength(v, 3, "Username")
+            ).FirstOrDefault(r => !r.IsValid);
         });
     }
 
     public void AddPasswordValidator() {
         AddValidator(nameof(Password), (value) =>
         {
-            var password = value as string;
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                return (false, "Password is required");
-            }
-
-            return (true, string.Empty);
+            return value.Validate(
+                v => ValidationRules.StringRules.NotEmpty(v, "Password")
+            ).FirstOrDefault(r => !r.IsValid);
         });
     }
 

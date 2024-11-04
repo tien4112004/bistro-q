@@ -51,7 +51,7 @@ public class ValidatorBase : INotifyPropertyChanged, INotifyDataErrorInfo
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    protected void AddValidator(string propertyName, Func<object?, (bool IsValue, string Message )> validator)
+    protected void AddValidator(string propertyName, Func<object?, (bool IsValue, string Message)> validator)
     {
         _validators[propertyName] = validator;
     }
