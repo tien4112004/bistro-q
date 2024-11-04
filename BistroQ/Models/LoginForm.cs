@@ -1,3 +1,4 @@
+using BistroQ.Validation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,12 +10,16 @@ using System.Threading.Tasks;
 
 namespace BistroQ.Models;
 
-public class LoginForm : INotifyPropertyChanged, INotifyDataErrorInfo
+public class LoginForm : ValidatorBase
 {
-    private readonly Dictionary<string, List<string>> _errors = new();
+    public LoginForm()
+    {
+        AddUsernameValidator();
+        AddPasswordValidator();
+    }
+
     private string _username = string.Empty;
     private string _password = string.Empty;
-    public Dictionary<string, List<string>> Errors => _errors;
 
     public string Username
     {
@@ -24,7 +29,7 @@ public class LoginForm : INotifyPropertyChanged, INotifyDataErrorInfo
             if (_username != value)
             {
                 _username = value;
-                ValidateUsername();
+                ValidateProperty(nameof(Username), value);
                 OnPropertyChanged();
             }
         }
@@ -38,75 +43,53 @@ public class LoginForm : INotifyPropertyChanged, INotifyDataErrorInfo
             if (_password != value)
             {
                 _password = value;
-                ValidatePassword();
+                ValidateProperty(nameof(Password), value);
                 OnPropertyChanged();
             }
         }
     }
 
-    public bool HasErrors => _errors.Any();
-
-    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    public IEnumerable GetErrors(string? propertyName)
+    public void AddUsernameValidator()
     {
-        return propertyName != null && _errors.ContainsKey(propertyName)
-            ? _errors[propertyName]
-            : Enumerable.Empty<string>();
-    }
-
-    public void ValidateUsername()
-    {
-        var errors = new List<string>();
-
-        if (string.IsNullOrWhiteSpace(_username))
+        AddValidator(nameof(Username), (value) =>
         {
-            errors.Add("Username is required");
-        }
-        else if (_username.Length < 3)
+            var username = value as string;
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return (false, "Username is required");
+            }
+
+            return (true, string.Empty);
+        });
+
+        AddValidator(nameof(Username), (value) =>
         {
-            errors.Add("Username must be at least 3 characters long");
-        }
+            var username = value as string;
+            if (username.Length < 3)
+            {
+                return (false, "Username must be at least 3 characters long");
+            }
 
-        UpdateErrors(nameof(Username), errors);
+            return (true, string.Empty);
+        });
     }
 
-    public void ValidatePassword()
-    {
-        var errors = new List<string>();
-
-        if (string.IsNullOrWhiteSpace(_password))
+    public void AddPasswordValidator() {
+        AddValidator(nameof(Password), (value) =>
         {
-            errors.Add("Password is required");
-        }
+            var password = value as string;
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                return (false, "Password is required");
+            }
 
-        UpdateErrors(nameof(Password), errors);
+            return (true, string.Empty);
+        });
     }
 
-    public void ResetError(string propertyName)
+    public override void ValidateAll()
     {
-        UpdateErrors(propertyName, new List<string>());
-    }
-
-    private void UpdateErrors(string propertyName, List<string> errors)
-    {
-        if (errors.Any())
-            _errors[propertyName] = errors;
-        else
-            _errors.Remove(propertyName);
-
-        ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-        OnPropertyChanged(nameof(Errors));
-    }
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-    public void ValidateAll()
-    {
-        ValidateUsername();
-        ValidatePassword();
+        ValidateProperty(nameof(Username), Username);
+        ValidateProperty(nameof(Password), Password);
     }
 }

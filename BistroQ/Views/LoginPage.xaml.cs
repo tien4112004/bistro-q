@@ -65,11 +65,11 @@ public sealed partial class LoginPage : Page
         switch (sender)
         {
             case TextBox textBox:
-                ViewModel.FormChangeCommand.Execute(textBox.Name);
+                ViewModel.FormChangeCommand.Execute((textBox.Name, textBox.Text));
                 break;
 
             case PasswordBox passwordBox:
-                ViewModel.FormChangeCommand.Execute(passwordBox.Name);
+                ViewModel.FormChangeCommand.Execute((passwordBox.Name, passwordBox.Password));
                 break;
 
             default:

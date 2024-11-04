@@ -41,18 +41,9 @@ public partial class LoginViewModel : ObservableObject
             await Login();
         });
 
-        FormChangeCommand = new RelayCommand<string>((field) =>
+        FormChangeCommand = new RelayCommand<(string Field, string Value)>((param) =>
         {
-            switch (field)
-            {
-                case nameof(Form.Username):
-                    Form.ValidateUsername();
-                    break;
-
-                case nameof(Form.Password):
-                    Form.ValidatePassword();
-                    break;
-            }
+            Form.ValidateProperty(param.Field, param.Value);
         });
     }
     

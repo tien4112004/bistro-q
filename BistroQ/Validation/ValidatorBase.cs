@@ -4,60 +4,76 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BistroQ.Validation;
 
-public class ValidatorBase : INotifyDataErrorInfo
+
+public class ValidatorBase : INotifyPropertyChanged, INotifyDataErrorInfo
 {
     private readonly Dictionary<string, List<string>> _errors = new();
-    private readonly Dictionary<string, Func<object, List<string>>> _validationRules = new();
-    
     public Dictionary<string, List<string>> Errors => _errors;
+
+    private readonly Dictionary<string, Func<object?, (bool IsValid, string Message)>> _validators = new();
 
     public bool HasErrors => _errors.Any();
 
-    public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
-    public IEnumerable GetErrors(string propertyName)
+    public IEnumerable GetErrors(string? propertyName)
     {
-        return _errors.ContainsKey(propertyName) ? _errors[propertyName] : null;
+        return propertyName != null && _errors.ContainsKey(propertyName)
+            ? _errors[propertyName]
+            : Enumerable.Empty<string>();
     }
 
-    // Method to register validation rules for a property
-    public void AddValidationRule(string propertyName, Func<object, List<string>> validationRule)
+    public void ResetError(string propertyName)
     {
-        _validationRules[propertyName] = validationRule;
-        Debug.WriteLine($"Validation rule added for {propertyName}");
+        UpdateErrors(propertyName, new List<string>());
     }
 
-    // Method to validate a single property
-    public void ValidateProperty(string propertyName, object value)
+    protected void UpdateErrors(string propertyName, List<string> errors)
     {
-        Debug.WriteLine($"Validating {propertyName}");
-        if (_validationRules.ContainsKey(propertyName))
+        if (errors.Any())
+            _errors[propertyName] = errors;
+        else
+            _errors.Remove(propertyName);
+
+        ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+        OnPropertyChanged(nameof(Errors));
+    }
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    protected void AddValidator(string propertyName, Func<object?, (bool IsValue, string Message )> validator)
+    {
+        _validators[propertyName] = validator;
+    }
+
+    public void ValidateProperty(string propertyName, object? value)
+    {
+        if (_validators.ContainsKey(propertyName))
         {
-            var errors = _validationRules[propertyName](value);
-            if (errors?.Any() == true)
+            var errors = new List<string>();
+
+            var (isValid, message) = _validators[propertyName].Invoke(value);
+
+            if (!isValid)
             {
-                _errors[propertyName] = errors;
-            }
-            else
-            {
-                _errors.Remove(propertyName);
+                errors.Add(message);
             }
 
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+            UpdateErrors(propertyName, errors);
         }
     }
 
-    // Method to validate all properties
-    public void ValidateAll()
-    {
-        foreach (var property in _validationRules.Keys)
-        {
-            ValidateProperty(property, null);
-        }
+    public virtual void ValidateAll() {
+        throw new NotImplementedException();
     }
 }
