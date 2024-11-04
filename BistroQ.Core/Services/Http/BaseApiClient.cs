@@ -4,22 +4,15 @@ using Newtonsoft.Json;
 using System.Text;
 using System.Web;
 
-namespace BistroQ.Core.Services;
+namespace BistroQ.Core.Services.Http;
 
-public class ApiClient : IApiClient
+public class BaseApiClient : IBaseApiClient
 {
     private readonly HttpClient _httpClient;
-    private readonly string _apiBaseUri;
 
-    public ApiClient(HttpClient httpClient)
+    public BaseApiClient(HttpClient httpClient)
     {
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        _apiBaseUri = Environment.GetEnvironmentVariable("API_BASE_URI") ?? "http://localhost:5256";
-
-        if (_httpClient.BaseAddress == null)
-        {
-            _httpClient.BaseAddress = new Uri(_apiBaseUri);
-        }
     }
 
     public async Task<ApiResponse<T>> PostAsync<T>(string url, object contentValue)
@@ -51,30 +44,6 @@ public class ApiClient : IApiClient
         var finalUrl = BuildUrlWithQueryParams(url, queryParams);
         var response = await _httpClient.GetAsync(finalUrl);
         return await HandleResponse<T>(response);
-    }
-
-    public async Task<PaginationResponseDto<T>> GetCollectionAsync<T>(string url, object queryParams = null) where T : class
-    {
-        var finalUrl = BuildUrlWithQueryParams(url, queryParams);
-        var response = await _httpClient.GetAsync(finalUrl);
-
-        var resultContentString = await response.Content.ReadAsStringAsync();
-
-        try
-        {
-            var res = JsonConvert.DeserializeObject<PaginationResponseDto<T>>(resultContentString);
-
-            if (res == null)
-            {
-                return null;
-            }
-
-            return res;
-        }
-        catch (JsonException ex)
-        {
-            return null;
-        }
     }
 
     public async Task<ApiResponse<T>> DeleteAsync<T>(string url, object queryParams = null)
@@ -129,6 +98,26 @@ public class ApiClient : IApiClient
                 Error = ex.Message,
                 StatusCode = (int)response.StatusCode
             };
+        }
+    }
+
+    public async Task<PaginationResponseDto<T>> GetCollectionAsync<T>(string url, object queryParams = null) where T : class
+    {
+        var finalUrl = BuildUrlWithQueryParams(url, queryParams);
+        var response = await _httpClient.GetAsync(finalUrl);
+        var resultContentString = await response.Content.ReadAsStringAsync();
+        try
+        {
+            var res = JsonConvert.DeserializeObject<PaginationResponseDto<T>>(resultContentString);
+            if (res == null)
+            {
+                return null;
+            }
+            return res;
+        }
+        catch (JsonException ex)
+        {
+            return null;
         }
     }
 }

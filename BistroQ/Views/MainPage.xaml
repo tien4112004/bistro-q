@@ -1,4 +1,4 @@
-﻿<Page
+<Page
     x:Class="BistroQ.Views.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,7 +6,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
-        
-    </Grid>
+    <StackPanel x:Name="ContentArea" Margin="10">
+        <TextBox x:Name="Index" PlaceholderText="Product Index"/>
+
+        <Button Content="Test Refresh Token" 
+                Click="Button_Click" 
+                x:Name="Button" 
+                IsEnabled="True"
+                Margin="0,0,0,10"/>
+
+        <TextBlock x:Name="Text" 
+                   Text="Button Result"/>
+    </StackPanel>
 </Page>
