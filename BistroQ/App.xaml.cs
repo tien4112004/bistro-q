@@ -5,8 +5,9 @@ using BistroQ.Core.Services;
 using BistroQ.Models;
 using BistroQ.Services;
 using BistroQ.ViewModels;
+using BistroQ.ViewModels.AdminZone;
 using BistroQ.Views;
-
+using BistroQ.Views.AdminZone;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
@@ -68,6 +69,7 @@ public partial class App : Application
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Core Services
+            services.AddSingleton<ISampleDataService, SampleDataService>();
             services.AddSingleton<IFileService, FileService>();
             services.AddHttpClient();
 
@@ -76,10 +78,15 @@ public partial class App : Application
             services.AddTransient<MainPage>();
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
-            //services.AddTransient<AdminZoneViewModel>();
-            //services.AddTransient<AdminZonePage>();
+            // AdminZone V&VM
+            services.AddTransient<AdminZoneViewModel>();
+            services.AddTransient<AdminZonePage>();
+            services.AddTransient<AdminZoneAddPageViewModel>();
+            services.AddTransient<AdminZoneAddPage>();
+            services.AddTransient<AdminZoneEditPageViewModel>();
+            services.AddTransient<AdminZoneEditPage>();
 
-            //services.AddScoped<IZoneDataService, ZoneDataService>();
+            services.AddScoped<IZoneDataService, ZoneDataService>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

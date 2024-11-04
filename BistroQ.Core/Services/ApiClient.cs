@@ -53,6 +53,30 @@ public class ApiClient : IApiClient
         return await HandleResponse<T>(response);
     }
 
+    public async Task<PaginationResponseDto<T>> GetCollectionAsync<T>(string url, object queryParams = null) where T : class
+    {
+        var finalUrl = BuildUrlWithQueryParams(url, queryParams);
+        var response = await _httpClient.GetAsync(finalUrl);
+
+        var resultContentString = await response.Content.ReadAsStringAsync();
+
+        try
+        {
+            var res = JsonConvert.DeserializeObject<PaginationResponseDto<T>>(resultContentString);
+
+            if (res == null)
+            {
+                return null;
+            }
+
+            return res;
+        }
+        catch (JsonException ex)
+        {
+            return null;
+        }
+    }
+
     public async Task<ApiResponse<T>> DeleteAsync<T>(string url, object queryParams = null)
     {
         var finalUrl = BuildUrlWithQueryParams(url, queryParams);
@@ -86,7 +110,8 @@ public class ApiClient : IApiClient
 
             if (res == null)
             {
-                return new ApiResponse<T>{
+                return new ApiResponse<T>
+                {
                     Success = false,
                     Message = "Empty response",
                     StatusCode = (int)response.StatusCode
