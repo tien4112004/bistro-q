@@ -58,4 +58,9 @@ public sealed partial class LoginPage : Page
             ViewModel.LoginCommand.Execute(null);
         }
     }
+
+    private void TextBox_LosingFocus(UIElement sender, LosingFocusEventArgs args)
+    {
+        ViewModel.UsernameChangeCommand.Execute(null);
+    }
 }

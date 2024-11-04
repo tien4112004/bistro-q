@@ -46,14 +46,15 @@
 
             <!-- Username -->
             <TextBox
-                Text="{x:Bind ViewModel.Username, Mode=TwoWay}"
+                Text="{x:Bind ViewModel.Form.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                LosingFocus="TextBox_LosingFocus"
                 PlaceholderText="Username"
                 KeyDown="Text_KeyDown"
                 Height="40"/>
 
             <!-- Password -->
             <PasswordBox
-                Password="{x:Bind ViewModel.Password, Mode=TwoWay}"
+                Password="{x:Bind ViewModel.Form.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 PlaceholderText="Password"
                 KeyDown="Text_KeyDown"
                 Height="40"/>

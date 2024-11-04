@@ -11,6 +11,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
+using BistroQ.Models;
+using System.Text.Json;
 
 namespace BistroQ.ViewModels;
 
@@ -24,12 +26,11 @@ public partial class LoginViewModel : ObservableObject
     [ObservableProperty]
     private bool _isProcessing = false;
     [ObservableProperty]
+    private LoginForm _form = new();
+    [ObservableProperty]
     private string _errorMessage = "";
-    [ObservableProperty]
-    private string _username = "";
-    [ObservableProperty]
-    private string _password = "";
     public ICommand LoginCommand { get; }
+    public ICommand UsernameChangeCommand { get; }
 
     public LoginViewModel(IAuthService authService)
     {
@@ -39,15 +40,24 @@ public partial class LoginViewModel : ObservableObject
             Debug.WriteLine("Login command executed");
             await Login();
         });
+
+        UsernameChangeCommand = new RelayCommand(() =>
+        {
+            Form.ValidateUsername();
+            Debug.WriteLine(JsonSerializer.Serialize(Form.GetErrors("Username")));
+
+        });
     }
     public async Task Login()
     {
+        Form.ValidateAll();
+        Debug.WriteLine(JsonSerializer.Serialize(Form.GetErrors("Username")));
         try
         {
             IsProcessing = true;
             ErrorMessage = string.Empty;
 
-            var result = await _authService.LoginAsync(Username, Password);
+            var result = await _authService.LoginAsync(Form.Username, Form.Password);
 
 
             if (!result.Success)
