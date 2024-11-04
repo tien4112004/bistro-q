@@ -12,6 +12,11 @@ using System.Threading.Tasks;
 
 namespace BistroQ.Core.Services.Auth;
 
+/// <summary>
+/// A secure storage service for authentication tokens, implementing the <see cref="ITokenStorageService"/> interface.
+/// This service provides methods to securely store, retrieve, and clear access and refresh tokens,
+/// using encryption to ensure sensitive data is protected.
+/// </summary>
 public class TokenSecureStorageService : ITokenStorageService
 {
     private readonly SemaphoreSlim _semaphore;
@@ -160,6 +165,13 @@ public class TokenSecureStorageService : ITokenStorageService
         }
     }
 
+    /// <summary>
+    /// Encrypts the specified data string using Data Protection API (DPAPI) for secure storage.
+    /// </summary>
+    /// <param name="data">The plain text data to be encrypted.</param>
+    /// <returns>A task that represents the asynchronous encryption operation. 
+    /// The task result contains the encrypted data as a Base64-encoded string.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="data"/> is null or empty.</exception>
     private Task<string> EncryptData(string data)
     {
         if (string.IsNullOrEmpty(data))
@@ -179,6 +191,13 @@ public class TokenSecureStorageService : ITokenStorageService
         return Task.FromResult(Convert.ToBase64String(encryptedData));
     }
 
+    /// <summary>
+    /// Decrypts an encrypted Base64-encoded string back into plain text using Data Protection API (DPAPI).
+    /// </summary>
+    /// <param name="data">The encrypted data as a Base64-encoded string.</param>
+    /// <returns>A task that represents the asynchronous decryption operation. 
+    /// The task result contains the decrypted plain text string.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="data"/> is null or empty.</exception>
     private Task<string> DecryptData(string data)
     {
         if (string.IsNullOrEmpty(data))
