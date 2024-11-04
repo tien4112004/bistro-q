@@ -17,7 +17,7 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
 
     public AdminZoneEditPageViewModel(IZoneDataService zoneDataService)
     {
-        _zoneDataService = zoneDataService ?? throw new ArgumentNullException(nameof(zoneDataService));
+        _zoneDataService = zoneDataService;
         Request = new UpdateZoneRequestDto();
     }
 
