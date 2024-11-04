@@ -9,6 +9,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -61,6 +62,20 @@ public sealed partial class LoginPage : Page
 
     private void TextBox_LosingFocus(UIElement sender, LosingFocusEventArgs args)
     {
-        ViewModel.UsernameChangeCommand.Execute(null);
+        switch (sender)
+        {
+            case TextBox textBox:
+                ViewModel.FormChangeCommand.Execute(textBox.Name);
+                break;
+
+            case PasswordBox passwordBox:
+                ViewModel.FormChangeCommand.Execute(passwordBox.Name);
+                break;
+
+            default:
+                break;
+        }
     }
 }
+
+

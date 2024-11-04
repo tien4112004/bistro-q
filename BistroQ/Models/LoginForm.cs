@@ -14,6 +14,7 @@ public class LoginForm : INotifyPropertyChanged, INotifyDataErrorInfo
     private readonly Dictionary<string, List<string>> _errors = new();
     private string _username = string.Empty;
     private string _password = string.Empty;
+    public Dictionary<string, List<string>> Errors => _errors;
 
     public string Username
     {
@@ -63,6 +64,10 @@ public class LoginForm : INotifyPropertyChanged, INotifyDataErrorInfo
         {
             errors.Add("Username is required");
         }
+        else if (_username.Length < 3)
+        {
+            errors.Add("Username must be at least 3 characters long");
+        }
 
         UpdateErrors(nameof(Username), errors);
     }
@@ -73,10 +78,15 @@ public class LoginForm : INotifyPropertyChanged, INotifyDataErrorInfo
 
         if (string.IsNullOrWhiteSpace(_password))
         {
-            errors.Add("Username is required");
+            errors.Add("Password is required");
         }
 
         UpdateErrors(nameof(Password), errors);
+    }
+
+    public void ResetError(string propertyName)
+    {
+        UpdateErrors(propertyName, new List<string>());
     }
 
     private void UpdateErrors(string propertyName, List<string> errors)
@@ -87,6 +97,7 @@ public class LoginForm : INotifyPropertyChanged, INotifyDataErrorInfo
             _errors.Remove(propertyName);
 
         ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+        OnPropertyChanged(nameof(Errors));
     }
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)

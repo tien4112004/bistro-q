@@ -30,7 +30,7 @@ public partial class LoginViewModel : ObservableObject
     [ObservableProperty]
     private string _errorMessage = "";
     public ICommand LoginCommand { get; }
-    public ICommand UsernameChangeCommand { get; }
+    public ICommand FormChangeCommand { get; }
 
     public LoginViewModel(IAuthService authService)
     {
@@ -41,17 +41,34 @@ public partial class LoginViewModel : ObservableObject
             await Login();
         });
 
-        UsernameChangeCommand = new RelayCommand(() =>
+        FormChangeCommand = new RelayCommand<string>((field) =>
         {
-            Form.ValidateUsername();
-            Debug.WriteLine(JsonSerializer.Serialize(Form.GetErrors("Username")));
+            switch (field)
+            {
+                case nameof(Form.Username):
+                    Form.ValidateUsername();
+                    break;
 
+                case nameof(Form.Password):
+                    Form.ValidatePassword();
+                    break;
+            }
         });
     }
-    public async Task Login()
+    
+    public bool CanLogin()
     {
         Form.ValidateAll();
-        Debug.WriteLine(JsonSerializer.Serialize(Form.GetErrors("Username")));
+        return !Form.HasErrors;
+    }
+
+    public async Task Login()
+    {
+        if (!CanLogin())
+        {
+            return;
+        }
+
         try
         {
             IsProcessing = true;
