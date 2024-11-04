@@ -105,4 +105,8 @@ public class MockAuthService : IAuthService
         }
     }
 
+    public Task<bool> IsAuthenticatedAsync()
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -16,7 +16,8 @@ namespace BistroQ.ViewModels;
 
 public partial class LoginViewModel : ObservableObject
 {
-    public event EventHandler ClosingRequest;
+    public event EventHandler NavigationRequested;
+    public event EventHandler CloseRequested;
 
     private readonly IAuthService _authService;
 
@@ -55,8 +56,7 @@ public partial class LoginViewModel : ObservableObject
                 return;
             }
 
-            await App.GetService<IActivationService>().ActivateAsync(EventArgs.Empty);
-            Close();
+            RequestNavigation();
         }
         catch (Exception)
         {
@@ -68,8 +68,14 @@ public partial class LoginViewModel : ObservableObject
         }
     }
 
-    public void Close()
+    public void RequestNavigation() =>
+        NavigationRequested?.Invoke(this, EventArgs.Empty);
+
+    public void RequestClose() =>
+        CloseRequested?.Invoke(this, EventArgs.Empty);
+
+    public async Task<bool> IsAuthenticated()
     {
-        ClosingRequest?.Invoke(this, EventArgs.Empty);
+        return await _authService.IsAuthenticatedAsync();
     }
 }

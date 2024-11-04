@@ -18,13 +18,13 @@ public class TokenSecureStorageService : ITokenStorageService
     private readonly string _folderPath;
     private readonly string _fileName;
     private readonly IFileService _fileService;
-    private readonly byte[] _entrophy;
+    private readonly byte[] _entropy;
 
     public TokenSecureStorageService(IFileService fileService)
     {
         _fileService = fileService;
         _semaphore = new SemaphoreSlim(1, 1);
-        _entrophy = Encoding.UTF8.GetBytes("BistroQ");
+        _entropy = Encoding.UTF8.GetBytes("BistroQ");
         // File path will be: ./bin/x64/Debug/net7.0-windows10.0.19041.0\AppX\Data
         _folderPath = Path.Combine(AppContext.BaseDirectory, "Data");
         _fileName = "tokens.dat";
@@ -167,13 +167,12 @@ public class TokenSecureStorageService : ITokenStorageService
 
         var jsonData = JsonSerializer.Serialize(data);
         var dataBytes = Encoding.UTF8.GetBytes(jsonData);
-        var _entrophy = Encoding.UTF8.GetBytes("BistroQ");
 
         // Encrypt using DPAPI
 #pragma warning disable CA1416 // Validate platform compatibility
         var encryptedData = ProtectedData.Protect(
             dataBytes,
-            _entrophy,
+            _entropy,
             DataProtectionScope.CurrentUser
         );
 
@@ -191,7 +190,7 @@ public class TokenSecureStorageService : ITokenStorageService
 #pragma warning disable CA1416 // Validate platform compatibility
         var decryptedData = ProtectedData.Unprotect(
             byteData,
-            _entrophy,
+            _entropy,
             DataProtectionScope.CurrentUser
         );
 

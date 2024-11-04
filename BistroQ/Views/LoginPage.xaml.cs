@@ -1,3 +1,4 @@
+using BistroQ.Contracts.Services;
 using BistroQ.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -33,12 +34,21 @@ public sealed partial class LoginPage : Page
         this.InitializeComponent();
         _window = window;
         ViewModel = App.GetService<LoginViewModel>();
-        ViewModel.ClosingRequest += HandleCLose;
+        ViewModel.NavigationRequested += async (s, e) =>
+        {
+            await App.GetService<IActivationService>().ActivateAsync(EventArgs.Empty);
+            window.Close();
+        };
+
+        ViewModel.CloseRequested += (s, e) => window.Close();
     }
 
-    private void HandleCLose(object sender, EventArgs e)
+    private async void On_Loaded(object sender, RoutedEventArgs e)
     {
-        _window.Close();
+        if (await ViewModel.IsAuthenticated())
+        {
+            ViewModel.RequestNavigation();
+        }
     }
 
     private void Text_KeyDown(object sender, KeyRoutedEventArgs e)

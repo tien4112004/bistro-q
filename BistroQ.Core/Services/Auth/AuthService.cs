@@ -33,7 +33,20 @@ public class AuthService : IAuthService
         return (false, response.Message ?? "Login failed");
     }
 
-    public async Task<string> GetTokenAsync()
+    public async Task<bool> IsAuthenticatedAsync()
+    {
+        try
+        {
+            await RefreshTokenAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public async Task<string?> GetTokenAsync()
     {
         try
         {
@@ -48,9 +61,7 @@ public class AuthService : IAuthService
         }
         catch (Exception)
         {
-            await LogoutAsync();
-
-            throw;
+            return null;
         }
     }
 
