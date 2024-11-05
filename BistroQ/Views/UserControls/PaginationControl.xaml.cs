@@ -1,20 +1,24 @@
 ﻿using BistroQ.Core.Models;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System.ComponentModel;
+using System.Data;
 
 namespace BistroQ.Views.UserControls;
+
 public partial class PaginationControl : UserControl
 {
     public static readonly DependencyProperty PaginationProperty = DependencyProperty.Register(
-            "Pagination",
-            typeof(Pagination),
-            typeof(PaginationControl),
-            new PropertyMetadata(new Pagination
-            {
-                TotalItems = 0,
-                CurrentPage = 1,
-                TotalPages = 0
-            }, OnPaginationChanged));
+        "Pagination",
+        typeof(Pagination),
+        typeof(PaginationControl),
+        new PropertyMetadata(new Pagination
+        {
+            TotalItems = 0,
+            CurrentPage = 1,
+            TotalPages = 0
+        }, OnPaginationChanged));
 
     public Pagination Pagination
     {
@@ -22,17 +26,54 @@ public partial class PaginationControl : UserControl
         set => SetValue(PaginationProperty, value);
     }
 
-    private static void OnPaginationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is PaginationControl control && e.NewValue is Pagination pagination)
-        {
-            control.UpdatePagination(pagination);
-        }
-    }
+    public IRelayCommand FirstPageCommand { get; }
+    public IRelayCommand PreviousPageCommand { get; }
+    public IRelayCommand NextPageCommand { get; }
+    public IRelayCommand LastPageCommand { get; }
 
     public PaginationControl()
     {
-        this.InitializeComponent();
+        this.DataContext = this;
+        InitializeComponent();
+
+        FirstPageCommand = new RelayCommand(FirstPage, CanFirstPage);
+        PreviousPageCommand = new RelayCommand(PreviousPage, CanPreviousPage);
+        NextPageCommand = new RelayCommand(NextPage, CanNextPage);
+        LastPageCommand = new RelayCommand(LastPage, CanLastPage);
+
+        Pagination.PropertyChanged += OnPaginationPropertyChanged;
+    }
+
+    private static void OnPaginationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is PaginationControl control)
+        {
+            if (e.OldValue is Pagination oldPagination)
+            {
+                oldPagination.PropertyChanged -= control.OnPaginationPropertyChanged;
+            }
+
+            if (e.NewValue is Pagination newPagination)
+            {
+                newPagination.PropertyChanged += control.OnPaginationPropertyChanged;
+                control.UpdatePagination(newPagination);
+            }
+
+            control.UpdateCommandStates();
+        }
+    }
+
+    private void OnPaginationPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        UpdateCommandStates();
+    }
+
+    private void UpdateCommandStates()
+    {
+        FirstPageCommand.NotifyCanExecuteChanged();
+        PreviousPageCommand.NotifyCanExecuteChanged();
+        NextPageCommand.NotifyCanExecuteChanged();
+        LastPageCommand.NotifyCanExecuteChanged();
     }
 
     private void UpdatePagination(Pagination pagination)
@@ -40,37 +81,10 @@ public partial class PaginationControl : UserControl
         var item = RowsPerPageSelection.Items
             .Cast<ComboBoxItem>()
             .FirstOrDefault(x => x.Content.ToString() == pagination.PageSize.ToString());
-
         if (item != null)
         {
             RowsPerPageSelection.SelectedItem = item;
         }
-    }
-
-    private void PreviousButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (Pagination.CurrentPage > 1)
-        {
-            Pagination.CurrentPage--;
-        }
-    }
-
-    private void NextButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (Pagination.CurrentPage < Pagination.TotalPages)
-        {
-            Pagination.CurrentPage++;
-        }
-    }
-
-    private void FirstPageButton_Click(object sender, RoutedEventArgs e)
-    {
-        Pagination.CurrentPage = 1;
-    }
-
-    private void LastPageButton_Click(object sender, RoutedEventArgs e)
-    {
-        Pagination.CurrentPage = Pagination.TotalPages;
     }
 
     private void RowsPerPageSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -83,4 +97,16 @@ public partial class PaginationControl : UserControl
             }
         }
     }
+
+    private void FirstPage() => Pagination.CurrentPage = 1;
+    private bool CanFirstPage() => Pagination?.CurrentPage > 1;
+
+    private void PreviousPage() => Pagination.CurrentPage--;
+    private bool CanPreviousPage() => Pagination?.CurrentPage > 1;
+
+    private void NextPage() => Pagination.CurrentPage++;
+    private bool CanNextPage() => Pagination?.CurrentPage < Pagination?.TotalPages;
+
+    private void LastPage() => Pagination.CurrentPage = Pagination.TotalPages;
+    private bool CanLastPage() => Pagination?.CurrentPage < Pagination?.TotalPages;
 }
