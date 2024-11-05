@@ -96,7 +96,7 @@ public partial class App : Application
             services.AddTransient<ShellViewModel>();
             services.AddTransient<LoginViewModel>();
             // AdminZone V&VM
-            services.AddTransient<AdminZoneViewModel>();
+            services.AddScoped<AdminZoneViewModel>();
             services.AddTransient<AdminZonePage>();
             services.AddTransient<AdminZoneAddPageViewModel>();
             services.AddTransient<AdminZoneAddPage>();
