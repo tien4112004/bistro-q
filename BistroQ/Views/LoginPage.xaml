@@ -17,6 +17,7 @@
         <converter:ReverseBooleanConverter x:Key="ReverseBool"/>
         <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
         <converter:StringToVisibilityConverter x:Key="StringToVisibility"/>
+        <converter:FirstValidationErrorConverter x:Key="FirstError"/>
     </Page.Resources>
 
     <Grid>
@@ -45,18 +46,39 @@
               Opacity="0.7"/>
 
             <!-- Username -->
-            <TextBox
-                Text="{x:Bind ViewModel.Username, Mode=TwoWay}"
+            <StackPanel>
+
+                <TextBox
+                Text="{x:Bind ViewModel.Form.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                x:Name="Username"
+                LosingFocus="TextBox_LosingFocus"
                 PlaceholderText="Username"
                 KeyDown="Text_KeyDown"
                 Height="40"/>
 
-            <!-- Password -->
-            <PasswordBox
-                Password="{x:Bind ViewModel.Password, Mode=TwoWay}"
+                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                Mode=OneWay, 
+                                Converter={StaticResource FirstError},
+                                ConverterParameter=Username}"
+                           Margin="0,5,0,0"
+                           Foreground="Red"/>
+            </StackPanel>
+            <StackPanel>
+                <!-- Password -->
+                <PasswordBox
+                Password="{x:Bind ViewModel.Form.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                x:Name="Password"
+                LosingFocus="TextBox_LosingFocus"
                 PlaceholderText="Password"
                 KeyDown="Text_KeyDown"
                 Height="40"/>
+                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                Mode=OneWay, 
+                                Converter={StaticResource FirstError},
+                                ConverterParameter=Password}"
+                           Margin="0,5,0,0"
+                           Foreground="Red"/>
+            </StackPanel>
 
             <!-- Login Button -->
             <Button 
