@@ -1,4 +1,4 @@
-using BistroQ.Core.Contracts.Services;
+﻿using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Dtos;
 using BistroQ.Core.Models.Exceptions;
 using System;
@@ -95,5 +95,10 @@ public class AuthService : IAuthService
         {
             throw new UnauthorizedException("Unauthorized");
         }
+    }
+
+    public async Task<string> GetRoleAsync()
+    {
+        return await _tokenStorageService.GetRoleAsync();
     }
 }

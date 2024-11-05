@@ -1,4 +1,4 @@
-using BistroQ.Core.Models;
+﻿using BistroQ.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,5 +46,11 @@ public interface IAuthService
     /// <returns>A task that represents the asynchronous operation. The task result contains a boolean
     /// indicating whether the user is authenticated.</returns>
     Task<bool> IsAuthenticatedAsync();
+
+    /// <summary>
+    /// Gets the current user's role.
+    /// </summary>
+    /// <returns>User's role</returns>
+    Task<string> GetRoleAsync();
 }
 

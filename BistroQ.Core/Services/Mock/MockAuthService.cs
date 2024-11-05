@@ -1,4 +1,4 @@
-using BistroQ.Core.Contracts.Services;
+﻿using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Dtos;
 using BistroQ.Core.Models;
 using BistroQ.Core.Models.Exceptions;
@@ -106,6 +106,11 @@ public class MockAuthService : IAuthService
     }
 
     public Task<bool> IsAuthenticatedAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<string> GetRoleAsync()
     {
         throw new NotImplementedException();
     }

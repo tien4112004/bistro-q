@@ -106,6 +106,11 @@ public partial class App : Application
             services.AddScoped<IZoneDataService, ZoneDataService>();
             services.AddScoped<IAdminZoneService, AdminZoneService>();
 
+            services.AddTransient<TestKitchenViewModel>();
+            services.AddTransient<TestKitchenPage>();
+            services.AddTransient<TestAdminPage>();
+            services.AddTransient<TestAdminViewModel>();
+
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
         }).
