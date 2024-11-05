@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Data;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 using BistroQ.Contracts.Services;
@@ -35,21 +36,20 @@ public class NavigationViewService : INavigationViewService
     [MemberNotNull(nameof(_navigationView))]
     public void Initialize(NavigationView navigationView, string role)
     {
-        var items = navigationView.MenuItems.Where(x =>
+        _navigationView = navigationView;
+
+        var items = _navigationView.MenuItems.Where(x =>
         {
             var navItem = x as NavigationViewItem;
             return navItem != null && (navItem.Tag?.ToString() == role || navItem.Tag?.ToString() == "User");
         }).ToList();
 
-        navigationView.MenuItems.Clear();
+        _navigationView.MenuItems.Clear();
 
         foreach (var item in items)
         {
-            navigationView.MenuItems.Add(item);
+            _navigationView.MenuItems.Add(item);
         }
-
-        _navigationView = navigationView;
-
         _navigationView.BackRequested += OnBackRequested;
         _navigationView.ItemInvoked += OnItemInvoked;
     }

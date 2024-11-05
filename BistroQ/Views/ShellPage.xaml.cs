@@ -1,6 +1,5 @@
 ﻿using BistroQ.Contracts.Services;
 using BistroQ.Core.Contracts.Services;
-using BistroQ.Core.Services.Auth;
 using BistroQ.Helpers;
 using BistroQ.ViewModels;
 
@@ -29,8 +28,8 @@ public sealed partial class ShellPage : Page
         ViewModel.NavigationService.Frame = NavigationFrame;
 
         // This is considered an anti-pattern when calling async code in the constructor.
-        ViewModel.NavigationViewService.Initialize(NavigationViewControl, 
-            Task.Run(async () =>await App.GetService<IAuthService>().GetRoleAsync()).GetAwaiter().GetResult()
+        ViewModel.NavigationViewService.Initialize(NavigationViewControl,
+            Task.Run(async () => await App.GetService<IAuthService>().GetRoleAsync()).GetAwaiter().GetResult()
         );
 
         // TODO: Set the title bar icon by updating /Assets/WindowIcon.ico.
@@ -87,5 +86,23 @@ public sealed partial class ShellPage : Page
         var result = navigationService.GoBack();
 
         args.Handled = result;
+    }
+
+    private void SettingsItem_Tapped(object sender, TappedRoutedEventArgs e)
+    {
+        var settingsItem = sender as NavigationViewItem;
+        if (settingsItem?.ContextFlyout is MenuFlyout flyout)
+        {
+            flyout.ShowAt(settingsItem);
+        }
+    }
+
+    private async void LogOut_Click(object sender, RoutedEventArgs e)
+    {
+        await App.GetService<IAuthService>().LogoutAsync();
+
+        new LoginWindow().Activate();
+
+        App.MainWindow.Close();
     }
 }

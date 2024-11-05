@@ -76,6 +76,25 @@
                     </Grid>
                 </DataTemplate>
             </NavigationView.HeaderTemplate>
+
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem x:Name="SettingsItem" Tapped="SettingsItem_Tapped">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE713;"/>
+                    </NavigationViewItem.Icon>
+
+                    <NavigationViewItem.Content>
+                        <TextBlock Text="Settings"/>
+                    </NavigationViewItem.Content>
+
+                    <NavigationViewItem.ContextFlyout>
+                        <MenuFlyout Placement="TopEdgeAlignedLeft">
+                            <MenuFlyoutItem Text="Logout" Click="LogOut_Click"/>
+                        </MenuFlyout>
+                    </NavigationViewItem.ContextFlyout>
+                </NavigationViewItem>
+            </NavigationView.FooterMenuItems>
+
             <i:Interaction.Behaviors>
                 <behaviors:NavigationViewHeaderBehavior
                     DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">

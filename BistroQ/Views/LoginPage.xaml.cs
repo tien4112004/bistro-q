@@ -1,4 +1,5 @@
-using BistroQ.Contracts.Services;
+﻿using BistroQ.Contracts.Services;
+using BistroQ.Services;
 using BistroQ.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;

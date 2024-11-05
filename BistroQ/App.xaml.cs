@@ -40,7 +40,7 @@ public partial class App : Application
         return service;
     }
 
-    public static WindowEx MainWindow { get; } = new MainWindow();
+    public static WindowEx MainWindow { get; set; } = new MainWindow();
 
     public static UIElement? AppTitlebar
     {
@@ -125,12 +125,10 @@ public partial class App : Application
         // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
     }
 
-    protected override void OnLaunched(LaunchActivatedEventArgs args)
+    protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);
 
         new LoginWindow().Activate();
-
-        //await App.GetService<IActivationService>().ActivateAsync(args);
     }
 }
