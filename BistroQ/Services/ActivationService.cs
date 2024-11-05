@@ -4,6 +4,8 @@ using BistroQ.Views;
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace BistroQ.Services;
 
@@ -25,6 +27,11 @@ public class ActivationService : IActivationService
     {
         // Execute tasks before activation.
         await InitializeAsync();
+
+        if (App.MainWindow is MainWindow mainWindow && mainWindow.IsClosed)
+        {
+            App.MainWindow = new MainWindow();
+        }
 
         // Set the MainWindow Content.
         if (App.MainWindow.Content == null)

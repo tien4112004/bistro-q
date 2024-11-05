@@ -1,4 +1,4 @@
-using BistroQ.Core.Contracts.Services;
+﻿using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Dtos;
 using BistroQ.Core.Models;
 using BistroQ.Core.Models.Exceptions;
@@ -158,6 +158,29 @@ public class TokenSecureStorageService : ITokenStorageService
             {
                 _fileService.Save(_folderPath, _fileName, result);
             });
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
+    }
+
+    public async Task<string> GetRoleAsync()
+    {
+        await _semaphore.WaitAsync();
+
+        try
+        {
+            var result = await Task.Run(() =>
+            {
+                return _fileService.Read<Dictionary<string, string>>(_folderPath, _fileName);
+            });
+            if (result == null || !result.ContainsKey("Role"))
+            {
+                return "User";
+            }
+
+            return await DecryptData(result["Role"]);
         }
         finally
         {

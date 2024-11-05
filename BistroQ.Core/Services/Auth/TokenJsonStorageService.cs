@@ -1,4 +1,4 @@
-using BistroQ.Core.Contracts.Services;
+﻿using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Dtos;
 using BistroQ.Core.Helpers;
 using BistroQ.Core.Models;
@@ -71,5 +71,10 @@ public class TokenJsonStorageService : ITokenStorageService
         _fileService.Delete(_folderPath, _fileName);
 
         return Task.CompletedTask;
+    }
+
+    public Task<string> GetRoleAsync()
+    {
+        throw new NotImplementedException();
     }
 }

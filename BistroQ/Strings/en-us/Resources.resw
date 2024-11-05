@@ -129,6 +129,12 @@
   <data name="Shell_AdminZone.Content" xml:space="preserve">
     <value>Manage Zones</value>
   </data>
+  <data name="Shell_TestAdmin.Content" xml:space="preserve">
+    <value>Test Admin</value>
+  </data>
+  <data name="Shell_TestKitchen.Content" xml:space="preserve">
+    <value>Test Kitchen</value>
+  </data>
   <data name="AdminZone_DataGrid_Column_Id/Header" xml:space="preserve">
     <value>Zone ID</value>
   </data>

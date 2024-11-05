@@ -19,6 +19,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Views\AdminZone\AdminZoneAddPage.xaml" />
+    <None Remove="Views\TestAdminPage.xaml" />
+    <None Remove="Views\TestKitchenPage.xaml" />
     <None Remove="Views\UserControls\PaginationControl.xaml" />
     <None Remove="LoginWindow.xaml" />
   </ItemGroup>
@@ -49,6 +51,12 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\TestKitchenPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\TestAdminPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\AdminZone\AdminZoneEditPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <Generator>MSBuild:Compile</Generator>

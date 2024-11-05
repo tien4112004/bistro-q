@@ -19,6 +19,8 @@ public class PageService : IPageService
         Configure<AdminZoneViewModel, AdminZonePage>();
         Configure<AdminZoneAddPageViewModel, AdminZoneAddPage>();
         Configure<AdminZoneEditPageViewModel, AdminZoneEditPage>();
+        Configure<TestAdminViewModel, TestAdminPage>();
+        Configure<TestKitchenViewModel, TestKitchenPage>();
     }
 
     public Type GetPageType(string key)
