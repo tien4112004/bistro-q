@@ -6,9 +6,11 @@ using BistroQ.Services;
 using BistroQ.ViewModels.AdminZone;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace BistroQ.ViewModels;
 
@@ -32,6 +34,7 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
     public IRelayCommand AddCommand { get; }
     public IRelayCommand EditCommand { get; }
     public IAsyncRelayCommand DeleteCommand { get; }
+    public ICommand SortCommand { get; }
 
     public AdminZoneViewModel(IAdminZoneService adminZoneService, INavigationService navigationService)
     {
@@ -49,6 +52,8 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         AddCommand = new RelayCommand(NavigateToAddPage);
         EditCommand = new RelayCommand(NavigateToEditPage, CanEdit);
         DeleteCommand = new AsyncRelayCommand(DeleteSelectedZoneAsync, CanDelete);
+        SortCommand = new RelayCommand<(string column, string direction)>(ExecuteSortCommand);
+
     }
 
     public async void OnNavigatedTo(object parameter)
@@ -73,26 +78,25 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         _ = LoadDataAsync();
     }
 
-    private async Task LoadDataAsync()
+    private async Task LoadDataAsync(ZoneCollectionQueryParams query = null)
     {
         try
         {
             _isLoading = true;
 
-            var query = new ZoneCollectionQueryParams
+            var _query = query ?? new ZoneCollectionQueryParams()
             {
                 OrderDirection = "asc",
                 Page = pagination.CurrentPage,
                 Size = pagination.PageSize
             };
 
-            var (data, totalItems, totalPages, currentPage) =
-                await _adminZoneService.GetZonesAsync(query);
+            var result = await _adminZoneService.GetZonesAsync(_query);
 
-            Source = new ObservableCollection<ZoneDto>(data);
-            pagination.TotalItems = totalItems;
-            pagination.TotalPages = totalPages;
-            pagination.CurrentPage = currentPage;
+            Source = new ObservableCollection<ZoneDto>(result.Data);
+            pagination.TotalItems = result.TotalItems;
+            pagination.TotalPages = result.TotalPages;
+            pagination.CurrentPage = result.CurrentPage;
         }
         catch (ServiceException ex)
         {
@@ -104,6 +108,7 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         }
     }
 
+    // buttons
     private void NavigateToAddPage() =>
         _navigationService.NavigateTo(typeof(AdminZoneAddPageViewModel).FullName);
 
@@ -146,6 +151,35 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         {
             await _adminZoneService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
         }
+    }
+
+    // sort
+    private void ExecuteSortCommand((string column, string direction) sortParams)
+    {
+        var (column, direction) = sortParams;
+        var query = new ZoneCollectionQueryParams
+        {
+            OrderBy = column,
+            OrderDirection = direction,
+            Page = 1,
+            Size = pagination.PageSize
+        };
+        _ = LoadDataAsync(query);
+    }
+
+    public void AdminZoneDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
+    {
+        var column = e.Column;
+        var sortDirection = column.SortDirection == null || column.SortDirection == DataGridSortDirection.Descending
+            ? "asc"
+            : "des";
+
+        column.SortDirection = sortDirection == "asc"
+            ? DataGridSortDirection.Ascending
+            : DataGridSortDirection.Descending;
+
+        var sortParams = (column.Tag.ToString(), sortDirection);
+        SortCommand.Execute(sortParams);
     }
 
     public void Dispose()

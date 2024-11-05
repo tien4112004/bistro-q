@@ -10,6 +10,7 @@ using BistroQ.ViewModels;
 using BistroQ.ViewModels.AdminZone;
 using BistroQ.Views;
 using BistroQ.Views.AdminZone;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
@@ -90,6 +91,10 @@ public partial class App : Application
             services.AddSingleton<ITokenStorageService, TokenSecureStorageService>();
 
             // Views and ViewModels
+            services.AddTransient<AdminZoneViewModel>();
+            services.AddTransient<AdminZonePage>();
+            services.AddTransient<AdminTableViewModel>();
+            services.AddTransient<AdminTablePage>();
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainPage>();
             services.AddTransient<ShellPage>();

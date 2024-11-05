@@ -1,5 +1,6 @@
 ﻿using BistroQ.Contracts.Services;
 using BistroQ.Core.Contracts.Services;
+using BistroQ.Core.Dtos;
 using BistroQ.Core.Dtos.Zones;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -15,12 +16,12 @@ public class AdminZoneService : IAdminZoneService
         _zoneDataService = zoneDataService;
     }
 
-    public async Task<(IEnumerable<ZoneDto> Data, int TotalItems, int TotalPages, int CurrentPage)> GetZonesAsync(ZoneCollectionQueryParams query)
+    public async Task<PaginationResponseDto<IEnumerable<ZoneDto>>> GetZonesAsync(ZoneCollectionQueryParams query)
     {
         try
         {
             var result = await _zoneDataService.GetGridDataAsync(query);
-            return (result.Data, result.TotalItems, result.TotalPages, result.CurrentPage);
+            return result;
         }
         catch (Exception ex)
         {

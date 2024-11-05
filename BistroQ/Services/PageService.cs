@@ -3,6 +3,7 @@ using BistroQ.ViewModels;
 using BistroQ.ViewModels.AdminZone;
 using BistroQ.Views;
 using BistroQ.Views.AdminZone;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 
 using Microsoft.UI.Xaml.Controls;
@@ -19,6 +20,7 @@ public class PageService : IPageService
         Configure<AdminZoneViewModel, AdminZonePage>();
         Configure<AdminZoneAddPageViewModel, AdminZoneAddPage>();
         Configure<AdminZoneEditPageViewModel, AdminZoneEditPage>();
+        Configure<AdminTableViewModel, AdminTablePage>();
     }
 
     public Type GetPageType(string key)

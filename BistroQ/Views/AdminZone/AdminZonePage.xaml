@@ -45,14 +45,25 @@
             GridLinesVisibility="Horizontal"
             ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
             SelectedItem="{x:Bind ViewModel.SelectedZone, Mode=TwoWay}"
-            Grid.Row="1">
+            Grid.Row="1"
+            Sorting="ViewModel.AdminZoneDataGrid_Sorting">
 			<controls:DataGrid.Resources>
 				<SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
 			</controls:DataGrid.Resources>
 			<controls:DataGrid.Columns>
-				<controls:DataGridTextColumn Binding="{Binding ZoneId}" x:Uid="AdminZone_DataGrid_Column_Id" CanUserResize="False" IsReadOnly="True" />
-                <controls:DataGridTextColumn Binding="{Binding Name}" x:Uid="AdminZone_DataGrid_Column_Name" IsReadOnly="True" Width="300" />
-                <controls:DataGridTextColumn Binding="{Binding TableCount}" x:Uid="AdminZone_DataGrid_Column_TableCount" IsReadOnly="True" />
+                <controls:DataGridTextColumn Binding="{Binding ZoneId}" 
+                                             x:Uid="AdminZone_DataGrid_Column_Id" 
+                                             CanUserResize="False" 
+                                             IsReadOnly="True"
+                                             Tag="ZoneId" />
+                <controls:DataGridTextColumn Binding="{Binding Name}" 
+                                             x:Uid="AdminZone_DataGrid_Column_Name" 
+                                             IsReadOnly="True" Width="300"
+                                             Tag="Name" />
+                <controls:DataGridTextColumn Binding="{Binding TableCount}" 
+                                             x:Uid="AdminZone_DataGrid_Column_TableCount" 
+                                             IsReadOnly="True"
+                                             Tag="TableCount" />
                 <!-- <controls:DataGridTextColumn Header="Status" IsReadOnly="True" />-->
             </controls:DataGrid.Columns>
 		</controls:DataGrid>

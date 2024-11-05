@@ -67,10 +67,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Views\AdminZonePage.xaml">
+    <Page Update="Views\AdminTablePage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\AdminTable\" />
   </ItemGroup>
   
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
