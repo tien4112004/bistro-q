@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="BistroQ.Views.AdminZone.AdminZoneEditPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BistroQ.Views.AdminZone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Background="Transparent" HorizontalAlignment="Left">
+            <TextBox x:Name="ZoneIdTextBox"
+                     x:Uid="ZoneIdTextBox"
+                     Text="{x:Bind ViewModel.Zone.ZoneId, Mode=OneTime}"
+                     IsReadOnly="True"
+                     IsEnabled="False"
+                     Width="300"
+                     Margin="0,0,0,16" />
+            <TextBox x:Name="ZoneNameTextBox"
+                     x:Uid="ZoneNameTextBox"
+                     Text="{x:Bind ViewModel.Request.Name, Mode=TwoWay}"
+                     Header="Zone name"
+                     Width="300" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="AdminZoneEditPage_EditButton"
+                    x:Uid="AdminZoneEditPage_EditButton" 
+                    Style="{StaticResource AccentButtonStyle}" Width="80"
+                    Click="AdminZoneEditPage_EditButton_Click" 
+                    Margin="0,0,16,0"/>
+            <Button x:Name="AdminZoneEditPage_CancelButton"
+                    x:Uid="CancelButton" Width="80" 
+                    Click="AdminZoneEditPage_CancelButton_Click"
+                    />
+        </StackPanel>    
+    </Grid>
+</Page>

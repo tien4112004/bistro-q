@@ -1,20 +1,18 @@
-using BistroQ.Activation;
+﻿using BistroQ.Activation;
 using BistroQ.Contracts.Services;
 using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Services;
 using BistroQ.Core.Services.Auth;
 using BistroQ.Core.Services.Http;
-using BistroQ.Core.Services.Mock;
-using BistroQ.Helpers;
 using BistroQ.Models;
 using BistroQ.Services;
 using BistroQ.ViewModels;
+using BistroQ.ViewModels.AdminZone;
 using BistroQ.Views;
-
+using BistroQ.Views.AdminZone;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
-using Windows.ApplicationModel.Search;
 
 namespace BistroQ;
 
@@ -44,7 +42,10 @@ public partial class App : Application
 
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    public static UIElement? AppTitlebar { get; set; }
+    public static UIElement? AppTitlebar
+    {
+        get; set;
+    }
 
     public App()
     {
@@ -82,7 +83,9 @@ public partial class App : Application
             });
 
             // Core Services
+            services.AddSingleton<ISampleDataService, SampleDataService>();
             services.AddSingleton<IFileService, FileService>();
+            services.AddHttpClient();
             services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<ITokenStorageService, TokenSecureStorageService>();
 
@@ -92,6 +95,16 @@ public partial class App : Application
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
             services.AddTransient<LoginViewModel>();
+            // AdminZone V&VM
+            services.AddScoped<AdminZoneViewModel>();
+            services.AddTransient<AdminZonePage>();
+            services.AddTransient<AdminZoneAddPageViewModel>();
+            services.AddTransient<AdminZoneAddPage>();
+            services.AddTransient<AdminZoneEditPageViewModel>();
+            services.AddTransient<AdminZoneEditPage>();
+
+            services.AddScoped<IZoneDataService, ZoneDataService>();
+            services.AddScoped<IAdminZoneService, AdminZoneService>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

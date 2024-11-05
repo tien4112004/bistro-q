@@ -1,4 +1,4 @@
-using BistroQ.Core.Contracts.Services;
+﻿using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Dtos;
 using Newtonsoft.Json;
 using System.Text;
@@ -98,6 +98,26 @@ public class BaseApiClient : IBaseApiClient
                 Error = ex.Message,
                 StatusCode = (int)response.StatusCode
             };
+        }
+    }
+
+    public async Task<PaginationResponseDto<T>> GetCollectionAsync<T>(string url, object queryParams = null) where T : class
+    {
+        var finalUrl = BuildUrlWithQueryParams(url, queryParams);
+        var response = await _httpClient.GetAsync(finalUrl);
+        var resultContentString = await response.Content.ReadAsStringAsync();
+        try
+        {
+            var res = JsonConvert.DeserializeObject<PaginationResponseDto<T>>(resultContentString);
+            if (res == null)
+            {
+                return null;
+            }
+            return res;
+        }
+        catch (JsonException ex)
+        {
+            return null;
         }
     }
 }

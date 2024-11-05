@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="BistroQ.Views.AdminZone.AdminZoneAddPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BistroQ.Views.AdminZone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Background="Transparent">
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="ZoneNameTextBox"
+                         x:Uid="ZoneNameTextBox"
+                         Text="{x:Bind ViewModel.Request.Name, Mode=TwoWay}"
+                         Width="200" />
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="AdminZoneAddPage_AddButton"
+                    x:Uid="AdminZoneAddPage_AddButton" 
+                    Style="{StaticResource AccentButtonStyle}" Width="80"
+                    Click="AdminZoneAddPage_AddButton_Click" 
+                    Margin="0,0,16,0"/>
+            <Button x:Name="AdminZoneAddPage_CancelButton"
+                    x:Uid="CancelButton" Width="80" 
+                    Click="AdminZoneAddPage_CancelButton_Click"
+                    />
+        </StackPanel>    
+    </Grid>
+</Page>

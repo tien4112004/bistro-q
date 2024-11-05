@@ -1,9 +1,4 @@
-using BistroQ.Core.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BistroQ.Core.Dtos;
 
 namespace BistroQ.Core.Contracts.Services;
 
@@ -46,4 +41,6 @@ public interface IBaseApiClient
     /// <param name="contentValue">The content to include in the DELETE request.</param
     /// <returns>A task that represents the asynchronous operation, containing the response of type <typeparamref name="T"/>.</returns>
     Task<ApiResponse<T>> DeleteAsync<T>(string url, object contentValue);
+
+    Task<PaginationResponseDto<T>> GetCollectionAsync<T>(string url, object contentValue) where T : class;
 }
