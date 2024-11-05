@@ -1,4 +1,5 @@
-﻿using BistroQ.Contracts.Services;
+using BistroQ.Contracts.Services;
+using BistroQ.Core.Contracts.Services;
 using BistroQ.Helpers;
 using BistroQ.ViewModels;
 
@@ -81,5 +82,19 @@ public sealed partial class ShellPage : Page
         var result = navigationService.GoBack();
 
         args.Handled = result;
+    }
+
+    private void SettingsItem_Tapped(object sender, TappedRoutedEventArgs e)
+    {
+        var settingsItem = sender as NavigationViewItem;
+        if (settingsItem?.ContextFlyout is MenuFlyout flyout)
+        {
+            flyout.ShowAt(settingsItem);
+        }
+    }
+
+    private async void LogOut_Click(object sender, RoutedEventArgs e)
+    {
+        await App.GetService<IAuthService>().LogoutAsync();
     }
 }
