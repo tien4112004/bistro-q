@@ -96,5 +96,9 @@ public sealed partial class ShellPage : Page
     private async void LogOut_Click(object sender, RoutedEventArgs e)
     {
         await App.GetService<IAuthService>().LogoutAsync();
+
+        App.MainWindow.Hide();
+        await Task.Delay(500);
+        new LoginWindow().Activate();
     }
 }

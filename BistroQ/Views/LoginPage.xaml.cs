@@ -1,4 +1,5 @@
 using BistroQ.Contracts.Services;
+using BistroQ.Services;
 using BistroQ.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -35,9 +36,9 @@ public sealed partial class LoginPage : Page
         this.InitializeComponent();
         _window = window;
         ViewModel = App.GetService<LoginViewModel>();
-        ViewModel.NavigationRequested += async (s, e) =>
+        ViewModel.NavigationRequested += (s, e) =>
         {
-            await App.GetService<IActivationService>().ActivateAsync(EventArgs.Empty);
+            App.MainWindow.Show();
             window.Close();
         };
 

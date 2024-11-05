@@ -1,4 +1,4 @@
-﻿using BistroQ.Activation;
+using BistroQ.Activation;
 using BistroQ.Contracts.Services;
 using BistroQ.Views;
 
