@@ -18,4 +18,23 @@ public sealed partial class AdminZonePage : Page
         this.DataContext = ViewModel;
         InitializeComponent();
     }
+
+    private void Control2_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+    {
+        if (args.ChosenSuggestion != null)
+        {
+            ViewModel.SearchText = args.ChosenSuggestion.ToString();
+        }
+        else
+        {
+            ViewModel.SearchText = args.QueryText;
+        }
+
+        ViewModel.SearchCommand.Execute(null);
+    }
+
+    private void Control2_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+    {
+        sender.Text = args.SelectedItem.ToString();
+    }
 }

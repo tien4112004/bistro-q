@@ -23,37 +23,41 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
     [ObservableProperty]
     [NotifyCanExecuteChangedFor("EditCommand")]
     [NotifyCanExecuteChangedFor("DeleteCommand")]
-    private ZoneDto? selectedZone;
+    private ZoneDto? _selectedZone;
 
     [ObservableProperty]
-    private ObservableCollection<ZoneDto> source = new();
+    private ObservableCollection<ZoneDto> _source = new();
 
     [ObservableProperty]
-    private Pagination pagination;
+    private Pagination _pagination;
+
+    [ObservableProperty]
+    private string _searchText;
 
     public IRelayCommand AddCommand { get; }
     public IRelayCommand EditCommand { get; }
     public IAsyncRelayCommand DeleteCommand { get; }
     public ICommand SortCommand { get; }
+    public ICommand SearchCommand { get; }
 
     public AdminZoneViewModel(IAdminZoneService adminZoneService, INavigationService navigationService)
     {
         _adminZoneService = adminZoneService;
         _navigationService = navigationService;
-        pagination = new Pagination
+        _pagination = new Pagination
         {
             TotalItems = 0,
             TotalPages = 0,
             CurrentPage = 1,
             PageSize = 10
         };
-        pagination.PropertyChanged += Pagination_PropertyChanged;
+        _pagination.PropertyChanged += Pagination_PropertyChanged;
 
         AddCommand = new RelayCommand(NavigateToAddPage);
         EditCommand = new RelayCommand(NavigateToEditPage, CanEdit);
         DeleteCommand = new AsyncRelayCommand(DeleteSelectedZoneAsync, CanDelete);
         SortCommand = new RelayCommand<(string column, string direction)>(ExecuteSortCommand);
-
+        SearchCommand = new RelayCommand(ExecuteSearchCommand);
     }
 
     public async void OnNavigatedTo(object parameter)
@@ -87,16 +91,16 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
             var _query = query ?? new ZoneCollectionQueryParams()
             {
                 OrderDirection = "asc",
-                Page = pagination.CurrentPage,
-                Size = pagination.PageSize
+                Page = _pagination.CurrentPage,
+                Size = _pagination.PageSize
             };
 
             var result = await _adminZoneService.GetZonesAsync(_query);
 
             Source = new ObservableCollection<ZoneDto>(result.Data);
-            pagination.TotalItems = result.TotalItems;
-            pagination.TotalPages = result.TotalPages;
-            pagination.CurrentPage = result.CurrentPage;
+            _pagination.TotalItems = result.TotalItems;
+            _pagination.TotalPages = result.TotalPages;
+            _pagination.CurrentPage = result.CurrentPage;
         }
         catch (ServiceException ex)
         {
@@ -162,7 +166,7 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
             OrderBy = column,
             OrderDirection = direction,
             Page = 1,
-            Size = pagination.PageSize
+            Size = _pagination.PageSize
         };
         _ = LoadDataAsync(query);
     }
@@ -182,11 +186,43 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         SortCommand.Execute(sortParams);
     }
 
+    // search
+    private void ExecuteSearchCommand()
+    {
+        // Implement the search logic here
+        var query = new ZoneCollectionQueryParams
+        {
+            Name = SearchText,
+            Page = 1,
+            Size = _pagination.PageSize
+        };
+        _ = LoadDataAsync(query);
+    }
+
+    private void Control2_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+    {
+        if (args.ChosenSuggestion != null)
+        {
+            SearchText = args.ChosenSuggestion.ToString();
+        }
+        else
+        {
+            SearchText = args.QueryText;
+        }
+
+        SearchCommand.Execute(null);
+    }
+
+    private void Control2_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+    {
+        sender.Text = args.SelectedItem.ToString();
+    }
+
     public void Dispose()
     {
-        if (pagination != null)
+        if (_pagination != null)
         {
-            pagination.PropertyChanged -= Pagination_PropertyChanged;
+            _pagination.PropertyChanged -= Pagination_PropertyChanged;
         }
     }
 }
