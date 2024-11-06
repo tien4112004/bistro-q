@@ -50,7 +50,12 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_AdminZone" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.AdminZoneViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe80a;"/>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE71D;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_AdminTable" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.AdminTableViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7FB;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>

@@ -20,7 +20,7 @@
                 <TextBox x:Name="ZoneNameTextBox"
                          x:Uid="ZoneNameTextBox"
                          Text="{x:Bind ViewModel.Request.Name, Mode=TwoWay}"
-                         Width="200" />
+                         Width="300" />
             </StackPanel>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">

@@ -7,10 +7,7 @@ namespace BistroQ.Views;
 // For more details, see the documentation at https://docs.microsoft.com/windows/communitytoolkit/controls/datagrid.
 public sealed partial class AdminZonePage : Page
 {
-    public AdminZoneViewModel ViewModel
-    {
-        get;
-    }
+    public AdminZoneViewModel ViewModel { get; }
 
     public AdminZonePage()
     {
