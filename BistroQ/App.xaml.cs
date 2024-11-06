@@ -107,6 +107,7 @@ public partial class App : Application
 
             services.AddScoped<IZoneDataService, ZoneDataService>();
             services.AddScoped<IAdminZoneService, AdminZoneService>();
+            services.AddScoped<IOrderDataService, OrderDataService>();
             // Client V&VM
             services.AddTransient<HomePageViewModel>();
             services.AddTransient<HomePage>();
