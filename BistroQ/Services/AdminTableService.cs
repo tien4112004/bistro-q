@@ -1,22 +1,22 @@
 ﻿using BistroQ.Contracts.Services;
 using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Dtos;
-using BistroQ.Core.Dtos.Zones;
+using BistroQ.Core.Dtos.Tables;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace BistroQ.Services;
 
-public class AdminZoneService : IAdminZoneService
+public class AdminTableService : IAdminTableService
 {
-    private readonly IZoneDataService _zoneDataService;
+    private readonly ITableDataService _zoneDataService;
 
-    public AdminZoneService(IZoneDataService zoneDataService)
+    public AdminTableService(ITableDataService zoneDataService)
     {
         _zoneDataService = zoneDataService;
     }
 
-    public async Task<PaginationResponseDto<IEnumerable<ZoneDto>>> GetZonesAsync(ZoneCollectionQueryParams query)
+    public async Task<PaginationResponseDto<IEnumerable<TableDto>>> GetTablesAsync(TableCollectionQueryParams query)
     {
         try
         {
@@ -30,11 +30,11 @@ public class AdminZoneService : IAdminZoneService
         }
     }
 
-    public async Task<bool> DeleteZoneAsync(int zoneId)
+    public async Task<bool> DeleteTableAsync(int zoneId)
     {
         try
         {
-            var result = await _zoneDataService.DeleteZoneAsync(zoneId);
+            var result = await _zoneDataService.DeleteTableAsync(zoneId);
             return result.Success;
         }
         catch (Exception ex)
@@ -81,13 +81,5 @@ public class AdminZoneService : IAdminZoneService
             CloseButtonText = "OK"
         };
         await dialog.ShowAsync();
-    }
-}
-
-public class ServiceException : Exception
-{
-    public ServiceException(string message, Exception? innerException = null)
-        : base(message, innerException)
-    {
     }
 }

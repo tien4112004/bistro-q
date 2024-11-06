@@ -7,9 +7,12 @@ using BistroQ.Core.Services.Http;
 using BistroQ.Models;
 using BistroQ.Services;
 using BistroQ.ViewModels;
+using BistroQ.ViewModels.AdminTable;
 using BistroQ.ViewModels.AdminZone;
 using BistroQ.Views;
+using BistroQ.Views.AdminTable;
 using BistroQ.Views.AdminZone;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
@@ -102,9 +105,17 @@ public partial class App : Application
             services.AddTransient<AdminZoneAddPage>();
             services.AddTransient<AdminZoneEditPageViewModel>();
             services.AddTransient<AdminZoneEditPage>();
+            services.AddScoped<AdminTableViewModel>();
+            services.AddTransient<AdminTablePage>();
+            services.AddTransient<AdminTableAddPageViewModel>();
+            services.AddTransient<AdminTableAddPage>();
+            services.AddTransient<AdminTableEditPageViewModel>();
+            services.AddTransient<AdminTableEditPage>();
 
             services.AddScoped<IZoneDataService, ZoneDataService>();
+            services.AddScoped<ITableDataService, TableDataService>();
             services.AddScoped<IAdminZoneService, AdminZoneService>();
+            services.AddScoped<IAdminTableService, AdminTableService>();
 
             services.AddTransient<TestKitchenViewModel>();
             services.AddTransient<TestKitchenPage>();
