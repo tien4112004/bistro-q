@@ -3,6 +3,7 @@ using BistroQ.Core.Dtos;
 using BistroQ.Core.Models.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -51,6 +52,34 @@ public class OrderDataService : IOrderDataService
         if (!response.Success)
         {
             throw new Exception(response.Message);
+        }
+    }
+
+    public async Task<Order> GetOrderByCashierAsync(int tableId)
+    {
+        var response = await apiClient.GetAsync<Order>($"api/CashierOrder/{tableId}", null);
+
+        if (response.Success)
+        {
+            return response.Data;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public async Task<IEnumerable<Order>> GetCurrentOrdersByCashierAsync()
+    {
+        var response = await apiClient.GetAsync<IEnumerable<Order>>($"api/CashierOrder", null);
+
+        if (response.Success)
+        {
+            return response.Data;
+        }
+        else
+        {
+            return null;
         }
     }
 }

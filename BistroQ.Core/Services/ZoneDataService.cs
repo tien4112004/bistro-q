@@ -36,5 +36,17 @@ namespace BistroQ.Core.Services
             var response = await _apiClient.DeleteAsync<object>($"api/admin/zone/{zoneId}", null);
             return response;
         }
+
+        public async Task<PaginationResponseDto<IEnumerable<ZoneDto>>> GetZonesAsync(ZoneCollectionQueryParams query = null)
+        {
+            var response = await _apiClient.GetCollectionAsync<IEnumerable<ZoneDto>>("/api/zone", query);
+            return response;
+        }
+
+        public async Task<ZoneDto> GetZoneByIdAsync(int zoneId)
+        {
+            var response = await _apiClient.GetAsync<ZoneDto>($"api/zone/{zoneId}", null);
+            return response.Data;
+        }
     }
 }
