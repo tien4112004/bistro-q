@@ -5,14 +5,16 @@ namespace BistroQ.Views;
 
 // TODO: Change the grid as appropriate for your app. Adjust the column definitions on DataGridPage.xaml.
 // For more details, see the documentation at https://docs.microsoft.com/windows/communitytoolkit/controls/datagrid.
-public sealed partial class AdminZonePage : Page
+public sealed partial class AdminTablePage : Page
 {
-    public AdminZoneViewModel ViewModel { get; }
-
-    public AdminZonePage()
+    public AdminTableViewModel ViewModel
     {
-        ViewModel = App.GetService<AdminZoneViewModel>();
-        this.DataContext = ViewModel;
+        get;
+    }
+
+    public AdminTablePage()
+    {
+        ViewModel = App.GetService<AdminTableViewModel>();
         InitializeComponent();
     }
 

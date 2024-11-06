@@ -165,4 +165,58 @@
   <data name="Shell_ClientHomePage.Content" xml:space="preserve">
     <value>Order</value>
   </data>
+  <data name="Shell_AdminTable.Content" xml:space="preserve">
+    <value>Manage Tables</value>
+  </data>
+  <data name="AdminTable_DataGrid_AddNewButtonText/Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AdminTable_DataGrid_Column_TableId/Header" xml:space="preserve">
+    <value>Table ID</value>
+  </data>
+  <data name="AdminTable_DataGrid_Column_TableNumber/Header" xml:space="preserve">
+    <value>Table number</value>
+  </data>
+  <data name="AdminTable_DataGrid_Column_ZoneId/Header" xml:space="preserve">
+    <value>Zone ID</value>
+  </data>
+  <data name="AdminTable_DataGrid_Column_ZoneName/Header" xml:space="preserve">
+    <value>Zone name</value>
+  </data>
+  <data name="AdminTable_DataGrid_Column_SeatsCount/Header" xml:space="preserve">
+    <value>Number of seats</value>
+  </data>
+  <data name="TableAddPage_ZoneComboBox/Header" xml:space="preserve">
+    <value>Zone</value>
+  </data>
+  <data name="TableAddPage_SeatsCountTextBox/Header" xml:space="preserve">
+    <value>Number of seats</value>
+  </data>
+  <data name="TableAddPage_SeatsCountTextBox/PlaceholderText" xml:space="preserve">
+    <value>Number of seats</value>
+  </data>
+  <data name="TableAddPage_ZoneComboBox/PlaceholderText" xml:space="preserve">
+    <value>Select a zone</value>
+  </data>
+  <data name="AdminTableAddPage_AddButton_Click/Content" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AdminTableAddPage_AddButton/Content" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="TableIdTextBox/Header" xml:space="preserve">
+    <value>Table ID</value>
+  </data>
+  <data name="TableEditPage_ZoneComboBox/Header" xml:space="preserve">
+    <value>Zone</value>
+  </data>
+  <data name="TableEditPage_ZoneComboBox/PlaceholderText" xml:space="preserve">
+    <value>Select a zone</value>
+  </data>
+  <data name="TableEditPage_SeatsCountTextBox/Header" xml:space="preserve">
+    <value>Number of seats</value>
+  </data>
+  <data name="AdminTableEditPage_EditButton/Content" xml:space="preserve">
+    <value>Update</value>
+  </data>
 </root>

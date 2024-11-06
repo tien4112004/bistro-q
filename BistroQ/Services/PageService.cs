@@ -1,8 +1,10 @@
 ﻿using BistroQ.Contracts.Services;
 using BistroQ.ViewModels;
+using BistroQ.ViewModels.AdminTable;
 using BistroQ.ViewModels.AdminZone;
 using BistroQ.ViewModels.Client;
 using BistroQ.Views;
+using BistroQ.Views.AdminTable;
 using BistroQ.Views.AdminZone;
 using BistroQ.Views.Client;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -23,6 +25,10 @@ public class PageService : IPageService
         Configure<AdminZoneEditPageViewModel, AdminZoneEditPage>();
         
         Configure<HomePageViewModel, HomePage>();
+        
+        Configure<AdminTableViewModel, AdminTablePage>();
+        Configure<AdminTableAddPageViewModel, AdminTableAddPage>();
+        Configure<AdminTableEditPageViewModel, AdminTableEditPage>();
         
         Configure<TestAdminViewModel, TestAdminPage>();
         Configure<TestKitchenViewModel, TestKitchenPage>();

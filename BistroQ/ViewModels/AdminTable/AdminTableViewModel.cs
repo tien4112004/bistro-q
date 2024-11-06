@@ -1,9 +1,9 @@
 ﻿using BistroQ.Contracts.Services;
 using BistroQ.Contracts.ViewModels;
-using BistroQ.Core.Dtos.Zones;
+using BistroQ.Core.Dtos.Tables;
 using BistroQ.Core.Models;
 using BistroQ.Services;
-using BistroQ.ViewModels.AdminZone;
+using BistroQ.ViewModels.AdminTable;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI.UI.Controls;
@@ -14,19 +14,19 @@ using System.Windows.Input;
 
 namespace BistroQ.ViewModels;
 
-public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware, IDisposable
+public partial class AdminTableViewModel : ObservableRecipient, INavigationAware, IDisposable
 {
-    private readonly IAdminZoneService _adminZoneService;
+    private readonly IAdminTableService _adminTableService;
     private readonly INavigationService _navigationService;
     private bool _isLoading;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor("EditCommand")]
     [NotifyCanExecuteChangedFor("DeleteCommand")]
-    private ZoneDto? _selectedZone;
+    private TableDto? _selectedTable;
 
     [ObservableProperty]
-    private ObservableCollection<ZoneDto> _source = new();
+    private ObservableCollection<TableDto> _source = new();
 
     [ObservableProperty]
     private Pagination _pagination;
@@ -40,9 +40,9 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
     public ICommand SortCommand { get; }
     public ICommand SearchCommand { get; }
 
-    public AdminZoneViewModel(IAdminZoneService adminZoneService, INavigationService navigationService)
+    public AdminTableViewModel(IAdminTableService adminTableService, INavigationService navigationService)
     {
-        _adminZoneService = adminZoneService;
+        _adminTableService = adminTableService;
         _navigationService = navigationService;
         _pagination = new Pagination
         {
@@ -55,7 +55,7 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
 
         AddCommand = new RelayCommand(NavigateToAddPage);
         EditCommand = new RelayCommand(NavigateToEditPage, CanEdit);
-        DeleteCommand = new AsyncRelayCommand(DeleteSelectedZoneAsync, CanDelete);
+        DeleteCommand = new AsyncRelayCommand(DeleteSelectedTableAsync, CanDelete);
         SortCommand = new RelayCommand<(string column, string direction)>(ExecuteSortCommand);
         SearchCommand = new RelayCommand(ExecuteSearchCommand);
     }
@@ -67,7 +67,7 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
 
     public void OnNavigatedFrom()
     {
-        SelectedZone = null;
+        SelectedTable = null;
     }
 
     private void Pagination_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -82,29 +82,29 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         _ = LoadDataAsync();
     }
 
-    private async Task LoadDataAsync(ZoneCollectionQueryParams query = null)
+    private async Task LoadDataAsync(TableCollectionQueryParams query = null)
     {
         try
         {
             _isLoading = true;
 
-            var _query = query ?? new ZoneCollectionQueryParams()
+            var _query = query ?? new TableCollectionQueryParams()
             {
                 OrderDirection = "asc",
                 Page = _pagination.CurrentPage,
                 Size = _pagination.PageSize
             };
 
-            var result = await _adminZoneService.GetZonesAsync(_query);
+            var result = await _adminTableService.GetTablesAsync(_query);
 
-            Source = new ObservableCollection<ZoneDto>(result.Data);
+            Source = new ObservableCollection<TableDto>(result.Data);
             _pagination.TotalItems = result.TotalItems;
             _pagination.TotalPages = result.TotalPages;
             _pagination.CurrentPage = result.CurrentPage;
         }
         catch (ServiceException ex)
         {
-            await _adminZoneService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
+            await _adminTableService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
         }
         finally
         {
@@ -114,46 +114,46 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
 
     // buttons
     private void NavigateToAddPage() =>
-        _navigationService.NavigateTo(typeof(AdminZoneAddPageViewModel).FullName);
+        _navigationService.NavigateTo(typeof(AdminTableAddPageViewModel).FullName);
 
-    private bool CanEdit() => SelectedZone != null;
+    private bool CanEdit() => SelectedTable != null;
 
     private void NavigateToEditPage()
     {
-        if (SelectedZone?.ZoneId != null)
+        if (SelectedTable?.TableId != null)
         {
-            _navigationService.NavigateTo(typeof(AdminZoneEditPageViewModel).FullName, SelectedZone);
+            _navigationService.NavigateTo(typeof(AdminTableEditPageViewModel).FullName, SelectedTable);
         }
     }
 
-    private bool CanDelete() => SelectedZone != null;
+    private bool CanDelete() => SelectedTable != null;
 
-    private async Task DeleteSelectedZoneAsync()
+    private async Task DeleteSelectedTableAsync()
     {
-        if (SelectedZone?.ZoneId == null) return;
+        if (SelectedTable?.TableId == null) return;
 
         try
         {
             var xamlRoot = App.MainWindow.Content.XamlRoot;
-            var result = await _adminZoneService.ShowConfirmDeleteDialog(xamlRoot);
+            var result = await _adminTableService.ShowConfirmDeleteDialog(xamlRoot);
             if (result != ContentDialogResult.Primary) return;
 
-            var success = await _adminZoneService.DeleteZoneAsync(SelectedZone.ZoneId.Value);
+            var success = await _adminTableService.DeleteTableAsync(SelectedTable.TableId.Value);
             if (success)
             {
-                await _adminZoneService.ShowSuccessDialog("Zone deleted successfully.", xamlRoot);
-                Source.Remove(SelectedZone);
-                SelectedZone = null;
+                await _adminTableService.ShowSuccessDialog("Table deleted successfully.", xamlRoot);
+                Source.Remove(SelectedTable);
+                SelectedTable = null;
                 await LoadDataAsync();
             }
             else
             {
-                await _adminZoneService.ShowErrorDialog("Failed to delete zone.", xamlRoot);
+                await _adminTableService.ShowErrorDialog("Failed to delete table.", xamlRoot);
             }
         }
         catch (ServiceException ex)
         {
-            await _adminZoneService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
+            await _adminTableService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
         }
     }
 
@@ -161,7 +161,7 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
     private void ExecuteSortCommand((string column, string direction) sortParams)
     {
         var (column, direction) = sortParams;
-        var query = new ZoneCollectionQueryParams
+        var query = new TableCollectionQueryParams
         {
             OrderBy = column,
             OrderDirection = direction,
@@ -171,7 +171,7 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         _ = LoadDataAsync(query);
     }
 
-    public void AdminZoneDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
+    public void AdminTableDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
     {
         var column = e.Column;
         var sortDirection = column.SortDirection == null || column.SortDirection == DataGridSortDirection.Descending
@@ -190,11 +190,11 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
     private void ExecuteSearchCommand()
     {
         // Implement the search logic here
-        var query = new ZoneCollectionQueryParams
+        var query = new TableCollectionQueryParams
         {
-            Name = SearchText,
-            Page = 1,
-            Size = _pagination.PageSize
+            //Name = SearchText,
+            //Page = 1,
+            //Size = _pagination.PageSize
         };
         _ = LoadDataAsync(query);
     }

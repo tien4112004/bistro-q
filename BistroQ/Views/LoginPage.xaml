@@ -10,7 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:viewmodels="using:BistroQ.ViewModels" 
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Background="Transparent"
     Loaded="On_Loaded">
 
     <Page.Resources>
@@ -21,106 +21,108 @@
     </Page.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- Login Form -->
+            <!-- Login Form -->
 
-        <StackPanel Grid.Row="1" 
-             Width="300"
-             VerticalAlignment="Center"
-             Spacing="15">
+            <StackPanel Grid.Row="1" 
+                 Width="300"
+                 VerticalAlignment="Center"
+                 Spacing="15">
 
-            <TextBlock Text="BistroQ"
-              HorizontalAlignment="Center"
-              FontSize="28"
-              FontWeight="Bold"/>
+                <TextBlock Text="BistroQ"
+                  HorizontalAlignment="Center"
+                  FontSize="28"
+                  FontWeight="Bold"/>
 
-            <TextBlock Text="Please enter your username and password"
-              HorizontalAlignment="Center"
-              FontSize="14"
-              Margin="0,5,0,0"
-              Opacity="0.7"/>
+                <TextBlock Text="Please enter your username and password"
+                  HorizontalAlignment="Center"
+                  FontSize="14"
+                  Margin="0,5,0,0"
+                  Opacity="0.7"/>
 
-            <!-- Username -->
-            <StackPanel>
+                <!-- Username -->
+                <StackPanel>
 
-                <TextBox
-                Text="{x:Bind ViewModel.Form.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                x:Name="Username"
-                LosingFocus="TextBox_LosingFocus"
-                PlaceholderText="Username"
-                KeyDown="Text_KeyDown"
-                Height="40"/>
+                    <TextBox
+                    Text="{x:Bind ViewModel.Form.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    x:Name="Username"
+                    LosingFocus="TextBox_LosingFocus"
+                    PlaceholderText="Username"
+                    KeyDown="Text_KeyDown"
+                    Height="40"/>
 
-                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
-                                Mode=OneWay, 
-                                Converter={StaticResource FirstError},
-                                ConverterParameter=Username}"
-                           Margin="0,5,0,0"
-                           Foreground="Red"/>
-            </StackPanel>
-            <StackPanel>
-                <!-- Password -->
-                <PasswordBox
-                Password="{x:Bind ViewModel.Form.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                x:Name="Password"
-                LosingFocus="TextBox_LosingFocus"
-                PlaceholderText="Password"
-                KeyDown="Text_KeyDown"
-                Height="40"/>
-                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
-                                Mode=OneWay, 
-                                Converter={StaticResource FirstError},
-                                ConverterParameter=Password}"
-                           Margin="0,5,0,0"
-                           Foreground="Red"/>
-            </StackPanel>
-
-            <!-- Login Button -->
-            <Button 
-                 Style="{StaticResource AccentButtonStyle}"
-                 Width="60"
-                 Command="{x:Bind ViewModel.LoginCommand}"
-                 IsEnabled="{x:Bind ViewModel.IsProcessing, 
-                            Mode=OneWay,
-                            Converter={StaticResource ReverseBool}}"
-                 HorizontalAlignment="Center">
-                <Grid>
-                    <control:ProgressRing
-                         IsActive="{x:Bind ViewModel.IsProcessing, Mode=OneWay}"
-                         Foreground="White"
-                         Width="20"
-                         Height="20"/>
-
-                    <TextBlock Text="Login"
-                        Visibility="{x:Bind ViewModel.IsProcessing, 
+                    <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
                                     Mode=OneWay, 
-                                    Converter ={StaticResource BoolToVisibility}, 
-                                    ConverterParameter=invert}"
-                        Foreground="White"
-                        FontWeight="Bold"/>
-                </Grid>
-            </Button>
+                                    Converter={StaticResource FirstError},
+                                    ConverterParameter=Username}"
+                               Margin="0,5,0,0"
+                               Foreground="Red"/>
+                </StackPanel>
+                <StackPanel>
+                    <!-- Password -->
+                    <PasswordBox
+                    Password="{x:Bind ViewModel.Form.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    x:Name="Password"
+                    LosingFocus="TextBox_LosingFocus"
+                    PlaceholderText="Password"
+                    KeyDown="Text_KeyDown"
+                    Height="40"/>
+                    <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                    Mode=OneWay, 
+                                    Converter={StaticResource FirstError},
+                                    ConverterParameter=Password}"
+                               Margin="0,5,0,0"
+                               Foreground="Red"/>
+                </StackPanel>
 
-            <!-- Error Message -->
-            <TextBlock
-                Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
-                Visibility="{x:Bind ViewModel.ErrorMessage, 
-                            Mode=OneWay, 
-                            Converter={StaticResource StringToVisibility}}"
-                Foreground="Red"
-                TextWrapping="Wrap"/>
-        </StackPanel>
+                <!-- Login Button -->
+                <Button 
+                     Style="{StaticResource AccentButtonStyle}"
+                     Width="60"
+                     Command="{x:Bind ViewModel.LoginCommand}"
+                     IsEnabled="{x:Bind ViewModel.IsProcessing, 
+                                Mode=OneWay,
+                                Converter={StaticResource ReverseBool}}"
+                     HorizontalAlignment="Center">
+                    <Grid>
+                        <control:ProgressRing
+                             IsActive="{x:Bind ViewModel.IsProcessing, Mode=OneWay}"
+                             Foreground="White"
+                             Width="20"
+                             Height="20"/>
 
-        <!-- Footer -->
-        <TextBlock Grid.Row="2"
-          Text="© 2024 Bistro Q System"
-          HorizontalAlignment="Center"
-          Margin="0,0,0,20"
-          Opacity="0.5"/>
+                        <TextBlock Text="Login"
+                            Visibility="{x:Bind ViewModel.IsProcessing, 
+                                        Mode=OneWay, 
+                                        Converter ={StaticResource BoolToVisibility}, 
+                                        ConverterParameter=invert}"
+                            Foreground="White"
+                            FontWeight="Bold"/>
+                    </Grid>
+                </Button>
+
+                <!-- Error Message -->
+                <TextBlock
+                    Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.ErrorMessage, 
+                                Mode=OneWay, 
+                                Converter={StaticResource StringToVisibility}}"
+                    Foreground="Red"
+                    TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <!-- Footer -->
+            <TextBlock Grid.Row="2"
+              Text="© 2024 Bistro Q System"
+              HorizontalAlignment="Center"
+              Margin="0,0,0,20"
+              Opacity="0.5"/>
+        </Grid>
     </Grid>
 </Page>

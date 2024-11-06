@@ -18,6 +18,8 @@
     <Compile Remove="Services\IAdminZoneService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Views\AdminTable\AdminTableAddPage.xaml" />
+    <None Remove="Views\AdminTable\AdminTableEditPage.xaml" />
     <None Remove="Views\AdminZone\AdminZoneAddPage.xaml" />
     <None Remove="Views\TestAdminPage.xaml" />
     <None Remove="Views\TestKitchenPage.xaml" />
@@ -51,8 +53,17 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Page Update="ViewModels\Client\HomePage.xaml">
+    <Page Update="Views\Client\HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\AdminTable\AdminTableEditPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\AdminTable\AdminTableAddPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\AdminTable\AdminTableEditPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\TestKitchenPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -78,7 +89,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Views\AdminZonePage.xaml">
+    <Page Update="Views\AdminTablePage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <Generator>MSBuild:Compile</Generator>
     </Page>
