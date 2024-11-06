@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="BistroQ.Views.Client.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BistroQ.Views.Client"
+    xmlns:converter="using:BistroQ.Converters"
+    xmlns:control="using:Microsoft.UI.Xaml.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Page.Resources>
+        <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </Page.Resources>
+
+    <Grid x:Name="ContentArea">
+        <StackPanel
+            x:Name="EntryContent"
+            VerticalAlignment="Center" 
+            Background="Transparent"
+            Visibility="{x:Bind ViewModel.IsOrdering, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
+            HorizontalAlignment="Center">
+
+            <Button 
+                x:Name="EntryButton"
+                Command="{x:Bind ViewModel.StartOrderCommand}"
+                Style="{ThemeResource AccentButtonStyle}"
+                Width="140"
+                Padding="20,10"
+                FontSize="20">
+                <Grid>
+                    <TextBlock Text="Start Ordering"
+                        Visibility="{x:Bind ViewModel.IsLoading, 
+                                    Mode=OneWay, 
+                                    Converter ={StaticResource BoolToVisibility}, 
+                                    ConverterParameter=invert}"
+                        Style="{StaticResource BaseTextBlockStyle}"/>
+                    <control:ProgressRing 
+                         IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                         Foreground="White"
+                         Width="20"
+                         Height="20"/>
+                </Grid>
+            </Button>
+
+            <TextBlock x:Name="EntryErrorTextBlock" 
+                Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                Foreground="Red"
+                Margin="0,10,0,0"
+                />
+        </StackPanel>
+
+        <Grid
+            x:Name="MainContent"
+            Visibility="{x:Bind ViewModel.IsOrdering, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+            Margin="0,0,0,30"
+            >
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="{StaticResource CardBackgroundFillColorDefaultBrush}" CornerRadius="10" 
+                    BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="4">
+                <TextBlock Padding="10,10" Foreground="{StaticResource TextFillColorPrimaryBrush}">
+                    Product List
+                </TextBlock>
+            </Border>
+
+            <Rectangle Grid.Column="1"
+               Width="0"
+               Margin="6,0"
+               />
+
+            <Border Grid.Column="2" Background="{StaticResource CardBackgroundFillColorDefaultBrush}" CornerRadius="10" 
+                    BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="4">
+                <StackPanel>
+                    <TextBlock Padding="10,10" Foreground="{StaticResource TextFillColorPrimaryBrush}">
+                    Order Summary
+                    </TextBlock>
+                    
+                    <!--  TODO: Delete this in the final version -->
+                    <Button
+                        Command="{x:Bind ViewModel.CancelOrderCommand}"
+                        Style="{StaticResource AccentButtonStyle}"
+                        >
+                        Test Cancel Order (Used for testing UI)
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>
