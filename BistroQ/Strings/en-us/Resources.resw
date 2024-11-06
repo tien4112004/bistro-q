@@ -162,4 +162,7 @@
   <data name="ZoneNameTextBox/Header" xml:space="preserve">
     <value>Zone name</value>
   </data>
+  <data name="Shell_ClientHomePage.Content" xml:space="preserve">
+    <value>Order</value>
+  </data>
 </root>
