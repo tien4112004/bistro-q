@@ -9,5 +9,6 @@ public interface IZoneDataService
     Task<ApiResponse<ZoneDto>> CreateZoneAsync(CreateZoneRequestDto request);
     Task<ApiResponse<ZoneDto>> UpdateZoneAsync(int zoneId, UpdateZoneRequestDto request);
     Task<ApiResponse<object>> DeleteZoneAsync(int zoneId);
-
+    Task<PaginationResponseDto<IEnumerable<ZoneDto>>> GetZonesAsync(ZoneCollectionQueryParams query);
+    Task<ZoneDto> GetZoneByIdAsync(int zoneId);
 }

@@ -19,6 +19,12 @@ namespace BistroQ.Core.Services
             return response;
         }
 
+        public async Task<TableDto> GetDataTableAsync(int tableId)
+        {
+            var response = await _apiClient.GetAsync<TableDto>($"api/table/{tableId}", null);
+            return response.Data;
+        }
+
         public async Task<ApiResponse<TableDto>> CreateTableAsync(CreateTableRequestDto request)
         {
             var response = await _apiClient.PostAsync<TableDto>("api/admin/table", request);

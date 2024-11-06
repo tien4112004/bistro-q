@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BistroQ.Core.Dtos.Tables;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,5 +19,7 @@ public class Order
 
     public int? TableId { get; set; }
 
-    public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+    public TableDto Table { get; set; } = null!;
+
+    public List<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 }

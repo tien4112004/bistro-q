@@ -8,5 +8,6 @@ public class TableDto
     public int? Number { get; set; }
 
     public int? SeatsCount { get; set; }
+
     public string? ZoneName { get; set; }
 }

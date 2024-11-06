@@ -17,4 +17,6 @@ public class OrderDetail
     public int? Quantity { get; set; }
 
     public decimal? PriceAtPurchase { get; set; }
+
+    public Product Product { get; set; }
 }
