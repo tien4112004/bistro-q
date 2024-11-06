@@ -43,21 +43,34 @@
                 TODO: Update item icons by updating FontIcon.Glyph properties.
                 https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list
                 -->
-                <NavigationViewItem x:Uid="Shell_Main" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.MainViewModel">
+                <NavigationViewItem x:Uid="Shell_Main" Tag="User" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.MainViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_AdminZone" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.AdminZoneViewModel">
+                <NavigationViewItem x:Uid="Shell_AdminZone" Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.AdminZoneViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE71D;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_AdminTable" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.AdminTableViewModel">
+                <NavigationViewItem x:Uid="Shell_AdminTable" Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.AdminTableViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7FB;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
+                <NavigationViewItem x:Uid="Shell_TestAdmin" Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.TestAdminViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe8fd;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItem x:Uid="Shell_TestKitchen" Tag="Kitchen" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.TestKitchenViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe8fd;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                
             </NavigationView.MenuItems>
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
@@ -68,6 +81,25 @@
                     </Grid>
                 </DataTemplate>
             </NavigationView.HeaderTemplate>
+
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem x:Name="SettingsItem" Tapped="SettingsItem_Tapped">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE713;"/>
+                    </NavigationViewItem.Icon>
+
+                    <NavigationViewItem.Content>
+                        <TextBlock Text="Settings"/>
+                    </NavigationViewItem.Content>
+
+                    <NavigationViewItem.ContextFlyout>
+                        <MenuFlyout Placement="TopEdgeAlignedLeft">
+                            <MenuFlyoutItem Text="Logout" Click="LogOut_Click"/>
+                        </MenuFlyout>
+                    </NavigationViewItem.ContextFlyout>
+                </NavigationViewItem>
+            </NavigationView.FooterMenuItems>
+
             <i:Interaction.Behaviors>
                 <behaviors:NavigationViewHeaderBehavior
                     DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">

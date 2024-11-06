@@ -10,6 +10,8 @@ public sealed partial class MainWindow : WindowEx
 
     private UISettings settings;
 
+    public bool IsClosed { get; private set; }
+
     public MainWindow()
     {
         InitializeComponent();
@@ -33,5 +35,10 @@ public sealed partial class MainWindow : WindowEx
         {
             TitleBarHelper.ApplySystemThemeToCaptionButtons();
         });
+    }
+
+    private void Window_Closed(object sender, Microsoft.UI.Xaml.WindowEventArgs args)
+    {
+        IsClosed = true;
     }
 }

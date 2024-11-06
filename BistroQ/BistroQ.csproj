@@ -21,6 +21,8 @@
     <None Remove="Views\AdminTable\AdminTableAddPage.xaml" />
     <None Remove="Views\AdminTable\AdminTableEditPage.xaml" />
     <None Remove="Views\AdminZone\AdminZoneAddPage.xaml" />
+    <None Remove="Views\TestAdminPage.xaml" />
+    <None Remove="Views\TestKitchenPage.xaml" />
     <None Remove="Views\UserControls\PaginationControl.xaml" />
     <None Remove="LoginWindow.xaml" />
   </ItemGroup>
@@ -59,6 +61,12 @@
     </Page>
     <Page Update="Views\AdminTable\AdminTableEditPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\TestKitchenPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\TestAdminPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\AdminZone\AdminZoneEditPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

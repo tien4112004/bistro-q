@@ -1,4 +1,5 @@
-using BistroQ.Contracts.Services;
+﻿using BistroQ.Contracts.Services;
+using BistroQ.Services;
 using BistroQ.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -9,6 +10,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -58,4 +60,23 @@ public sealed partial class LoginPage : Page
             ViewModel.LoginCommand.Execute(null);
         }
     }
+
+    private void TextBox_LosingFocus(UIElement sender, LosingFocusEventArgs args)
+    {
+        switch (sender)
+        {
+            case TextBox textBox:
+                ViewModel.FormChangeCommand.Execute((textBox.Name, textBox.Text));
+                break;
+
+            case PasswordBox passwordBox:
+                ViewModel.FormChangeCommand.Execute((passwordBox.Name, passwordBox.Password));
+                break;
+
+            default:
+                break;
+        }
+    }
 }
+
+

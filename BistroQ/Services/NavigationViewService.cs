@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Data;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 using BistroQ.Contracts.Services;
 using BistroQ.Helpers;
@@ -16,7 +18,12 @@ public class NavigationViewService : INavigationViewService
 
     private NavigationView? _navigationView;
 
-    public IList<object>? MenuItems => _navigationView?.MenuItems;
+    public string Role;
+
+    public IList<object>? MenuItems
+    {
+        get => MenuItems; 
+    }
 
     public object? SettingsItem => _navigationView?.SettingsItem;
 
@@ -27,9 +34,22 @@ public class NavigationViewService : INavigationViewService
     }
 
     [MemberNotNull(nameof(_navigationView))]
-    public void Initialize(NavigationView navigationView)
+    public void Initialize(NavigationView navigationView, string role)
     {
         _navigationView = navigationView;
+
+        var items = _navigationView.MenuItems.Where(x =>
+        {
+            var navItem = x as NavigationViewItem;
+            return navItem != null && (navItem.Tag?.ToString() == role || navItem.Tag?.ToString() == "User");
+        }).ToList();
+
+        _navigationView.MenuItems.Clear();
+
+        foreach (var item in items)
+        {
+            _navigationView.MenuItems.Add(item);
+        }
         _navigationView.BackRequested += OnBackRequested;
         _navigationView.ItemInvoked += OnItemInvoked;
     }

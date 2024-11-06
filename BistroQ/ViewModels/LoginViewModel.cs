@@ -1,4 +1,5 @@
 ﻿using BistroQ.Core.Contracts.Services;
+using BistroQ.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
@@ -16,12 +17,11 @@ public partial class LoginViewModel : ObservableObject
     [ObservableProperty]
     private bool _isProcessing = false;
     [ObservableProperty]
+    private LoginForm _form = new();
+    [ObservableProperty]
     private string _errorMessage = "";
-    [ObservableProperty]
-    private string _username = "";
-    [ObservableProperty]
-    private string _password = "";
     public ICommand LoginCommand { get; }
+    public ICommand FormChangeCommand { get; }
 
     public LoginViewModel(IAuthService authService)
     {
@@ -31,15 +31,32 @@ public partial class LoginViewModel : ObservableObject
             Debug.WriteLine("Login command executed");
             await Login();
         });
+
+        FormChangeCommand = new RelayCommand<(string Field, string Value)>((param) =>
+        {
+            Form.ValidateProperty(param.Field, param.Value);
+        });
     }
+
+    public bool CanLogin()
+    {
+        Form.ValidateAll();
+        return !Form.HasErrors;
+    }
+
     public async Task Login()
     {
+        if (!CanLogin())
+        {
+            return;
+        }
+
         try
         {
             IsProcessing = true;
             ErrorMessage = string.Empty;
 
-            var result = await _authService.LoginAsync(Username, Password);
+            var result = await _authService.LoginAsync(Form.Username, Form.Password);
 
 
             if (!result.Success)

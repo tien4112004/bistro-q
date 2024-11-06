@@ -14,7 +14,7 @@ public interface INavigationViewService
         get;
     }
 
-    void Initialize(NavigationView navigationView);
+    void Initialize(NavigationView navigationView, string role);
 
     void UnregisterEvents();
 

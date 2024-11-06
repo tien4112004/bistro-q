@@ -1,4 +1,4 @@
-using BistroQ.Core.Dtos;
+﻿using BistroQ.Core.Dtos;
 using BistroQ.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -44,4 +44,11 @@ public interface ITokenStorageService
     /// </summary>
     /// <returns>A task that represents the asynchronous clear operation.</returns>
     Task ClearTokensAsync();
+
+    /// <summary>
+    /// Get the current user's role.
+    /// </summary>
+    /// <returns>User's role</returns>
+    Task<string> GetRoleAsync();
+
 }
