@@ -19,7 +19,7 @@ public class Order
 
     public int? TableId { get; set; }
 
-    public TableDto Table { get; set; } = null!;
+    public TableDto Table { get; set; }
 
     public List<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 }

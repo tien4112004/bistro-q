@@ -14,9 +14,11 @@
     mc:Ignorable="d"
     Background="Transparent">
 
+    <Page.Resources>
+        <converters:IntToCurrencyConverter x:Key="IntToCurrency"/>
+    </Page.Resources>
+
     <Grid Background="Transparent" Margin="0,0,0,20">
-         
-        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7*" />
             <ColumnDefinition Width="Auto"/>
@@ -82,49 +84,44 @@
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="4">
             <StackPanel Spacing="10">
                 <TextBlock Padding="10,10" Style="{StaticResource BodyStrongTextBlockStyle}">
-                    Order Summary
+                    Order Detail
                 </TextBlock>
-                <ScrollViewer x:Name="WrapScrollParent" Grid.Row="2" Padding="5,10,5,10">
-                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.CurrentOrder.OrderDetails, Mode=OneWay}">
-                        <ItemsRepeater.Layout>
-                            <UniformGridLayout 
-                                    MinItemWidth="120"
-                                    MinItemHeight="120"
-                                    MinRowSpacing="16"
-                                    MinColumnSpacing="16"
-                                    Orientation="Horizontal"/>
-                        </ItemsRepeater.Layout>
-                        <winui:ItemsRepeater.ItemTemplate>
-                            <DataTemplate x:DataType="models:OrderDetail">
-                                <StackPanel Spacing="4" Orientation="Horizontal">
-                                    <TextBlock 
-                                        Text="{x:Bind ProductId, Mode=OneWay}" 
-                                        FontSize="24"
-                                        FontWeight="SemiBold"
-                                        HorizontalAlignment="Center"/>
 
-                                    <TextBlock
-                                        Text="{x:Bind Product.Name, Mode=OneWay}" 
-                                        FontSize="14"
-                                        HorizontalAlignment="Center"/>
+                <controls:DataGrid
+                        x:Name="Order_Details"
+                        AutoGenerateColumns="False"
+                        GridLinesVisibility="Horizontal"
+                        ItemsSource="{x:Bind ViewModel.CurrentOrder.OrderDetails, Mode=OneWay}"
+                        Grid.Row="1">
+                    <controls:DataGrid.Resources>
+                        <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                    </controls:DataGrid.Resources>
+                    <controls:DataGrid.Columns>
+                        <controls:DataGridTextColumn Binding="{Binding Product.Name}" 
+                            x:Uid="OrderDetail_Name" 
+                            IsReadOnly="True" Width="100"
+                            Header="Name"
+                            Tag="Name" />
+                        <controls:DataGridTextColumn Binding="{Binding Product.Price, Converter={StaticResource IntToCurrency}}"
+                            x:Uid="OrderDetail_Price"
+                            Header="Price"
+                            IsReadOnly="True"
+                            Tag="Price" />
+                        <controls:DataGridTextColumn Binding="{Binding Quantity}" 
+                            x:Uid="OrderDetail_Quantity" 
+                            IsReadOnly="True"
+                            Header="Quantity"
+                            Tag="Quantity" />
+                    </controls:DataGrid.Columns>
+                </controls:DataGrid>
 
-                                    <TextBlock
-                                        Text="{x:Bind Product.Price, Mode=OneWay}"
-                                        FontSize="14"/>
-
-                                    <TextBlock
-                                        Text="{x:Bind Quantity, Mode=OneWay}" 
-                                        FontSize="14"
-                                        HorizontalAlignment="Center"/>
-
-                                </StackPanel>
-                            </DataTemplate>
-                        </winui:ItemsRepeater.ItemTemplate>
-                    </ItemsRepeater>
-                </ScrollViewer>
-
-                <TextBlock Padding="10,10" Style="{StaticResource BodyStrongTextBlockStyle}"
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Padding="10,10" Style="{StaticResource BodyStrongTextBlockStyle}">
+                        Total Amount:
+                    </TextBlock>
+                    <TextBlock Padding="10,10" Style="{StaticResource BodyStrongTextBlockStyle}"
                      Text="{x:Bind ViewModel.CurrentOrder.TotalAmount, Mode=OneWay}"/>
+                </StackPanel>
             </StackPanel>
         </Border>
     </Grid>
