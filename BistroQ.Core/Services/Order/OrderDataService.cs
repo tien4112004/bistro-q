@@ -69,9 +69,18 @@ public class OrderDataService : IOrderDataService
         }
     }
 
-    public async Task<IEnumerable<Order>> GetCurrentOrdersByCashierAsync()
+    public async Task<IEnumerable<Order>> GetCurrentOrdersByCashierAsync(int? zoneId)
     {
-        var response = await apiClient.GetAsync<IEnumerable<Order>>($"api/CashierOrder", null);
+        ApiResponse<IEnumerable<Order>> response;
+
+        if (zoneId == null)
+        {
+            response = await apiClient.GetAsync<IEnumerable<Order>>($"api/CashierOrder", null);
+        }
+        else
+        {
+            response = await apiClient.GetAsync<IEnumerable<Order>>($"api/CashierOrder/zones/{zoneId}", null);
+        }
 
         if (response.Success)
         {
@@ -79,7 +88,7 @@ public class OrderDataService : IOrderDataService
         }
         else
         {
-            return null;
+            return new List<Order>();
         }
     }
 }

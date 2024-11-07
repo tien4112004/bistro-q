@@ -27,52 +27,88 @@
 
         <Border Grid.Column="0" Background="{StaticResource CardBackgroundFillColorDefaultBrush}" CornerRadius="10" 
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="4">
-            <ScrollViewer x:Name="WrapScrollParent1" Grid.Row="2" Padding="5,10,5,10">
-                <ItemsRepeater ItemsSource="{x:Bind ViewModel.Orders, Mode=OneWay}">
-                    <ItemsRepeater.Layout>
-                        <UniformGridLayout 
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto" 
+                                            VerticalScrollBarVisibility="Disabled"
+                                            Padding="8,0,8,8"
+                                            >
+                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}">
+                        <ItemsRepeater.Layout>
+                            <StackLayout Spacing="10" Orientation="Horizontal"/>
+                        </ItemsRepeater.Layout>
+                        <winui:ItemsRepeater.ItemTemplate>
+                            <DataTemplate x:DataType="zoneModels:ZoneDetailDto">
+                                <Button Tag="{x:Bind ZoneId}"
+                                        Style="{StaticResource AccentButtonStyle}"
+                                        Click="SelectZone_Click"
+                                        Padding="12,4"
+                                        CornerRadius="8">
+                                    <TextBlock 
+                                                Text="{x:Bind Name, Mode=OneWay}" 
+                                                FontSize="14"
+                                                FontWeight="SemiBold"
+                                                Style="{StaticResource BodyStrongTextBlockStyle}"
+                                                HorizontalAlignment="Center"/>
+                                </Button>
+                            </DataTemplate>
+                        </winui:ItemsRepeater.ItemTemplate>
+
+                    </ItemsRepeater>
+                </ScrollViewer>
+
+
+                <ScrollViewer x:Name="WrapScrollParent1" Grid.Row="1" Padding="5,10,5,10">
+                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.Orders, Mode=OneWay}">
+                        <ItemsRepeater.Layout>
+                            <UniformGridLayout 
                                     MinItemWidth="120"
                                     MinItemHeight="120"
                                     MinRowSpacing="16"
                                     MinColumnSpacing="16"
                                     Orientation="Horizontal"/>
-                    </ItemsRepeater.Layout>
-                    <winui:ItemsRepeater.ItemTemplate>
-                        <DataTemplate x:DataType="models:Order">
-                            <Button Tag="{x:Bind TableId}"
+                        </ItemsRepeater.Layout>
+                        <winui:ItemsRepeater.ItemTemplate>
+                            <DataTemplate x:DataType="models:Order">
+                                <Button Tag="{x:Bind TableId}"
                                         Click="SelectTable_Click"
                                         Width="120" 
                                         Height="120"
                                         Padding="8"
                                         CornerRadius="8">
-                                <StackPanel Spacing="4">
-                                    <!-- Table Number -->
-                                    <TextBlock 
+                                    <StackPanel Spacing="4">
+                                        <!-- Table Number -->
+                                        <TextBlock 
                                                 Text="{x:Bind Table.Number, Mode=OneWay}" 
                                                 FontSize="24"
                                                 FontWeight="SemiBold"
                                                 HorizontalAlignment="Center"/>
 
-                                    <TextBlock
+                                        <TextBlock
                                                 Text="{x:Bind Table.ZoneName, Mode=OneWay}" 
                                                 FontSize="14"
                                                 HorizontalAlignment="Center"/>
 
-                                    <!-- Capacity -->
-                                    <StackPanel Orientation="Horizontal" 
+                                        <!-- Capacity -->
+                                        <StackPanel Orientation="Horizontal" 
                                                   HorizontalAlignment="Center" 
                                                   Spacing="4">
-                                        <FontIcon Glyph="&#xE716;" FontSize="14"/>
-                                        <TextBlock 
+                                            <FontIcon Glyph="&#xE716;" FontSize="14"/>
+                                            <TextBlock 
                                                 Text="{x:Bind Table.SeatsCount, Mode=OneWay}" 
                                                 FontSize="14"/>
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                            </Button>
-                        </DataTemplate>
-                    </winui:ItemsRepeater.ItemTemplate>
-                </ItemsRepeater>
-            </ScrollViewer>
+                                </Button>
+                            </DataTemplate>
+                        </winui:ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+                </ScrollViewer>
+            </Grid>
         </Border>
 
         <Rectangle Grid.Column="1"

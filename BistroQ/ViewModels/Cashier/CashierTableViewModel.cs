@@ -24,7 +24,13 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware
     private Order _currentOrder = null;
 
     [ObservableProperty]
+    private ZoneDetailDto _currentZone;
+
+    [ObservableProperty]
     private ObservableCollection<Order> _orders;
+
+    [ObservableProperty]
+    private ObservableCollection<ZoneDetailDto> _zones;
 
     private readonly IOrderDataService _orderDataService;
 
@@ -32,35 +38,64 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware
 
     public ICommand SelectTableCommand { get; }
 
+    public ICommand SelectZoneCommand { get; }
+
     public CashierTableViewModel(IOrderDataService orderDataService, IZoneDataService zoneDataService)
     {
         _orderDataService = orderDataService;
         _zoneDataService = zoneDataService;
         SelectTableCommand = new RelayCommand<int>(SelectTable);
+        SelectZoneCommand = new RelayCommand<int>(SelectZone);
     }
 
     public async void SelectTable(int tableId)
     {
-        CurrentOrder = Orders.FirstOrDefault(o => o.TableId == tableId);
-        CurrentOrder.OrderDetails = (await _orderDataService.GetOrderByCashierAsync(tableId)).OrderDetails;
+        CurrentOrder = await _orderDataService.GetOrderByCashierAsync(tableId);
+    }
+
+    public async void SelectZone(int zoneId)
+    {
+        CurrentZone = await _zoneDataService.GetZoneByIdAsync(zoneId);
+        Orders = new ObservableCollection<Order>(await _orderDataService.GetCurrentOrdersByCashierAsync(zoneId));
+        
+        if (Orders.Count > 0)
+        {
+            SelectTable(Orders.First().TableId ?? 0);
+        }
     }
 
     public async void OnNavigatedTo(object parameter)
     {
-        Orders = new ObservableCollection<Order>(await _orderDataService.GetCurrentOrdersByCashierAsync());
+        var zones = (await _zoneDataService.GetZonesAsync(new ZoneCollectionQueryParams { Page = 1, Size = 100 })).ToList();
 
-        for (int i = 0; i < Orders.Count; i++)
+        Zones = new ObservableCollection<ZoneDetailDto>(zones);
+
+        if (Zones.Count == 0)
         {
-            var zone = await _zoneDataService.GetZoneByIdAsync(Orders[i].Table.ZoneId.Value);
-            Orders[i].OrderDetails = (await _orderDataService.GetOrderByCashierAsync(Orders[i].TableId.Value)).OrderDetails;
-            Orders[i].Table.ZoneName = zone.Name;
+            return;
         }
 
-        Orders = new ObservableCollection<Order>(Orders);
+        var zoneId = zones.FirstOrDefault()?.ZoneId ?? 0;
+
+        CurrentZone = await _zoneDataService.GetZoneByIdAsync(zoneId);
+        Orders = new ObservableCollection<Order>(await _orderDataService.GetCurrentOrdersByCashierAsync(zoneId));
+
+        if (Orders.Count == 0)
+        {
+            return;
+        }
+        var tableId = Orders.First().TableId ?? 0;
+
+        CurrentOrder = Orders.FirstOrDefault(o => o.TableId == tableId) ?? new Order();
+        CurrentOrder.OrderDetails = (await _orderDataService.GetOrderByCashierAsync(tableId)).OrderDetails;
+
     }
 
     public void OnNavigatedFrom()
     {
-        //
+        CurrentOrder = new Order();
+        Orders = new ObservableCollection<Order>();
+        Zones = new ObservableCollection<ZoneDetailDto>();
+        CurrentZone = new ZoneDetailDto();
     }
 }

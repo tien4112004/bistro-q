@@ -37,16 +37,32 @@ namespace BistroQ.Core.Services
             return response;
         }
 
-        public async Task<PaginationResponseDto<IEnumerable<ZoneDto>>> GetZonesAsync(ZoneCollectionQueryParams query = null)
+        public async Task<IEnumerable<ZoneDetailDto>> GetZonesAsync(ZoneCollectionQueryParams query = null)
         {
-            var response = await _apiClient.GetCollectionAsync<IEnumerable<ZoneDto>>("/api/zone", query);
-            return response;
+            var response = await _apiClient.GetCollectionAsync<IEnumerable<ZoneDetailDto>>("/api/zone", query);
+
+            if (response.Success)
+            {
+                return response.Data;
+            }
+            else
+            {
+                return new List<ZoneDetailDto>();
+            }
         }
 
-        public async Task<ZoneDto> GetZoneByIdAsync(int zoneId)
+        public async Task<ZoneDetailDto> GetZoneByIdAsync(int zoneId)
         {
-            var response = await _apiClient.GetAsync<ZoneDto>($"api/zone/{zoneId}", null);
-            return response.Data;
+            var response = await _apiClient.GetAsync<ZoneDetailDto>($"api/zone/{zoneId}", null);
+
+            if (response.Success)
+            {
+                return response.Data;
+            }
+            else
+            {
+                return new ZoneDetailDto();
+            }
         }
     }
 }

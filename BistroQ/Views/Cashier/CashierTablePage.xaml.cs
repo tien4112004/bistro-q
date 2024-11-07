@@ -39,4 +39,13 @@ public sealed partial class CashierTablePage : Page
             ViewModel.SelectTableCommand.Execute(tableId);
         }
     }
+
+    private void SelectZone_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button)
+        {
+            var zoneId = int.Parse(button.Tag.ToString());
+            ViewModel.SelectZoneCommand.Execute(zoneId);
+        }
+    }
 }

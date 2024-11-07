@@ -17,6 +17,6 @@ public interface IOrderDataService
 
     public Task<Order> GetOrderByCashierAsync(int tableId);
 
-    public Task<IEnumerable<Order>> GetCurrentOrdersByCashierAsync();
+    public Task<IEnumerable<Order>> GetCurrentOrdersByCashierAsync(int? zoneId);
 
 }
