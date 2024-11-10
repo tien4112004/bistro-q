@@ -40,6 +40,7 @@ public sealed partial class AdminTableEditPage : Page
     private async void AdminTableEditPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         await ViewModel.LoadZonesAsync();
+        TableEditPage_ZoneComboBox.SelectedValue = ViewModel.Request.ZoneId;
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -48,6 +49,8 @@ public sealed partial class AdminTableEditPage : Page
         if (tableDto != null)
         {
             ViewModel.Table = tableDto;
+            ViewModel.Request.ZoneId = tableDto.ZoneId;
+            ViewModel.Request.SeatsCount = tableDto.SeatsCount;
         }
 
         base.OnNavigatedTo(e);
