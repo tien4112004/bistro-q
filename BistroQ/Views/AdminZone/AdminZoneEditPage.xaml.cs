@@ -88,6 +88,7 @@ public sealed partial class AdminZoneEditPage : Page
     {
         var dialog = new ContentDialog
         {
+            XamlRoot = XamlRoot,
             Title = "Error",
             Content = message,
             CloseButtonText = "OK"

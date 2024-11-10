@@ -33,9 +33,9 @@
                          KeyDown="Text_KeyDown"
                          Width="300" />
                 <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
-                                Mode=OneWay, 
-                                Converter={StaticResource FirstError},
-                                ConverterParameter=Name}"
+                           Mode=OneWay, 
+                           Converter={StaticResource FirstError},
+                           ConverterParameter=Name}"
                            Margin="0,8,0,0"
                            Foreground="Red"/>
             </StackPanel>

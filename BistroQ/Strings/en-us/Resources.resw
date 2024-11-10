@@ -186,10 +186,10 @@
   <data name="TableAddPage_ZoneComboBox/Header" xml:space="preserve">
     <value>Zone</value>
   </data>
-  <data name="TableAddPage_SeatsCountTextBox/Header" xml:space="preserve">
+  <data name="TableAddPage_SeatsCountNumberBox/Header" xml:space="preserve">
     <value>Number of seats</value>
   </data>
-  <data name="TableAddPage_SeatsCountTextBox/PlaceholderText" xml:space="preserve">
+  <data name="TableAddPage_SeatsCountNumberBox/PlaceholderText" xml:space="preserve">
     <value>Number of seats</value>
   </data>
   <data name="TableAddPage_ZoneComboBox/PlaceholderText" xml:space="preserve">

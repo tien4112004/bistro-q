@@ -1,5 +1,7 @@
 ﻿using BistroQ.ViewModels.AdminTable;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -19,42 +21,44 @@ public sealed partial class AdminTableAddPage : Page
         this.InitializeComponent();
         ViewModel = App.GetService<AdminTableAddPageViewModel>();
         this.DataContext = ViewModel;
+
         this.Loaded += AdminTableAddPage_Loaded;
-    }
+        ViewModel.ShowSuccessDialog += OnShowSuccessDialog;
+        ViewModel.ShowErrorDialog += OnShowErrorDialog;
+        ViewModel.NavigateBack += OnNavigateBack;
 
-    private async void AdminTableAddPage_AddButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        try
+        Unloaded += (s, e) =>
         {
-            var result = await ViewModel.AddTable();
-
-            if (result.Success)
-            {
-                await new ContentDialog()
-                {
-                    XamlRoot = this.Content.XamlRoot,
-                    Title = "Add new zone successfully",
-                    Content = "Successfully added zone: " + ViewModel.Request.SeatsCount,
-                    CloseButtonText = "OK"
-                }.ShowAsync();
-            }
-            Frame.GoBack();
-        }
-        catch (Exception ex)
-        {
-            await new ContentDialog()
-            {
-                XamlRoot = this.Content.XamlRoot,
-                Title = "Operation failed",
-                Content = $"Add new zone failed with error: {ex.Message}",
-                CloseButtonText = "OK"
-            }.ShowAsync();
-        }
+            ViewModel.ShowSuccessDialog -= OnShowSuccessDialog;
+            ViewModel.ShowErrorDialog -= OnShowErrorDialog;
+            ViewModel.NavigateBack -= OnNavigateBack;
+        };
     }
 
     private async void AdminTableAddPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         await ViewModel.LoadZonesAsync();
+    }
+
+    private void Text_Keydown(object sender, KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter)
+        {
+            ViewModel.AddCommand.Execute(null);
+        }
+
+        if (sender is TextBox textBox)
+        {
+            ViewModel.FormChangedCommand.Execute((textBox.Name, textBox.Text));
+        }
+    }
+
+    private void TextBox_LosingFocus(UIElement sender, LosingFocusEventArgs args)
+    {
+        if (sender is TextBox textbox)
+        {
+            ViewModel.FormChangedCommand.Execute((textbox.Name, textbox.Text));
+        }
     }
 
     private void AdminTableAddPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -65,5 +69,34 @@ public sealed partial class AdminTableAddPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
+    }
+
+    private async void OnShowSuccessDialog(object sender, string message)
+    {
+        var dialog = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = "Operation success",
+            Content = message,
+            CloseButtonText = "OK"
+        };
+        await dialog.ShowAsync();
+    }
+
+    private async void OnShowErrorDialog(object sender, string message)
+    {
+        var dialog = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = "Error",
+            Content = message,
+            CloseButtonText = "OK"
+        };
+        await dialog.ShowAsync();
+    }
+
+    private void OnNavigateBack(object sender, EventArgs e)
+    {
+        Frame.GoBack();
     }
 }

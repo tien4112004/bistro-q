@@ -17,7 +17,7 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient
     [ObservableProperty]
     private AddZoneForm _form = new();
     [ObservableProperty]
-    private string _errorMessage = "";
+    private string _errorMessage = string.Empty;
 
     private readonly IZoneDataService _zoneDataService;
 
