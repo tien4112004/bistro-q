@@ -162,6 +162,9 @@
   <data name="ZoneNameTextBox/Header" xml:space="preserve">
     <value>Zone name</value>
   </data>
+  <data name="Shell_ClientHomePage.Content" xml:space="preserve">
+    <value>Order</value>
+  </data>
   <data name="Shell_AdminTable.Content" xml:space="preserve">
     <value>Manage Tables</value>
   </data>
@@ -215,5 +218,8 @@
   </data>
   <data name="AdminTableEditPage_EditButton/Content" xml:space="preserve">
     <value>Update</value>
+  </data>
+  <data name="Shell_CashierTablePage.Content" xml:space="preserve">
+    <value>Table</value>
   </data>
 </root>

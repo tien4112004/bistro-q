@@ -9,10 +9,13 @@ using BistroQ.Services;
 using BistroQ.ViewModels;
 using BistroQ.ViewModels.AdminTable;
 using BistroQ.ViewModels.AdminZone;
+using BistroQ.ViewModels.Cashier;
+using BistroQ.ViewModels.Client;
 using BistroQ.Views;
 using BistroQ.Views.AdminTable;
 using BistroQ.Views.AdminZone;
-
+using BistroQ.Views.Cashier;
+using BistroQ.Views.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
@@ -115,7 +118,15 @@ public partial class App : Application
             services.AddScoped<IZoneDataService, ZoneDataService>();
             services.AddScoped<ITableDataService, TableDataService>();
             services.AddScoped<IAdminZoneService, AdminZoneService>();
+            services.AddScoped<IOrderDataService, OrderDataService>();
             services.AddScoped<IAdminTableService, AdminTableService>();
+            // Client V&VM
+            services.AddTransient<HomePageViewModel>();
+            services.AddTransient<HomePage>();
+
+            // Cashier V&VM
+            services.AddTransient<CashierTableViewModel>();
+            services.AddTransient<CashierTablePage>();
 
             services.AddTransient<TestKitchenViewModel>();
             services.AddTransient<TestKitchenPage>();
