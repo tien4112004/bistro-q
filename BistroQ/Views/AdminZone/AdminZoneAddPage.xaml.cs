@@ -74,7 +74,6 @@ public sealed partial class AdminZoneAddPage : Page
             CloseButtonText = "OK"
         };
         await dialog.ShowAsync();
-        Frame.GoBack();
     }
 
     private async void OnShowErrorDialog(object sender, string message)

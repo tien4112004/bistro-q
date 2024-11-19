@@ -153,7 +153,7 @@
   <data name="AdminZoneAddPage_AddButton/Content" xml:space="preserve">
     <value>Add</value>
   </data>
-  <data name="AdminZoneEditPage_EditButton/Content" xml:space="preserve">
+  <data name="AdminZoneEditPage_EditButtonText/Text" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="ZoneIdTextBox/Header" xml:space="preserve">
@@ -198,9 +198,6 @@
   <data name="TableAddPage_ZoneComboBox/PlaceholderText" xml:space="preserve">
     <value>Select a zone</value>
   </data>
-  <data name="AdminTableAddPage_AddButton_Click/Content" xml:space="preserve">
-    <value>Add</value>
-  </data>
   <data name="AdminTableAddPage_AddButton/Content" xml:space="preserve">
     <value>Add</value>
   </data>
@@ -221,5 +218,8 @@
   </data>
   <data name="Shell_CashierTablePage.Content" xml:space="preserve">
     <value>Table</value>
+  </data>
+  <data name="AdminZoneAddPage_AddButtonText/Text" xml:space="preserve">
+    <value>Add</value>
   </data>
 </root>
