@@ -198,7 +198,7 @@
   <data name="TableAddPage_ZoneComboBox/PlaceholderText" xml:space="preserve">
     <value>Select a zone</value>
   </data>
-  <data name="AdminTableAddPage_AddButton/Content" xml:space="preserve">
+  <data name="AdminTableAddPage_AddButtonText/Text" xml:space="preserve">
     <value>Add</value>
   </data>
   <data name="TableIdTextBox/Header" xml:space="preserve">
