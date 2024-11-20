@@ -35,5 +35,10 @@ public partial class ZoneTableGridViewModel : ObservableObject
         }
         var tables = await _tableDataService.GetTablesByCashierAsync((int)zoneId, type);
         Tables = new ObservableCollection<TableDto>(tables);
+
+        if (Tables.Any())
+        {
+            SelectedTable = Tables.First();
+        }
     }
 }

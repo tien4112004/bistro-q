@@ -6,29 +6,91 @@
     xmlns:local="using:BistroQ.Views.UserControls.Zones"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:models="using:BistroQ.Core.Dtos.Tables"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:converters="using:BistroQ.Converters"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <ScrollViewer x:Name="WrapScrollParent1" Grid.Row="2" Padding="15">
-        <ItemsRepeater ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}" >
-            <ItemsRepeater.Layout>
-                <UniformGridLayout 
-                    MinItemWidth="120"
-                    MinItemHeight="120"
-                    MinRowSpacing="16"
-                    MinColumnSpacing="16"
-                    Orientation="Horizontal"/>
-            </ItemsRepeater.Layout>
-            <winui:ItemsRepeater.ItemTemplate>
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </UserControl.Resources>
+
+    <ScrollViewer Grid.Row="2" Padding="15">
+        <GridView ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}" 
+                  SelectedItem="{x:Bind ViewModel.SelectedTable, Mode=TwoWay}"
+                  IsItemClickEnabled="True"
+                  SelectionMode="Single"
+                  SelectedIndex="0"
+                  ItemClick="OnTableClicked">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="Margin" Value="8"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Width" Value="120"/>
+                    <Setter Property="Background" Value="{StaticResource CardBackgroundFillColorDefaultBrush}" />
+                    <Setter Property="Height" Value="120"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="GridViewItem">
+                                <GridViewItemPresenter
+                                    ContentTransitions="{TemplateBinding ContentTransitions}"
+                                    Padding="{TemplateBinding Padding}"
+                                    SelectionCheckMarkVisualEnabled="True"
+                                    CheckHintBrush="{ThemeResource ListViewItemCheckHintThemeBrush}"
+                                    CheckSelectingBrush="{ThemeResource ListViewItemCheckSelectingThemeBrush}"
+                                    CheckBrush="{ThemeResource ListViewItemCheckThemeBrush}"
+                                    DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+                                    DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
+                                    FocusBorderBrush="{ThemeResource ListViewItemFocusBorderThemeBrush}"
+                                    PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
+                                    PointerOverBackground="{ThemeResource ListViewItemPointerOverBackgroundThemeBrush}"
+                                    SelectedBorderThickness="{ThemeResource GridViewItemCompactSelectedBorderThemeThickness}"
+                                    SelectedBackground="{ThemeResource SystemAccentColor}"
+                                    SelectedForeground="{ThemeResource ListViewItemSelectedForegroundThemeBrush}"
+                                    SelectedPointerOverBackground="{ThemeResource SystemAccentColorDark1}"
+                                    DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                    DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                    ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    PointerOverBackgroundMargin="1"
+                                    ContentMargin="4"
+                                    CornerRadius="10"
+                               />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </GridView.ItemContainerStyle>
+
+            <GridView.ItemTemplate>
                 <DataTemplate x:DataType="models:TableDto">
-                    <Button Tag="{x:Bind TableId}"
-                        Click="OnTableClicked"
-                        Width="120" 
-                        Height="120"
-                        Padding="8"
-                        CornerRadius="8">
-                        <StackPanel Spacing="4">
+                    <Grid>
+                        <StackPanel Spacing="4" VerticalAlignment="Center">
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Spacing="5">
+                                <FontIcon 
+                                    Glyph="&#xE73E;"
+                                    Foreground="{StaticResource SystemFillColorSuccessBrush}"
+                                    Visibility="{x:Bind IsOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+                                    FontSize="16"
+                                    HorizontalAlignment="Center"/>
+                                <TextBlock FontSize="12" 
+                                           Visibility="{x:Bind IsOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+                                           Foreground="{StaticResource SystemFillColorSuccessBrush}">
+                                    Occupied!
+                                </TextBlock>
+                            </StackPanel>
+
+                            
                             <!-- Table Number -->
                             <TextBlock 
                                 Text="{x:Bind Number, Mode=OneWay}" 
@@ -40,7 +102,7 @@
                                 Text="{x:Bind ZoneName, Mode=OneWay}" 
                                 FontSize="14"
                                 HorizontalAlignment="Center"/>
-
+                            
                             <!-- Capacity -->
                             <StackPanel Orientation="Horizontal" 
                                   HorizontalAlignment="Center" 
@@ -51,9 +113,9 @@
                                 FontSize="14"/>
                             </StackPanel>
                         </StackPanel>
-                    </Button>
+                    </Grid>
                 </DataTemplate>
-            </winui:ItemsRepeater.ItemTemplate>
-        </ItemsRepeater>
+            </GridView.ItemTemplate>
+        </GridView>
     </ScrollViewer>
 </UserControl>

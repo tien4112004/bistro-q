@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using BistroQ.ViewModels.CashierTable;
 using BistroQ.Core.Dtos.Tables;
+using System.Diagnostics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -39,9 +40,9 @@ public sealed partial class ZoneTableGridControl : UserControl
 
     public event EventHandler<int?> TableSelectionChanged;
 
-    private void OnTableClicked(object sender, RoutedEventArgs e)
+    private void OnTableClicked(object sender, ItemClickEventArgs e)
     {
-        if (sender is Button button && button.DataContext is TableDto table)
+        if (e.ClickedItem is TableDto table)
         {
             TableSelectionChanged?.Invoke(this, table.TableId);
         }
