@@ -9,16 +9,17 @@ using BistroQ.Services;
 using BistroQ.ViewModels;
 using BistroQ.ViewModels.AdminTable;
 using BistroQ.ViewModels.AdminZone;
-using BistroQ.ViewModels.Cashier;
+using BistroQ.ViewModels.CashierTable;
 using BistroQ.ViewModels.Client;
 using BistroQ.Views;
 using BistroQ.Views.AdminTable;
 using BistroQ.Views.AdminZone;
-using BistroQ.Views.Cashier;
+using BistroQ.Views.CashierTable;
 using BistroQ.Views.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
+using System.Diagnostics;
 
 namespace BistroQ;
 
@@ -114,6 +115,7 @@ public partial class App : Application
             services.AddTransient<AdminTableAddPage>();
             services.AddTransient<AdminTableEditPageViewModel>();
             services.AddTransient<AdminTableEditPage>();
+            
 
             services.AddScoped<IZoneDataService, ZoneDataService>();
             services.AddScoped<ITableDataService, TableDataService>();
@@ -127,6 +129,8 @@ public partial class App : Application
             // Cashier V&VM
             services.AddTransient<CashierTableViewModel>();
             services.AddTransient<CashierTablePage>();
+            services.AddTransient<ZoneOverviewViewModel>();
+
 
             services.AddTransient<TestKitchenViewModel>();
             services.AddTransient<TestKitchenPage>();
@@ -145,6 +149,8 @@ public partial class App : Application
     {
         // TODO: Log and handle exceptions as appropriate.
         // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
+
+        Debug.WriteLine(e);
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)

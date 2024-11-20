@@ -1,28 +1,19 @@
 ﻿using BistroQ.Contracts.ViewModels;
 using BistroQ.Core.Contracts.Services;
-using BistroQ.Core.Dtos.Tables;
-using BistroQ.Core.Dtos.Zones;
 using BistroQ.Core.Models.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Xaml.Controls;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace BistroQ.ViewModels.Cashier;
+namespace BistroQ.ViewModels.CashierTable;
 
 public partial class CashierTableViewModel : ObservableObject, INavigationAware
 {
     [ObservableProperty]
     private Order _currentOrder = null;
-
+    
     [ObservableProperty]
     private ObservableCollection<Order> _orders;
 
@@ -32,11 +23,30 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware
 
     public ICommand SelectTableCommand { get; }
 
+    public ICommand SelectZoneCommand { get; }
+
+    public ICommand SelectTypeCommand { get; }
+
     public CashierTableViewModel(IOrderDataService orderDataService, IZoneDataService zoneDataService)
     {
         _orderDataService = orderDataService;
         _zoneDataService = zoneDataService;
         SelectTableCommand = new RelayCommand<int>(SelectTable);
+        SelectZoneCommand = new RelayCommand<int?>(OnZoneSelected);
+        SelectTypeCommand = new RelayCommand<string>(OnTypeSelected);
+    }
+
+    public async void OnZoneSelected(int? zoneId)
+    {
+        // Get tables by zoneId
+        Debug.WriteLine("GET TABLE BY " + zoneId.ToString());
+    }
+
+
+    public async void OnTypeSelected(string type)
+    {
+        // Get tables by type
+        Debug.WriteLine("GET TABLE BY " + type);
     }
 
     public async void SelectTable(int tableId)
