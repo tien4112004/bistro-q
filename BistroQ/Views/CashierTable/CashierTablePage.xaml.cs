@@ -1,4 +1,5 @@
-﻿using BistroQ.ViewModels.CashierTable;
+﻿using BistroQ.Models;
+using BistroQ.ViewModels.CashierTable;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -13,22 +14,13 @@ public sealed partial class CashierTablePage : Page
         this.InitializeComponent();
     }
 
-    private void SelectTable_Click(object sender, RoutedEventArgs e)
-    {
-        if (sender is Button button)
-        {
-            var tableId = int.Parse(button.Tag.ToString());
-            ViewModel.SelectTableCommand.Execute(tableId);
-        }
-    }
-
-    private void ZoneControl_ZoneSelectionChanged(object sender, int? e)
+    private void ZoneControl_ZoneSelectionChanged(object sender, ZoneStateEventArgs e)
     {
         ViewModel.SelectZoneCommand.Execute(e);
     }
 
-    private void ZoneControl_TypeSelectionChanged(object sender, string e)
+    private void GridControl_TableSelectionChanged(object sender, int? e)
     {
-        ViewModel.SelectTypeCommand.Execute(e);
+        ViewModel.SelectTableCommand.Execute(e);
     }
 }

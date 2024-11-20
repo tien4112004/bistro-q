@@ -1,6 +1,7 @@
 ﻿using BistroQ.Contracts.ViewModels;
 using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Models.Entities;
+using BistroQ.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -25,29 +26,24 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware
 
     public ICommand SelectZoneCommand { get; }
 
-    public ICommand SelectTypeCommand { get; }
+    public ZoneOverviewViewModel ZoneOverviewViewModel { get; }
 
-    public CashierTableViewModel(IOrderDataService orderDataService, IZoneDataService zoneDataService)
+    public CashierTableViewModel(IOrderDataService orderDataService, IZoneDataService zoneDataService, ZoneOverviewViewModel zoneOverview)
     {
         _orderDataService = orderDataService;
         _zoneDataService = zoneDataService;
         SelectTableCommand = new RelayCommand<int>(SelectTable);
-        SelectZoneCommand = new RelayCommand<int?>(OnZoneSelected);
-        SelectTypeCommand = new RelayCommand<string>(OnTypeSelected);
+        SelectZoneCommand = new RelayCommand<ZoneStateEventArgs>(OnZoneSelected);
+        ZoneOverviewViewModel = zoneOverview;
     }
 
-    public async void OnZoneSelected(int? zoneId)
+    public async void OnZoneSelected(ZoneStateEventArgs e)
     {
         // Get tables by zoneId
-        Debug.WriteLine("GET TABLE BY " + zoneId.ToString());
+        Debug.WriteLine("GET TABLE BY " + e.ZoneId.ToString());
+        Debug.WriteLine("TYPE " + e.Type.ToString());
     }
 
-
-    public async void OnTypeSelected(string type)
-    {
-        // Get tables by type
-        Debug.WriteLine("GET TABLE BY " + type);
-    }
 
     public async void SelectTable(int tableId)
     {
@@ -57,6 +53,7 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware
 
     public async void OnNavigatedTo(object parameter)
     {
+        await ZoneOverviewViewModel.InitializeAsync();
         Orders = new ObservableCollection<Order>(await _orderDataService.GetCurrentOrdersByCashierAsync());
 
         for (int i = 0; i < Orders.Count; i++)

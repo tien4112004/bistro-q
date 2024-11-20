@@ -17,6 +17,7 @@ using BistroQ.Core.Contracts.Services;
 using BistroQ.ViewModels.CashierTable;
 using System.Diagnostics;
 using CommunityToolkit.WinUI.Controls;
+using BistroQ.Models;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -28,37 +29,42 @@ public sealed partial class ZoneOverviewControl : UserControl
     public ZoneOverviewControl()
     {
         this.InitializeComponent();
-        ViewModel = App.GetService<ZoneOverviewViewModel>();
-        Loaded += UserControl_Loaded;
     }
 
-    public ZoneOverviewViewModel ViewModel { get; }
+    public ZoneOverviewViewModel ViewModel { get; set; }
 
     public static readonly DependencyProperty ViewModelProperty =
-    DependencyProperty.Register(
-        nameof(ViewModel),
-        typeof(ZoneOverviewViewModel),
-        typeof(ZoneOverviewControl),
-        new PropertyMetadata(null));
+        DependencyProperty.Register(
+            nameof(ViewModel),
+            typeof(ZoneOverviewViewModel),
+            typeof(ZoneOverviewControl),
+            new PropertyMetadata(null));
 
+    private ZoneStateEventArgs _state = new();
 
-    public event EventHandler<int?> ZoneSelectionChanged;
-
-    public event EventHandler<string> TypeSelectionChanged;
+    public event EventHandler<ZoneStateEventArgs> ZoneSelectionChanged;
 
     private void OnZoneClicked(object sender, ItemClickEventArgs e)
     {
         if (e.ClickedItem is ZoneDto zone)
         {
-            ZoneSelectionChanged?.Invoke(this, zone.ZoneId);
+            _state.ZoneId = zone.ZoneId;
+            ZoneSelectionChanged?.Invoke(this, _state);
         }
     }
 
-    private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+    private void Segmented_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        await ViewModel.InitializeAsync();
-    }
+        _state.Type = Segmented.SelectedIndex switch
+        {
+            0 => "All",
+            1 => "Occupied",
+            _ => "All"
+        };
 
+        ZoneSelectionChanged?.Invoke(this, _state);
+
+    }
     private void ScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
     {
         const double SCROLL_SPEED = 1.25;
@@ -68,21 +74,5 @@ public sealed partial class ZoneOverviewControl : UserControl
             null,
             null,
             true);
-    }
-
-    private void Segmented_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        switch (Segmented.SelectedIndex)
-        {
-            case 0:
-                TypeSelectionChanged?.Invoke(this, "All");
-                break;
-            case 1:
-                TypeSelectionChanged?.Invoke(this, "Occupied");
-                break;
-            default:
-                TypeSelectionChanged?.Invoke(this, "All");
-                break;
-        }
     }
 }
