@@ -25,10 +25,9 @@ public sealed partial class ZoneTableGridControl : UserControl
     public ZoneTableGridControl()
     {
         this.InitializeComponent();
-        ViewModel = App.GetService<ZoneTableGridViewModel>();
     }
 
-    public ZoneTableGridViewModel ViewModel { get; }
+    public ZoneTableGridViewModel ViewModel { get; set; }
 
     public static readonly DependencyProperty ViewModelProperty =
             DependencyProperty.Register(

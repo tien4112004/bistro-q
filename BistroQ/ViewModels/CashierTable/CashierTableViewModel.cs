@@ -12,12 +12,6 @@ namespace BistroQ.ViewModels.CashierTable;
 
 public partial class CashierTableViewModel : ObservableObject, INavigationAware
 {
-    [ObservableProperty]
-    private Order _currentOrder = null;
-    
-    [ObservableProperty]
-    private ObservableCollection<Order> _orders;
-
     private readonly IOrderDataService _orderDataService;
 
     private readonly IZoneDataService _zoneDataService;
@@ -26,44 +20,40 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware
 
     public ICommand SelectZoneCommand { get; }
 
-    public ZoneOverviewViewModel ZoneOverviewViewModel { get; }
+    public ZoneOverviewViewModel ZoneOverviewVM { get; }
 
-    public CashierTableViewModel(IOrderDataService orderDataService, IZoneDataService zoneDataService, ZoneOverviewViewModel zoneOverview)
+    public ZoneTableGridViewModel ZoneTableGridVM { get; }
+
+    public CashierTableViewModel(
+        IOrderDataService orderDataService, 
+        IZoneDataService zoneDataService, 
+        ZoneOverviewViewModel zoneOverview, 
+        ZoneTableGridViewModel zoneTableGrid
+        )
     {
         _orderDataService = orderDataService;
         _zoneDataService = zoneDataService;
         SelectTableCommand = new RelayCommand<int>(SelectTable);
         SelectZoneCommand = new RelayCommand<ZoneStateEventArgs>(OnZoneSelected);
-        ZoneOverviewViewModel = zoneOverview;
+        ZoneOverviewVM = zoneOverview;
+        ZoneTableGridVM = zoneTableGrid;
     }
 
     public async void OnZoneSelected(ZoneStateEventArgs e)
     {
-        // Get tables by zoneId
-        Debug.WriteLine("GET TABLE BY " + e.ZoneId.ToString());
-        Debug.WriteLine("TYPE " + e.Type.ToString());
+        await ZoneTableGridVM.OnZoneChangedAsync(e.ZoneId, e.Type);
     }
 
 
     public async void SelectTable(int tableId)
     {
-        CurrentOrder = Orders.FirstOrDefault(o => o.TableId == tableId);
-        CurrentOrder.OrderDetails = (await _orderDataService.GetOrderByCashierAsync(tableId)).OrderDetails;
+        Debug.WriteLine("SELECT TABLE" + tableId.ToString());   
     }
 
     public async void OnNavigatedTo(object parameter)
     {
-        await ZoneOverviewViewModel.InitializeAsync();
-        Orders = new ObservableCollection<Order>(await _orderDataService.GetCurrentOrdersByCashierAsync());
-
-        for (int i = 0; i < Orders.Count; i++)
-        {
-            var zone = await _zoneDataService.GetZoneByIdAsync(Orders[i].Table.ZoneId.Value);
-            Orders[i].OrderDetails = (await _orderDataService.GetOrderByCashierAsync(Orders[i].TableId.Value)).OrderDetails;
-            Orders[i].Table.ZoneName = zone.Name;
-        }
-
-        Orders = new ObservableCollection<Order>(Orders);
+        await ZoneOverviewVM.InitializeAsync();
+        await ZoneTableGridVM.OnZoneChangedAsync(ZoneOverviewVM.SelectedZone.ZoneId, "All");
     }
 
     public void OnNavigatedFrom()

@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BistroQ.Views.UserControls.Zones"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:models="using:BistroQ.Core.Models.Entities"
+    xmlns:models="using:BistroQ.Core.Dtos.Tables"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -21,7 +21,7 @@
                     Orientation="Horizontal"/>
             </ItemsRepeater.Layout>
             <winui:ItemsRepeater.ItemTemplate>
-                <DataTemplate x:DataType="models:Order">
+                <DataTemplate x:DataType="models:TableDto">
                     <Button Tag="{x:Bind TableId}"
                         Click="OnTableClicked"
                         Width="120" 
@@ -31,13 +31,13 @@
                         <StackPanel Spacing="4">
                             <!-- Table Number -->
                             <TextBlock 
-                                Text="{x:Bind Table.Number, Mode=OneWay}" 
+                                Text="{x:Bind Number, Mode=OneWay}" 
                                 FontSize="24"
                                 FontWeight="SemiBold"
                                 HorizontalAlignment="Center"/>
 
                             <TextBlock
-                                Text="{x:Bind Table.ZoneName, Mode=OneWay}" 
+                                Text="{x:Bind ZoneName, Mode=OneWay}" 
                                 FontSize="14"
                                 HorizontalAlignment="Center"/>
 
@@ -47,7 +47,7 @@
                                   Spacing="4">
                                 <FontIcon Glyph="&#xE716;" FontSize="14"/>
                                 <TextBlock 
-                                Text="{x:Bind Table.SeatsCount, Mode=OneWay}" 
+                                Text="{x:Bind SeatsCount, Mode=OneWay}" 
                                 FontSize="14"/>
                             </StackPanel>
                         </StackPanel>

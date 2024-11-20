@@ -27,9 +27,13 @@ public partial class ZoneTableGridViewModel : ObservableObject
         _tableDataService = tableDataService;
     }
 
-    public async Task OnZoneChangedAsync(int zoneId, string type)
+    public async Task OnZoneChangedAsync(int? zoneId, string type)
     {
-        var tables = await _tableDataService.GetTablesByCashierAsync(zoneId, type);
+        if (zoneId == null)
+        {
+            return;
+        }
+        var tables = await _tableDataService.GetTablesByCashierAsync((int)zoneId, type);
         Tables = new ObservableCollection<TableDto>(tables);
     }
 }

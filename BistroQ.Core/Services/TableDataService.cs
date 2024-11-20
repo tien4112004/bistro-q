@@ -47,7 +47,7 @@ namespace BistroQ.Core.Services
         {
             string isOccupied = type == "All" ? "false" : "true";
 
-            var response = await _apiClient.GetCollectionAsync<IEnumerable<TableDto>>($"api/table/zone/{zoneId}?isOccupied={isOccupied}", null);
+            var response = await _apiClient.GetCollectionAsync<IEnumerable<TableDto>>($"api/cashier/zones/{zoneId}/table?isOccupied={isOccupied}", null);
 
             return response.Data;
         }

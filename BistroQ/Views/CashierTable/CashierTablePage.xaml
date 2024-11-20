@@ -32,12 +32,13 @@
 
             <Grid Grid.Row="0" Background="Transparent" Padding="10,0,0,0" >
                 <zoneControls:ZoneOverviewControl x:Name="ZoneControl" 
-                                                  ViewModel="{x:Bind ViewModel.ZoneOverviewViewModel, Mode=OneWay}"
+                                                  ViewModel="{x:Bind ViewModel.ZoneOverviewVM, Mode=OneWay}"
                                                   ZoneSelectionChanged="ZoneControl_ZoneSelectionChanged" />
             </Grid>
 
             <Border Grid.Row="1" Background="{StaticResource SolidBackgroundFillColorTertiaryBrush}" Margin="4,-3,5,5" CornerRadius="10">
                 <zoneControls:ZoneTableGridControl x:Name="GridControl"
+                                                   ViewModel="{x:Bind ViewModel.ZoneTableGridVM, Mode=OneWay}"
                                                    TableSelectionChanged="GridControl_TableSelectionChanged"/>
             </Border>
         </Grid>
@@ -49,47 +50,7 @@
 
         <Border Grid.Column="2" Background="{StaticResource CardBackgroundFillColorDefaultBrush}" CornerRadius="10" 
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="4">
-            <StackPanel Spacing="10">
-                <TextBlock Padding="10,10" Style="{StaticResource BodyStrongTextBlockStyle}">
-                    Order Detail
-                </TextBlock>
 
-                <controls:DataGrid
-                        x:Name="Order_Details"
-                        AutoGenerateColumns="False"
-                       GridLinesVisibility="Horizontal"
-                        ItemsSource="{x:Bind ViewModel.CurrentOrder.OrderDetails, Mode=OneWay}"
-                        Grid.Row="1">
-                    <controls:DataGrid.Resources>
-                        <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
-                    </controls:DataGrid.Resources>
-                    <controls:DataGrid.Columns>
-                        <controls:DataGridTextColumn Binding="{Binding Product.Name}" 
-                            x:Uid="OrderDetail_Name" 
-                            IsReadOnly="True" Width="100"
-                            Header="Name"
-                            Tag="Name" />
-                        <controls:DataGridTextColumn Binding="{Binding Product.Price, Converter={StaticResource IntToCurrency}}"
-                            x:Uid="OrderDetail_Price"
-                            Header="Price"
-                            IsReadOnly="True"
-                            Tag="Price" />
-                        <controls:DataGridTextColumn Binding="{Binding Quantity}" 
-                            x:Uid="OrderDetail_Quantity" 
-                            IsReadOnly="True"
-                            Header="Quantity"
-                            Tag="Quantity" />
-                    </controls:DataGrid.Columns>
-                </controls:DataGrid>
-
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Padding="10,10" Style="{StaticResource BodyStrongTextBlockStyle}">
-                        Total Amount:
-                    </TextBlock>
-                    <TextBlock Padding="10,10" Style="{StaticResource BodyStrongTextBlockStyle}"
-                     Text="{x:Bind ViewModel.CurrentOrder.TotalAmount, Mode=OneWay}"/>
-                </StackPanel>
-            </StackPanel>
         </Border>
     </Grid>
 </Page>
