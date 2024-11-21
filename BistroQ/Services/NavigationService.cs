@@ -1,11 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-using BistroQ.Contracts.Services;
+﻿using BistroQ.Contracts.Services;
 using BistroQ.Contracts.ViewModels;
 using BistroQ.Helpers;
-
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BistroQ.Services;
 
@@ -98,7 +96,6 @@ public class NavigationService : INavigationService
                     navigationAware.OnNavigatedFrom();
                 }
             }
-
             return navigated;
         }
 

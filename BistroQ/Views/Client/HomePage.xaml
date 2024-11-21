@@ -6,7 +6,6 @@
     xmlns:local="using:BistroQ.Views.Client"
     xmlns:converter="using:BistroQ.Converters"
     xmlns:control="using:Microsoft.UI.Xaml.Controls"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls.Primitives"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local1="using:BistroQ.Core.Models.Entities"
     mc:Ignorable="d"
@@ -14,6 +13,42 @@
 
     <Page.Resources>
         <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <DataTemplate x:Key="OrderItemDataTemplate" x:DataType="local1:OrderDetail">
+            <Grid Padding="0,4,0,4"
+                  Margin="0,4" 
+                  AutomationProperties.Name="{x:Bind Product.Name}"
+                  HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Column="0"
+                       Source="https://imageplaceholder.net/64" 
+                       Width="64" Height="64"
+                       Stretch="Fill"
+                       Margin="0,0,8,0"/>
+
+                <StackPanel 
+                    Grid.Column="1"                                                     
+                    Padding="0,0,4,0"
+                    HorizontalAlignment="Stretch">
+
+                    <TextBlock x:Name="OrderItemName"
+                               Text="{x:Bind Quantity}"
+                               Style="{ThemeResource BaseTextBlockStyle}"
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap" />
+
+                    <TextBlock Text="{x:Bind Product.Name}"
+                               Style="{ThemeResource BodyTextBlockStyle}"
+                               TextWrapping="Wrap"
+                               TextTrimming="CharacterEllipsis"
+                               MaxLines="2"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
     </Page.Resources>
 
     <Grid x:Name="ContentArea">
@@ -110,64 +145,34 @@
                             ExpandDirection="Down"
                             Background="{StaticResource SystemFillColorCautionBackground}"
                             VerticalAlignment="Top"
-                            Header="Is processing"
-                            Padding="4,8,4,8"
+                            Padding="0"
+                            Margin="0"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch">
-
+                        
                         <ListView x:Name="ProcessingOrderList"
-                                ItemsSource="{x:Bind OrderDetails, Mode=OneTime}"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Stretch">
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="local1:OrderDetail">
-                                    <Grid Margin="0,4,0,4" 
-                                          AutomationProperties.Name="{x:Bind Product.Name}"
-                                          HorizontalAlignment="Stretch">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="80"/>
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <Image Grid.Column="0"
-                                               Source="https://imageplaceholder.net/60"
-                                               Width="60" Height="60"
-                                               Stretch="Fill"
-                                               Margin="0,4,12,4"/>
-
-                                        <StackPanel Grid.Column="1"                                                     
-                                                    Padding="0,0,8,0"
-                                                    HorizontalAlignment="Stretch">
-
-                                            <TextBlock x:Name="OrderItemName"
-                                                       Text="{x:Bind Quantity}"
-                                                       Style="{ThemeResource BaseTextBlockStyle}"
-                                                       FontSize="18"
-                                                       TextWrapping="Wrap"
-                                                       Margin="0,6,0,6"/>
-
-                                            <TextBlock Text="{x:Bind Product.Name}"
-                                                       Style="{ThemeResource BodyTextBlockStyle}"
-                                                       TextWrapping="Wrap"
-                                                       TextTrimming="CharacterEllipsis"
-                                                       RelativePanel.Below="OrderItemName"
-                                                       MaxLines="2"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                                  ItemsSource="{x:Bind OrderDetails, Mode=OneWay}"
+                                  ItemTemplate="{StaticResource OrderItemDataTemplate}"
+                                  HorizontalAlignment="Stretch"
+                                  HorizontalContentAlignment="Stretch" />
                     </Expander>
 
                     <Expander
                          x:Uid="ClientHomePage_CompletedProductTitle"
                          IsExpanded="False"
                          ExpandDirection="Down"
-                         VerticalAlignment="Top"
                          Background="{StaticResource SystemFillColorSuccessBackground}"
-                         Margin="0,16,0,0"
-                         HorizontalAlignment="Stretch">
-                        <!-- content here -->
+                         VerticalAlignment="Top"
+                         Padding="0"
+                         Margin="0,8"
+                         HorizontalAlignment="Stretch"
+                         HorizontalContentAlignment="Stretch">
+
+                        <ListView x:Name="CompletedOrderList"
+                                  ItemsSource="{x:Bind OrderDetails, Mode=OneWay}"
+                                  ItemTemplate="{StaticResource OrderItemDataTemplate}"
+                                  HorizontalAlignment="Stretch"
+                                  HorizontalContentAlignment="Stretch" />
                     </Expander>
                 </StackPanel>
             </Border>

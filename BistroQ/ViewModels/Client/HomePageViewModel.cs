@@ -3,11 +3,6 @@ using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Models.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace BistroQ.ViewModels.Client;
@@ -35,6 +30,8 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
         StartOrderCommand = new AsyncRelayCommand(StartOrder);
         CancelOrderCommand = new RelayCommand(CancelOrder);
     }
+
+    //public event OrderNewItem { get; set; }
 
     private async Task StartOrder()
     {
