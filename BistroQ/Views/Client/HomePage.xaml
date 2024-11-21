@@ -121,8 +121,8 @@
                     Background="{StaticResource CardBackgroundFillColorDefaultBrush}" CornerRadius="10" 
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
                     BorderThickness="4"
-                    Padding="8">
-                <ScrollViewer>
+                    Padding="4">
+                <ScrollViewer Padding="8">
                 <StackPanel>
                     <TextBlock x:Uid="ClientHomePage_OrderTitle"
                                Foreground="{StaticResource TextFillColorPrimaryBrush}"
