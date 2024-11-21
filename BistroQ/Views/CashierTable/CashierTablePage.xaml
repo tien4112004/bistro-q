@@ -10,18 +10,15 @@
     xmlns:zoneModels="using:BistroQ.Core.Dtos.Zones"
     xmlns:converters="using:BistroQ.Converters"
     xmlns:zoneControls="using:BistroQ.Views.UserControls.Zones"
+    xmlns:orderControls="using:BistroQ.Views.UserControls.Orders"
     mc:Ignorable="d"
     Background="Transparent">
-
-    <Page.Resources>
-        <converters:IntToCurrencyConverter x:Key="IntToCurrency"/>
-    </Page.Resources>
 
     <Grid Background="Transparent" Margin="0,0,0,20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7*" />
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="4*" />
         </Grid.ColumnDefinitions>
 
         <Grid Background="{ThemeResource DividerStrokeColorDefaultBrush}" Grid.Column="0" CornerRadius="10" Padding="2">
@@ -50,7 +47,20 @@
 
         <Border Grid.Column="2" Background="{StaticResource CardBackgroundFillColorDefaultBrush}" CornerRadius="10" 
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="4">
+            <Grid Padding="10,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
+                <TextBlock Text="Order Detail" Grid.Row="0" 
+                           FontSize="16"
+                           FontWeight="Bold"
+                           Padding="5,5,5,15"
+                           />
+                <orderControls:TableOrderDetailsControl Grid.Row="1" ViewModel="{x:Bind ViewModel.TableOrderDetailVM, Mode=OneWay}"/>
+            </Grid>
         </Border>
     </Grid>
 </Page>

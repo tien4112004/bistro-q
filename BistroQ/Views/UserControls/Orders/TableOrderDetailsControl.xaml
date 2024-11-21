@@ -1,14 +1,55 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <UserControl
     x:Class="BistroQ.Views.UserControls.Orders.TableOrderDetailsControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BistroQ.Views.UserControls.Orders"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:converters="using:BistroQ.Converters"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <converters:IntToCurrencyConverter x:Key="IntToCurreny"/>
+        <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </UserControl.Resources>
+    
     <Grid>
+        <TextBlock
+            Text="This table is currently available!"
+            Visibility="{x:Bind ViewModel.DoesNotHaveOrder, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+            />
+        <TextBlock
+            Text="This table haven't ordered any product!"
+            Visibility="{x:Bind ViewModel.DoesNotHaveOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+            />
 
+        <controls:DataGrid
+            x:Name="OrderItemsGrid"
+            AutoGenerateColumns="False"
+            GridLinesVisibility="All"
+            IsReadOnly="True"
+            Visibility="{x:Bind ViewModel.HasOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+            ItemsSource="{x:Bind ViewModel.Order.OrderDetails, Mode=OneWay}"
+            >
+            <controls:DataGrid.Resources>
+                <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+            </controls:DataGrid.Resources>
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn 
+                    Header="Product Name" 
+                    Binding="{Binding Product.Name}"
+                    Width="*"/>
+                <controls:DataGridTextColumn 
+                    Header="Price" 
+                    Binding="{Binding Product.Price, Converter={StaticResource IntToCurreny}}" 
+                    Width="Auto"/>
+                <controls:DataGridTextColumn 
+                    Header="Quantity" 
+                    Binding="{Binding Quantity}" 
+                    Width="Auto"/>
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
     </Grid>
 </UserControl>

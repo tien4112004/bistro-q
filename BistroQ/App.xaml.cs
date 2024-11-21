@@ -131,6 +131,7 @@ public partial class App : Application
             services.AddTransient<CashierTablePage>();
             services.AddTransient<ZoneOverviewViewModel>();
             services.AddTransient<ZoneTableGridViewModel>();
+            services.AddTransient<TableOrderDetailViewModel>();
 
 
             services.AddTransient<TestKitchenViewModel>();

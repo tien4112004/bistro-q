@@ -27,6 +27,8 @@ public partial class ZoneTableGridViewModel : ObservableObject
         _tableDataService = tableDataService;
     }
 
+    public bool HasTables => Tables != null && Tables.Count > 0;
+
     public async Task OnZoneChangedAsync(int? zoneId, string type)
     {
         if (zoneId == null)

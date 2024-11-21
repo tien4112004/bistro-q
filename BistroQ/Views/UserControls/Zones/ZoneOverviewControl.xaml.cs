@@ -44,6 +44,8 @@ public sealed partial class ZoneOverviewControl : UserControl
 
     public event EventHandler<ZoneStateEventArgs> ZoneSelectionChanged;
 
+    public event EventHandler<int?> TableSelectionChanged;
+
     private void OnZoneClicked(object sender, ItemClickEventArgs e)
     {
         if (e.ClickedItem is ZoneDto zone)
@@ -63,7 +65,6 @@ public sealed partial class ZoneOverviewControl : UserControl
         };
 
         ZoneSelectionChanged?.Invoke(this, _state);
-
     }
     private void ScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
     {

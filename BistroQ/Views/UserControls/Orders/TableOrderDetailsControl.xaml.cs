@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,17 +12,18 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using BistroQ.ViewModels.CashierTable;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace BistroQ.Views.UserControls.Orders
+namespace BistroQ.Views.UserControls.Orders;
+
+public sealed partial class TableOrderDetailsControl : UserControl
 {
-    public sealed partial class TableOrderDetailsControl : UserControl
+    public TableOrderDetailViewModel ViewModel { get; set;  }
+    public TableOrderDetailsControl()
     {
-        public TableOrderDetailsControl()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
     }
 }
