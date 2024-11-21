@@ -1,18 +1,6 @@
-﻿using BistroQ.ViewModels.Client;
-using Microsoft.UI.Xaml;
+﻿using BistroQ.Core.Models.Entities;
+using BistroQ.ViewModels.Client;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -25,6 +13,23 @@ namespace BistroQ.Views.Client
     public sealed partial class HomePage : Page
     {
         public HomePageViewModel ViewModel { get; }
+        public List<OrderDetail> OrderDetails = new List<OrderDetail>
+        {
+            new OrderDetail
+            {
+                OrderDetailId = 1,
+                OrderId = null,
+                ProductId = 1,
+                Quantity = 1,
+                PriceAtPurchase = 1,
+                Product = new Product
+                {
+                    ProductId = 1,
+                    Name = "A long",
+                }
+            },
+        };
+
         public HomePage()
         {
             this.ViewModel = App.GetService<HomePageViewModel>();
