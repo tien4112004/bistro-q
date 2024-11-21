@@ -121,13 +121,14 @@
                     Background="{StaticResource CardBackgroundFillColorDefaultBrush}" CornerRadius="10" 
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
                     BorderThickness="4"
-                    Padding="16">
+                    Padding="8">
+                <ScrollViewer>
                 <StackPanel>
                     <TextBlock x:Uid="ClientHomePage_OrderTitle"
                                Foreground="{StaticResource TextFillColorPrimaryBrush}"
                                Style="{StaticResource SubtitleTextBlockStyle}"
                                Grid.Column="0"
-                               Margin="0,0,0,16"/>
+                               Margin="8,8,0,16"/>
 
                     <!--  TODO: Delete this in the final version
                     <Button
@@ -153,6 +154,7 @@
                         <ListView x:Name="ProcessingOrderList"
                                   ItemsSource="{x:Bind OrderDetails, Mode=OneWay}"
                                   ItemTemplate="{StaticResource OrderItemDataTemplate}"
+                                  SelectionMode="None" 
                                   HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Stretch" />
                     </Expander>
@@ -175,6 +177,7 @@
                                   HorizontalContentAlignment="Stretch" />
                     </Expander>
                 </StackPanel>
+                </ScrollViewer>
             </Border>
         </Grid>
     </Grid>

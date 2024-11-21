@@ -41,6 +41,84 @@ namespace BistroQ.Views.Client
                     Name = "A very long description A very long description A very long description A very long description",
                 }
             },
+                        new OrderDetail
+            {
+                OrderDetailId = 1,
+                OrderId = null,
+                ProductId = 1,
+                Quantity = 1,
+                PriceAtPurchase = 1,
+                Product = new Product
+                {
+                    ProductId = 1,
+                    Name = "A long",
+                }
+            },
+            new OrderDetail
+            {
+                OrderDetailId = 1,
+                OrderId = null,
+                ProductId = 1,
+                Quantity = 1,
+                PriceAtPurchase = 1,
+                Product = new Product
+                {
+                    ProductId = 1,
+                    Name = "A very long description A very long description A very long description A very long description",
+                }
+            },
+                        new OrderDetail
+            {
+                OrderDetailId = 1,
+                OrderId = null,
+                ProductId = 1,
+                Quantity = 1,
+                PriceAtPurchase = 1,
+                Product = new Product
+                {
+                    ProductId = 1,
+                    Name = "A long",
+                }
+            },
+            new OrderDetail
+            {
+                OrderDetailId = 1,
+                OrderId = null,
+                ProductId = 1,
+                Quantity = 1,
+                PriceAtPurchase = 1,
+                Product = new Product
+                {
+                    ProductId = 1,
+                    Name = "A very long description A very long description A very long description A very long description",
+                }
+            },
+                        new OrderDetail
+            {
+                OrderDetailId = 1,
+                OrderId = null,
+                ProductId = 1,
+                Quantity = 1,
+                PriceAtPurchase = 1,
+                Product = new Product
+                {
+                    ProductId = 1,
+                    Name = "A long",
+                }
+            },
+            new OrderDetail
+            {
+                OrderDetailId = 1,
+                OrderId = null,
+                ProductId = 1,
+                Quantity = 1,
+                PriceAtPurchase = 1,
+                Product = new Product
+                {
+                    ProductId = 1,
+                    Name = "A very long description A very long description A very long description A very long description",
+                }
+            },
         };
 
         public HomePage()
