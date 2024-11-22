@@ -12,11 +12,7 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IOrderDataService _orderDataService;
     private readonly ICategoryService _categoryService;
-
-    public event EventHandler<Order> OrderCreated;
-    public event EventHandler OrderCancelled;
-    public event EventHandler<IEnumerable<Category>> CategoriesLoaded;
-    public event EventHandler<string> ErrorOccurred;
+    private readonly IDialogService _dialogService;
 
     public Order Order { get; set; }
 
@@ -153,13 +149,18 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
 
     public ICommand StartOrderCommand { get; }
     public ICommand CancelOrderCommand { get; }
-    public HomePageViewModel(IOrderDataService orderDataService, ICategoryService categoryService)
+    public ICommand ShowProductDetailCommand { get; }
+    public HomePageViewModel(IDialogService dialogService, IOrderDataService orderDataService, ICategoryService categoryService)
     {
+        _dialogService = dialogService;
         _orderDataService = orderDataService;
         _categoryService = categoryService;
         StartOrderCommand = new AsyncRelayCommand(StartOrder);
         CancelOrderCommand = new RelayCommand(CancelOrder);
+        //ShowProductDetailCommand = new RelayCommand<Product>(ShowProductDetailCommand);
     }
+
+
 
     //public event OrderNewItem { get; set; }
 
@@ -215,7 +216,6 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
         };
         Categories = new List<Category> { allCategory }.Concat(categories)
                                                        .ToList();
-        System.Threading.Thread.Sleep(3000);
         _categoryIsLoading = false;
 
         IsLoading = false;

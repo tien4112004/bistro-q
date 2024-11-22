@@ -19,7 +19,7 @@ namespace BistroQ.Views.Client
             this.InitializeComponent();
         }
 
-        private void ProgressRing_SizeChanged(object sender, Microsoft.UI.Xaml.SizeChangedEventArgs e)
+        private void CategoryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
