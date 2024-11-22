@@ -121,12 +121,13 @@ public partial class App : Application
             services.AddScoped<ITableDataService, TableDataService>();
             services.AddScoped<IOrderDataService, OrderDataService>();
             services.AddScoped<ICategoryDataService, CategoryDataService>();
-            services.AddScoped<IZoneDataService, ZoneDataService>();
+            services.AddScoped<IProductDataService, ProductDataService>();
 
             // Client services
             services.AddScoped<IAdminZoneService, AdminZoneService>();
             services.AddScoped<IAdminTableService, AdminTableService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
             // Client V&VM
             services.AddTransient<HomePageViewModel>();
             services.AddTransient<HomePage>();

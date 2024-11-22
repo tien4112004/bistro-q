@@ -218,23 +218,29 @@
                                     Grid.Column="0" 
                                     MinWidth="200"
                                     MaxWidth="248"
-                            Grid.Row="1">
+                                    Grid.Row="1">
                             <ListView x:Name="CategoryList"
                                       ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
                                       ItemTemplate="{StaticResource CategoryItem}"
                                       SelectionChanged="CategoryList_SelectionChanged"
+                                      SelectedItem="{x:Bind ViewModel.SelectedCategory, Mode=TwoWay}"
                                       HorizontalAlignment="Stretch"
                                       HorizontalContentAlignment="Stretch" >
                             </ListView>
                         </StackPanel>
-                        <GridView x:Name="ProductList"
-                                  RelativePanel.RightOf="CategoryPanel"
-                                  ItemsSource="{x:Bind ViewModel.Products, Mode=OneWay}"
-                                  ItemTemplate="{StaticResource SingleProductDataTemplate}"
-                                  ItemsPanel="{StaticResource WrapGridItemsPanel}"
-                                  HorizontalAlignment="Stretch"
-                                  HorizontalContentAlignment="Stretch" />
-                        </RelativePanel>
+                        <ScrollView RelativePanel.RightOf="CategoryPanel" Margin="12,0,0,0">
+                            <StackPanel Orientation="Vertical">
+                                <GridView x:Name="ProductList"
+                                      
+                                          ItemsSource="{x:Bind ViewModel.Products, Mode=OneWay}"
+                                          ItemTemplate="{StaticResource SingleProductDataTemplate}"
+                                          ItemsPanel="{StaticResource WrapGridItemsPanel}"
+                                          ScrollViewer.VerticalScrollMode="Enabled"
+                                          HorizontalAlignment="Stretch"
+                                          HorizontalContentAlignment="Stretch" />
+                            </StackPanel>
+                        </ScrollView>
+                    </RelativePanel>
                 </StackPanel>
             </Border>
 
@@ -248,7 +254,7 @@
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
                     BorderThickness="4"
                     Padding="0,0,4,0">
-                <ScrollViewer Padding="8">
+                <ScrollView Padding="8">
                 <StackPanel>
                     <TextBlock x:Uid="ClientHomePage_OrderTitle"
                                Foreground="{StaticResource TextFillColorPrimaryBrush}"
@@ -302,7 +308,7 @@
                                   HorizontalContentAlignment="Stretch" />
                     </Expander>
                 </StackPanel>
-                </ScrollViewer>
+                </ScrollView>
             </Border>
         </Grid>
     </Grid>

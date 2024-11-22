@@ -21,7 +21,7 @@ namespace BistroQ.Views.Client
 
         private void CategoryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            ViewModel.ChangeCategoryCommand.Execute(this);
         }
     }
 }
