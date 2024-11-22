@@ -13,6 +13,7 @@
 
     <Page.Resources>
         <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <converter:ReverseBooleanConverter x:Key="ReverseBool" />
         <DataTemplate x:Key="OrderItemDataTemplate" x:DataType="entities:OrderDetail">
             <Grid Padding="0,4,0,4"
                   Margin="0,4" 
@@ -211,10 +212,11 @@
                                    HorizontalAlignment="Left">
                         <StackPanel x:Name="CategoryPanel" 
                                     Grid.Column="0" 
-                                    MaxWidth="240"
+                                    MinWidth="200"
+                                    MaxWidth="248"
                             Grid.Row="1">
                             <ListView x:Name="CategoryList"
-                                      ItemsSource="{x:Bind ViewModel.Categories}"
+                                      ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
                                       ItemTemplate="{StaticResource CategoryItem}"
                                       HorizontalAlignment="Stretch"
                                       HorizontalContentAlignment="Stretch" >

@@ -18,5 +18,10 @@ namespace BistroQ.Views.Client
             this.ViewModel = App.GetService<HomePageViewModel>();
             this.InitializeComponent();
         }
+
+        private void ProgressRing_SizeChanged(object sender, Microsoft.UI.Xaml.SizeChangedEventArgs e)
+        {
+
+        }
     }
 }

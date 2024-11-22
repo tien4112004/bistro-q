@@ -1,4 +1,5 @@
-﻿using BistroQ.Contracts.ViewModels;
+﻿using BistroQ.Contracts.Services;
+using BistroQ.Contracts.ViewModels;
 using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -10,7 +11,12 @@ namespace BistroQ.ViewModels.Client;
 public partial class HomePageViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IOrderDataService _orderDataService;
+    private readonly ICategoryService _categoryService;
 
+    public event EventHandler<Order> OrderCreated;
+    public event EventHandler OrderCancelled;
+    public event EventHandler<IEnumerable<Category>> CategoriesLoaded;
+    public event EventHandler<string> ErrorOccurred;
 
     public Order Order { get; set; }
 
@@ -21,21 +27,13 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
     private bool _isLoading = false;
 
     [ObservableProperty]
+    private bool _categoryIsLoading = false;
+
+    [ObservableProperty]
     private string _errorMessage = string.Empty;
 
     [ObservableProperty]
-    private List<Category> _categories = new List<Category> {
-        new Category
-        {
-            CategoryId=1,
-            Name="Category 1"
-        },
-        new Category
-        {
-            CategoryId=1,
-            Name="Category 2 with a very long name the quick brown fox"
-        }
-    };
+    private List<Category> _categories;
 
     [ObservableProperty]
     private List<OrderDetail> _orderDetails = new List<OrderDetail>
@@ -53,32 +51,6 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
                     Name = "A long",
                 }
             },
-            new OrderDetail
-            {
-                OrderDetailId = "1",
-                OrderId = null,
-                ProductId = 1,
-                Quantity = 1,
-                PriceAtPurchase = 1,
-                Product = new Product
-                {
-                    ProductId = 1,
-                    Name = "A very long description A very long description A very long description A very long description",
-                }
-            },
-                        new OrderDetail
-                        {
-                            OrderDetailId = "1",
-                            OrderId = null,
-                            ProductId = 1,
-                            Quantity = 1,
-                            PriceAtPurchase = 1,
-                            Product = new Product
-                            {
-                                ProductId = 1,
-                                Name = "A long",
-                            }
-                        },
             new OrderDetail
             {
                 OrderDetailId = "1",
@@ -162,14 +134,29 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
             Name = "Sản phẩm 2",
             Price=200000,
             Unit="Test"
+        },
+        new Product
+        {
+            CategoryId = 2,
+            Name = "Long product bun bo hue pho bo tra da",
+            Price=999999999,
+            Unit="Test"
+        },
+        new Product
+        {
+            CategoryId = 2,
+            Name = "Tra da",
+            Price=888888888888,
+            Unit="Test"
         }
     };
 
     public ICommand StartOrderCommand { get; }
     public ICommand CancelOrderCommand { get; }
-    public HomePageViewModel(IOrderDataService orderDataService)
+    public HomePageViewModel(IOrderDataService orderDataService, ICategoryService categoryService)
     {
         _orderDataService = orderDataService;
+        _categoryService = categoryService;
         StartOrderCommand = new AsyncRelayCommand(StartOrder);
         CancelOrderCommand = new RelayCommand(CancelOrder);
     }
@@ -181,6 +168,7 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
         try
         {
             IsLoading = true;
+            var categories = await _categoryService.GetAllCategoriesAsync();
 
             await Task.Delay(400); // TODO: This if for UI visualize only, remove it afterward  
 
@@ -219,6 +207,17 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
 
         });
 
+        _categoryIsLoading = true;
+        var categories = await _categoryService.GetAllCategoriesAsync();
+        var allCategory = new Category
+        {
+            Name = "All"
+        };
+        Categories = new List<Category> { allCategory }.Concat(categories)
+                                                       .ToList();
+        System.Threading.Thread.Sleep(3000);
+        _categoryIsLoading = false;
+
         IsLoading = false;
 
         if (existingOrder == null)
@@ -227,6 +226,7 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
         }
         Order = existingOrder;
         IsOrdering = true;
+
     }
 
     public void OnNavigatedFrom()

@@ -75,8 +75,6 @@ public partial class App : Application
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
-            // Data Services
-            services.AddSingleton<IZoneDataService, ZoneDataService>();
 
             // Http
             services.AddTransient<AuthenticationDelegatingHandler>();
@@ -117,11 +115,17 @@ public partial class App : Application
             services.AddTransient<AdminTableEditPageViewModel>();
             services.AddTransient<AdminTableEditPage>();
 
+            // Data Services
             services.AddScoped<IZoneDataService, ZoneDataService>();
             services.AddScoped<ITableDataService, TableDataService>();
-            services.AddScoped<IAdminZoneService, AdminZoneService>();
             services.AddScoped<IOrderDataService, OrderDataService>();
+            services.AddScoped<ICategoryDataService, CategoryDataService>();
+            services.AddScoped<IZoneDataService, ZoneDataService>();
+
+            // Client services
+            services.AddScoped<IAdminZoneService, AdminZoneService>();
             services.AddScoped<IAdminTableService, AdminTableService>();
+            services.AddScoped<ICategoryService, CategoryService>();
             // Client V&VM
             services.AddTransient<HomePageViewModel>();
             services.AddTransient<HomePage>();
