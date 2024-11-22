@@ -234,4 +234,7 @@
   <data name="ClientHomePage_CompletedProductTitle/Header" xml:space="preserve">
     <value>Completed</value>
   </data>
+  <data name="AddItemButton/Content" xml:space="preserve">
+    <value>Add</value>
+  </data>
 </root>

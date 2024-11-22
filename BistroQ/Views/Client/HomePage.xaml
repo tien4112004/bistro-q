@@ -7,13 +7,13 @@
     xmlns:converter="using:BistroQ.Converters"
     xmlns:control="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local1="using:BistroQ.Core.Models.Entities"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:entities="using:BistroQ.Core.Entities" xmlns:usercontrols="using:BistroQ.Views.UserControls"
     mc:Ignorable="d"
     Background="Transparent">
 
     <Page.Resources>
         <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-        <DataTemplate x:Key="OrderItemDataTemplate" x:DataType="local1:OrderDetail">
+        <DataTemplate x:Key="OrderItemDataTemplate" x:DataType="entities:OrderDetail">
             <Grid Padding="0,4,0,4"
                   Margin="0,4" 
                   AutomationProperties.Name="{x:Bind Product.Name}"
@@ -27,7 +27,7 @@
                        Source="https://imageplaceholder.net/64" 
                        Width="64" Height="64"
                        Stretch="Fill"
-                       Margin="0,0,8,0"/>
+                       Margin="0,0,12,0"/>
 
                 <StackPanel 
                     Grid.Column="1"                                                     
@@ -46,6 +46,101 @@
                                TextWrapping="Wrap"
                                TextTrimming="CharacterEllipsis"
                                MaxLines="2"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="CartItemDataTemplate" x:DataType="entities:OrderDetail">
+            <Grid Padding="0,4,0,4"
+                  Margin="0,4" 
+                  AutomationProperties.Name="{x:Bind Product.Name}"
+                  HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Column="0"
+                       Source="https://imageplaceholder.net/64" 
+                       Width="64" Height="64"
+                       Stretch="Fill"
+                       Margin="0,0,12,0"/>
+
+                <StackPanel 
+                    Grid.Column="1"                                                     
+                    Padding="0,0,4,0"
+                    HorizontalAlignment="Stretch">
+
+                    <TextBlock x:Name="OrderItemName"
+                               Text="{x:Bind Quantity}"
+                               Style="{ThemeResource BaseTextBlockStyle}"
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap" />
+
+                    <TextBlock Text="{x:Bind Product.Name}"
+                               Style="{ThemeResource BodyTextBlockStyle}"
+                               TextWrapping="Wrap"
+                               TextTrimming="CharacterEllipsis"
+                               MaxLines="2"/>
+                    <usercontrols:ItemQuantityControl Margin="0,8,0,0"
+                                                      HorizontalAlignment="Left"
+                                                      ProductId="{x:Bind ProductId}"
+                                                      Quantity="{x:Bind Quantity}" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="CategoryItem" 
+                      x:DataType="entities:Category">
+            <TextBlock Text="{x:Bind Name}" 
+                       TextWrapping="WrapWholeWords" 
+                       TextTrimming="CharacterEllipsis"
+                       MaxLines="2"
+                       Style="{StaticResource BodyStrongTextBlockStyle}"
+                       FontSize="16"
+                       Height="68"
+                       VerticalAlignment="Center"
+                       Padding="12"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SingleProductDataTemplate"
+                      x:DataType="entities:Product">
+            <Grid x:Name="SingleProductGrid"
+                  Margin="8" Padding="8"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  MinWidth="260" MaxWidth="300" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="160" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Image Source="https://imageplaceholder.net/160" 
+                       Grid.Row="0" 
+                       Stretch="None" />
+                <StackPanel Grid.Row="1" Margin="0,8">
+                    <TextBlock Margin="0,8,0,0"
+                   Text="{x:Bind Name}"
+                   Style="{StaticResource SubtitleTextBlockStyle}" />
+                    <TextBlock Margin="0,8,0,0">
+                        <Run Text="{x:Bind Price}" FontSize="20" FontWeight="SemiBold" />
+                        <Run Text=" / " FontSize="14" />
+                        <Run Text="{x:Bind Unit}" FontSize="14"/>
+                    </TextBlock>
+                    <TextBlock 
+                        x:Name="ProductDescriptionTextBlock"
+                        Text="Product description"
+                        Style="{StaticResource BodyTextBlockStyle}" Margin="0,12,0,0" />
+                </StackPanel>
+                <StackPanel x:Name="QuantityControls" Grid.Row="2" 
+                            Orientation="Horizontal" 
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Center">
+                    <Button x:Uid="AddItemButton" 
+                            Margin="0,8,0,0"
+                            Padding="16,8"
+                            Style="{StaticResource AccentButtonStyle}" />
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -97,7 +192,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="7*" />
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="3*" MaxWidth="360" />
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" 
@@ -105,11 +200,34 @@
                     CornerRadius="10" 
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
                     BorderThickness="4"
-                    Padding="16">
-                <TextBlock x:Uid="ClientHomePage_ProductListTitle"
-                           Foreground="{StaticResource TextFillColorPrimaryBrush}"
-                           Style="{StaticResource SubtitleTextBlockStyle}">
-                </TextBlock>
+                    Padding="16,16,0,0">
+                <StackPanel>
+                    <TextBlock x:Uid="ClientHomePage_ProductListTitle"
+                               Foreground="{StaticResource TextFillColorPrimaryBrush}"
+                               Style="{StaticResource SubtitleTextBlockStyle}">
+                    </TextBlock>
+                    <RelativePanel x:Name="Menu" 
+                                   Margin="0,12,0,0"
+                                   HorizontalAlignment="Left">
+                        <StackPanel x:Name="CategoryPanel" 
+                                    Grid.Column="0" 
+                                    MaxWidth="240"
+                            Grid.Row="1">
+                            <ListView x:Name="CategoryList"
+                                      ItemsSource="{x:Bind ViewModel.Categories}"
+                                      ItemTemplate="{StaticResource CategoryItem}"
+                                      HorizontalAlignment="Stretch"
+                                      HorizontalContentAlignment="Stretch" >
+                            </ListView>
+                        </StackPanel>
+                        <GridView x:Name="ProductList"
+                                  RelativePanel.RightOf="CategoryPanel"
+                                  ItemsSource="{x:Bind ViewModel.Products, Mode=OneWay}"
+                                  ItemTemplate="{StaticResource SingleProductDataTemplate}"
+                                  HorizontalAlignment="Stretch"
+                                  HorizontalContentAlignment="Stretch" />
+                        </RelativePanel>
+                </StackPanel>
             </Border>
 
             <Rectangle Grid.Column="1"
@@ -121,14 +239,14 @@
                     Background="{StaticResource CardBackgroundFillColorDefaultBrush}" CornerRadius="10" 
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
                     BorderThickness="4"
-                    Padding="4">
+                    Padding="0,0,4,0">
                 <ScrollViewer Padding="8">
                 <StackPanel>
                     <TextBlock x:Uid="ClientHomePage_OrderTitle"
                                Foreground="{StaticResource TextFillColorPrimaryBrush}"
                                Style="{StaticResource SubtitleTextBlockStyle}"
                                Grid.Column="0"
-                               Margin="8,8,0,16"/>
+                               Margin="4,8,0,12"/>
 
                     <!--  TODO: Delete this in the final version
                     <Button
@@ -152,9 +270,8 @@
                             HorizontalContentAlignment="Stretch">
                         
                         <ListView x:Name="ProcessingOrderList"
-                                  ItemsSource="{x:Bind OrderDetails, Mode=OneWay}"
+                                  ItemsSource="{x:Bind ViewModel.OrderDetails, Mode=OneWay}"
                                   ItemTemplate="{StaticResource OrderItemDataTemplate}"
-                                  SelectionMode="None" 
                                   HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Stretch" />
                     </Expander>
@@ -171,7 +288,7 @@
                          HorizontalContentAlignment="Stretch">
 
                         <ListView x:Name="CompletedOrderList"
-                                  ItemsSource="{x:Bind OrderDetails, Mode=OneWay}"
+                                  ItemsSource="{x:Bind ViewModel.OrderDetails, Mode=OneWay}"
                                   ItemTemplate="{StaticResource OrderItemDataTemplate}"
                                   HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Stretch" />

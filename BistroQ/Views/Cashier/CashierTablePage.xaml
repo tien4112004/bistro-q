@@ -8,7 +8,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:zoneModels="using:BistroQ.Core.Dtos.Zones"
-    xmlns:models="using:BistroQ.Core.Models.Entities"
+    xmlns:models="using:BistroQ.Core.Entities"
     xmlns:converters="using:BistroQ.Converters"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"

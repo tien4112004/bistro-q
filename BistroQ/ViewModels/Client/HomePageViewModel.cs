@@ -1,6 +1,6 @@
 ﻿using BistroQ.Contracts.ViewModels;
 using BistroQ.Core.Contracts.Services;
-using BistroQ.Core.Models.Entities;
+using BistroQ.Core.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
@@ -10,6 +10,7 @@ namespace BistroQ.ViewModels.Client;
 public partial class HomePageViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IOrderDataService _orderDataService;
+
 
     public Order Order { get; set; }
 
@@ -21,6 +22,148 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
 
     [ObservableProperty]
     private string _errorMessage = string.Empty;
+
+    [ObservableProperty]
+    private List<Category> _categories = new List<Category> {
+        new Category
+        {
+            CategoryId=1,
+            Name="Category 1"
+        },
+        new Category
+        {
+            CategoryId=1,
+            Name="Category 2 with a very long name the quick brown fox"
+        }
+    };
+
+    [ObservableProperty]
+    private List<OrderDetail> _orderDetails = new List<OrderDetail>
+        {
+            new OrderDetail
+            {
+                OrderDetailId = "1",
+                OrderId = null,
+                ProductId = 1,
+                Quantity = 1,
+                PriceAtPurchase = 1,
+                Product = new Product
+                {
+                    ProductId = 1,
+                    Name = "A long",
+                }
+            },
+            new OrderDetail
+            {
+                OrderDetailId = "1",
+                OrderId = null,
+                ProductId = 1,
+                Quantity = 1,
+                PriceAtPurchase = 1,
+                Product = new Product
+                {
+                    ProductId = 1,
+                    Name = "A very long description A very long description A very long description A very long description",
+                }
+            },
+                        new OrderDetail
+                        {
+                            OrderDetailId = "1",
+                            OrderId = null,
+                            ProductId = 1,
+                            Quantity = 1,
+                            PriceAtPurchase = 1,
+                            Product = new Product
+                            {
+                                ProductId = 1,
+                                Name = "A long",
+                            }
+                        },
+            new OrderDetail
+            {
+                OrderDetailId = "1",
+                OrderId = null,
+                ProductId = 1,
+                Quantity = 1,
+                PriceAtPurchase = 1,
+                Product = new Product
+                {
+                    ProductId = 1,
+                    Name = "A very long description A very long description A very long description A very long description",
+                }
+            },
+                        new OrderDetail
+                        {
+                            OrderDetailId = "1",
+                            OrderId = null,
+                            ProductId = 1,
+                            Quantity = 1,
+                            PriceAtPurchase = 1,
+                            Product = new Product
+                            {
+                                ProductId = 1,
+                                Name = "A long",
+                            }
+                        },
+            new OrderDetail
+            {
+                OrderDetailId = "1",
+                OrderId = null,
+                ProductId = 1,
+                Quantity = 1,
+                PriceAtPurchase = 1,
+                Product = new Product
+                {
+                    ProductId = 1,
+                    Name = "A very long description A very long description A very long description A very long description",
+                }
+            },
+                        new OrderDetail
+                        {
+                            OrderDetailId = "1",
+                            OrderId = null,
+                            ProductId = 1,
+                            Quantity = 1,
+                            PriceAtPurchase = 1,
+                            Product = new Product
+                            {
+                                ProductId = 1,
+                                Name = "A long",
+                            }
+                        },
+            new OrderDetail
+            {
+                OrderDetailId = "1",
+                OrderId = null,
+                ProductId = 1,
+                Quantity = 1,
+                PriceAtPurchase = 1,
+                Product = new Product
+                {
+                    ProductId = 1,
+                    Name = "A very long description A very long description A very long description A very long description",
+                }
+            },
+        };
+
+    [ObservableProperty]
+    private List<Product> _products = new List<Product>
+    {
+        new Product
+        {
+            CategoryId=1,
+            Name = "San phamar 1",
+            Price=100,
+            Unit="Test"
+        },
+        new Product
+        {
+            CategoryId = 2,
+            Name = "Sản phẩm 2",
+            Price=200000,
+            Unit="Test"
+        }
+    };
 
     public ICommand StartOrderCommand { get; }
     public ICommand CancelOrderCommand { get; }

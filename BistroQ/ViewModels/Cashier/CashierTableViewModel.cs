@@ -1,19 +1,9 @@
 ﻿using BistroQ.Contracts.ViewModels;
 using BistroQ.Core.Contracts.Services;
-using BistroQ.Core.Dtos.Tables;
-using BistroQ.Core.Dtos.Zones;
-using BistroQ.Core.Models.Entities;
+using BistroQ.Core.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Xaml.Controls;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace BistroQ.ViewModels.Cashier;

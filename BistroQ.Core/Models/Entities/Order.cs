@@ -1,11 +1,6 @@
 ﻿using BistroQ.Core.Dtos.Tables;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BistroQ.Core.Models.Entities;
+namespace BistroQ.Core.Entities;
 
 public class Order
 {
