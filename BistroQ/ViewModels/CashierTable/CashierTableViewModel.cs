@@ -20,6 +20,8 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware
 
     public ICommand SelectZoneCommand { get; }
 
+    public ICommand CheckoutCommand { get; }
+
     public ZoneOverviewViewModel ZoneOverviewVM { get; }
 
     public ZoneTableGridViewModel ZoneTableGridVM { get; }
@@ -36,11 +38,12 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware
     {
         _orderDataService = orderDataService;
         _zoneDataService = zoneDataService;
-        SelectTableCommand = new RelayCommand<int>(OnTableSelected);
-        SelectZoneCommand = new RelayCommand<ZoneStateEventArgs>(OnZoneSelected);
         ZoneOverviewVM = zoneOverview;
         ZoneTableGridVM = zoneTableGrid;
-        TableOrderDetailVM = tableOrderDetailVM;    
+        TableOrderDetailVM = tableOrderDetailVM;
+        SelectTableCommand = new RelayCommand<int>(OnTableSelected);
+        SelectZoneCommand = new RelayCommand<ZoneStateEventArgs>(OnZoneSelected);
+        CheckoutCommand = new RelayCommand<int>(OnCheckout);
     }
 
     public async void OnZoneSelected(ZoneStateEventArgs e)
@@ -57,14 +60,19 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware
         await TableOrderDetailVM.OnTableChangedAsync(tableId);
     }
 
+    public async void OnCheckout(int tableId)
+    {
+        Debug.WriteLine("Checkout " + tableId);
+    }
+
     public async void OnNavigatedTo(object parameter)
     {
         await ZoneOverviewVM.InitializeAsync();
-        await ZoneTableGridVM.OnZoneChangedAsync(ZoneOverviewVM.SelectedZone.ZoneId, "All");
-        if (ZoneTableGridVM.SelectedTable != null)
+        OnZoneSelected(new ZoneStateEventArgs
         {
-            await TableOrderDetailVM.OnTableChangedAsync(ZoneTableGridVM.SelectedTable.TableId);
-        }
+            Type = "All",
+            ZoneId = ZoneOverviewVM.SelectedZone.ZoneId
+        });
     }
 
     public void OnNavigatedFrom()

@@ -21,6 +21,7 @@
 
             <TextBlock FontSize="14"
                    Text="There are no tables in this zone."
+                   Foreground="{StaticResource SystemFillColorCriticalBrush}"
                    Visibility="{x:Bind ViewModel.HasTables, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
                    />
 

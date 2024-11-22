@@ -18,6 +18,7 @@ using BistroQ.ViewModels.CashierTable;
 using System.Diagnostics;
 using CommunityToolkit.WinUI.Controls;
 using BistroQ.Models;
+using System.Text.Json;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -31,7 +32,7 @@ public sealed partial class ZoneOverviewControl : UserControl
         this.InitializeComponent();
     }
 
-    public ZoneOverviewViewModel ViewModel { get; set; }
+    public ZoneOverviewViewModel ViewModel { get; set; } = App.GetService<ZoneOverviewViewModel>();
 
     public static readonly DependencyProperty ViewModelProperty =
         DependencyProperty.Register(
@@ -57,6 +58,7 @@ public sealed partial class ZoneOverviewControl : UserControl
 
     private void Segmented_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        _state.ZoneId = ViewModel.SelectedZone?.ZoneId;
         _state.Type = Segmented.SelectedIndex switch
         {
             0 => "All",

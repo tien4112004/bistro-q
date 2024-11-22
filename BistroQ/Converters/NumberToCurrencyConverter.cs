@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BistroQ.Converters;
 
-public class IntToCurrencyConverter : IValueConverter
+public class NumberToCurrencyConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
@@ -15,6 +15,11 @@ public class IntToCurrencyConverter : IValueConverter
         {
             return intValue.ToString("$");
         }
+        else if (value is decimal decicmalValue)
+        {
+            return decicmalValue.ToString() + ("$");
+        }
+
         return value;
     }
 

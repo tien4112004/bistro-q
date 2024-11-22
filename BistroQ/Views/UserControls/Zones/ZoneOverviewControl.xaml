@@ -98,7 +98,7 @@
                             SelectedIndex="0"
                             SelectionChanged="Segmented_SelectionChanged"
                             SelectionMode="Single">
-                <controls:SegmentedItem Content="All"/>
+                <controls:SegmentedItem Content="All State"/>
                 <controls:SegmentedItem Content="Occupied"/>
             </controls:Segmented>
         </StackPanel>

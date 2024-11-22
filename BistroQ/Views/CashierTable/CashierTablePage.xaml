@@ -27,7 +27,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Background="Transparent" Padding="10,0,0,0" >
+            <Grid Grid.Row="0" Background="Transparent" Padding="20,0,0,0" >
                 <zoneControls:ZoneOverviewControl x:Name="ZoneControl" 
                                                   ViewModel="{x:Bind ViewModel.ZoneOverviewVM, Mode=OneWay}"
                                                   ZoneSelectionChanged="ZoneControl_ZoneSelectionChanged" />
@@ -59,7 +59,9 @@
                            FontWeight="Bold"
                            Padding="5,5,5,15"
                            />
-                <orderControls:TableOrderDetailsControl Grid.Row="1" ViewModel="{x:Bind ViewModel.TableOrderDetailVM, Mode=OneWay}"/>
+
+                <orderControls:TableOrderDetailsControl Grid.Row="1" ViewModel="{x:Bind ViewModel.TableOrderDetailVM, Mode=OneWay}" 
+                                                        CheckoutRequested="TableOrderDetailsControl_CheckoutRequested"/>
             </Grid>
         </Border>
     </Grid>

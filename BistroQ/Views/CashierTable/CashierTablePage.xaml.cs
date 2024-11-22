@@ -23,4 +23,9 @@ public sealed partial class CashierTablePage : Page
     {
         ViewModel.SelectTableCommand.Execute(e);
     }
+
+    private void TableOrderDetailsControl_CheckoutRequested(object sender, int? e)
+    {
+        ViewModel.CheckoutCommand.Execute(e);
+    }
 }

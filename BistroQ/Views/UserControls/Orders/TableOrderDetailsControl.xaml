@@ -8,48 +8,60 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:converters="using:BistroQ.Converters"
+    xmlns:orderControls="using:BistroQ.Views.UserControls.Orders"
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <converters:IntToCurrencyConverter x:Key="IntToCurreny"/>
+        <converters:NumberToCurrencyConverter x:Key="NumberToCurreny"/>
         <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     </UserControl.Resources>
-    
+
     <Grid>
-        <TextBlock
-            Text="This table is currently available!"
-            Visibility="{x:Bind ViewModel.DoesNotHaveOrder, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel VerticalAlignment="Stretch" Grid.Row="0">
+            <TextBlock
+                Text="This table is currently available!"
+                Foreground="{StaticResource SystemFillColorSuccessBrush}"
+                Visibility="{x:Bind ViewModel.DoesNotHaveOrder, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
             />
-        <TextBlock
-            Text="This table haven't ordered any product!"
-            Visibility="{x:Bind ViewModel.DoesNotHaveOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+            <TextBlock
+                Foreground="{StaticResource SystemFillColorCriticalBrush}"
+                Text="This table haven't ordered any product!"
+                Visibility="{x:Bind ViewModel.DoesNotHaveOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
             />
 
-        <controls:DataGrid
-            x:Name="OrderItemsGrid"
-            AutoGenerateColumns="False"
-            GridLinesVisibility="All"
-            IsReadOnly="True"
-            Visibility="{x:Bind ViewModel.HasOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
-            ItemsSource="{x:Bind ViewModel.Order.OrderDetails, Mode=OneWay}"
+            <controls:DataGrid
+                x:Name="OrderItemsGrid"
+                AutoGenerateColumns="False"
+                GridLinesVisibility="All"
+                IsReadOnly="True"
+                Visibility="{x:Bind ViewModel.HasOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+                ItemsSource="{x:Bind ViewModel.Order.OrderDetails, Mode=OneWay}"
             >
-            <controls:DataGrid.Resources>
-                <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
-            </controls:DataGrid.Resources>
-            <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn 
+                <controls:DataGrid.Resources>
+                    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                </controls:DataGrid.Resources>
+                <controls:DataGrid.Columns>
+                    <controls:DataGridTextColumn 
                     Header="Product Name" 
                     Binding="{Binding Product.Name}"
                     Width="*"/>
-                <controls:DataGridTextColumn 
+                    <controls:DataGridTextColumn 
                     Header="Price" 
-                    Binding="{Binding Product.Price, Converter={StaticResource IntToCurreny}}" 
+                    Binding="{Binding Product.Price, Converter={StaticResource NumberToCurreny}}" 
                     Width="Auto"/>
-                <controls:DataGridTextColumn 
+                    <controls:DataGridTextColumn 
                     Header="Quantity" 
                     Binding="{Binding Quantity}" 
                     Width="Auto"/>
-            </controls:DataGrid.Columns>
-        </controls:DataGrid>
+                </controls:DataGrid.Columns>
+            </controls:DataGrid>
+        </StackPanel>
+        <orderControls:TableBillSummaryControl Grid.Row="1"  Total="{x:Bind ViewModel.Order.TotalAmount, Mode=OneWay}" 
+                                               CheckoutRequested="TableBillSummaryControl_CheckoutRequested" />
     </Grid>
 </UserControl>

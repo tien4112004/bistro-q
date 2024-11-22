@@ -15,6 +15,7 @@ namespace BistroQ.ViewModels.CashierTable;
 public partial class TableOrderDetailViewModel : ObservableObject
 {
     private readonly IOrderDataService _orderDataService;
+
     public TableOrderDetailViewModel(IOrderDataService orderDataService)
     {
         _orderDataService = orderDataService;
