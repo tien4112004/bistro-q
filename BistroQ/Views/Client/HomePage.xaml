@@ -115,13 +115,13 @@
               Margin="8" Padding="8"
               HorizontalAlignment="Stretch"
               VerticalAlignment="Stretch"
-              MinWidth="260" MaxWidth="300">
+              Width="260">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="160" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Image Source="https://imageplaceholder.net/160" 
+                <Image Source="https://imageplaceholder.net/320x160" 
                    Grid.Row="0" 
                    Stretch="None" />
                 <StackPanel Grid.Row="1" Margin="0,8">
@@ -156,25 +156,25 @@
             x:Name="EntryContent"
             VerticalAlignment="Center" 
             Background="Transparent"
-            Visibility="{x:Bind ViewModel.IsOrdering, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
+            Visibility="{x:Bind ViewModel.OrderCartViewModel.IsOrdering, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
             HorizontalAlignment="Center">
 
             <Button 
                 x:Name="EntryButton"
-                Command="{x:Bind ViewModel.StartOrderCommand}"
+                Command="{x:Bind ViewModel.OrderCartViewModel.StartOrderCommand}"
                 Style="{ThemeResource AccentButtonStyle}"
                 Width="140"
                 Padding="20,10"
                 FontSize="20">
                 <Grid>
                     <TextBlock Text="Start Ordering"
-                        Visibility="{x:Bind ViewModel.IsLoading, 
+                        Visibility="{x:Bind ViewModel.OrderCartViewModel.IsLoading, 
                                     Mode=OneWay, 
                                     Converter ={StaticResource BoolToVisibility}, 
                                     ConverterParameter=invert}"
                         Style="{StaticResource BaseTextBlockStyle}"/>
                     <control:ProgressRing 
-                         IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                         IsActive="{x:Bind ViewModel.OrderCartViewModel.IsLoading, Mode=OneWay}"
                          Foreground="White"
                          Width="20"
                          Height="20"/>
@@ -190,7 +190,7 @@
 
         <Grid
             x:Name="MainContent"
-            Visibility="{x:Bind ViewModel.IsOrdering, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+            Visibility="{x:Bind ViewModel.OrderCartViewModel.IsOrdering, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
             Margin="0,0,0,30"
             >
 
@@ -200,48 +200,65 @@
                 <ColumnDefinition Width="3*" MaxWidth="360" />
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" 
-                    Background="{StaticResource CardBackgroundFillColorDefaultBrush}" 
+            <Border Background="{StaticResource CardBackgroundFillColorDefaultBrush}" 
                     CornerRadius="10" 
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
                     BorderThickness="4"
                     Padding="16,16,0,0">
-                <StackPanel>
-                    <TextBlock x:Uid="ClientHomePage_ProductListTitle"
-                               Foreground="{StaticResource TextFillColorPrimaryBrush}"
-                               Style="{StaticResource SubtitleTextBlockStyle}">
-                    </TextBlock>
-                    <RelativePanel x:Name="Menu" 
-                                   Margin="0,12,0,0"
-                                   HorizontalAlignment="Left">
-                        <StackPanel x:Name="CategoryPanel" 
-                                    Grid.Column="0" 
-                                    MinWidth="200"
-                                    MaxWidth="248"
-                                    Grid.Row="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock x:Uid="ClientHomePage_ProductListTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
+
+                    <ScrollView Grid.Column="0" Grid.Row="1" Margin="0,0,12,0">
+                        <Grid x:Name="CategoryPanel"
+                              MinWidth="200"
+                              MaxWidth="248">
+                            <ProgressRing IsActive="{x:Bind ViewModel.ProductListViewModel.IsLoadingCategory, Mode=OneWay}"
+                                          VerticalAlignment="Center" HorizontalAlignment="Center"
+                                          Width="40" Height="40"
+                                          Visibility="{x:Bind ViewModel.ProductListViewModel.IsLoadingCategory, 
+                                                              Mode=OneWay,
+                                                              Converter={StaticResource BoolToVisibility}}" />
                             <ListView x:Name="CategoryList"
-                                      ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
+                                      ItemsSource="{x:Bind ViewModel.ProductListViewModel.Categories, Mode=OneWay}"
                                       ItemTemplate="{StaticResource CategoryItem}"
+                                      SelectionMode="Single"
                                       SelectionChanged="CategoryList_SelectionChanged"
-                                      SelectedItem="{x:Bind ViewModel.SelectedCategory, Mode=TwoWay}"
+                                      SelectedItem="{x:Bind ViewModel.ProductListViewModel.SelectedCategory, Mode=TwoWay}"
                                       HorizontalAlignment="Stretch"
                                       HorizontalContentAlignment="Stretch" >
                             </ListView>
-                        </StackPanel>
-                        <ScrollView RelativePanel.RightOf="CategoryPanel" Margin="12,0,0,0">
-                            <StackPanel Orientation="Vertical">
-                                <GridView x:Name="ProductList"
-                                      
-                                          ItemsSource="{x:Bind ViewModel.Products, Mode=OneWay}"
-                                          ItemTemplate="{StaticResource SingleProductDataTemplate}"
-                                          ItemsPanel="{StaticResource WrapGridItemsPanel}"
-                                          ScrollViewer.VerticalScrollMode="Enabled"
-                                          HorizontalAlignment="Stretch"
-                                          HorizontalContentAlignment="Stretch" />
-                            </StackPanel>
-                        </ScrollView>
-                    </RelativePanel>
-                </StackPanel>
+                        </Grid>
+                    </ScrollView>
+
+                    <ScrollView Grid.Column="1" Grid.Row="1">
+                        <Grid>
+                            <ProgressRing IsActive="{x:Bind ViewModel.ProductListViewModel.IsLoadingProduct, Mode=OneWay}"
+                                          VerticalAlignment="Center" HorizontalAlignment="Center"
+                                          Width="80" Height="80"
+                                                                   Margin="0,0,0,16"
+
+                                          Visibility="{x:Bind ViewModel.ProductListViewModel.IsLoadingProduct, 
+                                                              Mode=OneWay,
+                                                              Converter={StaticResource BoolToVisibility}}" />
+                            <GridView x:Name="ProductList"
+                                      ItemsSource="{x:Bind ViewModel.ProductListViewModel.Products, Mode=OneWay}"
+                                      ItemTemplate="{StaticResource SingleProductDataTemplate}"
+                                      ItemsPanel="{StaticResource WrapGridItemsPanel}"
+                                      ScrollViewer.VerticalScrollMode="Enabled"
+                                      HorizontalAlignment="Stretch"
+                                      HorizontalContentAlignment="Stretch" />
+                        </Grid>
+                    </ScrollView>
+                </Grid>
             </Border>
 
             <Rectangle Grid.Column="1"
@@ -284,7 +301,7 @@
                             HorizontalContentAlignment="Stretch">
                         
                         <ListView x:Name="ProcessingOrderList"
-                                  ItemsSource="{x:Bind ViewModel.OrderDetails, Mode=OneWay}"
+                                  ItemsSource="{x:Bind ViewModel.OrderCartViewModel.OrderDetails, Mode=OneWay}"
                                   ItemTemplate="{StaticResource OrderItemDataTemplate}"
                                   HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Stretch" />
@@ -302,7 +319,7 @@
                          HorizontalContentAlignment="Stretch">
 
                         <ListView x:Name="CompletedOrderList"
-                                  ItemsSource="{x:Bind ViewModel.OrderDetails, Mode=OneWay}"
+                                  ItemsSource="{x:Bind ViewModel.OrderCartViewModel.OrderDetails, Mode=OneWay}"
                                   ItemTemplate="{StaticResource OrderItemDataTemplate}"
                                   HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Stretch" />

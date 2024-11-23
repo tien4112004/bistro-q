@@ -1,8 +1,6 @@
 ﻿using BistroQ.ViewModels.Client;
 using Microsoft.UI.Xaml.Controls;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace BistroQ.Views.Client
 {
@@ -15,13 +13,16 @@ namespace BistroQ.Views.Client
 
         public HomePage()
         {
-            this.ViewModel = App.GetService<HomePageViewModel>();
-            this.InitializeComponent();
+            ViewModel = App.GetService<HomePageViewModel>();
+            InitializeComponent();
         }
 
         private void CategoryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ViewModel.ChangeCategoryCommand.Execute(this);
+            if (ViewModel.ProductListViewModel.ChangeCategoryCommand.CanExecute(null))
+            {
+                ViewModel.ProductListViewModel.ChangeCategoryCommand.Execute(null);
+            }
         }
     }
 }
