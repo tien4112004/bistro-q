@@ -16,6 +16,8 @@ public class OrderItem
 
     public int? Quantity { get; set; }
 
+    public decimal? Total => Quantity * PriceAtPurchase ?? 0;
+
     public decimal? PriceAtPurchase { get; set; }
 
     public Product Product { get; set; }
