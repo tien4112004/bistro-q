@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BistroQ.Core.Models.Entities;
 
-public class OrderDetail
+public class OrderItem
 {
     public int OrderDetailId { get; set; }
 

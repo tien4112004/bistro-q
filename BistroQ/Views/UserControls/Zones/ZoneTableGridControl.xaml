@@ -107,11 +107,6 @@
                                 FontWeight="SemiBold"
                                 HorizontalAlignment="Center"/>
 
-                                <TextBlock
-                                Text="{x:Bind ZoneName, Mode=OneWay}" 
-                                FontSize="14"
-                                HorizontalAlignment="Center"/>
-
                                 <!-- Capacity -->
                                 <StackPanel Orientation="Horizontal" 
                                   HorizontalAlignment="Center" 

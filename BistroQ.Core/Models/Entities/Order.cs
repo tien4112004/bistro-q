@@ -17,9 +17,13 @@ public class Order
 
     public DateTime? EndTime { get; set; }
 
+    public string Status { get; set; }
+
+    public int PeopleCount { get; set; }
+
     public int? TableId { get; set; }
 
     public TableDto Table { get; set; }
 
-    public List<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+    public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 }

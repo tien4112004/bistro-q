@@ -47,22 +47,10 @@
 
         <Border Grid.Column="2" Background="{StaticResource CardBackgroundFillColorDefaultBrush}" CornerRadius="10" 
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="4">
-            <Grid Padding="10,10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
 
-                <TextBlock Text="Order Detail" Grid.Row="0" 
-                           FontSize="16"
-                           FontWeight="Bold"
-                           Padding="5,5,5,15"
-                           />
 
                 <orderControls:TableOrderDetailsControl Grid.Row="1" ViewModel="{x:Bind ViewModel.TableOrderDetailVM, Mode=OneWay}" 
                                                         CheckoutRequested="TableOrderDetailsControl_CheckoutRequested"/>
-            </Grid>
         </Border>
     </Grid>
 </Page>
