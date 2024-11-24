@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:xamlControl="using:Microsoft.UI.Xaml.Controls"
     xmlns:converters="using:BistroQ.Converters"
     xmlns:orderControls="using:BistroQ.Views.UserControls.Orders"
     mc:Ignorable="d">
@@ -46,13 +47,27 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1">
+        <xamlControl:ProgressRing
+                    Grid.Row="1"    
+                    IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                    Foreground="{StaticResource AccentFillColorDefaultBrush}"
+                    Width="40"
+                    Height="40"/>
+
+        <Grid Grid.Row="1"
+              Visibility="{x:Bind ViewModel.IsLoading, 
+                            Mode=OneWay, 
+                            Converter={StaticResource BoolToVisibility}, 
+                            ConverterParameter=invert}">            
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <StackPanel VerticalAlignment="Stretch" Grid.Row="0">
+
+
+            <StackPanel VerticalAlignment="Stretch" Grid.Row="0"
+>
                 <TextBlock
                     Text="This table is currently available!"
                     Foreground="{StaticResource SystemFillColorSuccessBrush}"

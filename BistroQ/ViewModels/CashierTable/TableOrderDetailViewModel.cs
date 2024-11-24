@@ -33,18 +33,29 @@ public partial class TableOrderDetailViewModel : ObservableObject
     public bool DoesNotHaveOrderDetail => Order != null && Order.OrderItems.Count <= 0;
 
     public bool HasOrderDetail => Order != null && Order.OrderItems.Count > 0;
- 
+
+    [ObservableProperty]
+    private bool _isLoading = true;
+
     public async Task<Order?> OnTableChangedAsync(int? tableId)
     {
-        if (tableId == null)
+        IsLoading = true;
+        var order = await Task.Run(async () =>
         {
-            Order = new Order();
-            Timer.Reset();
-            Timer.SetStartTime(DateTime.Now);
-            return null;
-        }
-        var order = await _orderDataService.GetOrderByCashierAsync((int)tableId);
-        Order = order;
+            await Task.Delay(1000);
+            if (tableId == null)
+            {
+                Order = new Order();
+                Timer.Reset();
+                Timer.SetStartTime(DateTime.Now);
+                return null;
+            }
+            var order = await _orderDataService.GetOrderByCashierAsync((int)tableId);
+            return order;
+        });
+
+        IsLoading = false;
+        Order = order ?? new Order();
         Timer.SetStartTime(Order?.StartTime ?? DateTime.Now);
         return order;
     }

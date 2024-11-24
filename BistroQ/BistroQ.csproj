@@ -31,6 +31,7 @@
     <None Remove="Views\UserControls\Orders\TableOrderDetailsControl.xaml" />
     <None Remove="Views\UserControls\PaginationControl.xaml" />
     <None Remove="LoginWindow.xaml" />
+    <None Remove="Views\UserControls\Skeleton\RectangleSkeleton.xaml" />
     <None Remove="Views\UserControls\Zones\ZoneOverviewControl.xaml" />
     <None Remove="Views\UserControls\Zones\ZoneTableGridControl.xaml" />
   </ItemGroup>
@@ -63,6 +64,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\UserControls\Skeleton\RectangleSkeleton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\UserControls\Orders\TableBillSummaryControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

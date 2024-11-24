@@ -8,15 +8,30 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:BistroQ.Core.Dtos.Zones"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:converters="using:BistroQ.Converters"
     xmlns:ui="using:Microsoft.UI.Xaml.Controls"
+    xmlns:skeleton="using:BistroQ.Views.UserControls.Skeleton"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </UserControl.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition  Width="Auto" />
         </Grid.ColumnDefinitions>
+
+        <StackPanel
+            Grid.Column="0"
+            Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+            Spacing="10"
+            Orientation="Horizontal"
+            Margin="0,10,20,15"
+            >
+            <skeleton:RectangleSkeleton Width="500" Height="30" IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}"/>
+        </StackPanel>
 
         <ScrollViewer 
             Grid.Column="0" 

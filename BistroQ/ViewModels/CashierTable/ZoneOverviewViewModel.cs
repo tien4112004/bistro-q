@@ -25,6 +25,9 @@ public partial class ZoneOverviewViewModel : ObservableObject
 
     private readonly IZoneDataService _zoneDataService;
 
+    [ObservableProperty]
+    private bool _isLoading = true;
+
     public ZoneOverviewViewModel(IZoneDataService zoneDataService)
     {
         _zoneDataService = zoneDataService;
@@ -32,12 +35,20 @@ public partial class ZoneOverviewViewModel : ObservableObject
 
     public async Task InitializeAsync()
     {
-        var zones = await _zoneDataService.GetZonesAsync(null);
+        IsLoading = true;
+        var zones = await Task.Run(async () =>
+        {
+            await Task.Delay(1000);
+            return await _zoneDataService.GetZonesAsync(null);
+
+        });
+
         Zones = new ObservableCollection<ZoneDto>(zones.Data);
 
         if (Zones.Any())
         {
             SelectedZone = Zones.First();
         }
+        IsLoading = false;
     }
 }

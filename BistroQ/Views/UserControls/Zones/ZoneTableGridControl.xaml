@@ -10,6 +10,7 @@
     xmlns:converters="using:BistroQ.Converters"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:skeleton="using:BistroQ.Views.UserControls.Skeleton"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -17,21 +18,10 @@
     </UserControl.Resources>
 
     <ScrollViewer Grid.Row="2" Padding="15">
-        <StackPanel>
-
-            <TextBlock FontSize="14"
-                   Text="There are no tables in this zone."
-                   Foreground="{StaticResource SystemFillColorCriticalBrush}"
-                   Visibility="{x:Bind ViewModel.HasTables, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
-                   />
-
-            <GridView ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}" 
-                  SelectedItem="{x:Bind ViewModel.SelectedTable, Mode=TwoWay}"
-                  IsItemClickEnabled="True"
-                  SelectionMode="Single"
-                  Visibility="{x:Bind ViewModel.HasTables, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
-                  SelectedIndex="0"
-                  ItemClick="OnTableClicked">
+        <Grid>
+            <GridView x:Name="SkeletonGridView" 
+              IsHitTestVisible="False"
+              Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid Orientation="Horizontal"/>
@@ -41,14 +31,78 @@
                 <GridView.ItemContainerStyle>
                     <Style TargetType="GridViewItem">
                         <Setter Property="Margin" Value="8"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
                         <Setter Property="Width" Value="120"/>
-                        <Setter Property="Background" Value="{StaticResource CardBackgroundFillColorDefaultBrush}" />
                         <Setter Property="Height" Value="120"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="GridViewItem">
-                                    <GridViewItemPresenter
+                                    <Grid Background="{StaticResource CardBackgroundFillColorDefaultBrush}"
+                                  CornerRadius="10"
+                                  Padding="8">
+                                        <StackPanel Spacing="4" VerticalAlignment="Center">
+                                            <skeleton:RectangleSkeleton Width="80" Height="16" Margin="0,0,0,4"/>
+
+                                            <skeleton:RectangleSkeleton Width="40" Height="24" Margin="0,4"/>
+
+                                            <skeleton:RectangleSkeleton Width="60" Height="14" Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </GridView.ItemContainerStyle>
+
+                <GridViewItem/>
+                <GridViewItem/>
+                <GridViewItem/>
+                <GridViewItem/>
+                <GridViewItem/>
+                <GridViewItem/>
+                <GridViewItem/>
+                <GridViewItem/>
+                <GridViewItem/>
+                <GridViewItem/>
+                <GridViewItem/>
+                <GridViewItem/>
+                <GridViewItem/>
+                <GridViewItem/>
+            </GridView>
+
+            <StackPanel
+                Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
+                >
+
+                <TextBlock FontSize="14"
+                   Text="There are no tables in this zone."
+                   Foreground="{StaticResource SystemFillColorCriticalBrush}"
+                   Visibility="{x:Bind ViewModel.HasTables, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
+                   />
+
+                <GridView ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}" 
+                  SelectedItem="{x:Bind ViewModel.SelectedTable, Mode=TwoWay}"
+                  IsItemClickEnabled="True"
+                  SelectionMode="Single"
+                  Visibility="{x:Bind ViewModel.HasTables, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+                  SelectedIndex="0"
+                  ItemClick="OnTableClicked">
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+
+                    <GridView.ItemContainerStyle>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="Margin" Value="8"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Width" Value="120"/>
+                            <Setter Property="Background" Value="{StaticResource CardBackgroundFillColorDefaultBrush}" />
+                            <Setter Property="Height" Value="120"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="GridViewItem">
+                                        <GridViewItemPresenter
                                     ContentTransitions="{TemplateBinding ContentTransitions}"
                                     Padding="{TemplateBinding Padding}"
                                     SelectionCheckMarkVisualEnabled="True"
@@ -73,54 +127,55 @@
                                     ContentMargin="4"
                                     CornerRadius="10"
                                />
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </GridView.ItemContainerStyle>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GridView.ItemContainerStyle>
 
-                <GridView.ItemTemplate>
-                    <DataTemplate x:DataType="models:TableDto">
-                        <Grid>
-                            <StackPanel Spacing="4" VerticalAlignment="Center">
-                                <StackPanel
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="models:TableDto">
+                            <Grid>
+                                <StackPanel Spacing="4" VerticalAlignment="Center">
+                                    <StackPanel
                                 Orientation="Horizontal"
                                 Spacing="5">
-                                    <FontIcon 
+                                        <FontIcon 
                                     Glyph="&#xE73E;"
                                     Foreground="{StaticResource SystemFillColorSuccessBrush}"
                                     Visibility="{x:Bind IsOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                                     FontSize="16"
                                     HorizontalAlignment="Center"/>
-                                    <TextBlock FontSize="12" 
+                                        <TextBlock FontSize="12" 
                                            Visibility="{x:Bind IsOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                                            Foreground="{StaticResource SystemFillColorSuccessBrush}">
                                     Occupied!
-                                    </TextBlock>
-                                </StackPanel>
+                                        </TextBlock>
+                                    </StackPanel>
 
 
-                                <!-- Table Number -->
-                                <TextBlock 
+                                    <!-- Table Number -->
+                                    <TextBlock 
                                 Text="{x:Bind Number, Mode=OneWay}" 
                                 FontSize="24"
                                 FontWeight="SemiBold"
                                 HorizontalAlignment="Center"/>
 
-                                <!-- Capacity -->
-                                <StackPanel Orientation="Horizontal" 
+                                    <!-- Capacity -->
+                                    <StackPanel Orientation="Horizontal" 
                                   HorizontalAlignment="Center" 
                                   Spacing="4">
-                                    <FontIcon Glyph="&#xE716;" FontSize="14"/>
-                                    <TextBlock 
+                                        <FontIcon Glyph="&#xE716;" FontSize="14"/>
+                                        <TextBlock 
                                 Text="{x:Bind SeatsCount, Mode=OneWay}" 
                                 FontSize="14"/>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-            </GridView>
-        </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </StackPanel>
+        </Grid>
     </ScrollViewer>
 </UserControl>
