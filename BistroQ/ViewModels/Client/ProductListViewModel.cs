@@ -72,7 +72,7 @@ public partial class ProductListViewModel : ObservableRecipient
             };
 
             var response = await _productService.GetProductsAsync(query);
-            await Task.Delay(1000); // For test the loading animation
+            await Task.Delay(1500); // For test the loading animation
             Products = new ObservableCollection<Product>(response.Data);
             CategoryChangedCommand?.Execute(SelectedCategory);
         }

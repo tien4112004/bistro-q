@@ -24,6 +24,9 @@
     <None Remove="Views\AdminZone\AdminZoneAddPage.xaml" />
     <None Remove="Views\TestAdminPage.xaml" />
     <None Remove="Views\TestKitchenPage.xaml" />
+    <None Remove="Views\UserControls\Client\CartItemControl.xaml" />
+    <None Remove="Views\UserControls\Client\OrderCartControl.xaml" />
+    <None Remove="Views\UserControls\Client\SingleProductControl.xaml" />
     <None Remove="Views\UserControls\ItemQuantityControl.xaml" />
     <None Remove="Views\UserControls\PaginationControl.xaml" />
     <None Remove="LoginWindow.xaml" />
@@ -43,10 +46,10 @@
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231008000" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
-    <PackageReference Include="WinUIEx" Version="2.3.2" />
+    <PackageReference Include="WinUIEx" Version="2.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +59,18 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\UserControls\Client\OrderCartControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\UserControls\Client\ProductListControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\UserControls\Client\SingleProductControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\UserControls\Client\CartItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\UserControls\ItemQuantityControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

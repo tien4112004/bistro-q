@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="BistroQ.Views.UserControls.Client.CartItemControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:entities="using:BistroQ.Core.Entities"
+    xmlns:usercontrols="using:BistroQ.Views.UserControls">
+    <Grid Padding="0,4,0,4"
+          Margin="0,4" 
+          AutomationProperties.Name="{x:Bind OrderItem.Product.Name}"
+          HorizontalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Image Grid.Column="0"
+               Source="https://imageplaceholder.net/64" 
+               Width="64" Height="64"
+               Stretch="Fill"
+               Margin="0,0,12,0"/>
+
+        <StackPanel 
+            Grid.Column="1"                                                     
+            Padding="0,0,4,0"
+            HorizontalAlignment="Stretch">
+
+            <TextBlock x:Name="OrderItemName"
+                       Text="{x:Bind OrderItem.Quantity}"
+                       Style="{ThemeResource BaseTextBlockStyle}"
+                       FontSize="16"
+                       FontWeight="SemiBold"
+                       TextWrapping="Wrap" />
+
+            <TextBlock Text="{x:Bind OrderItem.Product.Name}"
+                       Style="{ThemeResource BodyTextBlockStyle}"
+                       TextWrapping="Wrap"
+                       TextTrimming="CharacterEllipsis"
+                       MaxLines="2"/>
+            <usercontrols:ItemQuantityControl Margin="0,8,0,0"
+                                              HorizontalAlignment="Left"
+                                              ProductId="{x:Bind OrderItem.ProductId}"
+                                              Quantity="{x:Bind OrderItem.Quantity}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

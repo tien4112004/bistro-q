@@ -7,7 +7,9 @@
     xmlns:converter="using:BistroQ.Converters"
     xmlns:control="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:entities="using:BistroQ.Core.Entities" xmlns:usercontrols="using:BistroQ.Views.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:entities="using:BistroQ.Core.Entities" xmlns:usercontrols="using:BistroQ.Views.UserControls"
+    xmlns:clientusercontrols="using:BistroQ.Views.UserControls.Client"
     mc:Ignorable="d"
     Background="Transparent">
 
@@ -92,63 +94,9 @@
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="CategoryItem" 
-                      x:DataType="entities:Category">
-            <TextBlock Text="{x:Bind Name}" 
-                       TextWrapping="WrapWholeWords" 
-                       TextTrimming="CharacterEllipsis"
-                       MaxLines="2"
-                       Style="{StaticResource BodyStrongTextBlockStyle}"
-                       FontSize="16"
-                       Height="68"
-                       VerticalAlignment="Center"
-                       Padding="12"/>
-        </DataTemplate>
-        
         <ItemsPanelTemplate x:Key="WrapGridItemsPanel">
             <ItemsWrapGrid Orientation="Horizontal" />
         </ItemsPanelTemplate>
-
-        <DataTemplate x:Key="SingleProductDataTemplate"
-                  x:DataType="entities:Product">
-            <Grid x:Name="SingleProductGrid"
-              Margin="8" Padding="8"
-              HorizontalAlignment="Stretch"
-              VerticalAlignment="Stretch"
-              Width="260">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="160" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Image Source="https://imageplaceholder.net/320x160" 
-                   Grid.Row="0" 
-                   Stretch="None" />
-                <StackPanel Grid.Row="1" Margin="0,8">
-                    <TextBlock Margin="0,8,0,0"
-                           Text="{x:Bind Name}"
-                           Style="{StaticResource SubtitleTextBlockStyle}" />
-                    <TextBlock Margin="0,8,0,0">
-                    <Run Text="{x:Bind Price}" FontSize="20" FontWeight="SemiBold" />
-                    <Run Text=" / " FontSize="14" />
-                    <Run Text="{x:Bind Unit}" FontSize="14"/>
-                    </TextBlock>
-                    <TextBlock 
-                    x:Name="ProductDescriptionTextBlock"
-                    Text="Product description"
-                    Style="{StaticResource BodyTextBlockStyle}" Margin="0,12,0,0" />
-                </StackPanel>
-                <StackPanel x:Name="QuantityControls" Grid.Row="2" 
-                        Orientation="Horizontal" 
-                        VerticalAlignment="Stretch"
-                        HorizontalAlignment="Center">
-                    <Button x:Uid="AddItemButton" 
-                        Margin="0,8,0,0"
-                        Padding="16,8"
-                        Style="{StaticResource AccentButtonStyle}" />
-                </StackPanel>
-            </Grid>
-        </DataTemplate>
     </Page.Resources>
 
     <Grid x:Name="ContentArea">
@@ -205,60 +153,8 @@
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
                     BorderThickness="4"
                     Padding="16,16,0,0">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-
-                    <TextBlock x:Uid="ClientHomePage_ProductListTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
-
-                    <ScrollView Grid.Column="0" Grid.Row="1" Margin="0,0,12,0">
-                        <Grid x:Name="CategoryPanel"
-                              MinWidth="200"
-                              MaxWidth="248">
-                            <ProgressRing IsActive="{x:Bind ViewModel.ProductListViewModel.IsLoadingCategory, Mode=OneWay}"
-                                          VerticalAlignment="Center" HorizontalAlignment="Center"
-                                          Width="40" Height="40"
-                                          Visibility="{x:Bind ViewModel.ProductListViewModel.IsLoadingCategory, 
-                                                              Mode=OneWay,
-                                                              Converter={StaticResource BoolToVisibility}}" />
-                            <ListView x:Name="CategoryList"
-                                      ItemsSource="{x:Bind ViewModel.ProductListViewModel.Categories, Mode=OneWay}"
-                                      ItemTemplate="{StaticResource CategoryItem}"
-                                      SelectionMode="Single"
-                                      SelectionChanged="CategoryList_SelectionChanged"
-                                      SelectedItem="{x:Bind ViewModel.ProductListViewModel.SelectedCategory, Mode=TwoWay}"
-                                      HorizontalAlignment="Stretch"
-                                      HorizontalContentAlignment="Stretch" >
-                            </ListView>
-                        </Grid>
-                    </ScrollView>
-
-                    <ScrollView Grid.Column="1" Grid.Row="1">
-                        <Grid>
-                            <ProgressRing IsActive="{x:Bind ViewModel.ProductListViewModel.IsLoadingProduct, Mode=OneWay}"
-                                          VerticalAlignment="Center" HorizontalAlignment="Center"
-                                          Width="80" Height="80"
-                                                                   Margin="0,0,0,16"
-
-                                          Visibility="{x:Bind ViewModel.ProductListViewModel.IsLoadingProduct, 
-                                                              Mode=OneWay,
-                                                              Converter={StaticResource BoolToVisibility}}" />
-                            <GridView x:Name="ProductList"
-                                      ItemsSource="{x:Bind ViewModel.ProductListViewModel.Products, Mode=OneWay}"
-                                      ItemTemplate="{StaticResource SingleProductDataTemplate}"
-                                      ItemsPanel="{StaticResource WrapGridItemsPanel}"
-                                      ScrollViewer.VerticalScrollMode="Enabled"
-                                      HorizontalAlignment="Stretch"
-                                      HorizontalContentAlignment="Stretch" />
-                        </Grid>
-                    </ScrollView>
-                </Grid>
+                <clientusercontrols:ProductListControl 
+                    ViewModel="{x:Bind ViewModel.ProductListViewModel, Mode=OneWay}" />
             </Border>
 
             <Rectangle Grid.Column="1"
@@ -271,7 +167,9 @@
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
                     BorderThickness="4"
                     Padding="0,0,4,0">
-                <ScrollView Padding="8">
+                <clientusercontrols:OrderCartControl 
+                    ViewModel="{x:Bind ViewModel.OrderCartViewModel, Mode=OneWay}" />
+                <!-- <ScrollView Padding="8">
                 <StackPanel>
                     <TextBlock x:Uid="ClientHomePage_OrderTitle"
                                Foreground="{StaticResource TextFillColorPrimaryBrush}"
@@ -279,7 +177,7 @@
                                Grid.Column="0"
                                Margin="4,8,0,12"/>
 
-                    <!--  TODO: Delete this in the final version
+                    TODO: Delete this in the final version
                     <Button
                         Command="{x:Bind ViewModel.CancelOrderCommand}"
                         Style="{StaticResource AccentButtonStyle}"
@@ -287,7 +185,7 @@
                         HorizontalAlignment="Right"
                         Grid.Column="1">
                         Cancel Order
-                    </Button> -->
+                    </Button>
 
                     <Expander
                             x:Uid="ClientHomePage_IsProcessingProductTitle"
@@ -325,7 +223,7 @@
                                   HorizontalContentAlignment="Stretch" />
                     </Expander>
                 </StackPanel>
-                </ScrollView>
+                </ScrollView> -->
             </Border>
         </Grid>
     </Grid>

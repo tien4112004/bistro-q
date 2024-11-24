@@ -16,13 +16,5 @@ namespace BistroQ.Views.Client
             ViewModel = App.GetService<HomePageViewModel>();
             InitializeComponent();
         }
-
-        private void CategoryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ViewModel.ProductListViewModel.ChangeCategoryCommand.CanExecute(null))
-            {
-                ViewModel.ProductListViewModel.ChangeCategoryCommand.Execute(null);
-            }
-        }
     }
 }

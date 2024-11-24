@@ -40,6 +40,7 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
     {
         await OrderCartViewModel.LoadExistingOrderAsync();
         _ = ProductListViewModel.LoadCategoriesAsync();
+        _ = ProductListViewModel.LoadProductAsync();
     }
 
     public void OnNavigatedFrom()

@@ -22,7 +22,29 @@ public partial class OrderCartViewModel : ObservableRecipient
     private string _errorMessage = string.Empty;
 
     [ObservableProperty]
-    private List<OrderDetail> _orderDetails = new List<OrderDetail>();
+    private List<OrderDetail> _orderDetails = new List<OrderDetail>
+    {
+        new OrderDetail
+        {
+            Product = new Product
+            {
+                Name = "Short",
+                Unit = "Piece",
+            },
+            Quantity = 1,
+            PriceAtPurchase = 10.00m
+        },
+        new OrderDetail
+        {
+            Product = new Product
+            {
+                Name = "This is a product with a very long name to test the UI handling",
+                Unit = "Bowl",
+            },
+            Quantity = 2,
+            PriceAtPurchase = 20.00m
+        }
+    };
 
     public ICommand StartOrderCommand { get; }
     public ICommand CancelOrderCommand { get; }
