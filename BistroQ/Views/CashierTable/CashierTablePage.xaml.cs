@@ -1,10 +1,8 @@
 ﻿using BistroQ.Models;
 using BistroQ.ViewModels.CashierTable;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace BistroQ.Views.CashierTable;
-
 public sealed partial class CashierTablePage : Page
 {
     public CashierTableViewModel ViewModel { get; }

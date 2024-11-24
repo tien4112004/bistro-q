@@ -6,7 +6,6 @@ using BistroQ.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 
 using Windows.System;
 
@@ -27,7 +26,7 @@ public sealed partial class ShellPage : Page
 
         ViewModel.NavigationService.Frame = NavigationFrame;
 
-        // This is considered an anti-pattern when calling async code in the constructor.
+        // TODO: This is considered an anti-pattern when calling async code in the constructor.
         ViewModel.NavigationViewService.Initialize(NavigationViewControl,
             Task.Run(async () => await App.GetService<IAuthService>().GetRoleAsync()).GetAwaiter().GetResult()
         );

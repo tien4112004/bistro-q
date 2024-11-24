@@ -1,14 +1,8 @@
 ﻿using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Dtos.Tables;
-using BistroQ.Core.Dtos.Zones;
+using BistroQ.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Security.Isolation;
 
 namespace BistroQ.ViewModels.CashierTable;
 
@@ -38,16 +32,14 @@ public partial class ZoneTableGridViewModel : ObservableObject
         IsLoading = true;
         if (zoneId == null)
         {
+            await Task.Delay(200);
             IsLoading = false;
             return;
         }
 
-        var tables = await Task.Run(async () =>
-        {
-            await Task.Delay(1000);
-
-            return await _tableDataService.GetTablesByCashierAsync((int)zoneId, type);
-        });
+        var tables = await TaskHelper.WithMinimumDelay(
+            _tableDataService.GetTablesByCashierAsync(zoneId.Value, type),
+            200);
 
         Tables = new ObservableCollection<TableDto>(tables);
         if (Tables.Any())

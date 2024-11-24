@@ -1,17 +1,8 @@
-﻿using BistroQ.Contracts.ViewModels;
-using BistroQ.Core.Contracts.Services;
+﻿using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Dtos.Zones;
+using BistroQ.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace BistroQ.ViewModels.CashierTable;
 
@@ -36,12 +27,10 @@ public partial class ZoneOverviewViewModel : ObservableObject
     public async Task InitializeAsync()
     {
         IsLoading = true;
-        var zones = await Task.Run(async () =>
-        {
-            await Task.Delay(1000);
-            return await _zoneDataService.GetZonesAsync(null);
 
-        });
+        var zones = await TaskHelper.WithMinimumDelay(
+            _zoneDataService.GetZonesAsync(new ZoneCollectionQueryParams()),
+            200);
 
         Zones = new ObservableCollection<ZoneDto>(zones.Data);
 

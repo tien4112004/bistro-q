@@ -23,14 +23,8 @@ using System.Diagnostics;
 
 namespace BistroQ;
 
-// To learn more about WinUI 3, see https://docs.microsoft.com/windows/apps/winui/winui3/.
 public partial class App : Application
 {
-    // The .NET Generic Host provides dependency injection, configuration, logging, and other services.
-    // https://docs.microsoft.com/dotnet/core/extensions/generic-host
-    // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection
-    // https://docs.microsoft.com/dotnet/core/extensions/configuration
-    // https://docs.microsoft.com/dotnet/core/extensions/logging
     public IHost Host
     {
         get;
@@ -65,8 +59,6 @@ public partial class App : Application
         {
             // Default Activation Handler
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
-
-            // Other Activation Handlers
 
             // Services
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
@@ -115,7 +107,7 @@ public partial class App : Application
             services.AddTransient<AdminTableAddPage>();
             services.AddTransient<AdminTableEditPageViewModel>();
             services.AddTransient<AdminTableEditPage>();
-            
+
 
             services.AddScoped<IZoneDataService, ZoneDataService>();
             services.AddScoped<ITableDataService, TableDataService>();
@@ -133,12 +125,6 @@ public partial class App : Application
             services.AddTransient<ZoneTableGridViewModel>();
             services.AddTransient<TableOrderDetailViewModel>();
 
-
-            services.AddTransient<TestKitchenViewModel>();
-            services.AddTransient<TestKitchenPage>();
-            services.AddTransient<TestAdminPage>();
-            services.AddTransient<TestAdminViewModel>();
-
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
         }).
@@ -149,9 +135,6 @@ public partial class App : Application
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
-        // TODO: Log and handle exceptions as appropriate.
-        // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
-
         Debug.WriteLine(e);
     }
 

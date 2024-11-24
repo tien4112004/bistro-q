@@ -25,8 +25,6 @@
     <None Remove="Views\CashierTable\CashierTable_ZoneControl.xaml" />
     <None Remove="Views\CashierTable\Controls\ZoneOverviewControl.xaml" />
     <None Remove="Views\CashierTable\Controls\ZoneTableGridControl.xaml" />
-    <None Remove="Views\TestAdminPage.xaml" />
-    <None Remove="Views\TestKitchenPage.xaml" />
     <None Remove="Views\UserControls\Orders\TableBillSummaryControl.xaml" />
     <None Remove="Views\UserControls\Orders\TableOrderDetailsControl.xaml" />
     <None Remove="Views\UserControls\PaginationControl.xaml" />
@@ -99,12 +97,6 @@
     </Page>
     <Page Update="Views\AdminTable\AdminTableEditPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Views\TestKitchenPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Views\TestAdminPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\AdminZone\AdminZoneEditPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

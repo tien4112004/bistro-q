@@ -1,11 +1,8 @@
 ﻿using BistroQ.Contracts.ViewModels;
 using BistroQ.Core.Contracts.Services;
-using BistroQ.Core.Models.Entities;
 using BistroQ.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows.Input;
 
 namespace BistroQ.ViewModels.CashierTable;
@@ -29,9 +26,9 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware
     public TableOrderDetailViewModel TableOrderDetailVM { get; }
 
     public CashierTableViewModel(
-        IOrderDataService orderDataService, 
-        IZoneDataService zoneDataService, 
-        ZoneOverviewViewModel zoneOverview, 
+        IOrderDataService orderDataService,
+        IZoneDataService zoneDataService,
+        ZoneOverviewViewModel zoneOverview,
         ZoneTableGridViewModel zoneTableGrid,
         TableOrderDetailViewModel tableOrderDetailVM
         )
@@ -62,7 +59,7 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware
 
     public async void OnCheckout(int tableId)
     {
-        Debug.WriteLine("Checkout " + tableId);
+        //
     }
 
     public async void OnNavigatedTo(object parameter)
