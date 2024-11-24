@@ -9,27 +9,22 @@ using BistroQ.Services;
 using BistroQ.ViewModels;
 using BistroQ.ViewModels.AdminTable;
 using BistroQ.ViewModels.AdminZone;
-using BistroQ.ViewModels.Cashier;
+using BistroQ.ViewModels.CashierTable;
 using BistroQ.ViewModels.Client;
 using BistroQ.Views;
 using BistroQ.Views.AdminTable;
 using BistroQ.Views.AdminZone;
-using BistroQ.Views.Cashier;
+using BistroQ.Views.CashierTable;
 using BistroQ.Views.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
+using System.Diagnostics;
 
 namespace BistroQ;
 
-// To learn more about WinUI 3, see https://docs.microsoft.com/windows/apps/winui/winui3/.
 public partial class App : Application
 {
-    // The .NET Generic Host provides dependency injection, configuration, logging, and other services.
-    // https://docs.microsoft.com/dotnet/core/extensions/generic-host
-    // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection
-    // https://docs.microsoft.com/dotnet/core/extensions/configuration
-    // https://docs.microsoft.com/dotnet/core/extensions/logging
     public IHost Host
     {
         get;
@@ -64,8 +59,6 @@ public partial class App : Application
         {
             // Default Activation Handler
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
-
-            // Other Activation Handlers
 
             // Services
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
@@ -115,6 +108,7 @@ public partial class App : Application
             services.AddTransient<AdminTableEditPageViewModel>();
             services.AddTransient<AdminTableEditPage>();
 
+
             services.AddScoped<IZoneDataService, ZoneDataService>();
             services.AddScoped<ITableDataService, TableDataService>();
             services.AddScoped<IAdminZoneService, AdminZoneService>();
@@ -127,11 +121,9 @@ public partial class App : Application
             // Cashier V&VM
             services.AddTransient<CashierTableViewModel>();
             services.AddTransient<CashierTablePage>();
-
-            services.AddTransient<TestKitchenViewModel>();
-            services.AddTransient<TestKitchenPage>();
-            services.AddTransient<TestAdminPage>();
-            services.AddTransient<TestAdminViewModel>();
+            services.AddTransient<ZoneOverviewViewModel>();
+            services.AddTransient<ZoneTableGridViewModel>();
+            services.AddTransient<TableOrderDetailViewModel>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
@@ -143,8 +135,7 @@ public partial class App : Application
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
-        // TODO: Log and handle exceptions as appropriate.
-        // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
+        Debug.WriteLine(e);
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)

@@ -11,4 +11,6 @@ public interface ITableDataService
     Task<ApiResponse<TableDto>> CreateTableAsync(CreateTableRequestDto request);
     Task<ApiResponse<TableDto>> UpdateTableAsync(int zoneId, UpdateTableRequestDto request);
     Task<ApiResponse<object>> DeleteTableAsync(int zoneId);
+
+    Task<IEnumerable<TableDto>> GetTablesByCashierAsync(int zoneId, string type);
 }

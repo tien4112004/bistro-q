@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BistroQ.Core.Models.Entities;
 
-public class OrderDetail
+public class OrderItem
 {
     public int OrderDetailId { get; set; }
 
@@ -15,6 +15,8 @@ public class OrderDetail
     public int? ProductId { get; set; }
 
     public int? Quantity { get; set; }
+
+    public decimal? Total => Quantity * PriceAtPurchase ?? 0;
 
     public decimal? PriceAtPurchase { get; set; }
 

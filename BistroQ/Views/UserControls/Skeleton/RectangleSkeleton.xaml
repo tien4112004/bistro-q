@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="BistroQ.Views.UserControls.Skeleton.RectangleSkeleton"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BistroQ.Views.UserControls.Skeleton"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Rectangle x:Name="SkeletonRectangle"
+                  Width="{x:Bind Width, Mode=OneWay}"
+                  Height="{x:Bind Height, Mode=OneWay}"
+                  Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}"
+                  RadiusX="4" RadiusY="4">
+            <Rectangle.Resources>
+                <Storyboard x:Name="PulseAnimation">
+                    <DoubleAnimationUsingKeyFrames 
+                        Storyboard.TargetName="SkeletonRectangle"
+                        Storyboard.TargetProperty="Opacity"
+                        RepeatBehavior="Forever">
+                        <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.8"/>
+                        <LinearDoubleKeyFrame KeyTime="0:0:0.5" Value="0.2"/>
+                        <LinearDoubleKeyFrame KeyTime="0:0:1" Value="0.8"/>
+                    </DoubleAnimationUsingKeyFrames>
+                </Storyboard>
+            </Rectangle.Resources>
+        </Rectangle>
+    </Grid>
+</UserControl>

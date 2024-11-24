@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,4 +19,6 @@ public class Product
     public string Unit { get; set; }
 
     public decimal? DiscountPrice { get; set; }
+
+    public string ImageUrl { get; set; }
 }

@@ -1,9 +1,6 @@
-﻿using BistroQ.Core.Contracts.Services;
-using BistroQ.Core.Models.Entities;
-using BistroQ.ViewModels;
+﻿using BistroQ.ViewModels;
 
 using Microsoft.UI.Xaml.Controls;
-using System.Diagnostics;
 
 namespace BistroQ.Views;
 
