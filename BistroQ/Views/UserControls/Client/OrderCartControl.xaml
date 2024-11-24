@@ -8,46 +8,41 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:converter="using:BistroQ.Converters" 
     xmlns:entities="using:BistroQ.Core.Entities" 
-    xmlns:usercontrols="using:BistroQ.Views.UserControls" xmlns:client="using:BistroQ.ViewModels.Client"
+    xmlns:usercontrols="using:BistroQ.Views.UserControls" 
+    xmlns:vm="using:BistroQ.ViewModels.Client"
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-        <converter:ReverseBooleanConverter x:Key="ReverseBool" />
         <DataTemplate x:Key="OrderItemDataTemplate" x:DataType="entities:OrderDetail">
             <Grid Padding="0,4,0,4"
-              Margin="0,4" 
-              AutomationProperties.Name="{x:Bind Product.Name}"
-              HorizontalAlignment="Stretch">
+                  Margin="0,4" 
+                  AutomationProperties.Name="{x:Bind Product.Name}"
+                  HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="80"/>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Image Grid.Column="0"
-                   Source="https://imageplaceholder.net/64" 
-                   Width="64" Height="64"
-                   Stretch="Fill"
-                   Margin="0,0,12,0"/>
+                       Source="https://imageplaceholder.net/64" 
+                       Width="64" Height="64"
+                       Stretch="Fill"
+                       Margin="0,0,12,0"/>
 
-                <StackPanel 
-                    Grid.Column="1"                                                     
-                    Padding="0,0,4,0"
-                    HorizontalAlignment="Stretch">
+                <StackPanel Grid.Column="1"                                                     
+                          Padding="0,0,4,0"
+                          HorizontalAlignment="Stretch">
+                    <TextBlock Text="{x:Bind Product.Name}"
+                             Style="{ThemeResource BaseTextBlockStyle}"
+                             FontSize="16"
+                             FontWeight="SemiBold"
+                             TextWrapping="Wrap" />
 
-                    <TextBlock x:Name="OrderItemName"
-                           Text="{x:Bind Product.Name}"
-                           Style="{ThemeResource BaseTextBlockStyle}"
-                           FontSize="16"
-                           FontWeight="SemiBold"
-                           TextWrapping="Wrap" />
-
-                    <TextBlock
-                           Style="{ThemeResource BodyTextBlockStyle}"
-                           TextWrapping="Wrap"
-                           TextTrimming="CharacterEllipsis"
-                           Margin="0,4,0,0"
-                           MaxLines="2">
+                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}"
+                             TextWrapping="Wrap"
+                             TextTrimming="CharacterEllipsis"
+                             Margin="0,4,0,0"
+                             MaxLines="2">
                         <Run Text="{x:Bind Quantity}" />
                         <Run Text="x" />
                         <Run Text="{x:Bind Product.Unit}" />
@@ -55,103 +50,6 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-
-        <DataTemplate x:Key="CartItemDataTemplate" x:DataType="entities:OrderDetail">
-            <Grid Padding="0,4,0,4"
-              Margin="0,4" 
-              AutomationProperties.Name="{x:Bind Product.Name}"
-              HorizontalAlignment="Stretch">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <Image Grid.Column="0"
-                   Source="https://imageplaceholder.net/64" 
-                   Width="64" Height="64"
-                   Stretch="Fill"
-                   Margin="0,0,12,0"/>
-
-                <StackPanel 
-                Grid.Column="1"                                                     
-                Padding="0,0,4,0"
-                HorizontalAlignment="Stretch">
-
-                    <TextBlock x:Name="OrderItemName"
-                           Text="{x:Bind Quantity}"
-                           Style="{ThemeResource BaseTextBlockStyle}"
-                           FontSize="16"
-                           FontWeight="SemiBold"
-                           TextWrapping="Wrap" />
-
-                    <TextBlock Text="{x:Bind Product.Name}"
-                           Style="{ThemeResource BodyTextBlockStyle}"
-                           TextWrapping="Wrap"
-                           TextTrimming="CharacterEllipsis"
-                           MaxLines="2"/>
-                    <usercontrols:ItemQuantityControl Margin="0,8,0,0"
-                                                  HorizontalAlignment="Left"
-                                                  ProductId="{x:Bind ProductId}"
-                                                  Quantity="{x:Bind Quantity}" />
-                </StackPanel>
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate x:Key="CartContentTemplate">
-            <TextBlock Text="Cart content goes here." />
-        </DataTemplate>
-
-        <DataTemplate x:Key="OrderContentTemplate" x:DataType="client:OrderCartViewModel">
-            <ScrollView Padding="8">
-                <StackPanel>
-                    <TextBlock x:Uid="ClientHomePage_OrderTitle"
-                               Foreground="{StaticResource TextFillColorPrimaryBrush}"
-                               Style="{StaticResource SubtitleTextBlockStyle}"
-                               Grid.Column="0"
-                               Margin="4,8,0,12"/>
-
-                    <Expander
-                        x:Uid="ClientHomePage_IsProcessingProductTitle"
-                        IsExpanded="True"
-                        ExpandDirection="Down"
-                        Background="{StaticResource SystemFillColorCautionBackground}"
-                        VerticalAlignment="Top"
-                        Padding="0"
-                        Margin="0"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch">
-
-                        <ListView x:Name="ProcessingOrderList"
-                                  ItemsSource="{x:Bind OrderDetails, Mode=OneWay}"
-                                  ItemTemplate="{StaticResource OrderItemDataTemplate}"
-                                  HorizontalAlignment="Stretch"
-                                  HorizontalContentAlignment="Stretch" />
-                    </Expander>
-
-                    <Expander
-                        x:Uid="ClientHomePage_CompletedProductTitle"
-                        IsExpanded="False"
-                        ExpandDirection="Down"
-                        Background="{StaticResource SystemFillColorSuccessBackground}"
-                        VerticalAlignment="Top"
-                        Padding="0"
-                        Margin="0,8"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch">
-
-                        <ListView x:Name="CompletedOrderList"
-                                  ItemsSource="{x:Bind OrderDetails, Mode=OneWay}"
-                                  ItemTemplate="{StaticResource OrderItemDataTemplate}"
-                                  HorizontalAlignment="Stretch"
-                                  HorizontalContentAlignment="Stretch" />
-                    </Expander>
-                </StackPanel>
-            </ScrollView>
-        </DataTemplate>
-
-        <ItemsPanelTemplate x:Key="WrapGridItemsPanel">
-            <ItemsWrapGrid Orientation="Horizontal" />
-        </ItemsPanelTemplate>
     </UserControl.Resources>
 
     <Grid>
@@ -174,6 +72,9 @@
             </SelectorBarItem>
         </SelectorBar>
 
-        <ContentControl x:Name="PanelContentControl" Grid.Row="1" />
+        <ContentControl x:Name="PanelContentControl" 
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        Grid.Row="1" />
     </Grid>
 </UserControl>

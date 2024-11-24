@@ -1,6 +1,8 @@
-﻿namespace BistroQ.Core.Entities;
+﻿using System.ComponentModel;
 
-public class OrderDetail
+namespace BistroQ.Core.Entities;
+
+public class OrderDetail : INotifyPropertyChanged
 {
     public string OrderDetailId { get; set; } = null!;
 
@@ -15,4 +17,6 @@ public class OrderDetail
     public virtual Order? Order { get; set; }
 
     public virtual Product? Product { get; set; }
+
+    public event PropertyChangedEventHandler PropertyChanged;
 }

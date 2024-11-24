@@ -167,63 +167,8 @@
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
                     BorderThickness="4"
                     Padding="0,0,4,0">
-                <clientusercontrols:OrderCartControl 
+                <clientusercontrols:OrderCartControl
                     ViewModel="{x:Bind ViewModel.OrderCartViewModel, Mode=OneWay}" />
-                <!-- <ScrollView Padding="8">
-                <StackPanel>
-                    <TextBlock x:Uid="ClientHomePage_OrderTitle"
-                               Foreground="{StaticResource TextFillColorPrimaryBrush}"
-                               Style="{StaticResource SubtitleTextBlockStyle}"
-                               Grid.Column="0"
-                               Margin="4,8,0,12"/>
-
-                    TODO: Delete this in the final version
-                    <Button
-                        Command="{x:Bind ViewModel.CancelOrderCommand}"
-                        Style="{StaticResource AccentButtonStyle}"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Right"
-                        Grid.Column="1">
-                        Cancel Order
-                    </Button>
-
-                    <Expander
-                            x:Uid="ClientHomePage_IsProcessingProductTitle"
-                            IsExpanded="True"
-                            ExpandDirection="Down"
-                            Background="{StaticResource SystemFillColorCautionBackground}"
-                            VerticalAlignment="Top"
-                            Padding="0"
-                            Margin="0"
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Stretch">
-                        
-                        <ListView x:Name="ProcessingOrderList"
-                                  ItemsSource="{x:Bind ViewModel.OrderCartViewModel.OrderDetails, Mode=OneWay}"
-                                  ItemTemplate="{StaticResource OrderItemDataTemplate}"
-                                  HorizontalAlignment="Stretch"
-                                  HorizontalContentAlignment="Stretch" />
-                    </Expander>
-
-                    <Expander
-                         x:Uid="ClientHomePage_CompletedProductTitle"
-                         IsExpanded="False"
-                         ExpandDirection="Down"
-                         Background="{StaticResource SystemFillColorSuccessBackground}"
-                         VerticalAlignment="Top"
-                         Padding="0"
-                         Margin="0,8"
-                         HorizontalAlignment="Stretch"
-                         HorizontalContentAlignment="Stretch">
-
-                        <ListView x:Name="CompletedOrderList"
-                                  ItemsSource="{x:Bind ViewModel.OrderCartViewModel.OrderDetails, Mode=OneWay}"
-                                  ItemTemplate="{StaticResource OrderItemDataTemplate}"
-                                  HorizontalAlignment="Stretch"
-                                  HorizontalContentAlignment="Stretch" />
-                    </Expander>
-                </StackPanel>
-                </ScrollView> -->
             </Border>
         </Grid>
     </Grid>

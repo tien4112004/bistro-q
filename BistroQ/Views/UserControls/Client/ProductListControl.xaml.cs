@@ -13,7 +13,7 @@ namespace BistroQ.Views.UserControls.Client
             nameof(ProductListViewModel),
             typeof(ProductListViewModel),
             typeof(ProductListControl),
-            null);
+            new PropertyMetadata(null));
 
         public ProductListViewModel ViewModel { get; set; }
 

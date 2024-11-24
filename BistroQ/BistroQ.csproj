@@ -22,6 +22,7 @@
     <None Remove="Views\AdminTable\AdminTableAddPage.xaml" />
     <None Remove="Views\AdminTable\AdminTableEditPage.xaml" />
     <None Remove="Views\AdminZone\AdminZoneAddPage.xaml" />
+    <None Remove="Views\Client\CartPage.xaml" />
     <None Remove="Views\TestAdminPage.xaml" />
     <None Remove="Views\TestKitchenPage.xaml" />
     <None Remove="Views\UserControls\Client\CartItemControl.xaml" />
@@ -59,6 +60,12 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\Client\CartPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Client\OrderPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\UserControls\Client\OrderCartControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -114,10 +121,6 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Client\" />
   </ItemGroup>
   
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">

@@ -237,4 +237,7 @@
   <data name="AddItemButton/Content" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="ClientHomePage_CartTitle/Text" xml:space="preserve">
+    <value>Cart</value>
+  </data>
 </root>
