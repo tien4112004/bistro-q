@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,15 +10,18 @@ namespace BistroQ.Converters;
 
 public class NumberToCurrencyConverter : IValueConverter
 {
+    private readonly CultureInfo _vietnameseCulture;
+
+    public NumberToCurrencyConverter()
+    {
+        _vietnameseCulture = new CultureInfo("vi-VN");
+    }
+
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is int intValue)
+        if (value is decimal decimalValue)
         {
-            return intValue.ToString("$");
-        }
-        else if (value is decimal decicmalValue)
-        {
-            return decicmalValue.ToString() + ("$");
+            return decimalValue.ToString("C", _vietnameseCulture);
         }
 
         return value;
