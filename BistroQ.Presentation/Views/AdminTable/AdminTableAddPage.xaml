@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="BistroQ.Presentation.Views.AdminTable.AdminTableAddPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BistroQ.Presentation.Views.AdminTable"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Background="Transparent" HorizontalAlignment="Left">
+            <ComboBox x:Name="TableAddPage_ZoneComboBox"
+                        x:Uid="TableAddPage_ZoneComboBox"
+                        ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
+                        DisplayMemberPath="Name"
+                        SelectedValuePath="ZoneId"
+                        SelectedValue="{x:Bind ViewModel.Request.ZoneId, Mode=TwoWay}"
+                        Width="300" />
+            <TextBox x:Name="TableAddPage_SeatsCountTextBox"
+                        x:Uid="TableAddPage_SeatsCountTextBox"
+                        Text="{x:Bind ViewModel.Request.SeatsCount, Mode=TwoWay}"
+                        Width="300"
+                        Margin="0,16,0,0"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="AdminTableAddPage_AddButton"
+                    x:Uid="AdminTableAddPage_AddButton" 
+                    Style="{StaticResource AccentButtonStyle}" Width="80"
+                    Click="AdminTableAddPage_AddButton_Click" 
+                    Margin="0,0,16,0"/>
+            <Button x:Name="AdminTableAddPage_CancelButton"
+                    x:Uid="CancelButton" Width="80" 
+                    Click="AdminTableAddPage_CancelButton_Click"
+                    />
+        </StackPanel>    
+    </Grid>
+</Page>

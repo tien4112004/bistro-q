@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="BistroQ.Presentation.Views.CashierTable.CashierTablePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BistroQ.Presentation.Views.CashierTable"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:zoneModels="using:BistroQ.Domain.Dtos.Zones"
+    xmlns:converters="using:BistroQ.Presentation.Converters"
+    xmlns:zoneControls="using:BistroQ.Presentation.Views.UserControls.Zones"
+    xmlns:orderControls="using:BistroQ.Presentation.Views.UserControls.Orders"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Grid Background="Transparent" Margin="0,0,0,20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*" />
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="4*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Background="{ThemeResource DividerStrokeColorDefaultBrush}" Grid.Column="0" CornerRadius="10" Padding="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="Transparent" Padding="20,0,0,0" >
+                <zoneControls:ZoneOverviewControl x:Name="ZoneControl" 
+                                                  ViewModel="{x:Bind ViewModel.ZoneOverviewVM, Mode=OneWay}"
+                                                  ZoneSelectionChanged="ZoneControl_ZoneSelectionChanged" />
+            </Grid>
+
+            <Border Grid.Row="1" Background="{StaticResource SolidBackgroundFillColorTertiaryBrush}" Margin="4,-3,5,5" CornerRadius="10">
+                <zoneControls:ZoneTableGridControl x:Name="GridControl"
+                                                   ViewModel="{x:Bind ViewModel.ZoneTableGridVM, Mode=OneWay}"
+                                                   TableSelectionChanged="GridControl_TableSelectionChanged"/>
+            </Border>
+        </Grid>
+
+        <Rectangle Grid.Column="1"
+               Width="0"
+               Margin="6,0"
+               />
+
+        <Border Grid.Column="2" Background="{StaticResource CardBackgroundFillColorDefaultBrush}" CornerRadius="10" 
+                    BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="4">
+
+
+                <orderControls:TableOrderDetailsControl Grid.Row="1" ViewModel="{x:Bind ViewModel.TableOrderDetailVM, Mode=OneWay}" 
+                                                        CheckoutRequested="TableOrderDetailsControl_CheckoutRequested"/>
+        </Border>
+    </Grid>
+</Page>
