@@ -42,5 +42,14 @@ namespace BistroQ.Core.Services
             var response = await _apiClient.DeleteAsync<object>($"api/admin/table/{tableId}", null);
             return response;
         }
+
+        public async Task<IEnumerable<TableDto>> GetTablesByCashierAsync(int zoneId, string type)
+        {
+            string isOccupied = type == "All" ? "false" : "true";
+
+            var response = await _apiClient.GetCollectionAsync<IEnumerable<TableDto>>($"api/cashier/zones/{zoneId}/table?isOccupied={isOccupied}", null);
+
+            return response.Data;
+        }
     }
 }

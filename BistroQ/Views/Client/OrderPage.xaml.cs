@@ -7,8 +7,8 @@ namespace BistroQ.Views.Client;
 
 public sealed partial class OrderPage : Page, INotifyCollectionChanged
 {
-    public ObservableCollection<OrderDetail> ProcessingOrders { get; } = new();
-    public ObservableCollection<OrderDetail> CompletedOrders { get; } = new();
+    public ObservableCollection<OrderItem> ProcessingOrders { get; } = new();
+    public ObservableCollection<OrderItem> CompletedOrders { get; } = new();
 
     public bool ProcessingOrdersIsEmpty => ProcessingOrders == null || ProcessingOrders.Count() == 0;
     public bool CompletedOrdersIsEmpty => CompletedOrders == null || CompletedOrders.Count() == 0;

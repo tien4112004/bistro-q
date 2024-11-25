@@ -22,29 +22,29 @@ public partial class OrderCartViewModel : ObservableRecipient
     [ObservableProperty]
     private string _errorMessage = string.Empty;
 
-    private ObservableCollection<OrderDetail> _cartItems = new ObservableCollection<OrderDetail>();
-    public ObservableCollection<OrderDetail> CartItems
+    private ObservableCollection<OrderItem> _cartItems = new ObservableCollection<OrderItem>();
+    public ObservableCollection<OrderItem> CartItems
     {
         get => _cartItems;
         set => SetProperty(ref _cartItems, value);
     }
 
-    private ObservableCollection<OrderDetail> _processingItems = new ObservableCollection<OrderDetail>();
-    public ObservableCollection<OrderDetail> ProcessingItems
+    private ObservableCollection<OrderItem> _processingItems = new ObservableCollection<OrderItem>();
+    public ObservableCollection<OrderItem> ProcessingItems
     {
         get => _processingItems;
         set => SetProperty(ref _processingItems, value);
     }
 
-    private ObservableCollection<OrderDetail> _completedItems = new ObservableCollection<OrderDetail>();
-    public ObservableCollection<OrderDetail> CompletedItems
+    private ObservableCollection<OrderItem> _completedItems = new ObservableCollection<OrderItem>();
+    public ObservableCollection<OrderItem> CompletedItems
     {
         get => _completedItems;
         set => SetProperty(ref _completedItems, value);
     }
-    //private ObservableCollection<OrderDetail> CartItems { get; set; } = new ObservableCollection<OrderDetail>();
-    //public ObservableCollection<OrderDetail> ProcessingItems { get; set; } = new ObservableCollection<OrderDetail>();
-    //public ObservableCollection<OrderDetail> CompletedItems { get; set; } = new ObservableCollection<OrderDetail>();
+    //private ObservableCollection<OrderItem> CartItems { get; set; } = new ObservableCollection<OrderItem>();
+    //public ObservableCollection<OrderItem> ProcessingItems { get; set; } = new ObservableCollection<OrderItem>();
+    //public ObservableCollection<OrderItem> CompletedItems { get; set; } = new ObservableCollection<OrderItem>();
 
     public ICommand StartOrderCommand { get; }
     public ICommand CancelOrderCommand { get; }
@@ -56,8 +56,8 @@ public partial class OrderCartViewModel : ObservableRecipient
         StartOrderCommand = new AsyncRelayCommand(StartOrder);
         CancelOrderCommand = new RelayCommand(CancelOrder);
 
-        CartItems = new ObservableCollection<OrderDetail> {
-            new OrderDetail
+        CartItems = new ObservableCollection<OrderItem> {
+            new OrderItem
             {
                 Quantity = 1,
                 PriceAtPurchase = 0,
@@ -71,14 +71,14 @@ public partial class OrderCartViewModel : ObservableRecipient
 
     public void AddProductToCart(Product product)
     {
-        var existingOrderDetail = CartItems.FirstOrDefault(od => od.ProductId == product.ProductId);
-        if (existingOrderDetail != null)
+        var existingOrderItem = CartItems.FirstOrDefault(od => od.ProductId == product.ProductId);
+        if (existingOrderItem != null)
         {
-            existingOrderDetail.Quantity++;
+            existingOrderItem.Quantity++;
         }
         else
         {
-            CartItems.Add(new OrderDetail
+            CartItems.Add(new OrderItem
             {
                 OrderId = Order.OrderId,
                 ProductId = product.ProductId,

@@ -38,14 +38,14 @@ public sealed partial class CartPage : Page
     {
         if (product == null) return;
 
-        var existingOrderDetail = ViewModel.CartItems.FirstOrDefault(od => od.ProductId == product.ProductId);
-        if (existingOrderDetail != null)
+        var existingOrderItem = ViewModel.CartItems.FirstOrDefault(od => od.ProductId == product.ProductId);
+        if (existingOrderItem != null)
         {
-            existingOrderDetail.Quantity++;
+            existingOrderItem.Quantity++;
         }
         else
         {
-            ViewModel.CartItems.Add(new OrderDetail
+            ViewModel.CartItems.Add(new OrderItem
             {
                 ProductId = product.ProductId,
                 Product = product,

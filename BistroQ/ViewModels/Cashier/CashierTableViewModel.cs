@@ -32,7 +32,7 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware
     public async void SelectTable(int tableId)
     {
         CurrentOrder = Orders.FirstOrDefault(o => o.TableId == tableId);
-        CurrentOrder.OrderDetails = (await _orderDataService.GetOrderByCashierAsync(tableId)).OrderDetails;
+        CurrentOrder.OrderItems = (await _orderDataService.GetOrderByCashierAsync(tableId)).OrderItems;
     }
 
     public async void OnNavigatedTo(object parameter)
@@ -42,7 +42,7 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware
         for (int i = 0; i < Orders.Count; i++)
         {
             var zone = await _zoneDataService.GetZoneByIdAsync(Orders[i].Table.ZoneId.Value);
-            Orders[i].OrderDetails = (await _orderDataService.GetOrderByCashierAsync(Orders[i].TableId.Value)).OrderDetails;
+            Orders[i].OrderItems = (await _orderDataService.GetOrderByCashierAsync(Orders[i].TableId.Value)).OrderItems;
             Orders[i].Table.ZoneName = zone.Name;
         }
 

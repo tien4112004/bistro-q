@@ -2,12 +2,12 @@
 using BistroQ.ViewModels;
 using BistroQ.ViewModels.AdminTable;
 using BistroQ.ViewModels.AdminZone;
-using BistroQ.ViewModels.Cashier;
+using BistroQ.ViewModels.CashierTable;
 using BistroQ.ViewModels.Client;
 using BistroQ.Views;
 using BistroQ.Views.AdminTable;
 using BistroQ.Views.AdminZone;
-using BistroQ.Views.Cashier;
+using BistroQ.Views.CashierTable;
 using BistroQ.Views.Client;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -21,20 +21,17 @@ public class PageService : IPageService
 
     public PageService()
     {
+        Configure<CashierTableViewModel, CashierTablePage>();
         Configure<MainViewModel, MainPage>();
         Configure<AdminZoneViewModel, AdminZonePage>();
         Configure<AdminZoneAddPageViewModel, AdminZoneAddPage>();
         Configure<AdminZoneEditPageViewModel, AdminZoneEditPage>();
-        
+
         Configure<HomePageViewModel, HomePage>();
-        Configure<CashierTableViewModel, CashierTablePage>();
 
         Configure<AdminTableViewModel, AdminTablePage>();
         Configure<AdminTableAddPageViewModel, AdminTableAddPage>();
         Configure<AdminTableEditPageViewModel, AdminTableEditPage>();
-        
-        Configure<TestAdminViewModel, TestAdminPage>();
-        Configure<TestKitchenViewModel, TestKitchenPage>();
     }
 
     public Type GetPageType(string key)

@@ -8,15 +8,15 @@ namespace BistroQ.Views.UserControls.Client;
 
 public sealed partial class CartItemControl : UserControl
 {
-    public OrderDetail OrderItem { get; set; }
+    public OrderItem OrderItem { get; set; }
 
     public CartItemControl()
     {
-        OrderItem = new OrderDetail();
+        OrderItem = new OrderItem();
         this.InitializeComponent();
     }
 
-    public CartItemControl(OrderDetail orderItem) : this()
+    public CartItemControl(OrderItem orderItem) : this()
     {
         this.OrderItem = orderItem;
         this.DataContext = this;
