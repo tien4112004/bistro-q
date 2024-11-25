@@ -1,4 +1,5 @@
-﻿using BistroQ.ViewModels.Client;
+﻿using BistroQ.Core.Entities;
+using BistroQ.ViewModels.Client;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -15,18 +16,35 @@ namespace BistroQ.Views.UserControls.Client
             typeof(ProductListControl),
             new PropertyMetadata(null));
 
-        public ProductListViewModel ViewModel { get; set; }
+        public ProductListViewModel ViewModel
+        {
+            get => (ProductListViewModel)GetValue(ProductListViewModelProperty);
+            set => SetValue(ProductListViewModelProperty, value);
+        }
 
         public ProductListControl()
         {
             this.InitializeComponent();
+            DataContext = ViewModel;
         }
 
         private void CategoryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ViewModel.ChangeCategoryCommand.CanExecute(null))
+            if (ViewModel != null && e.AddedItems.Count > 0)
             {
-                ViewModel.ChangeCategoryCommand.Execute(null);
+                ViewModel.SelectedCategory = e.AddedItems[0] as Category;
+                if (ViewModel.ChangeCategoryCommand.CanExecute(ViewModel.SelectedCategory))
+                {
+                    ViewModel.ChangeCategoryCommand.Execute(ViewModel.SelectedCategory);
+                }
+            }
+        }
+
+        private void AddToCartButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel != null && sender is Button button && button.DataContext is Product product)
+            {
+                ViewModel.AddProductToCartCommand.Execute(product);
             }
         }
     }

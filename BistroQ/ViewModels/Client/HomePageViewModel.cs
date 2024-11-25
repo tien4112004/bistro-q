@@ -24,12 +24,13 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
         ProductListViewModel = new ProductListViewModel(categoryService, productService);
         OrderCartViewModel = new OrderCartViewModel(orderDataService);
 
-        ProductListViewModel.CategoryChangedCommand = new RelayCommand<Category>(OnCategoryChanged);
+        ProductListViewModel.AddProductToCartRequested += OnAddProductToCartRequested;
         OrderCartViewModel.OrderStartedCommand = new RelayCommand<Order>(OnOrderStarted);
     }
 
-    private async void OnCategoryChanged(Category selectedCategory)
+    private void OnAddProductToCartRequested(Product product)
     {
+        OrderCartViewModel.AddProductToCart(product);
     }
 
     private void OnOrderStarted(Order order)

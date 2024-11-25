@@ -16,9 +16,9 @@
         <converter:ReverseBooleanConverter x:Key="ReverseBool" />
         <DataTemplate x:Key="OrderItemDataTemplate" x:DataType="entities:OrderDetail">
             <Grid Padding="0,4,0,4"
-              Margin="0,4" 
-              AutomationProperties.Name="{x:Bind Product.Name}"
-              HorizontalAlignment="Stretch">
+                  Margin="0,4" 
+                  AutomationProperties.Name="{x:Bind Product.Name}"
+                  HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="80"/>
                     <ColumnDefinition Width="*" />
@@ -50,59 +50,14 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-
-        <DataTemplate x:Key="CartItemDataTemplate" x:DataType="entities:OrderDetail">
-            <Grid Padding="0,4,0,4"
-              Margin="0,4" 
-              AutomationProperties.Name="{x:Bind Product.Name}"
-              HorizontalAlignment="Stretch">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <Image Grid.Column="0"
-                   Source="https://imageplaceholder.net/64" 
-                   Width="64" Height="64"
-                   Stretch="Fill"
-                   Margin="0,0,12,0"/>
-
-                <StackPanel 
-                Grid.Column="1"                                                     
-                Padding="0,0,4,0"
-                HorizontalAlignment="Stretch">
-
-                    <TextBlock x:Name="OrderItemName"
-                           Text="{x:Bind Quantity}"
-                           Style="{ThemeResource BaseTextBlockStyle}"
-                           FontSize="16"
-                           FontWeight="SemiBold"
-                           TextWrapping="Wrap" />
-
-                    <TextBlock Text="{x:Bind Product.Name}"
-                           Style="{ThemeResource BodyTextBlockStyle}"
-                           TextWrapping="Wrap"
-                           TextTrimming="CharacterEllipsis"
-                           MaxLines="2"/>
-                    <usercontrols:ItemQuantityControl Margin="0,8,0,0"
-                                                  HorizontalAlignment="Left"
-                                                  ProductId="{x:Bind ProductId}"
-                                                  Quantity="{x:Bind Quantity}" />
-                </StackPanel>
-            </Grid>
-        </DataTemplate>
-
-        <ItemsPanelTemplate x:Key="WrapGridItemsPanel">
-            <ItemsWrapGrid Orientation="Horizontal" />
-        </ItemsPanelTemplate>
     </Page.Resources>
 
     <ScrollViewer>
-        <StackPanel Padding="16,8,8,0">
+        <StackPanel Padding="8,8,8,0">
             <TextBlock x:Uid="ClientHomePage_OrderTitle"
                      Foreground="{StaticResource TextFillColorPrimaryBrush}"
                      Style="{StaticResource SubtitleTextBlockStyle}"
-                     Margin="0,4,0,12"/>
+                     Margin="8,4,0,12"/>
 
             <!-- Processing Orders -->
             <Expander x:Uid="ClientHomePage_IsProcessingProductTitle"

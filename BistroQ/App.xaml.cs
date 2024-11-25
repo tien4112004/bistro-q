@@ -131,6 +131,8 @@ public partial class App : Application
             // Client V&VM
             services.AddTransient<HomePageViewModel>();
             services.AddTransient<HomePage>();
+            services.AddTransient<ProductListViewModel>();
+            services.AddTransient<OrderCartViewModel>();
 
             // Cashier V&VM
             services.AddTransient<CashierTableViewModel>();

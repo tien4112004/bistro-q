@@ -6,7 +6,8 @@
     xmlns:local="using:BistroQ.Views.UserControls.Client"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:converter="using:BistroQ.Converters" xmlns:entities="using:BistroQ.Core.Entities"
+    xmlns:converter="using:BistroQ.Converters" 
+    xmlns:entities="using:BistroQ.Core.Entities"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -15,23 +16,23 @@
 
         <DataTemplate x:Key="CategoryItem" x:DataType="entities:Category">
             <TextBlock Text="{x:Bind Name}" 
-               TextWrapping="WrapWholeWords" 
-               TextTrimming="CharacterEllipsis"
-               MaxLines="2"
-               Style="{StaticResource BodyStrongTextBlockStyle}"
-               FontSize="16"
-               Height="68"
-               VerticalAlignment="Center"
-               Padding="12"/>
+                       TextWrapping="WrapWholeWords" 
+                       TextTrimming="CharacterEllipsis"
+                       MaxLines="2"
+                       Style="{StaticResource BodyStrongTextBlockStyle}"
+                       FontSize="16"
+                       Height="68"
+                       VerticalAlignment="Center"
+                       Padding="12"/>
         </DataTemplate>
 
         <DataTemplate x:Key="SingleProductDataTemplate"
-                  x:DataType="entities:Product">
+                      x:DataType="entities:Product">
             <Grid x:Name="SingleProductGrid"
-              Margin="8" Padding="8"
-              HorizontalAlignment="Stretch"
-              VerticalAlignment="Stretch"
-              Width="260">
+                  Margin="8" Padding="4"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  Width="260">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="160" />
                     <RowDefinition Height="*" />
@@ -61,7 +62,9 @@
                     <Button x:Uid="AddItemButton" 
                         Margin="0,8,0,0"
                         Padding="16,8"
-                        Style="{StaticResource AccentButtonStyle}" />
+                        Style="{StaticResource AccentButtonStyle}"
+                        Click="AddToCartButton_Click"
+                        CommandParameter="{Binding}" />
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -81,8 +84,8 @@
 
         <ScrollView Grid.Column="0" Grid.Row="1">
             <Grid x:Name="CategoryPanel"
-                    MinWidth="200"
-                    MaxWidth="248">
+                    MinWidth="160"
+                    MaxWidth="200">
                 <ProgressRing IsActive="{x:Bind ViewModel.IsLoadingCategory, Mode=OneWay}"
                               VerticalAlignment="Center" HorizontalAlignment="Center"
                               Width="40" Height="40"
@@ -115,7 +118,46 @@
                           ItemTemplate="{StaticResource SingleProductDataTemplate}"
                           ScrollViewer.VerticalScrollMode="Enabled"
                           HorizontalAlignment="Center"
-                          HorizontalContentAlignment="Center" />
+                          HorizontalContentAlignment="Center">
+                    <GridView.ItemContainerStyle>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="Margin" Value="8"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Background" Value="{StaticResource CardBackgroundFillColorDefaultBrush}" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="GridViewItem">
+                                        <GridViewItemPresenter
+                                            ContentTransitions="{TemplateBinding ContentTransitions}"
+                                            Padding="{TemplateBinding Padding}"
+                                            SelectionCheckMarkVisualEnabled="True"
+                                            CheckHintBrush="{ThemeResource ListViewItemCheckHintThemeBrush}"
+                                            CheckSelectingBrush="{ThemeResource ListViewItemCheckSelectingThemeBrush}"
+                                            CheckBrush="{ThemeResource ListViewItemCheckThemeBrush}"
+                                            DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+                                            DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
+                                            FocusBorderBrush="{ThemeResource ListViewItemFocusBorderThemeBrush}"
+                                            PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
+                                            PointerOverBackground="{ThemeResource ListViewItemPointerOverBackgroundThemeBrush}"
+                                            SelectedBorderThickness="{ThemeResource GridViewItemCompactSelectedBorderThemeThickness}"
+                                            SelectedBackground="{ThemeResource AccentAcrylicBackgroundFillColorDefaultBrush}"
+                                            SelectedForeground="{ThemeResource ListViewItemSelectedForegroundThemeBrush}"
+                                            SelectedPointerOverBackground="{ThemeResource AccentAcrylicBackgroundFillColorBaseBrush}"
+                                            DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                            DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                            ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            PointerOverBackgroundMargin="1"
+                                            ContentMargin="4"
+                                            CornerRadius="10"
+                                       />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GridView.ItemContainerStyle>
+                </GridView>
             </Grid>
         </ScrollView>
     </Grid>

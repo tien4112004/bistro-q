@@ -1,33 +1,64 @@
 ﻿using BistroQ.Core.Entities;
+using BistroQ.ViewModels.Client;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace BistroQ.Views.Client;
 
-public sealed partial class CartPage : Page, INotifyPropertyChanged
+public sealed partial class CartPage : Page
 {
-    public ObservableCollection<OrderDetail> CartItems;
+    private OrderCartViewModel ViewModel => (OrderCartViewModel)DataContext;
 
-    public bool CartIsEmpty => CartItems == null || CartItems.Count == 0;
+    public bool CartIsEmpty => ViewModel.CartItems == null || ViewModel.CartItems.Count == 0;
+
+    public RelayCommand<Product> AddToCartCommand { get; set; }
 
     public CartPage()
     {
         this.InitializeComponent();
-        CartItems = new ObservableCollection<OrderDetail>
+        DataContext = App.GetService<OrderCartViewModel>();
+        AddToCartCommand = new RelayCommand<Product>(AddToCart);
+
+        var productListViewModel = App.GetService<ProductListViewModel>();
+        //productListViewModel.ProductAddedToCart += OnProductAddedToCart;
+
+        ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+    }
+
+    private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(ViewModel.CartItems))
+        {
+            OnPropertyChanged(nameof(CartIsEmpty));
+        }
+    }
+
+    private void AddToCart(Product product)
+    {
+        if (product == null) return;
+
+        var existingOrderDetail = ViewModel.CartItems.FirstOrDefault(od => od.ProductId == product.ProductId);
+        if (existingOrderDetail != null)
+        {
+            existingOrderDetail.Quantity++;
+        }
+        else
+        {
+            ViewModel.CartItems.Add(new OrderDetail
             {
-                new OrderDetail
-                {
-                    OrderDetailId = "123123",
-                    Quantity = 12,
-                    Product = new Product
-                    {
-                        Name = "Bun bo",
-                        Unit = "Bowl",
-                    },
-                }
-            };
+                ProductId = product.ProductId,
+                Product = product,
+                Quantity = 1,
+                PriceAtPurchase = product.Price
+            });
+        }
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 }

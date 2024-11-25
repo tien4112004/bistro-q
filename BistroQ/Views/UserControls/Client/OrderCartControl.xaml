@@ -12,46 +12,6 @@
     xmlns:vm="using:BistroQ.ViewModels.Client"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <DataTemplate x:Key="OrderItemDataTemplate" x:DataType="entities:OrderDetail">
-            <Grid Padding="0,4,0,4"
-                  Margin="0,4" 
-                  AutomationProperties.Name="{x:Bind Product.Name}"
-                  HorizontalAlignment="Stretch">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <Image Grid.Column="0"
-                       Source="https://imageplaceholder.net/64" 
-                       Width="64" Height="64"
-                       Stretch="Fill"
-                       Margin="0,0,12,0"/>
-
-                <StackPanel Grid.Column="1"                                                     
-                          Padding="0,0,4,0"
-                          HorizontalAlignment="Stretch">
-                    <TextBlock Text="{x:Bind Product.Name}"
-                             Style="{ThemeResource BaseTextBlockStyle}"
-                             FontSize="16"
-                             FontWeight="SemiBold"
-                             TextWrapping="Wrap" />
-
-                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}"
-                             TextWrapping="Wrap"
-                             TextTrimming="CharacterEllipsis"
-                             Margin="0,4,0,0"
-                             MaxLines="2">
-                        <Run Text="{x:Bind Quantity}" />
-                        <Run Text="x" />
-                        <Run Text="{x:Bind Product.Unit}" />
-                    </TextBlock>
-                </StackPanel>
-            </Grid>
-        </DataTemplate>
-    </UserControl.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

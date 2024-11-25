@@ -29,8 +29,10 @@ public partial class ProductListViewModel : ObservableRecipient
     [ObservableProperty]
     private ObservableCollection<Product> _products = new ObservableCollection<Product>();
 
-    public ICommand ChangeCategoryCommand { get; }
-    public ICommand CategoryChangedCommand { get; set; }
+    public ICommand ChangeCategoryCommand { get; set; }
+    public ICommand AddProductToCartCommand { get; set; }
+
+    public event Action<Product> AddProductToCartRequested;
 
     public ProductListViewModel(
         ICategoryService categoryService,
@@ -38,12 +40,20 @@ public partial class ProductListViewModel : ObservableRecipient
     {
         _categoryService = categoryService;
         _productService = productService;
-        ChangeCategoryCommand = new AsyncRelayCommand(ChangeCategory);
+        ChangeCategoryCommand = new AsyncRelayCommand<Category>(ChangeCategory);
+        AddProductToCartCommand = new RelayCommand<Product>(AddProductToCart);
     }
 
-    private async Task ChangeCategory()
+    private async Task ChangeCategory(Category category)
     {
+        SelectedCategory = category;
         await LoadProductAsync();
+        OnPropertyChanged(nameof(Products));
+    }
+
+    private void AddProductToCart(Product product)
+    {
+        AddProductToCartRequested?.Invoke(product);
     }
 
     public async Task LoadCategoriesAsync()
@@ -54,7 +64,7 @@ public partial class ProductListViewModel : ObservableRecipient
         {
             Name = "All"
         };
-        await Task.Delay(1000); // For test the loading animation
+        await Task.Delay(400); // For test the loading animation
         Categories = new List<Category> { allCategory }.Concat(categories).ToList();
         IsLoadingCategory = false;
     }
@@ -72,9 +82,8 @@ public partial class ProductListViewModel : ObservableRecipient
             };
 
             var response = await _productService.GetProductsAsync(query);
-            await Task.Delay(1500); // For test the loading animation
+            await Task.Delay(800); // For test the loading animation
             Products = new ObservableCollection<Product>(response.Data);
-            CategoryChangedCommand?.Execute(SelectedCategory);
         }
         catch (Exception ex)
         {

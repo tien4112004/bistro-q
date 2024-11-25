@@ -9,19 +9,21 @@
     xmlns:entities="using:BistroQ.Core.Entities" 
     xmlns:converter="using:BistroQ.Converters" xmlns:usercontrols="using:BistroQ.Views.UserControls"
     Background="Transparent"
+    DataContext="{x:Bind ViewModel}"
     mc:Ignorable="d">
 
     <Page.Resources>
         <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
         <converter:ReverseBooleanConverter x:Key="ReverseBool" />
         <DataTemplate x:Key="CartItemDataTemplate" x:DataType="entities:OrderDetail">
-            <Grid Padding="0,4,0,4"
+            <Grid Padding="0,6,0,8"
                   Margin="0,4" 
                   AutomationProperties.Name="{x:Bind Product.Name}"
                   HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="80"/>
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <Image Grid.Column="0"
@@ -33,13 +35,13 @@
                 <StackPanel Grid.Column="1"                                                     
                           Padding="0,0,4,0"
                           HorizontalAlignment="Stretch">
-                    <TextBlock Text="{x:Bind Quantity}"
+                    <TextBlock Text="{x:Bind Product.Name}"
                              Style="{ThemeResource BaseTextBlockStyle}"
                              FontSize="16"
                              FontWeight="SemiBold"
                              TextWrapping="Wrap" />
 
-                    <TextBlock Text="{x:Bind Product.Name}"
+                    <TextBlock Text="{x:Bind Product.Unit}"
                              Style="{ThemeResource BodyTextBlockStyle}"
                              TextWrapping="Wrap"
                              TextTrimming="CharacterEllipsis"
@@ -49,7 +51,7 @@
                         Margin="0,8,0,0"
                         HorizontalAlignment="Left"
                         ProductId="{x:Bind ProductId}"
-                        Quantity="{x:Bind Quantity}" />
+                        Quantity="{x:Bind Quantity, Mode=TwoWay}" />
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -62,12 +64,13 @@
                      Style="{StaticResource SubtitleTextBlockStyle}"
                      Margin="8,4,0,12"/>
 
-            <ListView ItemsSource="{x:Bind CartItems, Mode=TwoWay}"
+            <ListView ItemsSource="{x:Bind ViewModel.CartItems, Mode=TwoWay}"
                       ItemTemplate="{StaticResource CartItemDataTemplate}"
                       HorizontalAlignment="Stretch"                     
                       HorizontalContentAlignment="Stretch" />
 
             <TextBlock Foreground="{StaticResource TextFillColorPrimaryBrush}" 
+                       Margin="8,0"
                    Visibility="{x:Bind CartIsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                    Text="Your cart is currently empty." />
         </StackPanel>
