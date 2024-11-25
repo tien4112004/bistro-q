@@ -7,7 +7,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace BistroQ.Presentation.Services;
 
-public class AdminZoneDialogDialogService : IAdminZoneDialogService
+public class AdminZoneDialogService : IAdminZoneDialogService
 {
     public async Task<ContentDialogResult> ShowConfirmDeleteDialog(XamlRoot xamlRoot)
     {

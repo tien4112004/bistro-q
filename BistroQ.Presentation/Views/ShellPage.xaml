@@ -43,28 +43,28 @@
                 TODO: Update item icons by updating FontIcon.Glyph properties.
                 https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list
                 -->
-                <NavigationViewItem x:Uid="Shell_Main" Tag="User" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.MainViewModel">
+                <NavigationViewItem x:Uid="Shell_Main" Tag="User" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.MainViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_AdminZone" Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.AdminZoneViewModel">
+                <NavigationViewItem x:Uid="Shell_AdminZone" Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.AdminZoneViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE71D;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_AdminTable" Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.AdminTableViewModel">
+                <NavigationViewItem x:Uid="Shell_AdminTable" Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.AdminTableViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7FB;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_ClientHomePage" Tag="Client" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.Client.HomePageViewModel">
+                <NavigationViewItem x:Uid="Shell_ClientHomePage" Tag="Client" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.Client.HomePageViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED56;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem x:Uid="Shell_CashierTablePage" Tag="Cashier" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.CashierTable.CashierTableViewModel">
+                <NavigationViewItem x:Uid="Shell_CashierTablePage" Tag="Cashier" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.CashierTable.CashierTableViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED56;"/>
                     </NavigationViewItem.Icon>

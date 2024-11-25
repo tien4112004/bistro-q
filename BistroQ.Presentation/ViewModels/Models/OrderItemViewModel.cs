@@ -1,5 +1,4 @@
-using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BistroQ.Presentation.ViewModels.Models;
 
@@ -19,7 +18,9 @@ public partial class OrderItemViewModel : ObservableObject
 
     [ObservableProperty]
     private decimal? _priceAtPurchase;
-    
+
+    public decimal? Total => Quantity * PriceAtPurchase;
+
     [ObservableProperty]
     private ProductViewModel? _product;
 }

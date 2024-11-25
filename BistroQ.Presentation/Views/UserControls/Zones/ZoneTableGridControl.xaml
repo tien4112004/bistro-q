@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BistroQ.Presentation.Views.UserControls.Zones"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:models="using:BistroQ.Domain.Dtos.Tables"
+    xmlns:models="using:BistroQ.Presentation.ViewModels.Models"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:converters="using:BistroQ.Presentation.Converters"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
@@ -134,7 +134,7 @@
                     </GridView.ItemContainerStyle>
 
                     <GridView.ItemTemplate>
-                        <DataTemplate x:DataType="models:TableResponse">
+                        <DataTemplate x:DataType="models:TableViewModel">
                             <Grid>
                                 <StackPanel Spacing="4" VerticalAlignment="Center">
                                     <StackPanel
@@ -156,15 +156,15 @@
 
                                     <!-- Table Number -->
                                     <TextBlock 
-                                Text="{x:Bind Number, Mode=OneWay}" 
-                                FontSize="24"
-                                FontWeight="SemiBold"
-                                HorizontalAlignment="Center"/>
+                                        Text="{x:Bind Number, Mode=OneWay}" 
+                                        FontSize="24"
+                                        FontWeight="SemiBold"
+                                        HorizontalAlignment="Center"/>
 
                                     <!-- Capacity -->
                                     <StackPanel Orientation="Horizontal" 
-                                  HorizontalAlignment="Center" 
-                                  Spacing="4">
+                                          HorizontalAlignment="Center" 
+                                          Spacing="4">
                                         <FontIcon Glyph="&#xE716;" FontSize="14"/>
                                         <TextBlock 
                                 Text="{x:Bind SeatsCount, Mode=OneWay}" 

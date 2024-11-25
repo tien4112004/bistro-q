@@ -1,8 +1,8 @@
+﻿using BistroQ.Domain.Contracts.Services;
+using BistroQ.Domain.Services.Http;
 using BistroQ.Presentation.Activation;
 using BistroQ.Presentation.Contracts.Services;
-using BistroQ.Domain.Contracts.Services;
-using BistroQ.Domain.Services;
-using BistroQ.Domain.Services.Http;
+using BistroQ.Presentation.Mappings;
 using BistroQ.Presentation.Models;
 using BistroQ.Presentation.Services;
 using BistroQ.Presentation.ViewModels;
@@ -15,16 +15,13 @@ using BistroQ.Presentation.Views.AdminTable;
 using BistroQ.Presentation.Views.AdminZone;
 using BistroQ.Presentation.Views.CashierTable;
 using BistroQ.Presentation.Views.Client;
+using BistroQ.Service.Auth;
+using BistroQ.Service.Common;
+using BistroQ.Service.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using System.Diagnostics;
-using AutoMapper;
-using BistroQ.Domain.Mappings;
-using BistroQ.Presentation.Mappings;
-using BistroQ.Service.Auth;
-using BistroQ.Service.Common;
-using BistroQ.Service.Data;
 
 namespace BistroQ.Presentation;
 
@@ -116,10 +113,10 @@ public partial class App : Application
 
             services.AddScoped<IZoneDataService, ZoneDataService>();
             services.AddScoped<ITableDataService, TableDataService>();
-            services.AddScoped<IAdminZoneDialogService, AdminZoneDialogDialogService>();
+            services.AddScoped<IAdminZoneDialogService, AdminZoneDialogService>();
             services.AddScoped<IAdminTableDialogService, AdminTableDialogService>();
             services.AddScoped<IOrderDataService, OrderDataService>();
-            
+
             // Client V&VM
             services.AddTransient<HomePageViewModel>();
             services.AddTransient<HomePage>();
@@ -132,21 +129,14 @@ public partial class App : Application
             services.AddTransient<TableOrderDetailViewModel>();
 
             // Auto Mapper
-            services.AddAutoMapper(typeof(DomainMappingProfile).Assembly);
-            services.AddAutoMapper(typeof(PresentationMappingProfile).Assembly);
-            services.AddSingleton(provider =>
+            services.AddAutoMapper((serviceProvider, cfg) =>
             {
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddMaps(typeof(PresentationMappingProfile).Assembly);    
-                    cfg.AddMaps(typeof(DomainMappingProfile).Assembly); 
-                });
-                    
-                config.AssertConfigurationIsValid();
-                    
-                return config.CreateMapper();
-            });
-            
+                cfg.AddProfile<MappingProfile>();
+                cfg.ConstructServicesUsing(type =>
+                    ActivatorUtilities.CreateInstance(serviceProvider, type));
+            }, typeof(MappingProfile).Assembly);
+
+
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
         }).

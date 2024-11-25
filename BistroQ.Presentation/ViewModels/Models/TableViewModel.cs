@@ -11,6 +11,9 @@ public partial class TableViewModel : ObservableObject
     private string? _name;
 
     [ObservableProperty] 
+    private int? _number;
+
+    [ObservableProperty] 
     private int? _zoneId;
     
     [ObservableProperty]

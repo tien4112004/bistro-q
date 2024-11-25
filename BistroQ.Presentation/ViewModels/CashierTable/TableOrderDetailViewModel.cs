@@ -1,10 +1,10 @@
-using AutoMapper;
+﻿using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
-using BistroQ.Domain.Models.Entities;
 using BistroQ.Presentation.Helpers;
 using BistroQ.Presentation.ViewModels.Commons;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
 
@@ -34,16 +34,32 @@ public partial class TableOrderDetailViewModel : ObservableObject
     [ObservableProperty]
     private bool _isLoading = true;
 
-    public async Task<Order?> OnTableChangedAsync(int? tableId)
+    public async Task<OrderViewModel?> OnTableChangedAsync(int? tableId)
     {
         IsLoading = true;
-        var order = await TaskHelper.WithMinimumDelay(
-            _orderDataService.GetOrderByCashierAsync(tableId ?? 0),
-            200);
+        try
+        {
+            var order = await TaskHelper.WithMinimumDelay(
+                _orderDataService.GetOrderByCashierAsync(tableId ?? 0),
+                200);
 
-        IsLoading = false;
-        Order = _mapper.Map<OrderViewModel>(order);
-        Timer.SetStartTime(Order?.StartTime ?? DateTime.Now);
-        return order;
+            Order = _mapper.Map<OrderViewModel>(order);
+            Debug.WriteLine(Order.OrderItems[0].Total);
+            Timer.SetStartTime(Order.StartTime ?? DateTime.Now);
+            return Order;
+        }
+        catch (Exception ex)
+        {
+            Order = new OrderViewModel();
+            Timer.SetStartTime(DateTime.Now);
+
+            Debug.WriteLine(ex.Message);
+            return null;
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+
     }
 }

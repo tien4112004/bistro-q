@@ -1,5 +1,6 @@
 using BistroQ.Domain.Dtos.Tables;
 using BistroQ.Presentation.ViewModels.CashierTable;
+using BistroQ.Presentation.ViewModels.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -26,7 +27,7 @@ public sealed partial class ZoneTableGridControl : UserControl
 
     private void OnTableClicked(object sender, ItemClickEventArgs e)
     {
-        if (e.ClickedItem is TableResponse table)
+        if (e.ClickedItem is TableViewModel table)
         {
             TableSelectionChanged?.Invoke(this, table.TableId);
         }

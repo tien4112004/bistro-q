@@ -1,10 +1,10 @@
+﻿using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
-using BistroQ.Domain.Dtos.Tables;
 using BistroQ.Presentation.Helpers;
+using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
-using AutoMapper;
-using BistroQ.Presentation.ViewModels.Models;
+using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
 
@@ -34,24 +34,35 @@ public partial class ZoneTableGridViewModel : ObservableObject
     public async Task OnZoneChangedAsync(int? zoneId, string type)
     {
         IsLoading = true;
-        if (zoneId == null)
+        try
         {
-            await Task.Delay(200);
+            if (zoneId == null)
+            {
+                await Task.Delay(200);
+                IsLoading = false;
+                return;
+            }
+
+            var tablesData = await TaskHelper.WithMinimumDelay(
+                _tableDataService.GetTablesByCashierAsync(zoneId.Value, type),
+                200);
+
+            var tables = _mapper.Map<IEnumerable<TableViewModel>>(tablesData);
+            Tables = new ObservableCollection<TableViewModel>(tables);
+            if (Tables.Any())
+            {
+                SelectedTableResponse = Tables.First();
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+            Tables = new ObservableCollection<TableViewModel>();
+            SelectedTableResponse = null;
+        }
+        finally
+        {
             IsLoading = false;
-            return;
         }
-
-        var tablesData = await TaskHelper.WithMinimumDelay(
-            _tableDataService.GetTablesByCashierAsync(zoneId.Value, type),
-            200);
-
-        var tables = _mapper.Map<IEnumerable<TableViewModel>>(tablesData);
-        Tables = new ObservableCollection<TableViewModel>(tables);
-        if (Tables.Any())
-        {
-            SelectedTableResponse = Tables.First();
-        }
-
-        IsLoading = false;
     }
 }

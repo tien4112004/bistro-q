@@ -1,5 +1,5 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BistroQ.Presentation.ViewModels.Models;
 

@@ -11,6 +11,5 @@ public class TableResponse
 
     public string? ZoneName { get; set; }
 
-
     public bool IsOccupied { get; set; }
 }
