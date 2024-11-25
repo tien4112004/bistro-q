@@ -3,16 +3,17 @@ using BistroQ.Domain.Dtos.Zones;
 using BistroQ.Presentation.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
+using BistroQ.Presentation.ViewModels.Models;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
 
 public partial class ZoneOverviewViewModel : ObservableObject
 {
     [ObservableProperty]
-    private ObservableCollection<ZoneDto> _zones;
+    private ObservableCollection<ZoneViewModel> _zones;
 
     [ObservableProperty]
-    private ZoneDto _selectedZone;
+    private ZoneViewModel _selectedZone;
 
     private readonly IZoneDataService _zoneDataService;
 
@@ -32,7 +33,7 @@ public partial class ZoneOverviewViewModel : ObservableObject
             _zoneDataService.GetZonesAsync(new ZoneCollectionQueryParams()),
             200);
 
-        Zones = new ObservableCollection<ZoneDto>(zones.Data);
+        Zones = new ObservableCollection<ZoneViewModel>(zones.Data);
 
         if (Zones.Any())
         {

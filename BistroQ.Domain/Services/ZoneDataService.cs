@@ -1,6 +1,7 @@
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos;
 using BistroQ.Domain.Dtos.Zones;
+using BistroQ.Domain.Models.Entities;
 
 namespace BistroQ.Domain.Services
 {
@@ -13,21 +14,21 @@ namespace BistroQ.Domain.Services
             _apiClient = apiClient;
         }
 
-        public async Task<PaginationResponse<IEnumerable<ZoneDto>>> GetGridDataAsync(ZoneCollectionQueryParams query = null)
+        public async Task<PaginationResponse<IEnumerable<Zone>>> GetGridDataAsync(ZoneCollectionQueryParams query = null)
         {
-            var response = await _apiClient.GetCollectionAsync<IEnumerable<ZoneDto>>("/api/admin/zone", query);
+            var response = await _apiClient.GetCollectionAsync<IEnumerable<ZoneResponse>>("/api/admin/zone", query);
             return response;
         }
 
-        public async Task<ApiResponse<ZoneDto>> CreateZoneAsync(CreateZoneRequest request)
+        public async Task<ApiResponse<Zone>> CreateZoneAsync(CreateZoneRequest request)
         {
-            var response = await _apiClient.PostAsync<ZoneDto>("api/admin/zone", request);
+            var response = await _apiClient.PostAsync<ZoneResponse>("api/admin/zone", request);
             return response;
         }
 
-        public async Task<ApiResponse<ZoneDto>> UpdateZoneAsync(int zoneId, UpdateZoneRequest request)
+        public async Task<ApiResponse<Zone>> UpdateZoneAsync(int zoneId, UpdateZoneRequest request)
         {
-            var response = await _apiClient.PutAsync<ZoneDto>($"api/admin/zone/{zoneId}", request);
+            var response = await _apiClient.PutAsync<ZoneResponse>($"api/admin/zone/{zoneId}", request);
             return response;
         }
 
@@ -37,15 +38,15 @@ namespace BistroQ.Domain.Services
             return response;
         }
 
-        public async Task<PaginationResponse<IEnumerable<ZoneDto>>> GetZonesAsync(ZoneCollectionQueryParams query = null)
+        public async Task<PaginationResponse<IEnumerable<Zone>>> GetZonesAsync(ZoneCollectionQueryParams query = null)
         {
-            var response = await _apiClient.GetCollectionAsync<IEnumerable<ZoneDto>>("/api/zone", query);
+            var response = await _apiClient.GetCollectionAsync<IEnumerable<ZoneResponse>>("/api/zone", query);
             return response;
         }
 
-        public async Task<ZoneDto> GetZoneByIdAsync(int zoneId)
+        public async Task<Zone> GetZoneByIdAsync(int zoneId)
         {
-            var response = await _apiClient.GetAsync<ZoneDto>($"api/zone/{zoneId}", null);
+            var response = await _apiClient.GetAsync<ZoneResponse>($"api/zone/{zoneId}", null);
             return response.Data;
         }
     }

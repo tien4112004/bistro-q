@@ -8,11 +8,11 @@ namespace BistroQ.Domain.Models.Entities;
 
 public class OrderItem
 {
-    public string OrderDetailId { get; set; }
+    public int OrderDetailId { get; set; }
 
     public string? OrderId { get; set; }
 
-    public string? ProductId { get; set; }
+    public int? ProductId { get; set; }
 
     public int? Quantity { get; set; }
 

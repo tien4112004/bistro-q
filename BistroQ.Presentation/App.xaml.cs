@@ -20,6 +20,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using System.Diagnostics;
+using AutoMapper;
+using BistroQ.Domain.Mappings;
+using BistroQ.Presentation.Mappings;
 
 namespace BistroQ.Presentation;
 
@@ -125,6 +128,22 @@ public partial class App : Application
             services.AddTransient<ZoneTableGridViewModel>();
             services.AddTransient<TableOrderDetailViewModel>();
 
+            // Auto Mapper
+            services.AddAutoMapper(typeof(DomainMappingProfile).Assembly);
+            services.AddAutoMapper(typeof(PresentationMappingProfile).Assembly);
+            services.AddSingleton(provider =>
+            {
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.AddMaps(typeof(PresentationMappingProfile).Assembly);    
+                    cfg.AddMaps(typeof(DomainMappingProfile).Assembly); 
+                });
+                    
+                config.AssertConfigurationIsValid();
+                    
+                return config.CreateMapper();
+            });
+            
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
         }).
