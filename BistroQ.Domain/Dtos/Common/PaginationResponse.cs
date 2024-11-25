@@ -1,9 +1,9 @@
 namespace BistroQ.Domain.Dtos;
 
-public class PaginationResponseDto<T>
+public class PaginationResponse<T>
     where T : class
 {
-    public PaginationResponseDto(T data, int totalItems, int page, int size)
+    public PaginationResponse(T data, int totalItems, int page, int size)
     {
         Data = data;
         TotalItems = totalItems;

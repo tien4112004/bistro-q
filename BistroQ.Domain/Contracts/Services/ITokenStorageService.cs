@@ -9,9 +9,9 @@ public interface ITokenStorageService
     /// <summary>
     /// Stores the access and refresh tokens, along with additional information, from a login result.
     /// </summary>
-    /// <param name="result">The login result containing tokens and other authentication details.</param>
+    /// <param name="responseDto">The login result containing tokens and other authentication details.</param>
     /// <returns>A task that represents the asynchronous save operation.</returns>
-    Task SaveTokensAsync(LoginResult result);
+    Task SaveTokensAsync(LoginResponseDto responseDto);
 
     /// <summary>
     /// Stores the access token.

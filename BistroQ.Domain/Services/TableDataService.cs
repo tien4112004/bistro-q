@@ -13,27 +13,27 @@ namespace BistroQ.Domain.Services
             _apiClient = apiClient;
         }
 
-        public async Task<PaginationResponseDto<IEnumerable<TableDto>>> GetGridDataAsync(TableCollectionQueryParams query = null)
+        public async Task<PaginationResponse<IEnumerable<TableResponse>>> GetGridDataAsync(TableCollectionQueryParams query = null)
         {
-            var response = await _apiClient.GetCollectionAsync<IEnumerable<TableDto>>("/api/admin/table", query);
+            var response = await _apiClient.GetCollectionAsync<IEnumerable<TableResponse>>("/api/admin/table", query);
             return response;
         }
 
-        public async Task<TableDto> GetDataTableAsync(int tableId)
+        public async Task<TableResponse> GetDataTableAsync(int tableId)
         {
-            var response = await _apiClient.GetAsync<TableDto>($"api/table/{tableId}", null);
+            var response = await _apiClient.GetAsync<TableResponse>($"api/table/{tableId}", null);
             return response.Data;
         }
 
-        public async Task<ApiResponse<TableDto>> CreateTableAsync(CreateTableRequestDto request)
+        public async Task<ApiResponse<TableResponse>> CreateTableAsync(CreateTableRequest request)
         {
-            var response = await _apiClient.PostAsync<TableDto>("api/admin/table", request);
+            var response = await _apiClient.PostAsync<TableResponse>("api/admin/table", request);
             return response;
         }
 
-        public async Task<ApiResponse<TableDto>> UpdateTableAsync(int tableId, UpdateTableRequestDto request)
+        public async Task<ApiResponse<TableResponse>> UpdateTableAsync(int tableId, UpdateTableRequest request)
         {
-            var response = await _apiClient.PutAsync<TableDto>($"api/admin/table/{tableId}", request);
+            var response = await _apiClient.PutAsync<TableResponse>($"api/admin/table/{tableId}", request);
             return response;
         }
 
@@ -43,11 +43,11 @@ namespace BistroQ.Domain.Services
             return response;
         }
 
-        public async Task<IEnumerable<TableDto>> GetTablesByCashierAsync(int zoneId, string type)
+        public async Task<IEnumerable<TableResponse>> GetTablesByCashierAsync(int zoneId, string type)
         {
             string isOccupied = type == "All" ? "false" : "true";
 
-            var response = await _apiClient.GetCollectionAsync<IEnumerable<TableDto>>($"api/cashier/zones/{zoneId}/table?isOccupied={isOccupied}", null);
+            var response = await _apiClient.GetCollectionAsync<IEnumerable<TableResponse>>($"api/cashier/zones/{zoneId}/table?isOccupied={isOccupied}", null);
 
             return response.Data;
         }

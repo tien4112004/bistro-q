@@ -26,7 +26,7 @@ public sealed partial class ZoneTableGridControl : UserControl
 
     private void OnTableClicked(object sender, ItemClickEventArgs e)
     {
-        if (e.ClickedItem is TableDto table)
+        if (e.ClickedItem is TableResponse table)
         {
             TableSelectionChanged?.Invoke(this, table.TableId);
         }

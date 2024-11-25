@@ -9,10 +9,10 @@ namespace BistroQ.Presentation.ViewModels.CashierTable;
 public partial class ZoneTableGridViewModel : ObservableObject
 {
     [ObservableProperty]
-    private ObservableCollection<TableDto> _tables;
+    private ObservableCollection<TableResponse> _tables;
 
     [ObservableProperty]
-    private TableDto _selectedTable;
+    private TableResponse _selectedTableResponse;
 
 
     private readonly ITableDataService _tableDataService;
@@ -41,10 +41,10 @@ public partial class ZoneTableGridViewModel : ObservableObject
             _tableDataService.GetTablesByCashierAsync(zoneId.Value, type),
             200);
 
-        Tables = new ObservableCollection<TableDto>(tables);
+        Tables = new ObservableCollection<TableResponse>(tables);
         if (Tables.Any())
         {
-            SelectedTable = Tables.First();
+            SelectedTableResponse = Tables.First();
         }
 
         IsLoading = false;

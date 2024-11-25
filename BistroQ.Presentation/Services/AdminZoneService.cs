@@ -16,7 +16,7 @@ public class AdminZoneService : IAdminZoneService
         _zoneDataService = zoneDataService;
     }
 
-    public async Task<PaginationResponseDto<IEnumerable<ZoneDto>>> GetZonesAsync(ZoneCollectionQueryParams query)
+    public async Task<PaginationResponse<IEnumerable<ZoneDto>>> GetZonesAsync(ZoneCollectionQueryParams query)
     {
         try
         {

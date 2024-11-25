@@ -27,10 +27,10 @@ public sealed partial class AdminTableEditPage : Page
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        var tableDto = e.Parameter as TableDto;
+        var tableDto = e.Parameter as TableResponse;
         if (tableDto != null)
         {
-            ViewModel.Table = tableDto;
+            ViewModel.TableResponse = tableDto;
         }
 
         base.OnNavigatedTo(e);

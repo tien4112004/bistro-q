@@ -1,6 +1,6 @@
 namespace BistroQ.Domain.Dtos.Zones;
 
-public class CreateZoneRequestDto
+public class CreateZoneRequest
 {
     public string Name { get; set; }
 }

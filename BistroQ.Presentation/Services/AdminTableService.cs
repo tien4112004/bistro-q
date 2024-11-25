@@ -16,7 +16,7 @@ public class AdminTableService : IAdminTableService
         _zoneDataService = zoneDataService;
     }
 
-    public async Task<PaginationResponseDto<IEnumerable<TableDto>>> GetTablesAsync(TableCollectionQueryParams query)
+    public async Task<PaginationResponse<IEnumerable<TableResponse>>> GetTablesAsync(TableCollectionQueryParams query)
     {
         try
         {

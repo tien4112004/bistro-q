@@ -22,7 +22,7 @@ public class MockAuthService : IAuthService
         // Mock login
         if (username == "test" && password == "test")
         {
-            var result = new LoginResult
+            var result = new LoginResponseDto
             {
                 AccessToken = "1," + DateTime.Now.AddMinutes(TOKEN_EXPIRE_TIME).ToString(),
                 RefreshToken = "1," + DateTime.Now.AddMinutes(REF_TOKEN_EXPIRE_TIME).ToString(),

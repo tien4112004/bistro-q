@@ -46,9 +46,9 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware
     public async void OnZoneSelected(ZoneStateEventArgs e)
     {
         await ZoneTableGridVM.OnZoneChangedAsync(e.ZoneId, e.Type);
-        if (ZoneTableGridVM.SelectedTable != null)
+        if (ZoneTableGridVM.SelectedTableResponse != null)
         {
-            await TableOrderDetailVM.OnTableChangedAsync(ZoneTableGridVM.SelectedTable.TableId);
+            await TableOrderDetailVM.OnTableChangedAsync(ZoneTableGridVM.SelectedTableResponse.TableId);
         }
     }
 

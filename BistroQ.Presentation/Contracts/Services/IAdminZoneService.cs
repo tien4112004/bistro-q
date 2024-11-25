@@ -7,7 +7,7 @@ namespace BistroQ.Presentation.Contracts.Services;
 
 public interface IAdminZoneService
 {
-    Task<PaginationResponseDto<IEnumerable<ZoneDto>>> GetZonesAsync(ZoneCollectionQueryParams query);
+    Task<PaginationResponse<IEnumerable<ZoneResponse>>> GetZonesAsync(ZoneCollectionQueryParams query);
     Task<bool> DeleteZoneAsync(int zoneId);
     Task<ContentDialogResult> ShowConfirmDeleteDialog(XamlRoot xamlRoot);
     Task ShowSuccessDialog(string message, XamlRoot xamlRoot);

@@ -13,19 +13,19 @@ namespace BistroQ.Domain.Services
             _apiClient = apiClient;
         }
 
-        public async Task<PaginationResponseDto<IEnumerable<ZoneDto>>> GetGridDataAsync(ZoneCollectionQueryParams query = null)
+        public async Task<PaginationResponse<IEnumerable<ZoneDto>>> GetGridDataAsync(ZoneCollectionQueryParams query = null)
         {
             var response = await _apiClient.GetCollectionAsync<IEnumerable<ZoneDto>>("/api/admin/zone", query);
             return response;
         }
 
-        public async Task<ApiResponse<ZoneDto>> CreateZoneAsync(CreateZoneRequestDto request)
+        public async Task<ApiResponse<ZoneDto>> CreateZoneAsync(CreateZoneRequest request)
         {
             var response = await _apiClient.PostAsync<ZoneDto>("api/admin/zone", request);
             return response;
         }
 
-        public async Task<ApiResponse<ZoneDto>> UpdateZoneAsync(int zoneId, UpdateZoneRequestDto request)
+        public async Task<ApiResponse<ZoneDto>> UpdateZoneAsync(int zoneId, UpdateZoneRequest request)
         {
             var response = await _apiClient.PutAsync<ZoneDto>($"api/admin/zone/{zoneId}", request);
             return response;
@@ -37,7 +37,7 @@ namespace BistroQ.Domain.Services
             return response;
         }
 
-        public async Task<PaginationResponseDto<IEnumerable<ZoneDto>>> GetZonesAsync(ZoneCollectionQueryParams query = null)
+        public async Task<PaginationResponse<IEnumerable<ZoneDto>>> GetZonesAsync(ZoneCollectionQueryParams query = null)
         {
             var response = await _apiClient.GetCollectionAsync<IEnumerable<ZoneDto>>("/api/zone", query);
             return response;

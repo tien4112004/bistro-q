@@ -10,7 +10,7 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
 {
     public ZoneDto Zone { get; set; }
     [ObservableProperty]
-    private UpdateZoneRequestDto request;
+    private UpdateZoneRequest request;
     public AdminZoneEditPageViewModel ViewModel;
 
     private readonly IZoneDataService _zoneDataService;
@@ -18,7 +18,7 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
     public AdminZoneEditPageViewModel(IZoneDataService zoneDataService)
     {
         _zoneDataService = zoneDataService;
-        Request = new UpdateZoneRequestDto();
+        Request = new UpdateZoneRequest();
     }
 
     public async Task<ApiResponse<ZoneDto>> UpdateZoneAsync()

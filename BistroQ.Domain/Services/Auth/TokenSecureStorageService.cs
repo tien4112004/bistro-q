@@ -29,7 +29,7 @@ public class TokenSecureStorageService : ITokenStorageService
         _folderPath = Path.Combine(AppContext.BaseDirectory, "Data");
         _fileName = "tokens.dat";
     }
-    public async Task SaveTokensAsync(LoginResult result)
+    public async Task SaveTokensAsync(LoginResponseDto responseDto)
     {
         await _semaphore.WaitAsync();
 
@@ -43,10 +43,10 @@ public class TokenSecureStorageService : ITokenStorageService
 
         var tasks = new Task[]
         {
-            Task.Run(async () => res["AccessToken"] = await EncryptData(result.AccessToken)),
-            Task.Run(async () => res["RefreshToken"] = await EncryptData(result.RefreshToken)),
-            Task.Run(async () => res["UserId"] = await EncryptData(result.UserId)),
-            Task.Run(async () => res["Role"] = await EncryptData(result.Role))
+            Task.Run(async () => res["AccessToken"] = await EncryptData(responseDto.AccessToken)),
+            Task.Run(async () => res["RefreshToken"] = await EncryptData(responseDto.RefreshToken)),
+            Task.Run(async () => res["UserId"] = await EncryptData(responseDto.UserId)),
+            Task.Run(async () => res["Role"] = await EncryptData(responseDto.Role))
         };
 
         try

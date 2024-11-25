@@ -80,7 +80,7 @@
                    />
 
                 <GridView ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}" 
-                  SelectedItem="{x:Bind ViewModel.SelectedTable, Mode=TwoWay}"
+                  SelectedItem="{x:Bind ViewModel.SelectedTableResponse, Mode=TwoWay}"
                   IsItemClickEnabled="True"
                   SelectionMode="Single"
                   Visibility="{x:Bind ViewModel.HasTables, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
@@ -134,7 +134,7 @@
                     </GridView.ItemContainerStyle>
 
                     <GridView.ItemTemplate>
-                        <DataTemplate x:DataType="models:TableDto">
+                        <DataTemplate x:DataType="models:TableResponse">
                             <Grid>
                                 <StackPanel Spacing="4" VerticalAlignment="Center">
                                     <StackPanel

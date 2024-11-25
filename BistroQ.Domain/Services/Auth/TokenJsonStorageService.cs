@@ -17,14 +17,14 @@ public class TokenJsonStorageService : ITokenStorageService
         _fileName = "tokens.json";
     }
 
-    public Task SaveTokensAsync(LoginResult authResult)
+    public Task SaveTokensAsync(LoginResponseDto authResponseDto)
     {
         var tokens = new Dictionary<string, string>
         {
-            { "AccessToken", authResult.AccessToken },
-            { "RefreshToken", authResult.RefreshToken },
-            { "UserId", authResult.UserId },
-            { "Role", authResult.Role }
+            { "AccessToken", authResponseDto.AccessToken },
+            { "RefreshToken", authResponseDto.RefreshToken },
+            { "UserId", authResponseDto.UserId },
+            { "Role", authResponseDto.Role }
         };
 
         _fileService.Save(_folderPath, _fileName, tokens);

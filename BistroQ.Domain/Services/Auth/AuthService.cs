@@ -23,7 +23,7 @@ public class AuthService : IAuthService
 
     public async Task<(bool Success, string Message)> LoginAsync(string username, string password)
     {
-        var response = await _apiClient.PostAsync<LoginResult>("api/auth/login", new { username, password });
+        var response = await _apiClient.PostAsync<LoginResponseDto>("api/auth/login", new { username, password });
 
         if (response.Success)
         {
@@ -75,7 +75,7 @@ public class AuthService : IAuthService
     {
         var (refreshToken, userId) = await _tokenStorageService.GetRefreshToken();
 
-        var response = await _apiClient.PostAsync<RefreshResult>("api/Auth/refresh", new { RefreshToken = refreshToken, UserId = userId });
+        var response = await _apiClient.PostAsync<RefreshTokenResponse>("api/Auth/refresh", new { RefreshToken = refreshToken, UserId = userId });
 
         if (response.Success)
         {

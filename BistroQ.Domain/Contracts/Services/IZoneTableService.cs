@@ -5,12 +5,12 @@ namespace BistroQ.Domain.Contracts.Services;
 
 public interface ITableDataService
 {
-    Task<PaginationResponseDto<IEnumerable<TableDto>>> GetGridDataAsync(TableCollectionQueryParams query);
+    Task<PaginationResponse<IEnumerable<TableResponse>>> GetGridDataAsync(TableCollectionQueryParams query);
 
-    Task<TableDto> GetDataTableAsync(int tableId);
-    Task<ApiResponse<TableDto>> CreateTableAsync(CreateTableRequestDto request);
-    Task<ApiResponse<TableDto>> UpdateTableAsync(int zoneId, UpdateTableRequestDto request);
+    Task<TableResponse> GetDataTableAsync(int tableId);
+    Task<ApiResponse<TableResponse>> CreateTableAsync(CreateTableRequest request);
+    Task<ApiResponse<TableResponse>> UpdateTableAsync(int zoneId, UpdateTableRequest request);
     Task<ApiResponse<object>> DeleteTableAsync(int zoneId);
 
-    Task<IEnumerable<TableDto>> GetTablesByCashierAsync(int zoneId, string type);
+    Task<IEnumerable<TableResponse>> GetTablesByCashierAsync(int zoneId, string type);
 }

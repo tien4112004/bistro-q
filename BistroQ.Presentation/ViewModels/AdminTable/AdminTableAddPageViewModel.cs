@@ -10,7 +10,7 @@ namespace BistroQ.Presentation.ViewModels.AdminTable;
 public partial class AdminTableAddPageViewModel : ObservableRecipient
 {
     [ObservableProperty]
-    private CreateTableRequestDto request;
+    private CreateTableRequest request;
     public ObservableCollection<ZoneDto> Zones;
 
     private readonly ITableDataService _tableDataServic;
@@ -18,7 +18,7 @@ public partial class AdminTableAddPageViewModel : ObservableRecipient
 
     public AdminTableAddPageViewModel(ITableDataService tableDataService, IZoneDataService zoneDataService)
     {
-        Request = new CreateTableRequestDto();
+        Request = new CreateTableRequest();
         Zones = new ObservableCollection<ZoneDto>();
         _tableDataServic = tableDataService;
         _zoneDataService = zoneDataService;
@@ -28,7 +28,7 @@ public partial class AdminTableAddPageViewModel : ObservableRecipient
     {
     }
 
-    public async Task<ApiResponse<TableDto>> AddTable()
+    public async Task<ApiResponse<TableResponse>> AddTable()
     {
         var allZoneList = await _zoneDataService.GetGridDataAsync(new Domain.Dtos.Zones.ZoneCollectionQueryParams
         {

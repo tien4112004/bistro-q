@@ -5,10 +5,10 @@ namespace BistroQ.Domain.Contracts.Services;
 
 public interface IZoneDataService
 {
-    Task<PaginationResponseDto<IEnumerable<ZoneDto>>> GetGridDataAsync(ZoneCollectionQueryParams query);
-    Task<ApiResponse<ZoneDto>> CreateZoneAsync(CreateZoneRequestDto request);
-    Task<ApiResponse<ZoneDto>> UpdateZoneAsync(int zoneId, UpdateZoneRequestDto request);
+    Task<PaginationResponse<IEnumerable<ZoneResponse>>> GetGridDataAsync(ZoneCollectionQueryParams query);
+    Task<ApiResponse<ZoneResponse>> CreateZoneAsync(CreateZoneRequest request);
+    Task<ApiResponse<ZoneResponse>> UpdateZoneAsync(int zoneId, UpdateZoneRequest request);
     Task<ApiResponse<object>> DeleteZoneAsync(int zoneId);
-    Task<PaginationResponseDto<IEnumerable<ZoneDto>>> GetZonesAsync(ZoneCollectionQueryParams query);
-    Task<ZoneDto> GetZoneByIdAsync(int zoneId);
+    Task<PaginationResponse<IEnumerable<ZoneResponse>>> GetZonesAsync(ZoneCollectionQueryParams query);
+    Task<ZoneResponse> GetZoneByIdAsync(int zoneId);
 }

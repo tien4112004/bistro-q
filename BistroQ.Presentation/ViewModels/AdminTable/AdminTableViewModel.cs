@@ -23,10 +23,10 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
     [ObservableProperty]
     [NotifyCanExecuteChangedFor("EditCommand")]
     [NotifyCanExecuteChangedFor("DeleteCommand")]
-    private TableDto? _selectedTable;
+    private TableResponse? _selectedTable;
 
     [ObservableProperty]
-    private ObservableCollection<TableDto> _source = new();
+    private ObservableCollection<TableResponse> _source = new();
 
     [ObservableProperty]
     private Pagination _pagination;
@@ -97,7 +97,7 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
 
             var result = await _adminTableService.GetTablesAsync(_query);
 
-            Source = new ObservableCollection<TableDto>(result.Data);
+            Source = new ObservableCollection<TableResponse>(result.Data);
             _pagination.TotalItems = result.TotalItems;
             _pagination.TotalPages = result.TotalPages;
             _pagination.CurrentPage = result.CurrentPage;

@@ -8,13 +8,13 @@ namespace BistroQ.Presentation.ViewModels.AdminZone;
 public partial class AdminZoneAddPageViewModel : ObservableRecipient
 {
     [ObservableProperty]
-    private CreateZoneRequestDto request;
+    private CreateZoneRequest request;
 
     private readonly IZoneDataService _zoneDataService;
 
     public AdminZoneAddPageViewModel(IZoneDataService zoneDataService)
     {
-        Request = new CreateZoneRequestDto();
+        Request = new CreateZoneRequest();
         _zoneDataService = zoneDataService;
     }
 

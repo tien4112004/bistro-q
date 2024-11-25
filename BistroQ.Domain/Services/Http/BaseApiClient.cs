@@ -101,14 +101,14 @@ public class BaseApiClient : IBaseApiClient
         }
     }
 
-    public async Task<PaginationResponseDto<T>> GetCollectionAsync<T>(string url, object queryParams = null) where T : class
+    public async Task<PaginationResponse<T>> GetCollectionAsync<T>(string url, object queryParams = null) where T : class
     {
         var finalUrl = BuildUrlWithQueryParams(url, queryParams);
         var response = await _httpClient.GetAsync(finalUrl);
         var resultContentString = await response.Content.ReadAsStringAsync();
         try
         {
-            var res = JsonConvert.DeserializeObject<PaginationResponseDto<T>>(resultContentString);
+            var res = JsonConvert.DeserializeObject<PaginationResponse<T>>(resultContentString);
             if (res == null)
             {
                 return null;

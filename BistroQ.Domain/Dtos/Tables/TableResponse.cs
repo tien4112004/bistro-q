@@ -1,5 +1,5 @@
 namespace BistroQ.Domain.Dtos.Tables;
-public class TableDto
+public class TableResponse
 {
     public int? TableId { get; set; }
 

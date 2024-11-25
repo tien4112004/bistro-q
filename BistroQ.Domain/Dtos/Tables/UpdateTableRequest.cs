@@ -1,5 +1,5 @@
 namespace BistroQ.Domain.Dtos.Tables;
-public class UpdateTableRequestDto
+public class UpdateTableRequest
 {
     public int? ZoneId { get; set; }
     

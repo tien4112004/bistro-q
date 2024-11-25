@@ -1,6 +1,6 @@
 namespace BistroQ.Domain.Dtos.Tables;
 
-public class CreateTableRequestDto
+public class CreateTableRequest
 {
     public int ZoneId { get; set; }
     public int? SeatsCount { get; set; }

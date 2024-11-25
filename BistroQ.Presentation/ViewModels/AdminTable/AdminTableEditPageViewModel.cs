@@ -10,9 +10,9 @@ namespace BistroQ.Presentation.ViewModels.AdminTable;
 
 public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigationAware
 {
-    public TableDto Table { get; set; }
+    public TableResponse TableResponse { get; set; }
     [ObservableProperty]
-    private UpdateTableRequestDto _request;
+    private UpdateTableRequest _request;
     public AdminTableEditPageViewModel ViewModel;
     public ObservableCollection<ZoneDto> Zones;
 
@@ -23,7 +23,7 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
     {
         _tableDataService = tableDataService;
         _zoneDataService = zoneDataService;
-        Request = new UpdateTableRequestDto();
+        Request = new UpdateTableRequest();
         Zones = new ObservableCollection<ZoneDto>();
 
         LoadZonesAsync().ConfigureAwait(false);
@@ -33,7 +33,7 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
     {
     }
 
-    public async Task<ApiResponse<TableDto>> UpdateTableAsync()
+    public async Task<ApiResponse<TableResponse>> UpdateTableAsync()
     {
         if (Request.ZoneId == null)
         {
@@ -45,17 +45,17 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
             throw new InvalidDataException("Seats count must be greater than 0.");
         }
 
-        var result = await _tableDataService.UpdateTableAsync(Table.TableId.Value, Request);
+        var result = await _tableDataService.UpdateTableAsync(TableResponse.TableId.Value, Request);
         return result;
     }
 
     public void OnNavigatedTo(object parameter)
     {
-        if (parameter is TableDto selectedTable)
+        if (parameter is TableResponse selectedTable)
         {
-            Table = selectedTable;
-            Request.SeatsCount = Table?.SeatsCount ?? null;
-            Request.ZoneId = Table?.ZoneId ?? null;
+            TableResponse = selectedTable;
+            Request.SeatsCount = TableResponse?.SeatsCount ?? null;
+            Request.ZoneId = TableResponse?.ZoneId ?? null;
         }
     }
 

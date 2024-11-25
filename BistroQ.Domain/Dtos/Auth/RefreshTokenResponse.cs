@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace BistroQ.Domain.Dtos;
 
-public class LoginResult
+public class RefreshTokenResponse
 {
     public string AccessToken { get; set; }
-    public string RefreshToken { get; set; }
-    public string UserId { get; set; }
-    public string Role { get; set; }
 }
