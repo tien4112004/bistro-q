@@ -116,9 +116,10 @@ public partial class App : Application
 
             services.AddScoped<IZoneDataService, ZoneDataService>();
             services.AddScoped<ITableDataService, TableDataService>();
-            services.AddScoped<IAdminZoneService, AdminZoneDialogService>();
+            services.AddScoped<IAdminZoneDialogService, AdminZoneDialogDialogService>();
+            services.AddScoped<IAdminTableDialogService, AdminTableDialogService>();
             services.AddScoped<IOrderDataService, OrderDataService>();
-            services.AddScoped<IAdminTableService, AdminTableService>();
+            
             // Client V&VM
             services.AddTransient<HomePageViewModel>();
             services.AddTransient<HomePage>();

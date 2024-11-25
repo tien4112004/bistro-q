@@ -9,7 +9,7 @@ public interface IZoneDataService
     Task<PaginationResponse<IEnumerable<Zone>>> GetGridDataAsync(ZoneCollectionQueryParams query);
     Task<Zone> CreateZoneAsync(CreateZoneRequest request);
     Task<Zone> UpdateZoneAsync(int zoneId, UpdateZoneRequest request);
-    Task DeleteZoneAsync(int zoneId);
+    Task<bool> DeleteZoneAsync(int zoneId);
     Task<PaginationResponse<IEnumerable<Zone>>> GetZonesAsync(ZoneCollectionQueryParams query);
     Task<Zone> GetZoneByIdAsync(int zoneId);
 }

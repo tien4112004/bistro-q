@@ -1,6 +1,7 @@
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos.Zones;
 using BistroQ.Presentation.ViewModels.AdminZone;
+using BistroQ.Presentation.ViewModels.Models;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
@@ -18,15 +19,14 @@ public sealed partial class AdminZoneEditPage : Page
 
     public AdminZoneEditPage()
     {
-        var zoneDataService = App.GetService<IZoneDataService>();
-        ViewModel = new AdminZoneEditPageViewModel(zoneDataService);
+        ViewModel = App.GetService<AdminZoneEditPageViewModel>();
         this.DataContext = ViewModel;
         this.InitializeComponent();
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        var zoneDto = e.Parameter as ZoneDto;
+        var zoneDto = e.Parameter as ZoneViewModel;
         if (zoneDto != null)
         {
             ViewModel.Zone = zoneDto;
@@ -41,15 +41,13 @@ public sealed partial class AdminZoneEditPage : Page
         {
             var result = await ViewModel.UpdateZoneAsync();
 
-            if (result.Success)
+            await new ContentDialog()
             {
-                await new ContentDialog()
-                {
-                    XamlRoot = this.Content.XamlRoot,
-                    Title = "Update zone successfully",
-                    CloseButtonText = "OK"
-                }.ShowAsync();
-            }
+                XamlRoot = this.Content.XamlRoot,
+                Title = "Update zone successfully",
+                CloseButtonText = "OK"
+            }.ShowAsync();
+            
             Frame.GoBack();
         }
         catch (Exception ex)

@@ -17,12 +17,12 @@ public sealed partial class CashierTablePage : Page
         ViewModel.SelectZoneCommand.Execute(e);
     }
 
-    private void GridControl_TableSelectionChanged(object sender, string? e)
+    private void GridControl_TableSelectionChanged(object sender, int? e)
     {
         ViewModel.SelectTableCommand.Execute(e);
     }
 
-    private void TableOrderDetailsControl_CheckoutRequested(object sender, string? e)
+    private void TableOrderDetailsControl_CheckoutRequested(object sender, int? e)
     {
         ViewModel.CheckoutCommand.Execute(e);
     }

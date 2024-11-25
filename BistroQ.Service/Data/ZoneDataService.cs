@@ -52,14 +52,15 @@ namespace BistroQ.Service.Data
             throw new Exception(response.Message);
         }
 
-        public async Task DeleteZoneAsync(int zoneId)
+        public async Task<bool> DeleteZoneAsync(int zoneId)
         {
             var response = await _apiClient.DeleteAsync<object>($"api/admin/zone/{zoneId}", null);
-            
             if (!response.Success)
             {
                 throw new Exception(response.Message);
             }
+            
+            return true;
         }
 
         public async Task<PaginationResponse<IEnumerable<Zone>>> GetZonesAsync(ZoneCollectionQueryParams query = null)

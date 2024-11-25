@@ -1,4 +1,5 @@
 using BistroQ.Presentation.ViewModels;
+using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Controls;
 
 namespace BistroQ.Presentation.Views;
@@ -33,5 +34,10 @@ public sealed partial class AdminZonePage : Page
     private void Control2_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
     {
         sender.Text = args.SelectedItem.ToString();
+    }
+
+    private void ViewModel_AdminZoneDataGrid_Sorting(object? sender, DataGridColumnEventArgs e)
+    {
+        ViewModel.AdminZoneDataGrid_Sorting(sender, e);
     }
 }

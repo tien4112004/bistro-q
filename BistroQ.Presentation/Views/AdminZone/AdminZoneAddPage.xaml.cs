@@ -12,7 +12,7 @@ namespace BistroQ.Presentation.Views.AdminZone;
 /// </summary>
 public sealed partial class AdminZoneAddPage : Page
 {
-    public AdminZoneAddPageViewModel ViewModel { get; set; } = new AdminZoneAddPageViewModel();
+    public AdminZoneAddPageViewModel ViewModel { get; set; }
 
     public AdminZoneAddPage()
     {
@@ -27,16 +27,14 @@ public sealed partial class AdminZoneAddPage : Page
         {
             var result = await ViewModel.AddZone();
 
-            if (result.Success)
+            await new ContentDialog()
             {
-                await new ContentDialog()
-                {
-                    XamlRoot = this.Content.XamlRoot,
-                    Title = "Add new zone successfully",
-                    Content = "Successfully added zone: " + ViewModel.Request.Name,
-                    CloseButtonText = "OK"
-                }.ShowAsync();
-            }
+                XamlRoot = this.Content.XamlRoot,
+                Title = "Add new zone successfully",
+                Content = "Successfully added zone: " + ViewModel.Request.Name,
+                CloseButtonText = "OK"
+            }.ShowAsync();
+            
             Frame.GoBack();
         }
         catch (Exception ex)

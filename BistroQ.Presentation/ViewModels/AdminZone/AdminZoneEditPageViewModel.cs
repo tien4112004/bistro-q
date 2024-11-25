@@ -1,40 +1,44 @@
-﻿using BistroQ.Domain.Contracts.Services;
+﻿using AutoMapper;
+using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos;
 using BistroQ.Domain.Dtos.Zones;
 using BistroQ.Presentation.Contracts.ViewModels;
+using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BistroQ.Presentation.ViewModels.AdminZone;
 
 public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigationAware
 {
-    public ZoneDto Zone { get; set; }
+    public ZoneViewModel Zone { get; set; }
     [ObservableProperty]
     private UpdateZoneRequest request;
     public AdminZoneEditPageViewModel ViewModel;
 
     private readonly IZoneDataService _zoneDataService;
+    private readonly IMapper _mapper;
 
-    public AdminZoneEditPageViewModel(IZoneDataService zoneDataService)
+    public AdminZoneEditPageViewModel(IZoneDataService zoneDataService, IMapper mapper)
     {
         _zoneDataService = zoneDataService;
         Request = new UpdateZoneRequest();
+        _mapper = mapper;
     }
 
-    public async Task<ApiResponse<ZoneDto>> UpdateZoneAsync()
+    public async Task<ZoneViewModel> UpdateZoneAsync()
     {
         if (string.IsNullOrEmpty(Request.Name))
         {
             throw new InvalidDataException("Name cannot be null");
         }
 
-        var result = await _zoneDataService.UpdateZoneAsync(Zone.ZoneId.Value, Request);
-        return result;
+        var zone = await _zoneDataService.UpdateZoneAsync(Zone.ZoneId.Value, Request);
+        return _mapper.Map<ZoneViewModel>(zone);
     }
 
     public void OnNavigatedTo(object parameter)
     {
-        if (parameter is ZoneDto selectedZone)
+        if (parameter is ZoneViewModel selectedZone)
         {
             Zone = selectedZone;
             Request.Name = Zone?.Name ?? string.Empty;

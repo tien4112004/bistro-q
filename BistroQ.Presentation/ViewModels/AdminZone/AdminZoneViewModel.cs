@@ -11,22 +11,27 @@ using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using AutoMapper;
+using BistroQ.Domain.Contracts.Services;
+using BistroQ.Presentation.ViewModels.Models;
 
 namespace BistroQ.Presentation.ViewModels;
 
 public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware, IDisposable
 {
-    private readonly IAdminZoneService _adminZoneService;
+    private readonly IAdminZoneDialogService _adminZoneDialogService;
     private readonly INavigationService _navigationService;
+    private readonly IZoneDataService _zoneDataService;
+    private readonly IMapper _mapper;
     private bool _isLoading;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor("EditCommand")]
     [NotifyCanExecuteChangedFor("DeleteCommand")]
-    private ZoneDto? _selectedZone;
+    private ZoneViewModel? _selectedZone;
 
     [ObservableProperty]
-    private ObservableCollection<ZoneDto> _source = new();
+    private ObservableCollection<ZoneViewModel> _source = new();
 
     [ObservableProperty]
     private Pagination _pagination;
@@ -40,10 +45,16 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
     public ICommand SortCommand { get; }
     public ICommand SearchCommand { get; }
 
-    public AdminZoneViewModel(IAdminZoneService adminZoneService, INavigationService navigationService)
+    public AdminZoneViewModel(
+        IAdminZoneDialogService adminZoneDialogService, 
+        INavigationService navigationService,
+        IMapper mapper,
+        IZoneDataService zoneDataService)
     {
-        _adminZoneService = adminZoneService;
+        _adminZoneDialogService = adminZoneDialogService;
         _navigationService = navigationService;
+        _mapper = mapper;
+        _zoneDataService = zoneDataService;
         _pagination = new Pagination
         {
             TotalItems = 0,
@@ -95,16 +106,16 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
                 Size = _pagination.PageSize
             };
 
-            var result = await _adminZoneService.GetZonesAsync(_query);
+            var result = await _zoneDataService.GetZonesAsync(_query);
 
-            Source = new ObservableCollection<ZoneDto>(result.Data);
+            Source = new ObservableCollection<ZoneViewModel>(_mapper.Map<IEnumerable<ZoneViewModel>>(result.Data));
             _pagination.TotalItems = result.TotalItems;
             _pagination.TotalPages = result.TotalPages;
             _pagination.CurrentPage = result.CurrentPage;
         }
-        catch (ServiceException ex)
+        catch (Exception ex)
         {
-            await _adminZoneService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
+            await _adminZoneDialogService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
         }
         finally
         {
@@ -135,25 +146,25 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         try
         {
             var xamlRoot = App.MainWindow.Content.XamlRoot;
-            var result = await _adminZoneService.ShowConfirmDeleteDialog(xamlRoot);
+            var result = await _adminZoneDialogService.ShowConfirmDeleteDialog(xamlRoot);
             if (result != ContentDialogResult.Primary) return;
 
-            var success = await _adminZoneService.DeleteZoneAsync(SelectedZone.ZoneId.Value);
+            var success = await _zoneDataService.DeleteZoneAsync(SelectedZone.ZoneId.Value);
             if (success)
             {
-                await _adminZoneService.ShowSuccessDialog("Zone deleted successfully.", xamlRoot);
+                await _adminZoneDialogService.ShowSuccessDialog("Zone deleted successfully.", xamlRoot);
                 Source.Remove(SelectedZone);
                 SelectedZone = null;
                 await LoadDataAsync();
             }
             else
             {
-                await _adminZoneService.ShowErrorDialog("Failed to delete zone.", xamlRoot);
+                await _adminZoneDialogService.ShowErrorDialog("Failed to delete zone.", xamlRoot);
             }
         }
-        catch (ServiceException ex)
+        catch (Exception ex)
         {
-            await _adminZoneService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
+            await _adminZoneDialogService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
         }
     }
 

@@ -1,6 +1,6 @@
-using BistroQ.Domain.Dtos.Zones;
-using BistroQ.Presentation.Models;
+﻿using BistroQ.Presentation.Models;
 using BistroQ.Presentation.ViewModels.CashierTable;
+using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.WinUI.Controls;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -32,7 +32,7 @@ public sealed partial class ZoneOverviewControl : UserControl
 
     private void OnZoneClicked(object sender, ItemClickEventArgs e)
     {
-        if (e.ClickedItem is ZoneDto zone)
+        if (e.ClickedItem is ZoneViewModel zone)
         {
             _state.ZoneId = zone.ZoneId;
             ZoneSelectionChanged?.Invoke(this, _state);
