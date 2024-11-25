@@ -5,13 +5,13 @@ namespace BistroQ.Presentation.ViewModels.Models;
 public partial class TableViewModel : ObservableObject
 {
     [ObservableProperty] 
-    private string? _tableId;
+    private int? _tableId;
 
     [ObservableProperty] 
     private string? _name;
 
     [ObservableProperty] 
-    private string? _zoneId;
+    private int? _zoneId;
     
     [ObservableProperty]
     private int? _seatsCount;

@@ -3,23 +3,27 @@ using BistroQ.Domain.Dtos.Tables;
 using BistroQ.Presentation.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
+using AutoMapper;
+using BistroQ.Presentation.ViewModels.Models;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
 
 public partial class ZoneTableGridViewModel : ObservableObject
 {
     [ObservableProperty]
-    private ObservableCollection<TableResponse> _tables;
+    private ObservableCollection<TableViewModel> _tables;
 
     [ObservableProperty]
-    private TableResponse _selectedTableResponse;
+    private TableViewModel _selectedTableResponse;
 
 
     private readonly ITableDataService _tableDataService;
+    private readonly IMapper _mapper;
 
-    public ZoneTableGridViewModel(ITableDataService tableDataService)
+    public ZoneTableGridViewModel(ITableDataService tableDataService, IMapper mapper)
     {
         _tableDataService = tableDataService;
+        _mapper = mapper;
     }
 
     [ObservableProperty]
@@ -37,11 +41,12 @@ public partial class ZoneTableGridViewModel : ObservableObject
             return;
         }
 
-        var tables = await TaskHelper.WithMinimumDelay(
+        var tablesData = await TaskHelper.WithMinimumDelay(
             _tableDataService.GetTablesByCashierAsync(zoneId.Value, type),
             200);
 
-        Tables = new ObservableCollection<TableResponse>(tables);
+        var tables = _mapper.Map<IEnumerable<TableViewModel>>(tablesData);
+        Tables = new ObservableCollection<TableViewModel>(tables);
         if (Tables.Any())
         {
             SelectedTableResponse = Tables.First();

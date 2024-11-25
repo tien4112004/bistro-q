@@ -11,22 +11,27 @@ using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using AutoMapper;
+using BistroQ.Domain.Contracts.Services;
+using BistroQ.Presentation.ViewModels.Models;
 
 namespace BistroQ.Presentation.ViewModels;
 
 public partial class AdminTableViewModel : ObservableRecipient, INavigationAware, IDisposable
 {
-    private readonly IAdminTableService _adminTableService;
+    private readonly IAdminTableDialogService _adminTableDialogService;
+    private readonly IMapper _mapper;
+    private readonly ITableDataService _tableDataService;
     private readonly INavigationService _navigationService;
     private bool _isLoading;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor("EditCommand")]
     [NotifyCanExecuteChangedFor("DeleteCommand")]
-    private TableResponse? _selectedTable;
+    private TableViewModel? _selectedTable;
 
     [ObservableProperty]
-    private ObservableCollection<TableResponse> _source = new();
+    private ObservableCollection<TableViewModel> _source = new();
 
     [ObservableProperty]
     private Pagination _pagination;
@@ -40,10 +45,16 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
     public ICommand SortCommand { get; }
     public ICommand SearchCommand { get; }
 
-    public AdminTableViewModel(IAdminTableService adminTableService, INavigationService navigationService)
+    public AdminTableViewModel(
+        INavigationService navigationService, 
+        IAdminTableDialogService adminTableDialogService, 
+        ITableDataService tableDataService,
+        IMapper mapper)
     {
-        _adminTableService = adminTableService;
         _navigationService = navigationService;
+        _adminTableDialogService = adminTableDialogService;
+        _tableDataService = tableDataService;
+        _mapper = mapper;
         _pagination = new Pagination
         {
             TotalItems = 0,
@@ -95,16 +106,17 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
                 Size = _pagination.PageSize
             };
 
-            var result = await _adminTableService.GetTablesAsync(_query);
+            var result = await _tableDataService.GetGridDataAsync(_query);
 
-            Source = new ObservableCollection<TableResponse>(result.Data);
+            var tables = _mapper.Map<IEnumerable<TableViewModel>>(result.Data);
+            Source = new ObservableCollection<TableViewModel>(tables);
             _pagination.TotalItems = result.TotalItems;
             _pagination.TotalPages = result.TotalPages;
             _pagination.CurrentPage = result.CurrentPage;
         }
-        catch (ServiceException ex)
+        catch (Exception ex)
         {
-            await _adminTableService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
+            await _adminTableDialogService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
         }
         finally
         {
@@ -135,25 +147,25 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
         try
         {
             var xamlRoot = App.MainWindow.Content.XamlRoot;
-            var result = await _adminTableService.ShowConfirmDeleteDialog(xamlRoot);
+            var result = await _adminTableDialogService.ShowConfirmDeleteDialog(xamlRoot);
             if (result != ContentDialogResult.Primary) return;
 
-            var success = await _adminTableService.DeleteTableAsync(SelectedTable.TableId.Value);
+            var success = await _tableDataService.DeleteTableAsync(SelectedTable.TableId.Value);
             if (success)
             {
-                await _adminTableService.ShowSuccessDialog("Table deleted successfully.", xamlRoot);
+                await _adminTableDialogService.ShowSuccessDialog("Table deleted successfully.", xamlRoot);
                 Source.Remove(SelectedTable);
                 SelectedTable = null;
                 await LoadDataAsync();
             }
             else
             {
-                await _adminTableService.ShowErrorDialog("Failed to delete table.", xamlRoot);
+                await _adminTableDialogService.ShowErrorDialog("Failed to delete table.", xamlRoot);
             }
         }
-        catch (ServiceException ex)
+        catch (Exception ex)
         {
-            await _adminTableService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
+            await _adminTableDialogService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
         }
     }
 

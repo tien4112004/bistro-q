@@ -18,7 +18,7 @@
         <StackPanel Orientation="Vertical" Background="Transparent" HorizontalAlignment="Left">
             <TextBox x:Name="TableIdTextBox"
                      x:Uid="TableIdTextBox"
-                     Text="{x:Bind ViewModel.TableResponse.TableId, Mode=OneTime}"
+                     Text="{x:Bind ViewModel.Table.TableId, Mode=OneTime}"
                      IsReadOnly="True"
                      IsEnabled="False"
                      Width="300"
@@ -28,7 +28,7 @@
                       ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="ZoneId"
-                      SelectedValue="{x:Bind ViewModel.TableResponse.ZoneId, Mode=TwoWay}"
+                      SelectedValue="{x:Bind ViewModel.Table.ZoneId, Mode=TwoWay}"
                       Width="300" />
             <TextBox x:Name="TableEditPage_SeatsCountTextBox"
                         x:Uid="TableEditPage_SeatsCountTextBox"

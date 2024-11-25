@@ -5,26 +5,32 @@ using BistroQ.Domain.Dtos.Zones;
 using BistroQ.Presentation.Contracts.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
+using AutoMapper;
+using BistroQ.Presentation.ViewModels.Models;
 
 namespace BistroQ.Presentation.ViewModels.AdminTable;
 
 public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigationAware
 {
-    public TableResponse TableResponse { get; set; }
+    public TableViewModel Table { get; set; }
     [ObservableProperty]
     private UpdateTableRequest _request;
     public AdminTableEditPageViewModel ViewModel;
-    public ObservableCollection<ZoneDto> Zones;
+    public ObservableCollection<ZoneViewModel> Zones;
 
     private readonly ITableDataService _tableDataService;
     private readonly IZoneDataService _zoneDataService;
+    private readonly IMapper _mapper;
 
-    public AdminTableEditPageViewModel(ITableDataService tableDataService, IZoneDataService zoneDataService)
+    public AdminTableEditPageViewModel(ITableDataService tableDataService, 
+        IZoneDataService zoneDataService, 
+        IMapper mapper)
     {
         _tableDataService = tableDataService;
         _zoneDataService = zoneDataService;
+        _mapper = mapper;
         Request = new UpdateTableRequest();
-        Zones = new ObservableCollection<ZoneDto>();
+        Zones = new ObservableCollection<ZoneViewModel>();
 
         LoadZonesAsync().ConfigureAwait(false);
     }
@@ -33,7 +39,7 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
     {
     }
 
-    public async Task<ApiResponse<TableResponse>> UpdateTableAsync()
+    public async Task<TableViewModel> UpdateTableAsync()
     {
         if (Request.ZoneId == null)
         {
@@ -45,17 +51,17 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
             throw new InvalidDataException("Seats count must be greater than 0.");
         }
 
-        var result = await _tableDataService.UpdateTableAsync(TableResponse.TableId.Value, Request);
-        return result;
+        var table = await _tableDataService.UpdateTableAsync(Table.TableId.Value, Request);
+        return _mapper.Map<TableViewModel>(table);
     }
 
     public void OnNavigatedTo(object parameter)
     {
-        if (parameter is TableResponse selectedTable)
+        if (parameter is TableViewModel selectedTable)
         {
-            TableResponse = selectedTable;
-            Request.SeatsCount = TableResponse?.SeatsCount ?? null;
-            Request.ZoneId = TableResponse?.ZoneId ?? null;
+            Table = selectedTable;
+            Request.SeatsCount = Table?.SeatsCount ?? null;
+            Request.ZoneId = Table?.ZoneId ?? null;
         }
     }
 
@@ -66,7 +72,7 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
             Size = 1000
         });
         Zones.Clear();
-        var zones = response.Data;
+        var zones = _mapper.Map<IEnumerable<ZoneViewModel>>(response.Data);
         foreach (var zone in zones)
         {
             Zones.Add(zone);

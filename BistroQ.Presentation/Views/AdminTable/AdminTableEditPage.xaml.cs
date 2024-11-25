@@ -1,6 +1,7 @@
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos.Tables;
 using BistroQ.Presentation.ViewModels.AdminTable;
+using BistroQ.Presentation.ViewModels.Models;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
@@ -19,18 +20,16 @@ public sealed partial class AdminTableEditPage : Page
     public AdminTableEditPage()
     {
         InitializeComponent();
-        var tableDataService = App.GetService<ITableDataService>();
-        var zoneDataService = App.GetService<IZoneDataService>();
-        ViewModel = new AdminTableEditPageViewModel(tableDataService, zoneDataService);
+        ViewModel = App.GetService<AdminTableEditPageViewModel>();
         this.DataContext = ViewModel;
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        var tableDto = e.Parameter as TableResponse;
+        var tableDto = e.Parameter as TableViewModel;
         if (tableDto != null)
         {
-            ViewModel.TableResponse = tableDto;
+            ViewModel.Table = tableDto;
         }
 
         base.OnNavigatedTo(e);
@@ -42,15 +41,13 @@ public sealed partial class AdminTableEditPage : Page
         {
             var result = await ViewModel.UpdateTableAsync();
 
-            if (result.Success)
+            await new ContentDialog()
             {
-                await new ContentDialog()
-                {
-                    XamlRoot = this.Content.XamlRoot,
-                    Title = "Update zone successfully",
-                    CloseButtonText = "OK"
-                }.ShowAsync();
-            }
+                XamlRoot = this.Content.XamlRoot,
+                Title = "Update zone successfully",
+                CloseButtonText = "OK"
+            }.ShowAsync();
+            
             Frame.GoBack();
         }
         catch (Exception ex)

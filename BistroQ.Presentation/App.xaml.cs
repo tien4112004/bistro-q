@@ -116,7 +116,7 @@ public partial class App : Application
 
             services.AddScoped<IZoneDataService, ZoneDataService>();
             services.AddScoped<ITableDataService, TableDataService>();
-            services.AddScoped<IAdminZoneService, AdminZoneService>();
+            services.AddScoped<IAdminZoneService, AdminZoneDialogService>();
             services.AddScoped<IOrderDataService, OrderDataService>();
             services.AddScoped<IAdminTableService, AdminTableService>();
             // Client V&VM

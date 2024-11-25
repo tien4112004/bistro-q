@@ -59,7 +59,8 @@
             ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
             SelectedItem="{x:Bind ViewModel.SelectedTable, Mode=TwoWay}"
             Grid.Row="1"
-            Sorting="ViewModel.AdminTableDataGrid_Sorting">
+            Sorting="ViewModel_AdminTableDataGrid_Sorting"
+            >
             <controls:DataGrid.Resources>
                 <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
             </controls:DataGrid.Resources>

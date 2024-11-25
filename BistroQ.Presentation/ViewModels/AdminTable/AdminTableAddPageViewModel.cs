@@ -4,6 +4,8 @@ using BistroQ.Domain.Dtos.Tables;
 using BistroQ.Domain.Dtos.Zones;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
+using AutoMapper;
+using BistroQ.Presentation.ViewModels.Models;
 
 namespace BistroQ.Presentation.ViewModels.AdminTable;
 
@@ -11,24 +13,22 @@ public partial class AdminTableAddPageViewModel : ObservableRecipient
 {
     [ObservableProperty]
     private CreateTableRequest request;
-    public ObservableCollection<ZoneDto> Zones;
+    public ObservableCollection<ZoneViewModel> Zones;
 
-    private readonly ITableDataService _tableDataServic;
+    private readonly ITableDataService _tableDataService;
     private readonly IZoneDataService _zoneDataService;
+    private readonly IMapper _mapper;
 
-    public AdminTableAddPageViewModel(ITableDataService tableDataService, IZoneDataService zoneDataService)
+    public AdminTableAddPageViewModel(ITableDataService tableDataService, IZoneDataService zoneDataService, IMapper mapper)
     {
         Request = new CreateTableRequest();
-        Zones = new ObservableCollection<ZoneDto>();
-        _tableDataServic = tableDataService;
+        Zones = new ObservableCollection<ZoneViewModel>();
+        _tableDataService = tableDataService;
         _zoneDataService = zoneDataService;
+        _mapper = mapper;
     }
 
-    public AdminTableAddPageViewModel()
-    {
-    }
-
-    public async Task<ApiResponse<TableResponse>> AddTable()
+    public async Task<TableViewModel> AddTable()
     {
         var allZoneList = await _zoneDataService.GetGridDataAsync(new Domain.Dtos.Zones.ZoneCollectionQueryParams
         {
@@ -45,8 +45,8 @@ public partial class AdminTableAddPageViewModel : ObservableRecipient
             throw new InvalidDataException("Seats count must be greater than 0.");
         }
 
-        var result = await _tableDataServic.CreateTableAsync(request);
-        return result;
+        var table = await _tableDataService.CreateTableAsync(request);
+        return _mapper.Map<TableViewModel>(table);
     }
 
     public async Task LoadZonesAsync()
@@ -56,7 +56,7 @@ public partial class AdminTableAddPageViewModel : ObservableRecipient
         var zones = response.Data;
         foreach (var zone in zones)
         {
-            Zones.Add(zone);
+            Zones.Add(_mapper.Map<ZoneViewModel>(zone));
         }
     }
 }

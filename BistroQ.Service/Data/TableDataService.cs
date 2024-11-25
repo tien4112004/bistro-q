@@ -62,13 +62,15 @@ public class TableDataService : ITableDataService
         throw new Exception("Failed to update table");
     }
 
-    public async Task DeleteTableAsync(int tableId)
+    public async Task<bool> DeleteTableAsync(int tableId)
     {
         var response = await _apiClient.DeleteAsync<object>($"api/admin/table/{tableId}", null);
         if (!response.Success)
         {
             throw new Exception(response.Message);
         }
+        
+        return true;
     }
 
     public async Task<IEnumerable<Table>> GetTablesByCashierAsync(int zoneId, string type)

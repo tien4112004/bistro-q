@@ -7,43 +7,8 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace BistroQ.Presentation.Services;
 
-public class AdminZoneService : IAdminZoneService
+public class AdminZoneDialogService : IAdminZoneService
 {
-    private readonly IZoneDataService _zoneDataService;
-
-    public AdminZoneService(IZoneDataService zoneDataService)
-    {
-        _zoneDataService = zoneDataService;
-    }
-
-    public async Task<PaginationResponse<IEnumerable<ZoneDto>>> GetZonesAsync(ZoneCollectionQueryParams query)
-    {
-        try
-        {
-            var result = await _zoneDataService.GetGridDataAsync(query);
-            return result;
-        }
-        catch (Exception ex)
-        {
-            // Log the error
-            throw new ServiceException("Failed to retrieve zones.", ex);
-        }
-    }
-
-    public async Task<bool> DeleteZoneAsync(int zoneId)
-    {
-        try
-        {
-            var result = await _zoneDataService.DeleteZoneAsync(zoneId);
-            return result.Success;
-        }
-        catch (Exception ex)
-        {
-            // Log the error
-            throw new ServiceException($"Failed to delete zone with ID {zoneId}.", ex);
-        }
-    }
-
     public async Task<ContentDialogResult> ShowConfirmDeleteDialog(XamlRoot xamlRoot)
     {
         var dialog = new ContentDialog
@@ -81,13 +46,5 @@ public class AdminZoneService : IAdminZoneService
             CloseButtonText = "OK"
         };
         await dialog.ShowAsync();
-    }
-}
-
-public class ServiceException : Exception
-{
-    public ServiceException(string message, Exception? innerException = null)
-        : base(message, innerException)
-    {
     }
 }

@@ -1,7 +1,9 @@
+using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Models.Entities;
 using BistroQ.Presentation.Helpers;
 using BistroQ.Presentation.ViewModels.Commons;
+using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
@@ -9,15 +11,17 @@ namespace BistroQ.Presentation.ViewModels.CashierTable;
 public partial class TableOrderDetailViewModel : ObservableObject
 {
     private readonly IOrderDataService _orderDataService;
+    private readonly IMapper _mapper;
 
-    public TableOrderDetailViewModel(IOrderDataService orderDataService)
+    public TableOrderDetailViewModel(IOrderDataService orderDataService, IMapper mapper)
     {
         _orderDataService = orderDataService;
+        _mapper = mapper;
         Timer = new TimeCounterViewModel();
     }
 
     [ObservableProperty]
-    private Order _order;
+    private OrderViewModel _order;
 
     public TimeCounterViewModel Timer { get; }
 
@@ -38,7 +42,7 @@ public partial class TableOrderDetailViewModel : ObservableObject
             200);
 
         IsLoading = false;
-        Order = order ?? new Order();
+        Order = _mapper.Map<OrderViewModel>(order);
         Timer.SetStartTime(Order?.StartTime ?? DateTime.Now);
         return order;
     }

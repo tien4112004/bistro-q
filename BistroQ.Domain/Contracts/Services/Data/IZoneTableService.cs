@@ -10,7 +10,7 @@ public interface ITableDataService
     Task<Table> GetDataTableAsync(int tableId);
     Task<Table> CreateTableAsync(CreateTableRequest request);
     Task<Table> UpdateTableAsync(int zoneId, UpdateTableRequest request);
-    Task DeleteTableAsync(int zoneId);
+    Task<bool> DeleteTableAsync(int zoneId);
 
     Task<IEnumerable<Table>> GetTablesByCashierAsync(int zoneId, string type);
 }

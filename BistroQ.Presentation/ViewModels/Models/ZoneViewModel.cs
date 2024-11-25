@@ -6,7 +6,7 @@ namespace BistroQ.Presentation.ViewModels.Models;
 public partial class ZoneViewModel : ObservableObject
 {
     [ObservableProperty]
-    private string? _zoneId;
+    private int? _zoneId;
 
     [ObservableProperty]
     private string? _name;

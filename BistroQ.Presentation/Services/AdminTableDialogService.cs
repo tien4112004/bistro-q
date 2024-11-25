@@ -7,43 +7,8 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace BistroQ.Presentation.Services;
 
-public class AdminTableService : IAdminTableService
+public class AdminTableDialogService : IAdminTableDialogService
 {
-    private readonly ITableDataService _zoneDataService;
-
-    public AdminTableService(ITableDataService zoneDataService)
-    {
-        _zoneDataService = zoneDataService;
-    }
-
-    public async Task<PaginationResponse<IEnumerable<TableResponse>>> GetTablesAsync(TableCollectionQueryParams query)
-    {
-        try
-        {
-            var result = await _zoneDataService.GetGridDataAsync(query);
-            return result;
-        }
-        catch (Exception ex)
-        {
-            // Log the error
-            throw new ServiceException("Failed to retrieve zones.", ex);
-        }
-    }
-
-    public async Task<bool> DeleteTableAsync(int zoneId)
-    {
-        try
-        {
-            var result = await _zoneDataService.DeleteTableAsync(zoneId);
-            return result.Success;
-        }
-        catch (Exception ex)
-        {
-            // Log the error
-            throw new ServiceException($"Failed to delete zone with ID {zoneId}.", ex);
-        }
-    }
-
     public async Task<ContentDialogResult> ShowConfirmDeleteDialog(XamlRoot xamlRoot)
     {
         var dialog = new ContentDialog
