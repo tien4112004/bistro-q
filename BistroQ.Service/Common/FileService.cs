@@ -1,10 +1,8 @@
 using System.Text;
-
 using BistroQ.Domain.Contracts.Services;
-
 using Newtonsoft.Json;
 
-namespace BistroQ.Domain.Services;
+namespace BistroQ.Service.Common;
 
 public class FileService : IFileService
 {

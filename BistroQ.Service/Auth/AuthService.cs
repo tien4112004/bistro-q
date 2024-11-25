@@ -2,7 +2,7 @@ using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos;
 using BistroQ.Domain.Models.Exceptions;
 
-namespace BistroQ.Domain.Services.Auth;
+namespace BistroQ.Service.Auth;
 
 /// <summary>
 /// A JSON-based storage service for authentication tokens, implementing the <see cref="ITokenStorageService"/> interface.

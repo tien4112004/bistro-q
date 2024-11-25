@@ -1,7 +1,7 @@
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Models;
 
-namespace BistroQ.Domain.Services;
+namespace BistroQ.Service.Common;
 
 // This class holds sample data used by some generated pages to show how they can be used.
 // TODO: The following classes have been created to display sample data. Delete these files once your app is using real data.
@@ -63,7 +63,7 @@ public class SampleDataService : ISampleDataService
                             new SampleOrderDetail()
                             {
                                 ProductID = 28,
-                                ProductName = "Rössle Sauerkraut",
+                                ProductName = "Rï¿½ssle Sauerkraut",
                                 Quantity = 15,
                                 Discount = 0.25,
                                 QuantityPerUnit = "25 - 825 g cans",
@@ -130,7 +130,7 @@ public class SampleDataService : ISampleDataService
                             new SampleOrderDetail()
                             {
                                 ProductID = 77,
-                                ProductName = "Original Frankfurter grüne Soße",
+                                ProductName = "Original Frankfurter grï¿½ne Soï¿½e",
                                 Quantity = 2,
                                 Discount = 0.2,
                                 QuantityPerUnit = "12 boxes",
@@ -173,7 +173,7 @@ public class SampleDataService : ISampleDataService
                             new SampleOrderDetail()
                             {
                                 ProductID = 28,
-                                ProductName = "Rössle Sauerkraut",
+                                ProductName = "Rï¿½ssle Sauerkraut",
                                 Quantity = 2,
                                 Discount = 0,
                                 QuantityPerUnit = "25 - 825 g cans",
@@ -192,8 +192,8 @@ public class SampleDataService : ISampleDataService
                 CompanyName = "Company F",
                 ContactName = "Ana Trujillo",
                 ContactTitle = "Owner",
-                Address = "Avda. de la Constitución 2222",
-                City = "México D.F.",
+                Address = "Avda. de la Constituciï¿½n 2222",
+                City = "Mï¿½xico D.F.",
                 PostalCode = "05021",
                 Country = "Mexico",
                 Phone = "(5) 555-4729",
@@ -210,7 +210,7 @@ public class SampleDataService : ISampleDataService
                         ShipperPhone = "(503) 555-9831",
                         Freight = 43.90,
                         Company = "Company F",
-                        ShipTo = "Company F, Avda. de la Constitución 2222, 05021, México D.F., Mexico",
+                        ShipTo = "Company F, Avda. de la Constituciï¿½n 2222, 05021, Mï¿½xico D.F., Mexico",
                         OrderTotal = 469.75,
                         Status = "Shipped",
                         SymbolCode = 57620,
@@ -265,7 +265,7 @@ public class SampleDataService : ISampleDataService
                         ShipperPhone = "(503) 555-9931",
                         Freight = 39.92,
                         Company = "Company F",
-                        ShipTo = "Company F, Avda. de la Constitución 2222, 05021, México D.F., Mexico",
+                        ShipTo = "Company F, Avda. de la Constituciï¿½n 2222, 05021, Mï¿½xico D.F., Mexico",
                         OrderTotal = 507.20,
                         Status = "Shipped",
                         SymbolCode = 57633,
@@ -331,7 +331,7 @@ public class SampleDataService : ISampleDataService
                 ContactName = "Antonio Moreno",
                 ContactTitle = "Owner",
                 Address = "Mataderos  2312",
-                City = "México D.F.",
+                City = "Mï¿½xico D.F.",
                 PostalCode = "05023",
                 Country = "Mexico",
                 Phone = "(5) 555-3932",
@@ -348,7 +348,7 @@ public class SampleDataService : ISampleDataService
                         ShipperPhone = "(503) 555-9831",
                         Freight = 47.45,
                         Company = "Company Z",
-                        ShipTo = "Company Z, Mataderos  2312, 05023, México D.F., Mexico",
+                        ShipTo = "Company Z, Mataderos  2312, 05023, Mï¿½xico D.F., Mexico",
                         OrderTotal = 978.50,
                         Status = "Closed",
                         SymbolCode = 57661,
@@ -391,7 +391,7 @@ public class SampleDataService : ISampleDataService
                         ShipperPhone = "(503) 555-9931",
                         Freight = 84.84,
                         Company = "Company Z",
-                        ShipTo = "Company Z, Mataderos  2312, 05023, México D.F., Mexico",
+                        ShipTo = "Company Z, Mataderos  2312, 05023, Mï¿½xico D.F., Mexico",
                         OrderTotal = 2082.00,
                         Status = "Closed",
                         SymbolCode = 57619,
@@ -446,7 +446,7 @@ public class SampleDataService : ISampleDataService
                         ShipperPhone = "(503) 555-3199",
                         Freight = 36.13,
                         Company = "Company Z",
-                        ShipTo = "Company Z, Mataderos  2312, 05023, México D.F., Mexico",
+                        ShipTo = "Company Z, Mataderos  2312, 05023, Mï¿½xico D.F., Mexico",
                         OrderTotal = 375.50,
                         Status = "Closed",
                         SymbolCode = 57615,
@@ -480,7 +480,7 @@ public class SampleDataService : ISampleDataService
                             new SampleOrderDetail()
                             {
                                 ProductID = 75,
-                                ProductName = "Rhönbräu Klosterbier",
+                                ProductName = "Rhï¿½nbrï¿½u Klosterbier",
                                 Quantity = 30,
                                 Discount = 0,
                                 QuantityPerUnit = "24 - 0.5 l bottles",

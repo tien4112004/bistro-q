@@ -2,7 +2,6 @@ using BistroQ.Presentation.Activation;
 using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Services;
-using BistroQ.Domain.Services.Auth;
 using BistroQ.Domain.Services.Http;
 using BistroQ.Presentation.Models;
 using BistroQ.Presentation.Services;
@@ -23,6 +22,9 @@ using System.Diagnostics;
 using AutoMapper;
 using BistroQ.Domain.Mappings;
 using BistroQ.Presentation.Mappings;
+using BistroQ.Service.Auth;
+using BistroQ.Service.Common;
+using BistroQ.Service.Data;
 
 namespace BistroQ.Presentation;
 

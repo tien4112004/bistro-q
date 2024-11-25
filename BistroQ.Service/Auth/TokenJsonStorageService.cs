@@ -1,7 +1,7 @@
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos;
 
-namespace BistroQ.Domain.Services.Auth;
+namespace BistroQ.Service.Auth;
 
 public class TokenJsonStorageService : ITokenStorageService
 {
