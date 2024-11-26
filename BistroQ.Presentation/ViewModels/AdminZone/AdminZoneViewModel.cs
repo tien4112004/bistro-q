@@ -1,9 +1,11 @@
+﻿using AutoMapper;
+using BistroQ.Domain.Contracts.Services;
+using BistroQ.Domain.Dtos.Zones;
 using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
-using BistroQ.Domain.Dtos.Zones;
-using BistroQ.Domain.Models;
-using BistroQ.Presentation.Services;
 using BistroQ.Presentation.ViewModels.AdminZone;
+using BistroQ.Presentation.ViewModels.Commons;
+using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI.UI.Controls;
@@ -11,9 +13,6 @@ using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using AutoMapper;
-using BistroQ.Domain.Contracts.Services;
-using BistroQ.Presentation.ViewModels.Models;
 
 namespace BistroQ.Presentation.ViewModels;
 
@@ -34,7 +33,7 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
     private ObservableCollection<ZoneViewModel> _source = new();
 
     [ObservableProperty]
-    private Pagination _pagination;
+    private PaginationViewModel _pagination;
 
     [ObservableProperty]
     private string _searchText;
@@ -46,7 +45,7 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
     public ICommand SearchCommand { get; }
 
     public AdminZoneViewModel(
-        IAdminZoneDialogService adminZoneDialogService, 
+        IAdminZoneDialogService adminZoneDialogService,
         INavigationService navigationService,
         IMapper mapper,
         IZoneDataService zoneDataService)
@@ -55,14 +54,14 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         _navigationService = navigationService;
         _mapper = mapper;
         _zoneDataService = zoneDataService;
-        _pagination = new Pagination
+        Pagination = new PaginationViewModel
         {
             TotalItems = 0,
             TotalPages = 0,
             CurrentPage = 1,
             PageSize = 10
         };
-        _pagination.PropertyChanged += Pagination_PropertyChanged;
+        Pagination.PropertyChanged += Pagination_PropertyChanged;
 
         AddCommand = new RelayCommand(NavigateToAddPage);
         EditCommand = new RelayCommand(NavigateToEditPage, CanEdit);
@@ -102,16 +101,16 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
             var _query = query ?? new ZoneCollectionQueryParams()
             {
                 OrderDirection = "asc",
-                Page = _pagination.CurrentPage,
-                Size = _pagination.PageSize
+                Page = Pagination.CurrentPage,
+                Size = Pagination.PageSize
             };
 
             var result = await _zoneDataService.GetZonesAsync(_query);
 
             Source = new ObservableCollection<ZoneViewModel>(_mapper.Map<IEnumerable<ZoneViewModel>>(result.Data));
-            _pagination.TotalItems = result.TotalItems;
-            _pagination.TotalPages = result.TotalPages;
-            _pagination.CurrentPage = result.CurrentPage;
+            Pagination.TotalItems = result.TotalItems;
+            Pagination.TotalPages = result.TotalPages;
+            Pagination.CurrentPage = result.CurrentPage;
         }
         catch (Exception ex)
         {
@@ -177,7 +176,7 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
             OrderBy = column,
             OrderDirection = direction,
             Page = 1,
-            Size = _pagination.PageSize
+            Size = Pagination.PageSize
         };
         _ = LoadDataAsync(query);
     }
@@ -205,7 +204,7 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         {
             Name = SearchText,
             Page = 1,
-            Size = _pagination.PageSize
+            Size = Pagination.PageSize
         };
         _ = LoadDataAsync(query);
     }
@@ -231,9 +230,9 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
 
     public void Dispose()
     {
-        if (_pagination != null)
+        if (Pagination != null)
         {
-            _pagination.PropertyChanged -= Pagination_PropertyChanged;
+            Pagination.PropertyChanged -= Pagination_PropertyChanged;
         }
     }
 }

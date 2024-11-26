@@ -1,11 +1,10 @@
-﻿using BistroQ.Domain.Contracts.Services;
-using BistroQ.Domain.Dtos;
+﻿using AutoMapper;
+using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos.Tables;
 using BistroQ.Domain.Dtos.Zones;
+using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
-using AutoMapper;
-using BistroQ.Presentation.ViewModels.Models;
 
 namespace BistroQ.Presentation.ViewModels.AdminTable;
 
@@ -30,7 +29,7 @@ public partial class AdminTableAddPageViewModel : ObservableRecipient
 
     public async Task<TableViewModel> AddTable()
     {
-        var allZoneList = await _zoneDataService.GetGridDataAsync(new Domain.Dtos.Zones.ZoneCollectionQueryParams
+        var allZoneList = await _zoneDataService.GetGridDataAsync(new ZoneCollectionQueryParams
         {
             Size = (int)short.MaxValue
         });
@@ -51,12 +50,19 @@ public partial class AdminTableAddPageViewModel : ObservableRecipient
 
     public async Task LoadZonesAsync()
     {
-        var response = await _zoneDataService.GetGridDataAsync(new ZoneCollectionQueryParams());
-        Zones.Clear();
-        var zones = response.Data;
-        foreach (var zone in zones)
+        try
         {
-            Zones.Add(_mapper.Map<ZoneViewModel>(zone));
+            var response = await _zoneDataService.GetGridDataAsync(new ZoneCollectionQueryParams());
+            Zones.Clear();
+            var zones = response.Data;
+            foreach (var zone in zones)
+            {
+                Zones.Add(_mapper.Map<ZoneViewModel>(zone));
+            }
+        }
+        catch (Exception ex)
+        {
+            Zones = new ObservableCollection<ZoneViewModel>();
         }
     }
 }

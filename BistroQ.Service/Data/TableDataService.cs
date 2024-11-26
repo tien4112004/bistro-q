@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos;
@@ -16,14 +17,14 @@ public class TableDataService : ITableDataService
         _mapper = mapper;
     }
 
-    public async Task<PaginationResponse<IEnumerable<Table>>> GetGridDataAsync(TableCollectionQueryParams query = null)
+    public async Task<ApiCollectionResponse<IEnumerable<Table>>> GetGridDataAsync(TableCollectionQueryParams query = null)
     {
         var response = await _apiClient.GetCollectionAsync<IEnumerable<TableResponse>>("/api/admin/table", query);
         if (response.Success)
         {
             var tables = _mapper.Map<IEnumerable<Table>>(response.Data);
-            return new PaginationResponse<IEnumerable<Table>>
-                (tables, response.TotalItems, response.CurrentPage, response.TotalPages);
+            return new ApiCollectionResponse<IEnumerable<Table>>
+                (tables, response.TotalItems, response.CurrentPage, query.Size);
         }
         
         throw new Exception("Failed to get tables");

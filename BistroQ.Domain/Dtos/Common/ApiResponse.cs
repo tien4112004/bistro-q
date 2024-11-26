@@ -1,3 +1,5 @@
+﻿using BistroQ.Domain.Dtos.Common;
+
 namespace BistroQ.Domain.Dtos;
 
 public class ApiResponse<T>

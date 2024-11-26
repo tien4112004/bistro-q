@@ -17,14 +17,14 @@ namespace BistroQ.Service.Data
             _mapper = mapper;
         }
 
-        public async Task<PaginationResponse<IEnumerable<Zone>>> GetGridDataAsync(ZoneCollectionQueryParams query = null)
+        public async Task<ApiCollectionResponse<IEnumerable<Zone>>> GetGridDataAsync(ZoneCollectionQueryParams query = null)
         {
             var response = await _apiClient.GetCollectionAsync<IEnumerable<ZoneResponse>>("/api/admin/zone", query);
             if (response.Success)
             {
                 var zones = _mapper.Map<IEnumerable<Zone>>(response.Data);
-                return new PaginationResponse<IEnumerable<Zone>>
-                    (zones, response.TotalItems, response.CurrentPage, response.TotalPages);
+                return new ApiCollectionResponse<IEnumerable<Zone>>
+                    (zones, response.TotalItems, response.CurrentPage, query.Size);
             }
             throw new Exception("Failed to get zones");
         }
@@ -63,14 +63,14 @@ namespace BistroQ.Service.Data
             return true;
         }
 
-        public async Task<PaginationResponse<IEnumerable<Zone>>> GetZonesAsync(ZoneCollectionQueryParams query = null)
+        public async Task<ApiCollectionResponse<IEnumerable<Zone>>> GetZonesAsync(ZoneCollectionQueryParams query = null)
         {
             var response = await _apiClient.GetCollectionAsync<IEnumerable<ZoneResponse>>("/api/zone", query);
             
             if (response.Success)
             {
                 var zones = _mapper.Map<IEnumerable<Zone>>(response.Data);
-                return new PaginationResponse<IEnumerable<Zone>>
+                return new ApiCollectionResponse<IEnumerable<Zone>>
                     (zones, response.TotalItems, response.CurrentPage, response.TotalPages);
             }
             

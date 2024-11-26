@@ -1,6 +1,4 @@
-using BistroQ.Domain.Contracts.Services;
-using BistroQ.Domain.Dtos.Tables;
-using BistroQ.Presentation.ViewModels.AdminTable;
+﻿using BistroQ.Presentation.ViewModels.AdminTable;
 using BistroQ.Presentation.ViewModels.Models;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -44,10 +42,10 @@ public sealed partial class AdminTableEditPage : Page
             await new ContentDialog()
             {
                 XamlRoot = this.Content.XamlRoot,
-                Title = "Update zone successfully",
+                Title = "Update table successfully",
                 CloseButtonText = "OK"
             }.ShowAsync();
-            
+
             Frame.GoBack();
         }
         catch (Exception ex)
@@ -56,7 +54,7 @@ public sealed partial class AdminTableEditPage : Page
             {
                 XamlRoot = this.Content.XamlRoot,
                 Title = "Operation failed",
-                Content = $"Update zone failed with error: {ex.Message}",
+                Content = $"Update table failed with error: {ex.Message}",
                 CloseButtonText = "OK"
             }.ShowAsync();
         }

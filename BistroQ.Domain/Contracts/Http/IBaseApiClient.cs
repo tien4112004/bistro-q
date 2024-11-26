@@ -42,5 +42,5 @@ public interface IBaseApiClient
     /// <returns>A task that represents the asynchronous operation, containing the response of type <typeparamref name="T"/>.</returns>
     Task<ApiResponse<T>> DeleteAsync<T>(string url, object contentValue);
 
-    Task<PaginationResponse<T>> GetCollectionAsync<T>(string url, object contentValue) where T : class;
+    Task<ApiCollectionResponse<T>> GetCollectionAsync<T>(string url, object contentValue) where T : class;
 }

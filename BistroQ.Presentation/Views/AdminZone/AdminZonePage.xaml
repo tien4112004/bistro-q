@@ -1,4 +1,4 @@
-<Page
+﻿<Page
     x:Class="BistroQ.Presentation.Views.AdminZonePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

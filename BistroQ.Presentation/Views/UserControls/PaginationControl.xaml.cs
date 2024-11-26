@@ -1,4 +1,4 @@
-using BistroQ.Domain.Models;
+﻿using BistroQ.Presentation.ViewModels.Commons;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -11,18 +11,18 @@ public partial class PaginationControl : UserControl
 {
     public static readonly DependencyProperty PaginationProperty = DependencyProperty.Register(
         "Pagination",
-        typeof(Pagination),
+        typeof(PaginationViewModel),
         typeof(PaginationControl),
-        new PropertyMetadata(new Pagination
+        new PropertyMetadata(new PaginationViewModel
         {
             TotalItems = 0,
             CurrentPage = 1,
             TotalPages = 0
         }, OnPaginationChanged));
 
-    public Pagination Pagination
+    public PaginationViewModel Pagination
     {
-        get => (Pagination)GetValue(PaginationProperty);
+        get => (PaginationViewModel)GetValue(PaginationProperty);
         set => SetValue(PaginationProperty, value);
     }
 
@@ -48,12 +48,12 @@ public partial class PaginationControl : UserControl
     {
         if (d is PaginationControl control)
         {
-            if (e.OldValue is Pagination oldPagination)
+            if (e.OldValue is PaginationViewModel oldPagination)
             {
                 oldPagination.PropertyChanged -= control.OnPaginationPropertyChanged;
             }
 
-            if (e.NewValue is Pagination newPagination)
+            if (e.NewValue is PaginationViewModel newPagination)
             {
                 newPagination.PropertyChanged += control.OnPaginationPropertyChanged;
                 control.UpdatePagination(newPagination);
@@ -76,7 +76,7 @@ public partial class PaginationControl : UserControl
         LastPageCommand.NotifyCanExecuteChanged();
     }
 
-    private void UpdatePagination(Pagination pagination)
+    private void UpdatePagination(PaginationViewModel pagination)
     {
         var item = RowsPerPageSelection.Items
             .Cast<ComboBoxItem>()

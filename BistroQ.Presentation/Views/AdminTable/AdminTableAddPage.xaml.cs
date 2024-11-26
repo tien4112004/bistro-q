@@ -1,4 +1,4 @@
-using BistroQ.Presentation.ViewModels.AdminTable;
+﻿using BistroQ.Presentation.ViewModels.AdminTable;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
@@ -31,11 +31,11 @@ public sealed partial class AdminTableAddPage : Page
             await new ContentDialog()
             {
                 XamlRoot = this.Content.XamlRoot,
-                Title = "Add new zone successfully",
-                Content = "Successfully added zone: " + ViewModel.Request.SeatsCount,
+                Title = "Add new table successfully",
+                Content = "Successfully added table: " + ViewModel.Request.SeatsCount,
                 CloseButtonText = "OK"
             }.ShowAsync();
-                
+
             Frame.GoBack();
         }
         catch (Exception ex)
@@ -44,7 +44,7 @@ public sealed partial class AdminTableAddPage : Page
             {
                 XamlRoot = this.Content.XamlRoot,
                 Title = "Operation failed",
-                Content = $"Add new zone failed with error: {ex.Message}",
+                Content = $"Add new table failed with error: {ex.Message}",
                 CloseButtonText = "OK"
             }.ShowAsync();
         }

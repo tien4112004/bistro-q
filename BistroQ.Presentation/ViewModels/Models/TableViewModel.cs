@@ -1,24 +1,27 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BistroQ.Presentation.ViewModels.Models;
 
 public partial class TableViewModel : ObservableObject
 {
-    [ObservableProperty] 
+    [ObservableProperty]
     private int? _tableId;
 
-    [ObservableProperty] 
+    [ObservableProperty]
     private string? _name;
 
-    [ObservableProperty] 
+    [ObservableProperty]
     private int? _number;
 
-    [ObservableProperty] 
+    [ObservableProperty]
     private int? _zoneId;
-    
+
+    [ObservableProperty]
+    private string? _zoneName;
+
     [ObservableProperty]
     private int? _seatsCount;
-    
+
     [ObservableProperty]
     private bool? _isOccupied;
 }
