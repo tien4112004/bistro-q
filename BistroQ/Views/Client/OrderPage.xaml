@@ -53,12 +53,7 @@
     </Page.Resources>
 
     <ScrollViewer>
-        <StackPanel Padding="8,8,8,0">
-            <TextBlock x:Uid="ClientHomePage_OrderTitle"
-                     Foreground="{StaticResource TextFillColorPrimaryBrush}"
-                     Style="{StaticResource SubtitleTextBlockStyle}"
-                     Margin="8,4,0,12"/>
-
+        <StackPanel Padding="6,4,4,0">
             <!-- Processing Orders -->
             <Expander x:Uid="ClientHomePage_IsProcessingProductTitle"
                      IsExpanded="True"

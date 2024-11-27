@@ -18,7 +18,6 @@
         <converter:ReverseBooleanConverter x:Key="ReverseBool" />
         <DataTemplate x:Key="CartItemDataTemplate" x:DataType="entities:OrderItem">
             <Grid Padding="0,6,0,8"
-                  Margin="0,4" 
                   AutomationProperties.Name="{x:Bind Product.Name}"
                   HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
@@ -44,6 +43,7 @@
 
                     <TextBlock Text="{x:Bind Product.Unit}"
                              Style="{ThemeResource BodyTextBlockStyle}"
+                             Foreground="{StaticResource TextFillColorSecondary}"
                              TextWrapping="Wrap"
                              TextTrimming="CharacterEllipsis"
                              MaxLines="2"/>
@@ -58,18 +58,13 @@
     </Page.Resources>
     
     <ScrollViewer>
-        <StackPanel Padding="8,8,4,0">
-            <TextBlock x:Uid="ClientHomePage_CartTitle"
-                     Foreground="{StaticResource TextFillColorPrimaryBrush}"
-                     Style="{StaticResource SubtitleTextBlockStyle}"
-                     Margin="8,4,0,12"/>
-
+        <StackPanel Padding="4,4,2,0">
             <ListView ItemsSource="{x:Bind ViewModel.CartItems, Mode=TwoWay}"
                       ItemTemplate="{StaticResource CartItemDataTemplate}"
                       HorizontalAlignment="Stretch"                     
                       HorizontalContentAlignment="Stretch" />
 
-            <TextBlock Foreground="{StaticResource TextFillColorPrimaryBrush}" 
+            <TextBlock Foreground="{StaticResource TextFillColorPrimary}" 
                        Margin="8,0"
                        Visibility="{x:Bind CartIsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                        Text="Your cart is currently empty." />

@@ -1,53 +1,79 @@
 ﻿using BistroQ.Core.Entities;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System.ComponentModel;
 
-namespace BistroQ.Views.UserControls
+namespace BistroQ.Views.UserControls;
+
+public sealed partial class ItemQuantityControl : UserControl
 {
-    public sealed partial class ItemQuantityControl : UserControl
+    public static readonly DependencyProperty ItemProperty = DependencyProperty.Register(
+        nameof(Item),
+        typeof(OrderItem),
+        typeof(ItemQuantityControl),
+        new PropertyMetadata(null, OnItemChanged));
+
+    public OrderItem Item
     {
-        public static readonly DependencyProperty ItemProperty = DependencyProperty.Register(
-            nameof(Item),
-            typeof(OrderItem),
-            typeof(ItemQuantityControl),
-            new PropertyMetadata(null));
-
-        public OrderItem Item
+        get => (OrderItem)GetValue(ItemProperty);
+        set
         {
-            get => (OrderItem)GetValue(ItemProperty);
-            set
-            {
-                SetValue(ItemProperty, value);
-                UpdateVisualState();
-            }
+            SetValue(ItemProperty, value);
+            UpdateVisualState();
         }
-        public ItemQuantityControl()
-        {
-            this.InitializeComponent();
-        }
+    }
+    public ItemQuantityControl()
+    {
+        this.InitializeComponent();
+    }
 
-        private void UpdateVisualState()
+    private static void OnItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var control = (ItemQuantityControl)d;
+        var oldItem = e.OldValue as OrderItem;
+        var newItem = e.NewValue as OrderItem;
+
+        if (oldItem != null)
         {
-            if (Item == null) { return; }
-            VisualStateManager.GoToState(this, Item.Quantity > 0 ? "InCart" : "NotInCart", true);
+            oldItem.PropertyChanged -= control.Item_PropertyChanged;
         }
 
-        private void AddButton_Click(object sender, RoutedEventArgs e)
+        if (newItem != null)
         {
-            Item.Quantity = 1;
+            newItem.PropertyChanged += control.Item_PropertyChanged;
+            control.UpdateVisualState();
         }
+    }
 
-        private void IncreaseButton_Click(object sender, RoutedEventArgs e)
+    private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(OrderItem.Quantity))
         {
-            Item.Quantity++;
+            UpdateVisualState();
         }
+    }
 
-        private void DecreaseButton_Click(object sender, RoutedEventArgs e)
+    private void UpdateVisualState()
+    {
+        if (Item == null) { return; }
+        VisualStateManager.GoToState(this, Item.Quantity > 0 ? "InCart" : "NotInCart", true);
+    }
+
+    private void AddButton_Click(object sender, RoutedEventArgs e)
+    {
+        Item.Quantity = 1;
+    }
+
+    private void IncreaseButton_Click(object sender, RoutedEventArgs e)
+    {
+        Item.Quantity++;
+    }
+
+    private void DecreaseButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (Item.Quantity > 0)
         {
-            if (Item.Quantity > 0)
-            {
-                Item.Quantity--;
-            }
+            Item.Quantity--;
         }
     }
 }

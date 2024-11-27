@@ -36,27 +36,26 @@
 
         <StackPanel x:Name="QuantityPanel"
                     HorizontalAlignment="Left"
+                    Margin="0,4,0,0"
                     Orientation="Horizontal">
-            <Button x:Name="DecreaseButton" 
-                    Content="-" 
-                    Width="32" Height="28"
-                    FontWeight="Bold"
-                    VerticalContentAlignment="Center"
+            <Button x:Name="DecreaseButton"                     
                     Style="{StaticResource AccentButtonStyle}"
-                    Click="DecreaseButton_Click"/>
+                    Width="32" Padding="4,4"
+                    Click="DecreaseButton_Click">
+                <FontIcon Glyph="&#xE949;" FontSize="14" />
+            </Button>
             <TextBlock x:Name="QuantityText" 
-                      Width="60" 
+                      Width="48" 
                       FontSize="18"
                       Text="{x:Bind Item.Quantity, Mode=OneWay}"
                       HorizontalTextAlignment="Center" 
                       VerticalAlignment="Center" />
             <Button x:Name="IncreaseButton" 
-                    Content="+" 
-                    Width="32" Height="28"
-                    FontWeight="Bold"
-                    VerticalContentAlignment="Center"
+                    Width="32" Padding="4,4"
                     Style="{StaticResource AccentButtonStyle}"
-                    Click="IncreaseButton_Click"/>
+                    Click="IncreaseButton_Click">
+                <FontIcon Glyph="&#xE948;" FontSize="14" />
+            </Button>
         </StackPanel>
     </StackPanel>
 </UserControl>
