@@ -1,4 +1,4 @@
-using BistroQ.Presentation.ViewModels;
+﻿using BistroQ.Presentation.ViewModels;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Controls;
 
@@ -23,11 +23,11 @@ public sealed partial class AdminTablePage : Page
     {
         if (args.ChosenSuggestion != null)
         {
-            ViewModel.SearchText = args.ChosenSuggestion.ToString();
+            ViewModel.State.SearchText = args.ChosenSuggestion.ToString();
         }
         else
         {
-            ViewModel.SearchText = args.QueryText;
+            ViewModel.State.SearchText = args.QueryText;
         }
 
         ViewModel.SearchCommand.Execute(null);

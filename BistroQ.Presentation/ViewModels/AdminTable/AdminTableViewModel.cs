@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
-using BistroQ.Domain.Dtos.Tables;
 using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.ViewModels.AdminTable;
-using BistroQ.Presentation.ViewModels.Commons;
 using BistroQ.Presentation.ViewModels.Models;
+using BistroQ.Presentation.ViewModels.States;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI.UI.Controls;
@@ -22,35 +21,9 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
     private readonly IMapper _mapper;
     private readonly ITableDataService _tableDataService;
     private readonly INavigationService _navigationService;
-    private bool _isLoading;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor("EditCommand")]
-    [NotifyCanExecuteChangedFor("DeleteCommand")]
-    private TableViewModel? _selectedTable;
-
-    [ObservableProperty]
-    private ObservableCollection<TableViewModel> _source = new();
-
-    [ObservableProperty]
-    private PaginationViewModel _pagination;
-
-    [ObservableProperty]
-    private TableCollectionQueryParams _query = new();
-
-    public string SearchText
-    {
-        get => Query.ZoneName ?? string.Empty;
-        set
-        {
-            if (Query.ZoneName != value)
-            {
-                Query.ZoneName = value;
-                OnPropertyChanged();
-            }
-        }
-    }
-
+    private AdminTableState state = new();
     public IRelayCommand AddCommand { get; }
     public IRelayCommand EditCommand { get; }
     public IAsyncRelayCommand DeleteCommand { get; }
@@ -67,20 +40,24 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
         _adminTableDialogService = adminTableDialogService;
         _tableDataService = tableDataService;
         _mapper = mapper;
-        Pagination = new PaginationViewModel
-        {
-            TotalItems = 0,
-            TotalPages = 0,
-            CurrentPage = 1,
-            PageSize = 10
-        };
-        Pagination.PropertyChanged += Pagination_PropertyChanged;
+
+        State.PropertyChanged += StatePropertyChanged;
+        State.Pagination.PropertyChanged += Pagination_PropertyChanged;
 
         AddCommand = new RelayCommand(NavigateToAddPage);
-        EditCommand = new RelayCommand(NavigateToEditPage, CanEdit);
-        DeleteCommand = new AsyncRelayCommand(DeleteSelectedTableAsync, CanDelete);
+        EditCommand = new RelayCommand(NavigateToEditPage, () => State.CanEdit);
+        DeleteCommand = new AsyncRelayCommand(DeleteSelectedTableAsync, () => State.CanDelete);
         SortCommand = new RelayCommand<(string column, string direction)>(ExecuteSortCommand);
         SearchCommand = new RelayCommand(ExecuteSearchCommand);
+    }
+
+    private void StatePropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(State.SelectedTable))
+        {
+            EditCommand.NotifyCanExecuteChanged();
+            DeleteCommand.NotifyCanExecuteChanged();
+        }
     }
 
     public async void OnNavigatedTo(object parameter)
@@ -90,20 +67,20 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
 
     public void OnNavigatedFrom()
     {
-        SelectedTable = null;
+        State.SelectedTable = null;
     }
 
     private void Pagination_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (_isLoading ||
-            (e.PropertyName != nameof(Pagination.CurrentPage) &&
-             e.PropertyName != nameof(Pagination.PageSize)))
+        if (State.IsLoading ||
+            (e.PropertyName != nameof(State.Pagination.CurrentPage) &&
+             e.PropertyName != nameof(State.Pagination.PageSize)))
         {
             return;
         }
 
-        Query.Page = Pagination.CurrentPage;
-        Query.Size = Pagination.PageSize;
+        State.Query.Page = State.Pagination.CurrentPage;
+        State.Query.Size = State.Pagination.PageSize;
         _ = LoadDataAsync();
     }
 
@@ -111,15 +88,15 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
     {
         try
         {
-            _isLoading = true;
+            State.IsLoading = true;
 
-            var result = await _tableDataService.GetGridDataAsync(Query);
+            var result = await _tableDataService.GetGridDataAsync(State.Query);
 
             var tables = _mapper.Map<IEnumerable<TableViewModel>>(result.Data);
-            Source = new ObservableCollection<TableViewModel>(tables);
-            Pagination.TotalItems = result.TotalItems;
-            Pagination.TotalPages = result.TotalPages;
-            Pagination.CurrentPage = result.CurrentPage;
+            State.Source = new ObservableCollection<TableViewModel>(tables);
+            State.Pagination.TotalItems = result.TotalItems;
+            State.Pagination.TotalPages = result.TotalPages;
+            State.Pagination.CurrentPage = result.CurrentPage;
         }
         catch (Exception ex)
         {
@@ -127,29 +104,24 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
         }
         finally
         {
-            _isLoading = false;
+            State.IsLoading = false;
         }
     }
 
-    // buttons
     private void NavigateToAddPage() =>
         _navigationService.NavigateTo(typeof(AdminTableAddPageViewModel).FullName);
 
-    private bool CanEdit() => SelectedTable != null;
-
     private void NavigateToEditPage()
     {
-        if (SelectedTable?.TableId != null)
+        if (State.SelectedTable?.TableId != null)
         {
-            _navigationService.NavigateTo(typeof(AdminTableEditPageViewModel).FullName, SelectedTable);
+            _navigationService.NavigateTo(typeof(AdminTableEditPageViewModel).FullName, State.SelectedTable);
         }
     }
 
-    private bool CanDelete() => SelectedTable != null;
-
     private async Task DeleteSelectedTableAsync()
     {
-        if (SelectedTable?.TableId == null) return;
+        if (State.SelectedTable?.TableId == null) return;
 
         try
         {
@@ -157,12 +129,12 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
             var result = await _adminTableDialogService.ShowConfirmDeleteDialog(xamlRoot);
             if (result != ContentDialogResult.Primary) return;
 
-            var success = await _tableDataService.DeleteTableAsync(SelectedTable.TableId.Value);
+            var success = await _tableDataService.DeleteTableAsync(State.SelectedTable.TableId.Value);
             if (success)
             {
                 await _adminTableDialogService.ShowSuccessDialog("Table deleted successfully.", xamlRoot);
-                Source.Remove(SelectedTable);
-                SelectedTable = null;
+                State.Source.Remove(State.SelectedTable);
+                State.SelectedTable = null;
                 await LoadDataAsync();
             }
             else
@@ -176,14 +148,12 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
         }
     }
 
-    // sort
     private void ExecuteSortCommand((string column, string direction) sortParams)
     {
         var (column, direction) = sortParams;
-        Query.OrderBy = column;
-        Query.OrderDirection = direction;
-        Query.Page = 1;
-        Pagination.CurrentPage = 1;
+        State.Query.OrderBy = column;
+        State.Query.OrderDirection = direction;
+        State.ReturnToFirstPage();
         _ = LoadDataAsync();
     }
 
@@ -204,16 +174,15 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
 
     private void ExecuteSearchCommand()
     {
-        Query.Page = 1;
-        Pagination.CurrentPage = 1;
+        State.ReturnToFirstPage();
         _ = LoadDataAsync();
     }
 
     public void Dispose()
     {
-        if (Pagination != null)
+        if (State.Pagination != null)
         {
-            Pagination.PropertyChanged -= Pagination_PropertyChanged;
+            State.Pagination.PropertyChanged -= Pagination_PropertyChanged;
         }
     }
 }

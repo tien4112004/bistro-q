@@ -7,19 +7,19 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:local="using:BistroQ.Presentation.Views.UserControls"
     mc:Ignorable="d">
 
-	<Grid x:Name="ContentArea">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-			<RowDefinition Height="Auto" />
-		</Grid.RowDefinitions>
+    <Grid x:Name="ContentArea">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <Grid Grid.Row="0" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <AutoSuggestBox PlaceholderText="Search for a zone"
-                Text="{x:Bind ViewModel.SearchText, Mode=TwoWay}"
+                Text="{x:Bind ViewModel.State.SearchText, Mode=TwoWay}"
                 QueryIcon="Find"
                 QuerySubmitted="Control2_QuerySubmitted"
                 SuggestionChosen="Control2_SuggestionChosen"
@@ -56,14 +56,14 @@
             x:Name="AdminZoneDataGrid"
             AutoGenerateColumns="False"
             GridLinesVisibility="Horizontal"
-            ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
-            SelectedItem="{x:Bind ViewModel.SelectedZone, Mode=TwoWay}"
+            ItemsSource="{x:Bind ViewModel.State.Source, Mode=OneWay}"
+            SelectedItem="{x:Bind ViewModel.State.SelectedZone, Mode=TwoWay}"
             Grid.Row="1"
             Sorting="ViewModel_AdminZoneDataGrid_Sorting">
-			<controls:DataGrid.Resources>
-				<SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
-			</controls:DataGrid.Resources>
-			<controls:DataGrid.Columns>
+            <controls:DataGrid.Resources>
+                <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+            </controls:DataGrid.Resources>
+            <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Binding="{Binding ZoneId}" 
                                              x:Uid="AdminZone_DataGrid_Column_Id" 
                                              CanUserResize="False" 
@@ -79,7 +79,7 @@
                                              Tag="TableCount" />
                 <!-- <controls:DataGridTextColumn Header="Status" IsReadOnly="True" />-->
             </controls:DataGrid.Columns>
-		</controls:DataGrid>
-        <local:PaginationControl Pagination="{x:Bind ViewModel.Pagination, Mode=TwoWay}" Grid.Row="2" Margin="0,0,0,24" /> 
+        </controls:DataGrid>
+        <local:PaginationControl Pagination="{x:Bind ViewModel.State.Pagination, Mode=TwoWay}" Grid.Row="2" Margin="0,0,0,24" />
     </Grid>
 </Page>

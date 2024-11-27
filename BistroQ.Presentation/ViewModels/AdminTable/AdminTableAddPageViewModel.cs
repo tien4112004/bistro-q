@@ -52,7 +52,7 @@ public partial class AdminTableAddPageViewModel : ObservableRecipient
     {
         try
         {
-            var response = await _zoneDataService.GetGridDataAsync(new ZoneCollectionQueryParams());
+            var response = await _zoneDataService.GetGridDataAsync(null);
             Zones.Clear();
             var zones = response.Data;
             foreach (var zone in zones)
