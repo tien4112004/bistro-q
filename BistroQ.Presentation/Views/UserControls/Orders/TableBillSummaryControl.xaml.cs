@@ -1,4 +1,4 @@
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace BistroQ.Presentation.Views.UserControls.Orders;
@@ -16,7 +16,7 @@ public sealed partial class TableBillSummaryControl : UserControl
         set => SetValue(TotalProperty, value);
     }
 
-    public static readonly DependencyProperty TotalProperty = 
+    public static readonly DependencyProperty TotalProperty =
         DependencyProperty.Register(
             nameof(Total),
             typeof(decimal?),
@@ -27,6 +27,6 @@ public sealed partial class TableBillSummaryControl : UserControl
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-        CheckoutRequested.Invoke(this, EventArgs.Empty);
+        CheckoutRequested?.Invoke(this, EventArgs.Empty);
     }
 }

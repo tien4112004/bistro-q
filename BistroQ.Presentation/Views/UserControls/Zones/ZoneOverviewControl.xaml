@@ -44,8 +44,7 @@
                 ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedZone, Mode=TwoWay}"
                 SelectionMode="Single"
-                IsItemClickEnabled="True"
-                ItemClick="OnZoneClicked">
+                IsItemClickEnabled="True">
 
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>

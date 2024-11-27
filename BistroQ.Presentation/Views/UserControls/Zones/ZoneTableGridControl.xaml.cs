@@ -1,6 +1,4 @@
-using BistroQ.Domain.Dtos.Tables;
-using BistroQ.Presentation.ViewModels.CashierTable;
-using BistroQ.Presentation.ViewModels.Models;
+﻿using BistroQ.Presentation.ViewModels.CashierTable;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -21,15 +19,4 @@ public sealed partial class ZoneTableGridControl : UserControl
                 typeof(ZoneTableGridViewModel),
                 typeof(ZoneTableGridControl),
                 new PropertyMetadata(null));
-
-
-    public event EventHandler<int?> TableSelectionChanged;
-
-    private void OnTableClicked(object sender, ItemClickEventArgs e)
-    {
-        if (e.ClickedItem is TableViewModel table)
-        {
-            TableSelectionChanged?.Invoke(this, table.TableId);
-        }
-    }
 }

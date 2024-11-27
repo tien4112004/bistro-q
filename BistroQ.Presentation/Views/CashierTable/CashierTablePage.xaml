@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Page
     x:Class="BistroQ.Presentation.Views.CashierTable.CashierTablePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -29,14 +29,12 @@
 
             <Grid Grid.Row="0" Background="Transparent" Padding="20,0,0,0" >
                 <zoneControls:ZoneOverviewControl x:Name="ZoneControl" 
-                                                  ViewModel="{x:Bind ViewModel.ZoneOverviewVM, Mode=OneWay}"
-                                                  ZoneSelectionChanged="ZoneControl_ZoneSelectionChanged" />
+                                                  ViewModel="{x:Bind ViewModel.ZoneOverviewVM, Mode=OneWay}"/>
             </Grid>
 
             <Border Grid.Row="1" Background="{StaticResource SolidBackgroundFillColorTertiaryBrush}" Margin="4,-3,5,5" CornerRadius="10">
                 <zoneControls:ZoneTableGridControl x:Name="GridControl"
-                                                   ViewModel="{x:Bind ViewModel.ZoneTableGridVM, Mode=OneWay}"
-                                                   TableSelectionChanged="GridControl_TableSelectionChanged"/>
+                                                   ViewModel="{x:Bind ViewModel.ZoneTableGridVM, Mode=OneWay}"/>
             </Border>
         </Grid>
 
@@ -49,8 +47,7 @@
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="4">
 
 
-                <orderControls:TableOrderDetailsControl Grid.Row="1" ViewModel="{x:Bind ViewModel.TableOrderDetailVM, Mode=OneWay}" 
-                                                        CheckoutRequested="TableOrderDetailsControl_CheckoutRequested"/>
+                <orderControls:TableOrderDetailsControl Grid.Row="1" ViewModel="{x:Bind ViewModel.TableOrderDetailVM, Mode=OneWay}"/>
         </Border>
     </Grid>
 </Page>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <UserControl
     x:Class="BistroQ.Presentation.Views.UserControls.Orders.TableOrderDetailsControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -117,7 +117,7 @@
 
 
             <orderControls:TableBillSummaryControl Grid.Row="1"  Total="{x:Bind ViewModel.Order.TotalAmount, Mode=OneWay}" 
-                                               CheckoutRequested="TableBillSummaryControl_CheckoutRequested" />
+                                               CheckoutRequested="{x:Bind ViewModel.CheckoutRequestedCommand, Mode=OneWay}" />
         </Grid>
     </Grid>
 

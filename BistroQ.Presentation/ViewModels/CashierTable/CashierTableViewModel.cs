@@ -1,79 +1,44 @@
-using BistroQ.Presentation.Contracts.ViewModels;
-using BistroQ.Domain.Contracts.Services;
-using BistroQ.Presentation.Models;
+﻿using BistroQ.Presentation.Contracts.ViewModels;
+using BistroQ.Presentation.Messages;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System.Windows.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
 
-public partial class CashierTableViewModel : ObservableObject, INavigationAware
+public partial class CashierTableViewModel : ObservableObject, INavigationAware, IRecipient<CheckoutRequestedMessage>
 {
-    private readonly IOrderDataService _orderDataService;
-
-    private readonly IZoneDataService _zoneDataService;
-
-    public ICommand SelectTableCommand { get; }
-
-    public ICommand SelectZoneCommand { get; }
-
-    public ICommand CheckoutCommand { get; }
-
-    public ZoneOverviewViewModel ZoneOverviewVM { get; }
-
-    public ZoneTableGridViewModel ZoneTableGridVM { get; }
-
-    public TableOrderDetailViewModel TableOrderDetailVM { get; }
+    public ZoneOverviewViewModel ZoneOverviewVM;
+    public ZoneTableGridViewModel ZoneTableGridVM;
+    public TableOrderDetailViewModel TableOrderDetailVM;
+    private readonly IMessenger _messenger;
 
     public CashierTableViewModel(
-        IOrderDataService orderDataService,
-        IZoneDataService zoneDataService,
         ZoneOverviewViewModel zoneOverview,
         ZoneTableGridViewModel zoneTableGrid,
-        TableOrderDetailViewModel tableOrderDetailVM
+        TableOrderDetailViewModel tableOrderDetailVM,
+        IMessenger messenger
         )
     {
-        _orderDataService = orderDataService;
-        _zoneDataService = zoneDataService;
         ZoneOverviewVM = zoneOverview;
         ZoneTableGridVM = zoneTableGrid;
         TableOrderDetailVM = tableOrderDetailVM;
-        SelectTableCommand = new RelayCommand<int>(OnTableSelected);
-        SelectZoneCommand = new RelayCommand<ZoneStateEventArgs>(OnZoneSelected);
-        CheckoutCommand = new RelayCommand<int>(OnCheckout);
-    }
-
-    public async void OnZoneSelected(ZoneStateEventArgs e)
-    {
-        await ZoneTableGridVM.OnZoneChangedAsync(e.ZoneId, e.Type);
-        if (ZoneTableGridVM.SelectedTableResponse != null)
-        {
-            await TableOrderDetailVM.OnTableChangedAsync(ZoneTableGridVM.SelectedTableResponse.TableId);
-        }
-    }
-
-    public async void OnTableSelected(int tableId)
-    {
-        await TableOrderDetailVM.OnTableChangedAsync(tableId);
-    }
-
-    public async void OnCheckout(int tableId)
-    {
-        //
+        _messenger = messenger;
+        _messenger.RegisterAll(this);
     }
 
     public async void OnNavigatedTo(object parameter)
     {
         await ZoneOverviewVM.InitializeAsync();
-        OnZoneSelected(new ZoneStateEventArgs
-        {
-            Type = "All",
-            ZoneId = ZoneOverviewVM.SelectedZone.ZoneId
-        });
     }
 
     public void OnNavigatedFrom()
     {
         //
+    }
+
+    public void Receive(CheckoutRequestedMessage message)
+    {
+        Debug.WriteLine("Checkout requested");
     }
 }

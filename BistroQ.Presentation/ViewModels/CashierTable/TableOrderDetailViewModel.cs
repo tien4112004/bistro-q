@@ -1,23 +1,29 @@
 ﻿using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Presentation.Helpers;
+using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Commons;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
 
-public partial class TableOrderDetailViewModel : ObservableObject
+public partial class TableOrderDetailViewModel : ObservableObject, IRecipient<TableSelectedMessage>
 {
     private readonly IOrderDataService _orderDataService;
     private readonly IMapper _mapper;
+    private readonly IMessenger _messenger;
 
-    public TableOrderDetailViewModel(IOrderDataService orderDataService, IMapper mapper)
+    public TableOrderDetailViewModel(IOrderDataService orderDataService, IMapper mapper, IMessenger messenger)
     {
         _orderDataService = orderDataService;
         _mapper = mapper;
+        _messenger = messenger;
         Timer = new TimeCounterViewModel();
+        _messenger.RegisterAll(this);
     }
 
     [ObservableProperty]
@@ -44,7 +50,6 @@ public partial class TableOrderDetailViewModel : ObservableObject
                 200);
 
             Order = _mapper.Map<OrderViewModel>(order);
-            Debug.WriteLine(Order.OrderItems[0].Total);
             Timer.SetStartTime(Order.StartTime ?? DateTime.Now);
             return Order;
         }
@@ -60,6 +65,16 @@ public partial class TableOrderDetailViewModel : ObservableObject
         {
             IsLoading = false;
         }
+    }
 
+    [RelayCommand]
+    public void CheckoutRequestedCommand()
+    {
+        _messenger.Send(new CheckoutRequestedMessage(Order.TableId));
+    }
+
+    public void Receive(TableSelectedMessage message)
+    {
+        OnTableChangedAsync(message.TableId);
     }
 }

@@ -80,12 +80,11 @@
                    />
 
                 <GridView ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}" 
-                  SelectedItem="{x:Bind ViewModel.SelectedTableResponse, Mode=TwoWay}"
+                  SelectedItem="{x:Bind ViewModel.SelectedTable, Mode=TwoWay}"
                   IsItemClickEnabled="True"
                   SelectionMode="Single"
                   Visibility="{x:Bind ViewModel.HasTables, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
-                  SelectedIndex="0"
-                  ItemClick="OnTableClicked">
+                  SelectedIndex="0">
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <ItemsWrapGrid Orientation="Horizontal"/>

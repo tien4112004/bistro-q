@@ -1,6 +1,4 @@
-﻿using BistroQ.Presentation.Models;
-using BistroQ.Presentation.ViewModels.CashierTable;
-using BistroQ.Presentation.ViewModels.Models;
+﻿using BistroQ.Presentation.ViewModels.CashierTable;
 using CommunityToolkit.WinUI.Controls;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -15,7 +13,7 @@ public sealed partial class ZoneOverviewControl : UserControl
         this.InitializeComponent();
     }
 
-    public ZoneOverviewViewModel ViewModel { get; set; } = App.GetService<ZoneOverviewViewModel>();
+    public ZoneOverviewViewModel ViewModel { get; set; }
 
     public static readonly DependencyProperty ViewModelProperty =
         DependencyProperty.Register(
@@ -24,32 +22,20 @@ public sealed partial class ZoneOverviewControl : UserControl
             typeof(ZoneOverviewControl),
             new PropertyMetadata(null));
 
-    private ZoneStateEventArgs _state = new();
-
-    public event EventHandler<ZoneStateEventArgs> ZoneSelectionChanged;
-
-    public event EventHandler<int?> TableSelectionChanged;
-
-    private void OnZoneClicked(object sender, ItemClickEventArgs e)
-    {
-        if (e.ClickedItem is ZoneViewModel zone)
-        {
-            _state.ZoneId = zone.ZoneId;
-            ZoneSelectionChanged?.Invoke(this, _state);
-        }
-    }
-
     private void Segmented_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        _state.ZoneId = ViewModel.SelectedZone?.ZoneId;
-        _state.Type = Segmented.SelectedIndex switch
+        if (ViewModel == null)
+        {
+            return;
+        }
+
+        var type = Segmented.SelectedIndex switch
         {
             0 => "All",
             1 => "Occupied",
             _ => "All"
         };
-
-        ZoneSelectionChanged?.Invoke(this, _state);
+        ViewModel.UpdateFilter(type);
     }
     private void ScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
     {

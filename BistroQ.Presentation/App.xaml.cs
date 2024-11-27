@@ -18,6 +18,7 @@ using BistroQ.Presentation.Views.Client;
 using BistroQ.Service.Auth;
 using BistroQ.Service.Common;
 using BistroQ.Service.Data;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
@@ -61,6 +62,9 @@ public partial class App : Application
         {
             // Default Activation Handler
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
+
+            // Message Bus
+            services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 
             // Services
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
