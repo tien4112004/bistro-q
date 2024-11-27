@@ -3,6 +3,7 @@ using BistroQ.Core.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
 
 namespace BistroQ.ViewModels.Client;
@@ -22,29 +23,9 @@ public partial class OrderCartViewModel : ObservableRecipient
     [ObservableProperty]
     private string _errorMessage = string.Empty;
 
-    private ObservableCollection<OrderItem> _cartItems = new ObservableCollection<OrderItem>();
-    public ObservableCollection<OrderItem> CartItems
-    {
-        get => _cartItems;
-        set => SetProperty(ref _cartItems, value);
-    }
-
-    private ObservableCollection<OrderItem> _processingItems = new ObservableCollection<OrderItem>();
-    public ObservableCollection<OrderItem> ProcessingItems
-    {
-        get => _processingItems;
-        set => SetProperty(ref _processingItems, value);
-    }
-
-    private ObservableCollection<OrderItem> _completedItems = new ObservableCollection<OrderItem>();
-    public ObservableCollection<OrderItem> CompletedItems
-    {
-        get => _completedItems;
-        set => SetProperty(ref _completedItems, value);
-    }
-    //private ObservableCollection<OrderItem> CartItems { get; set; } = new ObservableCollection<OrderItem>();
-    //public ObservableCollection<OrderItem> ProcessingItems { get; set; } = new ObservableCollection<OrderItem>();
-    //public ObservableCollection<OrderItem> CompletedItems { get; set; } = new ObservableCollection<OrderItem>();
+    public ObservableCollection<OrderItem> CartItems { get; set; } = new ObservableCollection<OrderItem>();
+    public ObservableCollection<OrderItem> ProcessingItems { get; set; } = new ObservableCollection<OrderItem>();
+    public ObservableCollection<OrderItem> CompletedItems { get; set; } = new ObservableCollection<OrderItem>();
 
     public ICommand StartOrderCommand { get; }
     public ICommand CancelOrderCommand { get; }
@@ -52,21 +33,10 @@ public partial class OrderCartViewModel : ObservableRecipient
 
     public OrderCartViewModel(IOrderDataService orderDataService)
     {
+        Debug.WriteLine(1);
         _orderDataService = orderDataService;
         StartOrderCommand = new AsyncRelayCommand(StartOrder);
         CancelOrderCommand = new RelayCommand(CancelOrder);
-
-        CartItems = new ObservableCollection<OrderItem> {
-            new OrderItem
-            {
-                Quantity = 1,
-                PriceAtPurchase = 0,
-                Product = new Product
-                {
-                    Name = "Test product"
-                }
-            }
-        };
     }
 
     public void AddProductToCart(Product product)
@@ -87,6 +57,7 @@ public partial class OrderCartViewModel : ObservableRecipient
                 PriceAtPurchase = product.Price
             });
         }
+        _ = Task.CompletedTask;
     }
 
     public async Task LoadExistingOrderAsync()

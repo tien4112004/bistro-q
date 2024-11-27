@@ -28,7 +28,7 @@
 
             <Button 
                 x:Name="EntryButton"
-                Command="{x:Bind ViewModel.OrderCartViewModel.StartOrderCommand}"
+                Command="{x:Bind ViewModel.OrderCartViewModel.StartOrderCommand, Mode=OneWay}"
                 Style="{ThemeResource AccentButtonStyle}"
                 Width="140"
                 Padding="20,10"
@@ -73,7 +73,9 @@
                     BorderThickness="4"
                     Padding="16,16,0,0">
                 <clientusercontrols:ProductListControl 
-                    ViewModel="{x:Bind ViewModel.ProductListViewModel, Mode=OneWay}" />
+                    x:Name="ProductList"
+                    ViewModel="{x:Bind ViewModel.ProductListViewModel, Mode=OneWay}"
+                    AddProductToCart="ProductList_AddProductToCart" />
             </Border>
 
             <Rectangle Grid.Column="1"
@@ -87,6 +89,7 @@
                     BorderThickness="4"
                     Padding="0,0,4,0">
                 <clientusercontrols:OrderCartControl
+                    x:Name="OrderCart"
                     ViewModel="{x:Bind ViewModel.OrderCartViewModel, Mode=OneWay}" />
             </Border>
         </Grid>

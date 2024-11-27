@@ -7,12 +7,12 @@ namespace BistroQ.Views.UserControls.Client;
 
 public sealed partial class OrderCartControl : UserControl
 {
-    public DependencyProperty ViewModelProperty =
+    public static readonly DependencyProperty ViewModelProperty =
         DependencyProperty.Register(
-            nameof(OrderCartViewModel),
+            nameof(ViewModel),
             typeof(OrderCartViewModel),
             typeof(OrderCartControl),
-            new PropertyMetadata(null));
+            new PropertyMetadata(null, OnViewModelChanged));
 
     public OrderCartViewModel ViewModel
     {
@@ -20,17 +20,40 @@ public sealed partial class OrderCartControl : UserControl
         set => SetValue(ViewModelProperty, value);
     }
 
+    public event EventHandler<OrderCartViewModel> ViewModelChanged;
+
     public OrderCartControl()
     {
         this.InitializeComponent();
+        this.Loaded += OrderCartControl_Loaded;
+    }
+
+    private void OrderCartControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel == null)
+        {
+            ViewModel = App.GetService<OrderCartViewModel>();
+        }
+        DataContext = ViewModel;
         OrderCartSelector.SelectedItem = SelectorBarItemCart;
+    }
+
+    private static void OnViewModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var control = (OrderCartControl)d;
+        control.OnViewModelChanged((OrderCartViewModel)e.NewValue);
+    }
+
+    private void OnViewModelChanged(OrderCartViewModel newViewModel)
+    {
+        ViewModelChanged?.Invoke(this, newViewModel);
     }
 
     private void OrderCartSelector_SelectionChanged(object sender, SelectorBarSelectionChangedEventArgs e)
     {
         if (OrderCartSelector.SelectedItem == SelectorBarItemCart)
         {
-            PanelContentControl.Content = new CartPage();
+            PanelContentControl.Content = new CartPage(ViewModel);
         }
         else if (OrderCartSelector.SelectedItem == SelectorBarItemOrder)
         {

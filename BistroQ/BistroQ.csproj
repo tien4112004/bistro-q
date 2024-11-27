@@ -25,7 +25,6 @@
     <None Remove="Views\Client\CartPage.xaml" />
     <None Remove="Views\TestAdminPage.xaml" />
     <None Remove="Views\TestKitchenPage.xaml" />
-    <None Remove="Views\UserControls\Client\CartItemControl.xaml" />
     <None Remove="Views\UserControls\Client\OrderCartControl.xaml" />
     <None Remove="Views\UserControls\Client\SingleProductControl.xaml" />
     <None Remove="Views\UserControls\ItemQuantityControl.xaml" />
@@ -82,9 +81,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\UserControls\Client\SingleProductControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Views\UserControls\Client\CartItemControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\UserControls\ItemQuantityControl.xaml">

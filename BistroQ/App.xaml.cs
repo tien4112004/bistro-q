@@ -121,6 +121,7 @@ public partial class App : Application
             services.AddScoped<IAdminTableService, AdminTableService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
+
             // Client V&VM
             services.AddTransient<HomePageViewModel>();
             services.AddTransient<HomePage>();

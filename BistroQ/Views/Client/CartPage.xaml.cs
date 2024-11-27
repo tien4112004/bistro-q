@@ -1,64 +1,50 @@
-﻿using BistroQ.Core.Entities;
-using BistroQ.ViewModels.Client;
-using CommunityToolkit.Mvvm.Input;
+﻿using BistroQ.ViewModels.Client;
 using Microsoft.UI.Xaml.Controls;
+using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace BistroQ.Views.Client;
 
-public sealed partial class CartPage : Page
+public sealed partial class CartPage : Page, INotifyPropertyChanged
 {
-    private OrderCartViewModel ViewModel => (OrderCartViewModel)DataContext;
+    public OrderCartViewModel ViewModel { get; }
 
-    public bool CartIsEmpty => ViewModel.CartItems == null || ViewModel.CartItems.Count == 0;
+    public bool CartIsEmpty => ViewModel?.CartItems == null || ViewModel.CartItems.Count == 0;
 
-    public RelayCommand<Product> AddToCartCommand { get; set; }
-
-    public CartPage()
+    public CartPage(OrderCartViewModel orderCartViewModel)
     {
+        ViewModel = orderCartViewModel;
+        DataContext = ViewModel;
+        Debug.WriteLine(2);
         this.InitializeComponent();
-        DataContext = App.GetService<OrderCartViewModel>();
-        AddToCartCommand = new RelayCommand<Product>(AddToCart);
 
-        var productListViewModel = App.GetService<ProductListViewModel>();
-        //productListViewModel.ProductAddedToCart += OnProductAddedToCart;
-
-        ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+        if (ViewModel != null)
+        {
+            ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+            if (ViewModel.CartItems != null)
+            {
+                ViewModel.CartItems.CollectionChanged += CartItems_CollectionChanged;
+            }
+        }
     }
 
     private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(ViewModel.CartItems))
         {
-            OnPropertyChanged(nameof(CartIsEmpty));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CartIsEmpty)));
+            if (ViewModel.CartItems != null)
+            {
+                ViewModel.CartItems.CollectionChanged += CartItems_CollectionChanged;
+            }
         }
     }
 
-    private void AddToCart(Product product)
+    private void CartItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        if (product == null) return;
-
-        var existingOrderItem = ViewModel.CartItems.FirstOrDefault(od => od.ProductId == product.ProductId);
-        if (existingOrderItem != null)
-        {
-            existingOrderItem.Quantity++;
-        }
-        else
-        {
-            ViewModel.CartItems.Add(new OrderItem
-            {
-                ProductId = product.ProductId,
-                Product = product,
-                Quantity = 1,
-                PriceAtPurchase = product.Price
-            });
-        }
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CartIsEmpty)));
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-
-    protected void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

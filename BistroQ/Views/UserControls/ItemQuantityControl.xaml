@@ -47,7 +47,7 @@
             <TextBlock x:Name="QuantityText" 
                       Width="60" 
                       FontSize="18"
-                      Text="{x:Bind Quantity, Mode=OneWay}"
+                      Text="{x:Bind Item.Quantity, Mode=OneWay}"
                       HorizontalTextAlignment="Center" 
                       VerticalAlignment="Center" />
             <Button x:Name="IncreaseButton" 

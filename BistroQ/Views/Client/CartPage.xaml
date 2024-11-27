@@ -7,7 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:entities="using:BistroQ.Core.Entities" 
-    xmlns:converter="using:BistroQ.Converters" xmlns:usercontrols="using:BistroQ.Views.UserControls"
+    xmlns:converter="using:BistroQ.Converters" 
+    xmlns:usercontrols="using:BistroQ.Views.UserControls"
     Background="Transparent"
     DataContext="{x:Bind ViewModel}"
     mc:Ignorable="d">
@@ -48,10 +49,9 @@
                              MaxLines="2"/>
 
                     <usercontrols:ItemQuantityControl 
-                        Margin="0,8,0,0"
+                        Margin="0,4,0,0"
                         HorizontalAlignment="Left"
-                        ProductId="{x:Bind ProductId}"
-                        Quantity="{x:Bind Quantity, Mode=TwoWay}" />
+                        Item="{x:Bind}" />
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -71,8 +71,8 @@
 
             <TextBlock Foreground="{StaticResource TextFillColorPrimaryBrush}" 
                        Margin="8,0"
-                   Visibility="{x:Bind CartIsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
-                   Text="Your cart is currently empty." />
+                       Visibility="{x:Bind CartIsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+                       Text="Your cart is currently empty." />
         </StackPanel>
     </ScrollViewer>
 </Page>

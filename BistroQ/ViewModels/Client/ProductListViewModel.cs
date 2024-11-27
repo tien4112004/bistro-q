@@ -32,8 +32,6 @@ public partial class ProductListViewModel : ObservableRecipient
     public ICommand ChangeCategoryCommand { get; set; }
     public ICommand AddProductToCartCommand { get; set; }
 
-    public event Action<Product> AddProductToCartRequested;
-
     public ProductListViewModel(
         ICategoryService categoryService,
         IProductService productService)
@@ -41,7 +39,6 @@ public partial class ProductListViewModel : ObservableRecipient
         _categoryService = categoryService;
         _productService = productService;
         ChangeCategoryCommand = new AsyncRelayCommand<Category>(ChangeCategory);
-        AddProductToCartCommand = new RelayCommand<Product>(AddProductToCart);
     }
 
     private async Task ChangeCategory(Category category)
@@ -49,11 +46,6 @@ public partial class ProductListViewModel : ObservableRecipient
         SelectedCategory = category;
         await LoadProductAsync();
         OnPropertyChanged(nameof(Products));
-    }
-
-    private void AddProductToCart(Product product)
-    {
-        AddProductToCartRequested?.Invoke(product);
     }
 
     public async Task LoadCategoriesAsync()

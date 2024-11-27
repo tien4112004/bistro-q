@@ -1,81 +1,53 @@
-﻿using Microsoft.UI.Xaml;
+﻿using BistroQ.Core.Entities;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Windows.Foundation;
 
 namespace BistroQ.Views.UserControls
 {
     public sealed partial class ItemQuantityControl : UserControl
     {
-        public static readonly DependencyProperty QuantityProperty =
-            DependencyProperty.Register(nameof(Quantity), typeof(int), typeof(ItemQuantityControl),
-                new PropertyMetadata(0, OnQuantityChanged));
+        public static readonly DependencyProperty ItemProperty = DependencyProperty.Register(
+            nameof(Item),
+            typeof(OrderItem),
+            typeof(ItemQuantityControl),
+            new PropertyMetadata(null));
 
-        public static readonly DependencyProperty ProductIdProperty =
-            DependencyProperty.Register(nameof(ProductId), typeof(string), typeof(ItemQuantityControl),
-                new PropertyMetadata(string.Empty));
-
-        public event TypedEventHandler<ItemQuantityControl, QuantityChangedEventArgs> QuantityChanged;
-
-        public int Quantity
+        public OrderItem Item
         {
-            get => (int)GetValue(QuantityProperty);
-            set => SetValue(QuantityProperty, value);
+            get => (OrderItem)GetValue(ItemProperty);
+            set
+            {
+                SetValue(ItemProperty, value);
+                UpdateVisualState();
+            }
         }
-
-        public string ProductId
-        {
-            get => (string)GetValue(ProductIdProperty);
-            set => SetValue(ProductIdProperty, value);
-        }
-
         public ItemQuantityControl()
         {
             this.InitializeComponent();
-            UpdateVisualState();
-        }
-
-        private static void OnQuantityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = (ItemQuantityControl)d;
-            control.UpdateVisualState();
         }
 
         private void UpdateVisualState()
         {
-            VisualStateManager.GoToState(this, Quantity > 0 ? "InCart" : "NotInCart", true);
+            if (Item == null) { return; }
+            VisualStateManager.GoToState(this, Item.Quantity > 0 ? "InCart" : "NotInCart", true);
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            Quantity = 1;
-            QuantityChanged?.Invoke(this, new QuantityChangedEventArgs(ProductId, Quantity));
+            Item.Quantity = 1;
         }
 
         private void IncreaseButton_Click(object sender, RoutedEventArgs e)
         {
-            Quantity++;
-            QuantityChanged?.Invoke(this, new QuantityChangedEventArgs(ProductId, Quantity));
+            Item.Quantity++;
         }
 
         private void DecreaseButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Quantity > 0)
+            if (Item.Quantity > 0)
             {
-                Quantity--;
-                QuantityChanged?.Invoke(this, new QuantityChangedEventArgs(ProductId, Quantity));
+                Item.Quantity--;
             }
-        }
-    }
-
-    public class QuantityChangedEventArgs : EventArgs
-    {
-        public string ProductId { get; }
-        public int NewQuantity { get; }
-
-        public QuantityChangedEventArgs(string productId, int newQuantity)
-        {
-            ProductId = productId;
-            NewQuantity = newQuantity;
         }
     }
 }

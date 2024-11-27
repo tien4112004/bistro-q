@@ -4,6 +4,7 @@ using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Windows.Input;
 
 namespace BistroQ.ViewModels.Client;
 
@@ -15,20 +16,23 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
     [ObservableProperty]
     private bool _errorMessage;
 
+    public ICommand AddProductToCartCommand { get; private set; }
+
     public HomePageViewModel(
         IDialogService dialogService,
         IOrderDataService orderDataService,
         ICategoryService categoryService,
         IProductService productService)
     {
-        ProductListViewModel = new ProductListViewModel(categoryService, productService);
-        OrderCartViewModel = new OrderCartViewModel(orderDataService);
+        ProductListViewModel = App.GetService<ProductListViewModel>();
+        OrderCartViewModel = App.GetService<OrderCartViewModel>();
 
-        ProductListViewModel.AddProductToCartRequested += OnAddProductToCartRequested;
         OrderCartViewModel.OrderStartedCommand = new RelayCommand<Order>(OnOrderStarted);
+
+        AddProductToCartCommand = new RelayCommand<Product>(OnAddProductToCart);
     }
 
-    private void OnAddProductToCartRequested(Product product)
+    private void OnAddProductToCart(Product product)
     {
         OrderCartViewModel.AddProductToCart(product);
     }
