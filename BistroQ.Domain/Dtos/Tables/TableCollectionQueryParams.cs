@@ -8,5 +8,5 @@ public class TableCollectionQueryParams : BaseCollectionQueryParams
 
     public int? SeatsCount { get; set; }
 
-    public string? ZoneName { get; set; }    
+    public string? ZoneName { get; set; } 
 }

@@ -36,7 +36,21 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
     private PaginationViewModel _pagination;
 
     [ObservableProperty]
-    private string _searchText;
+    private ZoneCollectionQueryParams _query = new();
+
+    public string SearchText
+    {
+        get => Query.Name ?? string.Empty;
+        set
+        {
+            if (Query.Name != value)
+            {
+                Query.Name = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
 
     public IRelayCommand AddCommand { get; }
     public IRelayCommand EditCommand { get; }
@@ -88,24 +102,18 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         {
             return;
         }
-
+        Query.Page = Pagination.CurrentPage;
+        Query.Size = Pagination.PageSize;
         _ = LoadDataAsync();
     }
 
-    private async Task LoadDataAsync(ZoneCollectionQueryParams query = null)
+    private async Task LoadDataAsync()
     {
         try
         {
             _isLoading = true;
 
-            var _query = query ?? new ZoneCollectionQueryParams()
-            {
-                OrderDirection = "asc",
-                Page = Pagination.CurrentPage,
-                Size = Pagination.PageSize
-            };
-
-            var result = await _zoneDataService.GetZonesAsync(_query);
+            var result = await _zoneDataService.GetZonesAsync(Query);
 
             Source = new ObservableCollection<ZoneViewModel>(_mapper.Map<IEnumerable<ZoneViewModel>>(result.Data));
             Pagination.TotalItems = result.TotalItems;
@@ -171,14 +179,11 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
     private void ExecuteSortCommand((string column, string direction) sortParams)
     {
         var (column, direction) = sortParams;
-        var query = new ZoneCollectionQueryParams
-        {
-            OrderBy = column,
-            OrderDirection = direction,
-            Page = 1,
-            Size = Pagination.PageSize
-        };
-        _ = LoadDataAsync(query);
+        Query.OrderBy = column;
+        Query.OrderDirection = direction;
+        Pagination.CurrentPage = 1;
+        Query.Page = 1;
+        _ = LoadDataAsync();
     }
 
     public void AdminZoneDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
@@ -196,36 +201,11 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         SortCommand.Execute(sortParams);
     }
 
-    // search
     private void ExecuteSearchCommand()
     {
-        // Implement the search logic here
-        var query = new ZoneCollectionQueryParams
-        {
-            Name = SearchText,
-            Page = 1,
-            Size = Pagination.PageSize
-        };
-        _ = LoadDataAsync(query);
-    }
-
-    private void Control2_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-    {
-        if (args.ChosenSuggestion != null)
-        {
-            SearchText = args.ChosenSuggestion.ToString();
-        }
-        else
-        {
-            SearchText = args.QueryText;
-        }
-
-        SearchCommand.Execute(null);
-    }
-
-    private void Control2_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
-    {
-        sender.Text = args.SelectedItem.ToString();
+        Query.Page = 1;
+        Pagination.CurrentPage = 1;
+        _ = LoadDataAsync();
     }
 
     public void Dispose()

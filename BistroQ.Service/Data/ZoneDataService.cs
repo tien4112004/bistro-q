@@ -24,7 +24,7 @@ namespace BistroQ.Service.Data
             {
                 var zones = _mapper.Map<IEnumerable<Zone>>(response.Data);
                 return new ApiCollectionResponse<IEnumerable<Zone>>
-                    (zones, response.TotalItems, response.CurrentPage, query.Size);
+                    (zones, response.TotalItems, response.CurrentPage, response.TotalPages);
             }
             throw new Exception("Failed to get zones");
         }

@@ -12,7 +12,6 @@ using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels;
@@ -37,7 +36,20 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
     private PaginationViewModel _pagination;
 
     [ObservableProperty]
-    private string _searchText;
+    private TableCollectionQueryParams _query = new();
+
+    public string SearchText
+    {
+        get => Query.ZoneName ?? string.Empty;
+        set
+        {
+            if (Query.ZoneName != value)
+            {
+                Query.ZoneName = value;
+                OnPropertyChanged();
+            }
+        }
+    }
 
     public IRelayCommand AddCommand { get; }
     public IRelayCommand EditCommand { get; }
@@ -90,23 +102,18 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
             return;
         }
 
+        Query.Page = Pagination.CurrentPage;
+        Query.Size = Pagination.PageSize;
         _ = LoadDataAsync();
     }
 
-    private async Task LoadDataAsync(TableCollectionQueryParams query = null)
+    private async Task LoadDataAsync()
     {
         try
         {
             _isLoading = true;
 
-            var _query = query ?? new TableCollectionQueryParams()
-            {
-                OrderDirection = "asc",
-                Page = Pagination.CurrentPage,
-                Size = Pagination.PageSize
-            };
-
-            var result = await _tableDataService.GetGridDataAsync(_query);
+            var result = await _tableDataService.GetGridDataAsync(Query);
 
             var tables = _mapper.Map<IEnumerable<TableViewModel>>(result.Data);
             Source = new ObservableCollection<TableViewModel>(tables);
@@ -173,14 +180,11 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
     private void ExecuteSortCommand((string column, string direction) sortParams)
     {
         var (column, direction) = sortParams;
-        var query = new TableCollectionQueryParams
-        {
-            OrderBy = column,
-            OrderDirection = direction,
-            Page = 1,
-            Size = Pagination.PageSize
-        };
-        _ = LoadDataAsync(query);
+        Query.OrderBy = column;
+        Query.OrderDirection = direction;
+        Query.Page = 1;
+        Pagination.CurrentPage = 1;
+        _ = LoadDataAsync();
     }
 
     public void AdminTableDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
@@ -198,36 +202,11 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
         SortCommand.Execute(sortParams);
     }
 
-    // search
     private void ExecuteSearchCommand()
     {
-        // Implement the search logic here
-        var query = new TableCollectionQueryParams
-        {
-            //Name = SearchText,
-            //Page = 1,
-            //Size = Pagination.PageSize
-        };
-        _ = LoadDataAsync(query);
-    }
-
-    private void Control2_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-    {
-        if (args.ChosenSuggestion != null)
-        {
-            SearchText = args.ChosenSuggestion.ToString();
-        }
-        else
-        {
-            SearchText = args.QueryText;
-        }
-
-        SearchCommand.Execute(null);
-    }
-
-    private void Control2_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
-    {
-        sender.Text = args.SelectedItem.ToString();
+        Query.Page = 1;
+        Pagination.CurrentPage = 1;
+        _ = LoadDataAsync();
     }
 
     public void Dispose()

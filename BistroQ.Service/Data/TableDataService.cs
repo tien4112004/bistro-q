@@ -24,7 +24,7 @@ public class TableDataService : ITableDataService
         {
             var tables = _mapper.Map<IEnumerable<Table>>(response.Data);
             return new ApiCollectionResponse<IEnumerable<Table>>
-                (tables, response.TotalItems, response.CurrentPage, query.Size);
+                (tables, response.TotalItems, response.CurrentPage, response.TotalPages);
         }
         
         throw new Exception("Failed to get tables");
