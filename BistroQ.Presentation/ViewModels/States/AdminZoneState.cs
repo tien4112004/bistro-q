@@ -1,5 +1,4 @@
 ﻿using BistroQ.Domain.Dtos.Zones;
-using BistroQ.Presentation.ViewModels.Commons;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
@@ -17,15 +16,6 @@ public partial class AdminZoneState : ObservableObject
 
     [ObservableProperty]
     private ObservableCollection<ZoneViewModel> source = new();
-
-    [ObservableProperty]
-    private PaginationViewModel pagination = new()
-    {
-        TotalItems = 0,
-        TotalPages = 0,
-        CurrentPage = 1,
-        PageSize = 10
-    };
 
     [ObservableProperty]
     private bool isLoading;
@@ -52,18 +42,10 @@ public partial class AdminZoneState : ObservableObject
         Source.Clear();
         IsLoading = false;
         Query = new ZoneCollectionQueryParams();
-        Pagination = new PaginationViewModel
-        {
-            TotalItems = 0,
-            TotalPages = 0,
-            CurrentPage = 1,
-            PageSize = 10
-        };
     }
 
     public void ReturnToFirstPage()
     {
         Query.Page = 1;
-        Pagination.CurrentPage = 1;
     }
 }

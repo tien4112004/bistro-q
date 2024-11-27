@@ -89,6 +89,6 @@
                 <!-- <controls:DataGridTextColumn Header="Status" IsReadOnly="True" />-->
             </controls:DataGrid.Columns>
         </controls:DataGrid>
-        <local:PaginationControl Pagination="{x:Bind ViewModel.State.Pagination, Mode=TwoWay}" Grid.Row="2" Margin="0,0,0,24" />
+        <local:PaginationControl Grid.Row="2" Margin="0,0,0,24" />
     </Grid>
 </Page>

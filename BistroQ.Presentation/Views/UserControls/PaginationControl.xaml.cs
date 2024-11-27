@@ -1,16 +1,17 @@
-﻿using BistroQ.Presentation.ViewModels.Commons;
+﻿using BistroQ.Presentation.Messages;
+using BistroQ.Presentation.ViewModels.Commons;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
-using System.Text.Json;
 
 namespace BistroQ.Presentation.Views.UserControls;
 
 public partial class PaginationControl : UserControl
 {
+    private readonly IMessenger _messenger = App.GetService<IMessenger>();
+
     public static readonly DependencyProperty PaginationProperty = DependencyProperty.Register(
         "Pagination",
         typeof(PaginationViewModel),
@@ -43,31 +44,22 @@ public partial class PaginationControl : UserControl
         NextPageCommand = new RelayCommand(NextPage, CanNextPage);
         LastPageCommand = new RelayCommand(LastPage, CanLastPage);
 
-        Pagination.PropertyChanged += OnPaginationPropertyChanged;
+        _messenger.Register<PaginationChangedMessage>(this, (r, m) =>
+        {
+            Pagination.TotalItems = m.TotalItems;
+            Pagination.CurrentPage = m.CurrentPage;
+            Pagination.TotalPages = m.TotalPages;
+            UpdateCommandStates();
+        });
     }
 
     private static void OnPaginationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is PaginationControl control)
         {
-            if (e.OldValue is PaginationViewModel oldPagination)
-            {
-                oldPagination.PropertyChanged -= control.OnPaginationPropertyChanged;
-            }
-
-            if (e.NewValue is PaginationViewModel newPagination)
-            {
-                newPagination.PropertyChanged += control.OnPaginationPropertyChanged;
-                control.UpdatePagination(newPagination);
-            }
-
             control.UpdateCommandStates();
+            control.UpdatePagination((PaginationViewModel)e.NewValue);
         }
-    }
-
-    private void OnPaginationPropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        UpdateCommandStates();
     }
 
     private void UpdateCommandStates()
@@ -95,20 +87,20 @@ public partial class PaginationControl : UserControl
         {
             if (int.TryParse(item.Content.ToString(), out int pageSize))
             {
-                Pagination.PageSize = pageSize;
+                _messenger.Send(new PageSizeChangedMessage(pageSize));
             }
         }
     }
 
-    private void FirstPage() => Pagination.CurrentPage = 1;
+    private void FirstPage() => _messenger.Send(new CurrentPageChangedMessage(1));
     private bool CanFirstPage() => Pagination?.CurrentPage > 1;
 
-    private void PreviousPage() => Pagination.CurrentPage--;
+    private void PreviousPage() => _messenger.Send(new CurrentPageChangedMessage(Pagination.CurrentPage - 1));
     private bool CanPreviousPage() => Pagination?.CurrentPage > 1;
 
-    private void NextPage() => Pagination.CurrentPage++;
+    private void NextPage() => _messenger.Send(new CurrentPageChangedMessage(Pagination.CurrentPage + 1));
     private bool CanNextPage() => Pagination?.CurrentPage < Pagination?.TotalPages;
 
-    private void LastPage() => Pagination.CurrentPage = Pagination.TotalPages;
+    private void LastPage() => _messenger.Send(new CurrentPageChangedMessage(Pagination.TotalPages));
     private bool CanLastPage() => Pagination?.CurrentPage < Pagination?.TotalPages;
 }

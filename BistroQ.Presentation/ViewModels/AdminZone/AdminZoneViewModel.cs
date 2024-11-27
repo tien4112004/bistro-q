@@ -2,11 +2,13 @@
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
+using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.AdminZone;
 using BistroQ.Presentation.ViewModels.Models;
 using BistroQ.Presentation.ViewModels.States;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
@@ -15,12 +17,16 @@ using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels;
 
-public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware, IDisposable
+public partial class AdminZoneViewModel :
+    ObservableRecipient,
+    INavigationAware,
+    IDisposable
 {
     private readonly IAdminZoneDialogService _adminZoneDialogService;
     private readonly INavigationService _navigationService;
     private readonly IZoneDataService _zoneDataService;
     private readonly IMapper _mapper;
+    private readonly IMessenger _messenger;
 
     [ObservableProperty]
     private AdminZoneState state = new();
@@ -35,7 +41,8 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         IAdminZoneDialogService adminZoneDialogService,
         INavigationService navigationService,
         IZoneDataService zoneDataService,
-        IMapper mapper)
+        IMapper mapper,
+        IMessenger messenger)
     {
         _adminZoneDialogService = adminZoneDialogService;
         _navigationService = navigationService;
@@ -43,13 +50,25 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         _mapper = mapper;
 
         State.PropertyChanged += StatePropertyChanged;
-        State.Pagination.PropertyChanged += Pagination_PropertyChanged;
 
         AddCommand = new RelayCommand(NavigateToAddPage);
         EditCommand = new RelayCommand(NavigateToEditPage, () => State.CanEdit);
         DeleteCommand = new AsyncRelayCommand(DeleteSelectedZoneAsync, () => State.CanDelete);
         SortCommand = new RelayCommand<(string column, string direction)>(ExecuteSortCommand);
         SearchCommand = new RelayCommand(ExecuteSearchCommand);
+
+        _messenger = messenger;
+        _messenger.Register<PageSizeChangedMessage>(this, async (r, m) =>
+        {
+            State.Query.Size = m.NewPageSize;
+            await LoadDataAsync();
+        });
+
+        _messenger.Register<CurrentPageChangedMessage>(this, async (r, m) =>
+        {
+            State.Query.Page = m.NewCurrentPage;
+            await LoadDataAsync();
+        });
     }
 
     private void StatePropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -71,20 +90,6 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         State.SelectedZone = null;
     }
 
-    private void Pagination_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (State.IsLoading ||
-            (e.PropertyName != nameof(State.Pagination.CurrentPage) &&
-             e.PropertyName != nameof(State.Pagination.PageSize)))
-        {
-            return;
-        }
-
-        State.Query.Page = State.Pagination.CurrentPage;
-        State.Query.Size = State.Pagination.PageSize;
-        _ = LoadDataAsync();
-    }
-
     private async Task LoadDataAsync()
     {
         try
@@ -94,9 +99,11 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
 
             var zones = _mapper.Map<IEnumerable<ZoneViewModel>>(result.Data);
             State.Source = new ObservableCollection<ZoneViewModel>(zones);
-            State.Pagination.TotalItems = result.TotalItems;
-            State.Pagination.TotalPages = result.TotalPages;
-            State.Pagination.CurrentPage = result.CurrentPage;
+            _messenger.Send(new PaginationChangedMessage(
+                result.TotalItems,
+                result.CurrentPage,
+                result.TotalPages
+             ));
         }
         catch (Exception ex)
         {
@@ -180,11 +187,6 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
 
     public void Dispose()
     {
-        if (State.Pagination != null)
-        {
-            State.Pagination.PropertyChanged -= Pagination_PropertyChanged;
-        }
-
         if (State != null)
         {
             State.PropertyChanged -= StatePropertyChanged;

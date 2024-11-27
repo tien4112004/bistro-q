@@ -2,11 +2,13 @@
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
+using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.AdminTable;
 using BistroQ.Presentation.ViewModels.Models;
 using BistroQ.Presentation.ViewModels.States;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
@@ -21,6 +23,7 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
     private readonly IMapper _mapper;
     private readonly ITableDataService _tableDataService;
     private readonly INavigationService _navigationService;
+    private readonly IMessenger _messenger;
 
     [ObservableProperty]
     private AdminTableState state = new();
@@ -34,21 +37,34 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
         INavigationService navigationService,
         IAdminTableDialogService adminTableDialogService,
         ITableDataService tableDataService,
-        IMapper mapper)
+        IMapper mapper,
+        IMessenger messenger)
     {
         _navigationService = navigationService;
         _adminTableDialogService = adminTableDialogService;
         _tableDataService = tableDataService;
         _mapper = mapper;
+        _messenger = messenger;
 
         State.PropertyChanged += StatePropertyChanged;
-        State.Pagination.PropertyChanged += Pagination_PropertyChanged;
 
         AddCommand = new RelayCommand(NavigateToAddPage);
         EditCommand = new RelayCommand(NavigateToEditPage, () => State.CanEdit);
         DeleteCommand = new AsyncRelayCommand(DeleteSelectedTableAsync, () => State.CanDelete);
         SortCommand = new RelayCommand<(string column, string direction)>(ExecuteSortCommand);
         SearchCommand = new RelayCommand(ExecuteSearchCommand);
+
+        _messenger.Register<PageSizeChangedMessage>(this, async (r, m) =>
+        {
+            State.Query.Size = m.NewPageSize;
+            await LoadDataAsync();
+        });
+
+        _messenger.Register<CurrentPageChangedMessage>(this, async (r, m) =>
+        {
+            State.Query.Page = m.NewCurrentPage;
+            await LoadDataAsync();
+        });
     }
 
     private void StatePropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -70,20 +86,6 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
         State.SelectedTable = null;
     }
 
-    private void Pagination_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (State.IsLoading ||
-            (e.PropertyName != nameof(State.Pagination.CurrentPage) &&
-             e.PropertyName != nameof(State.Pagination.PageSize)))
-        {
-            return;
-        }
-
-        State.Query.Page = State.Pagination.CurrentPage;
-        State.Query.Size = State.Pagination.PageSize;
-        _ = LoadDataAsync();
-    }
-
     private async Task LoadDataAsync()
     {
         try
@@ -94,9 +96,11 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
 
             var tables = _mapper.Map<IEnumerable<TableViewModel>>(result.Data);
             State.Source = new ObservableCollection<TableViewModel>(tables);
-            State.Pagination.TotalItems = result.TotalItems;
-            State.Pagination.TotalPages = result.TotalPages;
-            State.Pagination.CurrentPage = result.CurrentPage;
+            _messenger.Send(new PaginationChangedMessage(
+                result.TotalItems,
+                result.CurrentPage,
+                result.TotalPages
+             ));
         }
         catch (Exception ex)
         {
@@ -180,9 +184,6 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
 
     public void Dispose()
     {
-        if (State.Pagination != null)
-        {
-            State.Pagination.PropertyChanged -= Pagination_PropertyChanged;
-        }
+
     }
 }
