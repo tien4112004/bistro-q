@@ -3,6 +3,7 @@ using BistroQ.Domain.Contracts.Services;
 using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Messages;
+using BistroQ.Presentation.Services;
 using BistroQ.Presentation.ViewModels.AdminZone;
 using BistroQ.Presentation.ViewModels.Models;
 using BistroQ.Presentation.ViewModels.States;
@@ -22,7 +23,7 @@ public partial class AdminZoneViewModel :
     INavigationAware,
     IDisposable
 {
-    private readonly IAdminZoneDialogService _adminZoneDialogService;
+    private readonly IAdminDialogService _adminZoneDialogService;
     private readonly INavigationService _navigationService;
     private readonly IZoneDataService _zoneDataService;
     private readonly IMapper _mapper;
@@ -38,16 +39,15 @@ public partial class AdminZoneViewModel :
     public ICommand SearchCommand { get; }
 
     public AdminZoneViewModel(
-        IAdminZoneDialogService adminZoneDialogService,
         INavigationService navigationService,
         IZoneDataService zoneDataService,
         IMapper mapper,
         IMessenger messenger)
     {
-        _adminZoneDialogService = adminZoneDialogService;
         _navigationService = navigationService;
         _zoneDataService = zoneDataService;
         _mapper = mapper;
+        _adminZoneDialogService = new AdminZoneDialogService();
 
         State.PropertyChanged += StatePropertyChanged;
 
@@ -107,7 +107,7 @@ public partial class AdminZoneViewModel :
         }
         catch (Exception ex)
         {
-            await _adminZoneDialogService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
+            await _adminZoneDialogService.ShowErrorDialog(ex.Message);
         }
         finally
         {
@@ -132,26 +132,25 @@ public partial class AdminZoneViewModel :
 
         try
         {
-            var xamlRoot = App.MainWindow.Content.XamlRoot;
-            var result = await _adminZoneDialogService.ShowConfirmDeleteDialog(xamlRoot);
+            var result = await _adminZoneDialogService.ShowConfirmDeleteDialog();
             if (result != ContentDialogResult.Primary) return;
 
             var success = await _zoneDataService.DeleteZoneAsync(State.SelectedZone.ZoneId.Value);
             if (success)
             {
-                await _adminZoneDialogService.ShowSuccessDialog("Zone deleted successfully.", xamlRoot);
+                await _adminZoneDialogService.ShowSuccessDialog("Zone deleted successfully.");
                 State.Source.Remove(State.SelectedZone);
                 State.SelectedZone = null;
                 await LoadDataAsync();
             }
             else
             {
-                await _adminZoneDialogService.ShowErrorDialog("Failed to delete zone.", xamlRoot);
+                await _adminZoneDialogService.ShowErrorDialog("Failed to delete zone.");
             }
         }
         catch (Exception ex)
         {
-            await _adminZoneDialogService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
+            await _adminZoneDialogService.ShowErrorDialog(ex.Message);
         }
     }
 

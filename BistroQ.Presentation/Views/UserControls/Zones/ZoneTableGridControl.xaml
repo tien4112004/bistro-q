@@ -10,7 +10,7 @@
     xmlns:converters="using:BistroQ.Presentation.Converters"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:skeleton="using:BistroQ.Presentation.Views.UserControls.Skeleton"
+    xmlns:skeleton="using:BistroQ.Presentation.Controls.Skeleton"
     mc:Ignorable="d">
 
     <UserControl.Resources>

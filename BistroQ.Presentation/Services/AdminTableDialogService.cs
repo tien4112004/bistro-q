@@ -1,15 +1,19 @@
-using BistroQ.Presentation.Contracts.Services;
-using BistroQ.Domain.Contracts.Services;
-using BistroQ.Domain.Dtos;
-using BistroQ.Domain.Dtos.Tables;
+﻿using BistroQ.Presentation.Contracts.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace BistroQ.Presentation.Services;
 
-public class AdminTableDialogService : IAdminTableDialogService
+public class AdminTableDialogService : IAdminDialogService
 {
-    public async Task<ContentDialogResult> ShowConfirmDeleteDialog(XamlRoot xamlRoot)
+    private readonly XamlRoot xamlRoot;
+
+    public AdminTableDialogService()
+    {
+        this.xamlRoot = App.MainWindow.Content.XamlRoot;
+    }
+
+    public async Task<ContentDialogResult> ShowConfirmDeleteDialog()
     {
         var dialog = new ContentDialog
         {
@@ -24,7 +28,7 @@ public class AdminTableDialogService : IAdminTableDialogService
         return await dialog.ShowAsync();
     }
 
-    public async Task ShowSuccessDialog(string message, XamlRoot xamlRoot)
+    public async Task ShowSuccessDialog(string message)
     {
         var dialog = new ContentDialog
         {
@@ -36,7 +40,7 @@ public class AdminTableDialogService : IAdminTableDialogService
         await dialog.ShowAsync();
     }
 
-    public async Task ShowErrorDialog(string message, XamlRoot xamlRoot)
+    public async Task ShowErrorDialog(string message)
     {
         var dialog = new ContentDialog
         {

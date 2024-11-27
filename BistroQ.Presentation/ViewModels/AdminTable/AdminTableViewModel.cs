@@ -3,6 +3,7 @@ using BistroQ.Domain.Contracts.Services;
 using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Messages;
+using BistroQ.Presentation.Services;
 using BistroQ.Presentation.ViewModels.AdminTable;
 using BistroQ.Presentation.ViewModels.Models;
 using BistroQ.Presentation.ViewModels.States;
@@ -19,7 +20,7 @@ namespace BistroQ.Presentation.ViewModels;
 
 public partial class AdminTableViewModel : ObservableRecipient, INavigationAware, IDisposable
 {
-    private readonly IAdminTableDialogService _adminTableDialogService;
+    private readonly IAdminDialogService _adminTableDialogService;
     private readonly IMapper _mapper;
     private readonly ITableDataService _tableDataService;
     private readonly INavigationService _navigationService;
@@ -35,16 +36,15 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
 
     public AdminTableViewModel(
         INavigationService navigationService,
-        IAdminTableDialogService adminTableDialogService,
         ITableDataService tableDataService,
         IMapper mapper,
         IMessenger messenger)
     {
         _navigationService = navigationService;
-        _adminTableDialogService = adminTableDialogService;
         _tableDataService = tableDataService;
         _mapper = mapper;
         _messenger = messenger;
+        _adminTableDialogService = new AdminTableDialogService();
 
         State.PropertyChanged += StatePropertyChanged;
 
@@ -104,7 +104,7 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
         }
         catch (Exception ex)
         {
-            await _adminTableDialogService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
+            await _adminTableDialogService.ShowErrorDialog(ex.Message);
         }
         finally
         {
@@ -129,26 +129,25 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
 
         try
         {
-            var xamlRoot = App.MainWindow.Content.XamlRoot;
-            var result = await _adminTableDialogService.ShowConfirmDeleteDialog(xamlRoot);
+            var result = await _adminTableDialogService.ShowConfirmDeleteDialog();
             if (result != ContentDialogResult.Primary) return;
 
             var success = await _tableDataService.DeleteTableAsync(State.SelectedTable.TableId.Value);
             if (success)
             {
-                await _adminTableDialogService.ShowSuccessDialog("Table deleted successfully.", xamlRoot);
+                await _adminTableDialogService.ShowSuccessDialog("Table deleted successfully.");
                 State.Source.Remove(State.SelectedTable);
                 State.SelectedTable = null;
                 await LoadDataAsync();
             }
             else
             {
-                await _adminTableDialogService.ShowErrorDialog("Failed to delete table.", xamlRoot);
+                await _adminTableDialogService.ShowErrorDialog("Failed to delete table.");
             }
         }
         catch (Exception ex)
         {
-            await _adminTableDialogService.ShowErrorDialog(ex.Message, App.MainWindow.Content.XamlRoot);
+            await _adminTableDialogService.ShowErrorDialog(ex.Message);
         }
     }
 
