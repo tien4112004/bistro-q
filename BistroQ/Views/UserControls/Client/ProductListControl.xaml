@@ -6,13 +6,14 @@
     xmlns:local="using:BistroQ.Views.UserControls.Client"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:converter="using:BistroQ.Converters" 
+    xmlns:converters="using:BistroQ.Converters" 
     xmlns:entities="using:BistroQ.Core.Entities"
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-        <converter:ReverseBooleanConverter x:Key="ReverseBool" />
+        <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <converters:ReverseBooleanConverter x:Key="ReverseBool" />
+        <converters:NumberToCurrencyConverter x:Key="NumberToCurreny"/>
 
         <DataTemplate x:Key="CategoryItem" x:DataType="entities:Category">
             <TextBlock Text="{x:Bind Name}" 
@@ -28,7 +29,9 @@
 
         <DataTemplate x:Key="SingleProductDataTemplate"
                       x:DataType="entities:Product">
-            <Grid x:Name="SingleProductGrid"
+            <local:SingleProductControl Product="{x:Bind Mode=OneTime}" 
+                                        AddProductToCart="AddToCart" />
+            <!-- <Grid x:Name="SingleProductGrid"
                   Margin="8" Padding="4"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
@@ -42,12 +45,12 @@
                    Grid.Row="0" 
                    Stretch="None" />
                 <StackPanel Grid.Row="1" Margin="0,8">
-                    <TextBlock Margin="0,6,0,0"
+                    <TextBlock Margin="2,6,0,0"
                            Text="{x:Bind Name}"    
                            FontSize="18"
                            Style="{StaticResource SubtitleTextBlockStyle}" />
                     <TextBlock Margin="0,4,0,0">
-                    <Run Text="{x:Bind Price}" FontSize="18" FontWeight="SemiBold" />
+                    <Run Text="{x:Bind Price, Converter={StaticResource NumberToCurreny}}" FontSize="16" FontWeight="SemiBold" />
                     <Run Text=" / " FontSize="12" Foreground="{ThemeResource TextFillColorTertiary}" />
                     <Run Text="{x:Bind Unit}" FontSize="12" Foreground="{StaticResource TextFillColorTertiary}" />
                     </TextBlock>
@@ -68,9 +71,9 @@
                         Style="{StaticResource AccentButtonStyle}"
                         FontWeight="SemiBold"
                         Click="AddToCartButton_Click"
-                        CommandParameter="{Binding}" />
+                        CommandParameter="{x:Bind}" />
                 </StackPanel>
-            </Grid>
+            </Grid>-->
         </DataTemplate>
     </UserControl.Resources>
     

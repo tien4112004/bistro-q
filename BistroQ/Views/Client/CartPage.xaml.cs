@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows.Input;
 
 namespace BistroQ.Views.Client;
@@ -55,7 +54,6 @@ public sealed partial class CartPage : Page, INotifyPropertyChanged
 
     private void RemoveProductFromCart(OrderItem item)
     {
-        Debug.WriteLine(1);
         if (item == null)
         {
             return;

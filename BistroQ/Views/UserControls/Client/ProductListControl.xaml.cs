@@ -60,12 +60,17 @@ namespace BistroQ.Views.UserControls.Client
             }
         }
 
-        private void AddToCartButton_Click(object sender, RoutedEventArgs e)
+        //private void AddToCartButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (sender is Button button && button.DataContext is Product product)
+        //    {
+        //        AddProductToCart?.Invoke(this, product);
+        //    }
+        //}
+
+        private void AddToCart(object sender, Product product)
         {
-            if (sender is Button button && button.DataContext is Product product)
-            {
-                AddProductToCart?.Invoke(this, product);
-            }
+            AddProductToCart?.Invoke(this, product);
         }
     }
 }

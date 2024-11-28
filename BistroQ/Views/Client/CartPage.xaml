@@ -8,15 +8,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     x:Name="ThisPage"
     xmlns:entities="using:BistroQ.Core.Entities" 
-    xmlns:converter="using:BistroQ.Converters" 
+    xmlns:converters="using:BistroQ.Converters" 
     xmlns:usercontrols="using:BistroQ.Views.UserControls"
     Background="Transparent"
     DataContext="{x:Bind ViewModel}"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-        <converter:ReverseBooleanConverter x:Key="ReverseBool" />
+        <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <converters:ReverseBooleanConverter x:Key="ReverseBool" />
+        <converters:NumberToCurrencyConverter x:Key="NumberToCurreny"/>
 
         <Style x:Key="DeleteButtonStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
             <Setter Property="BorderBrush" Value="White" />
@@ -82,11 +83,22 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{x:Bind Product.Name}"
-                                 Style="{ThemeResource BaseTextBlockStyle}"
-                                 FontSize="16"
-                                 FontWeight="SemiBold"
-                                 TextWrapping="Wrap" />
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="{x:Bind Product.Name}"
+                                     Style="{ThemeResource BaseTextBlockStyle}"
+                                     FontSize="16"
+                                     FontWeight="SemiBold"
+                                     TextWrapping="Wrap" />
+                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}"
+                                       Foreground="{StaticResource TextFillColorSecondary}"
+                                       TextWrapping="Wrap"
+                                       TextTrimming="CharacterEllipsis"
+                                       MaxLines="2">
+                                <Run Text="{x:Bind Quantity, Mode=OneWay}" />
+                                <Run Text="x" />
+                                <Run Text="{x:Bind Product.Unit}" />
+                            </TextBlock>
+                        </StackPanel>
                         <Button x:Name="DeleteButton"
                                 Width="32" Padding="4,4" Margin="0,2"
                                 BorderThickness="1"
@@ -95,23 +107,28 @@
                                 CommandParameter="{x:Bind}"
                                 Style="{StaticResource DeleteButtonStyle}"
                                 HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
                                 Grid.Column="3">
                             <FontIcon Glyph="&#xE74D;" FontSize="14" />
                         </Button>
                     </Grid>
 
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" 
+                                   Padding="0,6,0,0"
+                                   VerticalAlignment="Center" 
+                                   Text="{x:Bind Total, Mode=OneWay, Converter={StaticResource NumberToCurreny}}" />
 
-                    <TextBlock Text="{x:Bind Product.Unit}"
-                             Style="{ThemeResource BodyTextBlockStyle}"
-                             Foreground="{StaticResource TextFillColorSecondary}"
-                             TextWrapping="Wrap"
-                             TextTrimming="CharacterEllipsis"
-                             MaxLines="2"/>
-
-                    <usercontrols:ItemQuantityControl 
-                        Margin="0,4,0,0"
-                        HorizontalAlignment="Stretch"
-                        Item="{x:Bind}" />
+                        <usercontrols:ItemQuantityControl
+                            Grid.Column="1"
+                            Margin="0,4,0,0"
+                            HorizontalAlignment="Right"
+                            Item="{x:Bind}" />
+                    </Grid>
                 </StackPanel>
             </Grid>
         </DataTemplate>

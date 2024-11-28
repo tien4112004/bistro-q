@@ -63,10 +63,11 @@
             <Button x:Name="DecreaseButton"             
                     Style="{StaticResource AccentButtonStyle}"
                     Padding="2,4"
+                    Width="26"
                     HorizontalAlignment="Left"
                     Command="{x:Bind DecreaseQuantityCommand}"
                     Grid.Column="0">
-                <FontIcon Glyph="&#xE949;" FontSize="14" />
+                <FontIcon Glyph="&#xE949;" FontSize="12" />
             </Button>
 
             <TextBlock x:Name="QuantityText" 
@@ -79,10 +80,11 @@
 
             <Button x:Name="IncreaseButton" 
                     Padding="2,4"
+                    Width="26"
                     Style="{StaticResource AccentButtonStyle}"
                     Command="{x:Bind IncreaseQuantityCommand}"
                     Grid.Column="2">
-                <FontIcon Glyph="&#xE948;" FontSize="14" />
+                <FontIcon Glyph="&#xE948;" FontSize="12" />
             </Button>
         </Grid>
     </StackPanel>

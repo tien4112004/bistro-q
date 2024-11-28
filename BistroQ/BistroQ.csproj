@@ -68,6 +68,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\UserControls\Client\SingleProductControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\Client\CartPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
