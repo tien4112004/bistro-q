@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
-using System.Diagnostics;
 
 namespace BistroQ.Views.UserControls;
 
@@ -24,20 +23,16 @@ public sealed partial class ItemQuantityControl : UserControl
             UpdateVisualState();
         }
     }
+    public IRelayCommand IncreaseQuantityCommand { get; }
+    public IRelayCommand DecreaseQuantityCommand { get; }
+
     public ItemQuantityControl()
     {
         this.InitializeComponent();
 
         IncreaseQuantityCommand = new RelayCommand(Increase);
         DecreaseQuantityCommand = new RelayCommand(Decrease, CanDecrease);
-        RemoveFromCartCommand = new RelayCommand(RemoveFromCart);
     }
-
-    public IRelayCommand IncreaseQuantityCommand { get; }
-    public IRelayCommand DecreaseQuantityCommand { get; }
-    public IRelayCommand RemoveFromCartCommand { get; }
-
-    public event EventHandler<OrderItem> RemoveFromCartRequested;
 
     private static void OnItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -82,11 +77,5 @@ public sealed partial class ItemQuantityControl : UserControl
             Item.Quantity--;
         }
         DecreaseQuantityCommand.NotifyCanExecuteChanged();
-    }
-
-    private void RemoveFromCart()
-    {
-        RemoveFromCartRequested?.Invoke(this, Item);
-        Debug.WriteLine("Remove requested");
     }
 }

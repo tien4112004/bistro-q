@@ -6,6 +6,7 @@
     xmlns:local="using:BistroQ.Views.Client"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    x:Name="ThisPage"
     xmlns:entities="using:BistroQ.Core.Entities" 
     xmlns:converter="using:BistroQ.Converters" 
     xmlns:usercontrols="using:BistroQ.Views.UserControls"
@@ -16,7 +17,49 @@
     <Page.Resources>
         <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
         <converter:ReverseBooleanConverter x:Key="ReverseBool" />
-        <DataTemplate x:Key="CartItemDataTemplate" x:DataType="entities:OrderItem">
+
+        <Style x:Key="DeleteButtonStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+            <Setter Property="BorderBrush" Value="White" />
+            <Setter Property="Width" Value="32" />
+            <Setter Property="Padding" Value="4,4" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="RootGrid" Background="{TemplateBinding Background}" Width="32" Height="26">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" 
+                                                                   Storyboard.TargetName="RootGrid" 
+                                                                   Duration="Automatic">
+                                                <DiscreteObjectKeyFrame KeyTime="0" 
+                                                                Value="{StaticResource SystemFillColorCriticalBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" 
+                                                                   Storyboard.TargetName="RootGrid" 
+                                                                   Duration="Automatic">
+                                                <DiscreteObjectKeyFrame KeyTime="0" 
+                                                                Value="{StaticResource SystemFillColorCriticalBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+<DataTemplate x:Key="CartItemDataTemplate" x:DataType="entities:OrderItem">
             <Grid Padding="0,6,0,8"
                   AutomationProperties.Name="{x:Bind Product.Name}"
                   HorizontalAlignment="Stretch">
@@ -33,13 +76,30 @@
                        Margin="0,0,12,0"/>
 
                 <StackPanel Grid.Column="1"                                                     
-                          Padding="0,0,4,0"
                           HorizontalAlignment="Stretch">
-                    <TextBlock Text="{x:Bind Product.Name}"
-                             Style="{ThemeResource BaseTextBlockStyle}"
-                             FontSize="16"
-                             FontWeight="SemiBold"
-                             TextWrapping="Wrap" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{x:Bind Product.Name}"
+                                 Style="{ThemeResource BaseTextBlockStyle}"
+                                 FontSize="16"
+                                 FontWeight="SemiBold"
+                                 TextWrapping="Wrap" />
+                        <Button x:Name="DeleteButton"
+                                Width="32" Padding="4,4" Margin="0,2"
+                                BorderThickness="1"
+                                BorderBrush="White"
+                                Command="{Binding ElementName=ThisPage, Path=RemoveProductFromCartCommand}"
+                                CommandParameter="{x:Bind}"
+                                Style="{StaticResource DeleteButtonStyle}"
+                                HorizontalAlignment="Right"
+                                Grid.Column="3">
+                            <FontIcon Glyph="&#xE74D;" FontSize="14" />
+                        </Button>
+                    </Grid>
+
 
                     <TextBlock Text="{x:Bind Product.Unit}"
                              Style="{ThemeResource BodyTextBlockStyle}"
@@ -51,7 +111,6 @@
                     <usercontrols:ItemQuantityControl 
                         Margin="0,4,0,0"
                         HorizontalAlignment="Stretch"
-                        RemoveFromCartRequested="ItemQuantityControl_RemoveFromCartRequested"
                         Item="{x:Bind}" />
                 </StackPanel>
             </Grid>

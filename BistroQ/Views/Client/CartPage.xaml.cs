@@ -1,9 +1,11 @@
 ﻿using BistroQ.Core.Entities;
 using BistroQ.ViewModels.Client;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows.Input;
 
 namespace BistroQ.Views.Client;
 
@@ -13,11 +15,11 @@ public sealed partial class CartPage : Page, INotifyPropertyChanged
 
     public bool CartIsEmpty => ViewModel?.CartItems == null || ViewModel.CartItems.Count == 0;
 
+    public ICommand RemoveProductFromCartCommand { get; }
+
     public CartPage(OrderCartViewModel orderCartViewModel)
     {
         ViewModel = orderCartViewModel;
-        DataContext = ViewModel;
-        Debug.WriteLine(2);
         this.InitializeComponent();
 
         if (ViewModel != null)
@@ -28,6 +30,8 @@ public sealed partial class CartPage : Page, INotifyPropertyChanged
                 ViewModel.CartItems.CollectionChanged += CartItems_CollectionChanged;
             }
         }
+
+        RemoveProductFromCartCommand = new RelayCommand<OrderItem>(RemoveProductFromCart);
     }
 
     private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -49,8 +53,13 @@ public sealed partial class CartPage : Page, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    private void ItemQuantityControl_RemoveFromCartRequested(object sender, OrderItem product)
+    private void RemoveProductFromCart(OrderItem item)
     {
-        ViewModel.CartItems.Remove(product);
+        Debug.WriteLine(1);
+        if (item == null)
+        {
+            return;
+        }
+        ViewModel.CartItems.Remove(item);
     }
 }

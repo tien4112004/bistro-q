@@ -42,21 +42,21 @@
                    Grid.Row="0" 
                    Stretch="None" />
                 <StackPanel Grid.Row="1" Margin="0,8">
-                    <TextBlock Margin="0,8,0,0"
+                    <TextBlock Margin="0,6,0,0"
                            Text="{x:Bind Name}"    
                            FontSize="18"
                            Style="{StaticResource SubtitleTextBlockStyle}" />
                     <TextBlock Margin="0,4,0,0">
                     <Run Text="{x:Bind Price}" FontSize="18" FontWeight="SemiBold" />
-                    <Run Text=" / " FontSize="12" Foreground="{StaticResource TextFillColorTertiary}" />
+                    <Run Text=" / " FontSize="12" Foreground="{ThemeResource TextFillColorTertiary}" />
                     <Run Text="{x:Bind Unit}" FontSize="12" Foreground="{StaticResource TextFillColorTertiary}" />
                     </TextBlock>
                     <TextBlock 
                         x:Name="ProductDescriptionTextBlock"
                         Text="Product description"
                         Style="{StaticResource BodyTextBlockStyle}"
-                        Foreground="{StaticResource TextFillColorTertiary}"
-                        Margin="0,8,0,0" />
+                        Foreground="{StaticResource TextFillColorSecondary}"
+                        Margin="0,4,0,4" />
                 </StackPanel>
                 <StackPanel x:Name="QuantityControls" Grid.Row="2" 
                         Orientation="Horizontal" 

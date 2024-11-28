@@ -8,6 +8,23 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <Style x:Key="AccentCircularButtonStyle" TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse Fill="{TemplateBinding Background}" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Width" Value="26" />
+            <Setter Property="Height" Value="26" />
+        </Style>
+    </UserControl.Resources>
+
     <StackPanel x:Name="RootPanel" 
                 Padding="4,0"
                 HorizontalAlignment="Stretch"
@@ -43,9 +60,9 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="DecreaseButton"                     
+            <Button x:Name="DecreaseButton"             
                     Style="{StaticResource AccentButtonStyle}"
-                    Width="32" Padding="2,4"
+                    Padding="2,4"
                     HorizontalAlignment="Left"
                     Command="{x:Bind DecreaseQuantityCommand}"
                     Grid.Column="0">
@@ -61,21 +78,11 @@
                       Grid.Column="1" />
 
             <Button x:Name="IncreaseButton" 
-                    Width="32" Padding="2,4"
+                    Padding="2,4"
                     Style="{StaticResource AccentButtonStyle}"
                     Command="{x:Bind IncreaseQuantityCommand}"
                     Grid.Column="2">
                 <FontIcon Glyph="&#xE948;" FontSize="14" />
-            </Button>
-
-            <Button x:Name="DeleteButton"
-                    Background="{StaticResource SystemFillColorCritical}"
-                    Width="32" Padding="4,4"
-                    Command="{x:Bind RemoveFromCartCommand}"
-                    Style="{StaticResource AccentButtonStyle}"
-                    HorizontalAlignment="Right"
-                    Grid.Column="3">
-                <FontIcon Glyph="&#xE74D;" FontSize="14" />
             </Button>
         </Grid>
     </StackPanel>

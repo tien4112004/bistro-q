@@ -1,11 +1,11 @@
 ﻿using BistroQ.Core.Entities;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace BistroQ.Views.Client;
 
-public sealed partial class OrderPage : Page, INotifyCollectionChanged
+public sealed partial class OrderPage : Page, INotifyPropertyChanged
 {
     public ObservableCollection<OrderItem> ProcessingOrders { get; } = new();
     public ObservableCollection<OrderItem> CompletedOrders { get; } = new();
@@ -18,5 +18,5 @@ public sealed partial class OrderPage : Page, INotifyCollectionChanged
         this.InitializeComponent();
     }
 
-    public event NotifyCollectionChangedEventHandler? CollectionChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 }
