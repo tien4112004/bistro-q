@@ -9,13 +9,13 @@
       xmlns:converters="using:BistroQ.Presentation.Converters"
       xmlns:orderControls="using:BistroQ.Presentation.Views.UserControls.Orders"
       mc:Ignorable="d"
-      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+      Background="Transparent">
 
     <Page.Resources>
         <converters:NumberToCurrencyConverter x:Key="CurrencyConverter"/>
     </Page.Resources>
 
-    <Grid>
+    <Grid ColumnSpacing="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
@@ -23,11 +23,15 @@
         </Grid.ColumnDefinitions>
 
         <Grid >
-            <orderControls:OrderKanbanColumnControl Title="Pending" ViewModel="{x:Bind ViewModel.PendingColumnVM, Mode=OneWay}"/>
+            <orderControls:OrderKanbanColumnControl 
+                Title="Pending" 
+                ViewModel="{x:Bind ViewModel.PendingColumnVM, Mode=OneWay}"/>
         </Grid>
         
         <Grid Grid.Column="1">
-            <orderControls:OrderKanbanColumnControl Title="In Progress" ViewModel="{x:Bind ViewModel.PendingColumnVM, Mode=OneWay}"/>
+            <orderControls:OrderKanbanColumnControl 
+                Title="In Progress" 
+                ViewModel="{x:Bind ViewModel.PendingColumnVM, Mode=OneWay}"/>
         </Grid>
         
         <Grid Grid.Column="2">
@@ -35,7 +39,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
+
             <Border Background="{ThemeResource SuccessBaseColor }">
                 <TextBlock Foreground="White">COMPLETED!</TextBlock>
             </Border>

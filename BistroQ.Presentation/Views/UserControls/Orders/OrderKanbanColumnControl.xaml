@@ -9,88 +9,83 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid  Margin="20">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    <Grid Grid.Column="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <!-- Pending Column -->
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <!-- Column Header -->
+        <Grid Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            CornerRadius="8,8,0,0"
+            Padding="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-            <!-- Column Header -->
-            <Grid Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                          BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                          BorderThickness="1"
-                          CornerRadius="8,8,0,0"
-                          Padding="12">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <TextBlock Text="{x:Bind Title}"
+                    Foreground="{StaticResource TextBoxForegroundHeaderThemeBrush}"
+                    Style="{StaticResource SubtitleTextBlockStyle}"/>
+            <TextBlock Grid.Column="1"
+                       VerticalAlignment="Center"
+                    Style="{StaticResource BodyTextBlockStyle}">
+                <Run Text="Amount: " FontWeight="Bold"/>
+                <Run Text="{x:Bind ViewModel.Items.Count, Mode=OneWay}"/>
+            </TextBlock>
+        </Grid>
 
-                <TextBlock Text="{x:Bind Title}"
-                                   Foreground="{StaticResource TextOnAccentFillColorPrimaryBrush}"
-                                 Style="{StaticResource SubtitleTextBlockStyle}"/>
-                <TextBlock Grid.Column="1"
-                                 Text="{x:Bind ViewModel.Items.Count, Mode=OneWay}"
-                                 Style="{StaticResource BodyTextBlockStyle}"/>
-            </Grid>
-
-            <!-- Items List -->
-            <ListView Grid.Row="1"
-                              ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
-                              AllowDrop="True"
-                              SelectionMode="Multiple"
-                              CanDragItems="True"
-                              CanReorderItems="True"
-                              Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
-                              BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                              BorderThickness="1"
-                              CornerRadius="0,0,8,8"
-                              Padding="8">
+        <!-- Items List -->
+        <ListView Grid.Row="1"
+                ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
+                AllowDrop="True"
+                SelectionMode="Multiple"
+                CanDragItems="True"
+                CanReorderItems="True"
+                Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="0,0,8,8"
+                Padding="8">
+            <ListView.ItemTemplate>
                 <DataTemplate x:DataType="vm:OrderItemViewModel">
                     <Grid Margin="0,4" Padding="8">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Image Source="https://placehold.jp/200x200.png" 
+                        <Image Source="https://placehold.jp/200x200.png" 
                                            Width="100" Height="100"/>
 
-                            <StackPanel Grid.Column="1" 
+                        <StackPanel Grid.Column="1" 
                                                 Margin="12,0,0,0"
                                                 VerticalAlignment="Center">
-                                <TextBlock Text="{x:Bind Product.Name, Mode=OneWay}"
-                                                   Style="{StaticResource BodyTextBlockStyle}"/>
-                                <TextBlock Text="{x:Bind Product.Unit, Mode=OneWay}"
-                                                   Style="{StaticResource CaptionTextBlockStyle}"
-                                                   Opacity="0.6"/>
-                            </StackPanel>
+                            <TextBlock Text="{x:Bind Product.Name, Mode=OneWay}"
+                                       FontSize="15"
+                                       Style="{StaticResource BodyTextBlockStyle}"/>
 
-                            <TextBlock Grid.Column="2" 
-                                               Text="{x:Bind Quantity, Mode=OneWay}"
-                                               Style="{StaticResource CaptionTextBlockStyle}"
-                                               VerticalAlignment="Center"/>
-                        </Grid>
+                            <TextBlock 
+                                    Style="{StaticResource CaptionTextBlockStyle}"
+                                    Opacity="0.6">
+                                <Run Text="Unit: "/>
+                                <Run Text="{x:Bind Product.Unit, Mode=OneWay}"/>
+                            </TextBlock>
+                        </StackPanel>
+
+                        <TextBlock Grid.Column="2" 
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            FontSize="14"
+                            VerticalAlignment="Center">
+                            <Run Text="Quantity: "/>
+                            <Run Text="{x:Bind Quantity, Mode=OneWay}"/>
+                        </TextBlock>
                     </Grid>
                 </DataTemplate>
-            </ListView>
-
-        </Grid>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </UserControl>

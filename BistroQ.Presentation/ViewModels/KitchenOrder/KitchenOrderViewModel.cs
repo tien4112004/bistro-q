@@ -37,6 +37,7 @@ public partial class KitchenOrderViewModel : ObservableObject, INavigationAware
                 ProductId = 1,
                 Name = "Burger",
                 Price = 100,
+                Unit = "pcs",
                 ImageUrl = "https://placehold.jp/300x200.png"
             }
         });
@@ -54,6 +55,7 @@ public partial class KitchenOrderViewModel : ObservableObject, INavigationAware
                 ProductId = 2,
                 Name = "Pizza",
                 Price = 200,
+                Unit = "pcs",
                 ImageUrl = "https://placehold.jp/300x200.png"
             }
         });
@@ -71,6 +73,7 @@ public partial class KitchenOrderViewModel : ObservableObject, INavigationAware
                 ProductId = 3,
                 Name = "Pasta",
                 Price = 300,
+                Unit = "pcs",
                 ImageUrl = "https://placehold.jp/300x200.png"
             }
         });
