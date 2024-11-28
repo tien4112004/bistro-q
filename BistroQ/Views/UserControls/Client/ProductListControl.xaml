@@ -120,21 +120,19 @@
                 <GridView x:Name="ProductList"
                           ItemsSource="{x:Bind ViewModel.Products, Mode=OneWay}"
                           ItemTemplate="{StaticResource SingleProductDataTemplate}"
+                          SelectedItem="{x:Bind ViewModel.SelectedProduct, Mode=OneWay}"
                           ScrollViewer.VerticalScrollMode="Enabled"
                           HorizontalAlignment="Center"
                           HorizontalContentAlignment="Center">
                     <GridView.ItemContainerStyle>
-                        <Style TargetType="GridViewItem">
+                        <Style TargetType="GridViewItem" BasedOn="{StaticResource DefaultGridViewItemStyle}">
                             <Setter Property="Margin" Value="6"/>
                             <Setter Property="Padding" Value="0" />
                             <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="Background" Value="{StaticResource CardBackgroundFillColorDefaultBrush}" />
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="GridViewItem">
                                         <GridViewItemPresenter
-                                            ContentTransitions="{TemplateBinding ContentTransitions}"
-                                            Padding="{TemplateBinding Padding}"
                                             SelectionCheckMarkVisualEnabled="True"
                                             CheckHintBrush="{ThemeResource ListViewItemCheckHintThemeBrush}"
                                             CheckSelectingBrush="{ThemeResource ListViewItemCheckSelectingThemeBrush}"
@@ -144,7 +142,7 @@
                                             FocusBorderBrush="{ThemeResource ListViewItemFocusBorderThemeBrush}"
                                             PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
                                             PointerOverBackground="{ThemeResource ListViewItemPointerOverBackgroundThemeBrush}"
-                                            SelectedBorderThickness="{ThemeResource GridViewItemCompactSelectedBorderThemeThickness}"
+                                            SelectedBorderThickness="{ThemeResource GridViewItemSelectedBorderThickness}"
                                             SelectedBackground="{ThemeResource AccentAcrylicBackgroundFillColorDefaultBrush}"
                                             SelectedForeground="{ThemeResource ListViewItemSelectedForegroundThemeBrush}"
                                             SelectedPointerOverBackground="{ThemeResource AccentAcrylicBackgroundFillColorBaseBrush}"

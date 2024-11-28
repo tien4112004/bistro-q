@@ -10,8 +10,8 @@
 
     <StackPanel x:Name="RootPanel" 
                 Padding="4,0"
-                Orientation="Horizontal" 
-                HorizontalAlignment="Center">
+                HorizontalAlignment="Stretch"
+                Orientation="Horizontal">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="QuantityStates">
                 <VisualState x:Name="NotInCart">
@@ -31,31 +31,52 @@
 
         <Button x:Name="AddButton"
                 x:Uid="AddItemButton"
-                Style="{StaticResource AccentButtonStyle}"
-                Click="AddButton_Click"/>
+                Style="{StaticResource AccentButtonStyle}" />
 
-        <StackPanel x:Name="QuantityPanel"
-                    HorizontalAlignment="Left"
-                    Margin="0,4,0,0"
-                    Orientation="Horizontal">
+        <Grid x:Name="QuantityPanel"
+              Margin="0,4,0,0"
+              HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
             <Button x:Name="DecreaseButton"                     
                     Style="{StaticResource AccentButtonStyle}"
-                    Width="32" Padding="4,4"
-                    Click="DecreaseButton_Click">
+                    Width="32" Padding="2,4"
+                    HorizontalAlignment="Left"
+                    Command="{x:Bind DecreaseQuantityCommand}"
+                    Grid.Column="0">
                 <FontIcon Glyph="&#xE949;" FontSize="14" />
             </Button>
+
             <TextBlock x:Name="QuantityText" 
-                      Width="48" 
+                      Width="36" 
                       FontSize="18"
                       Text="{x:Bind Item.Quantity, Mode=OneWay}"
                       HorizontalTextAlignment="Center" 
-                      VerticalAlignment="Center" />
+                      VerticalAlignment="Center"
+                      Grid.Column="1" />
+
             <Button x:Name="IncreaseButton" 
-                    Width="32" Padding="4,4"
+                    Width="32" Padding="2,4"
                     Style="{StaticResource AccentButtonStyle}"
-                    Click="IncreaseButton_Click">
+                    Command="{x:Bind IncreaseQuantityCommand}"
+                    Grid.Column="2">
                 <FontIcon Glyph="&#xE948;" FontSize="14" />
             </Button>
-        </StackPanel>
+
+            <Button x:Name="DeleteButton"
+                    Background="{StaticResource SystemFillColorCritical}"
+                    Width="32" Padding="4,4"
+                    Command="{x:Bind RemoveFromCartCommand}"
+                    Style="{StaticResource AccentButtonStyle}"
+                    HorizontalAlignment="Right"
+                    Grid.Column="3">
+                <FontIcon Glyph="&#xE74D;" FontSize="14" />
+            </Button>
+        </Grid>
     </StackPanel>
 </UserControl>

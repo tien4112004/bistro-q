@@ -1,7 +1,9 @@
 ﻿using BistroQ.Core.Entities;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace BistroQ.Views.UserControls;
 
@@ -25,7 +27,17 @@ public sealed partial class ItemQuantityControl : UserControl
     public ItemQuantityControl()
     {
         this.InitializeComponent();
+
+        IncreaseQuantityCommand = new RelayCommand(Increase);
+        DecreaseQuantityCommand = new RelayCommand(Decrease, CanDecrease);
+        RemoveFromCartCommand = new RelayCommand(RemoveFromCart);
     }
+
+    public IRelayCommand IncreaseQuantityCommand { get; }
+    public IRelayCommand DecreaseQuantityCommand { get; }
+    public IRelayCommand RemoveFromCartCommand { get; }
+
+    public event EventHandler<OrderItem> RemoveFromCartRequested;
 
     private static void OnItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -57,23 +69,24 @@ public sealed partial class ItemQuantityControl : UserControl
     {
         if (Item == null) { return; }
         VisualStateManager.GoToState(this, Item.Quantity > 0 ? "InCart" : "NotInCart", true);
+        DecreaseQuantityCommand.NotifyCanExecuteChanged();
     }
 
-    private void AddButton_Click(object sender, RoutedEventArgs e)
-    {
-        Item.Quantity = 1;
-    }
+    private void Increase() => Item.Quantity++;
 
-    private void IncreaseButton_Click(object sender, RoutedEventArgs e)
+    private bool CanDecrease() => Item?.Quantity > 1;
+    private void Decrease()
     {
-        Item.Quantity++;
-    }
-
-    private void DecreaseButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (Item.Quantity > 0)
+        if (Item.Quantity > 1)
         {
             Item.Quantity--;
         }
+        DecreaseQuantityCommand.NotifyCanExecuteChanged();
+    }
+
+    private void RemoveFromCart()
+    {
+        RemoveFromCartRequested?.Invoke(this, Item);
+        Debug.WriteLine("Remove requested");
     }
 }

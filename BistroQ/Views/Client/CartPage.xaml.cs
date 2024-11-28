@@ -1,4 +1,5 @@
-﻿using BistroQ.ViewModels.Client;
+﻿using BistroQ.Core.Entities;
+using BistroQ.ViewModels.Client;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -47,4 +48,9 @@ public sealed partial class CartPage : Page, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    private void ItemQuantityControl_RemoveFromCartRequested(object sender, OrderItem product)
+    {
+        ViewModel.CartItems.Remove(product);
+    }
 }

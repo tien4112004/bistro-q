@@ -2,6 +2,7 @@
 using BistroQ.ViewModels.Client;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System.Diagnostics;
 
 
 namespace BistroQ.Views.UserControls.Client
@@ -21,6 +22,7 @@ namespace BistroQ.Views.UserControls.Client
         }
 
         public event EventHandler<Product> AddProductToCart;
+        public event EventHandler<Product> ProductSelected;
 
         public ProductListControl()
         {
@@ -46,6 +48,15 @@ namespace BistroQ.Views.UserControls.Client
                 {
                     ViewModel.ChangeCategoryCommand.Execute(ViewModel.SelectedCategory);
                 }
+            }
+        }
+
+        private void ProductList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is GridViewItem item && item.DataContext is Product product)
+            {
+                ProductSelected.Invoke(this, product);
+                Debug.WriteLine(product);
             }
         }
 

@@ -27,6 +27,9 @@ public partial class ProductListViewModel : ObservableRecipient
     private Category _selectedCategory;
 
     [ObservableProperty]
+    private Product _selectedProduct;
+
+    [ObservableProperty]
     private ObservableCollection<Product> _products = new ObservableCollection<Product>();
 
     public ICommand ChangeCategoryCommand { get; set; }
