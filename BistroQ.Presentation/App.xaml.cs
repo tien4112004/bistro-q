@@ -10,11 +10,13 @@ using BistroQ.Presentation.ViewModels.AdminTable;
 using BistroQ.Presentation.ViewModels.AdminZone;
 using BistroQ.Presentation.ViewModels.CashierTable;
 using BistroQ.Presentation.ViewModels.Client;
+using BistroQ.Presentation.ViewModels.KitchenOrder;
 using BistroQ.Presentation.Views;
 using BistroQ.Presentation.Views.AdminTable;
 using BistroQ.Presentation.Views.AdminZone;
 using BistroQ.Presentation.Views.CashierTable;
 using BistroQ.Presentation.Views.Client;
+using BistroQ.Presentation.Views.KitchenOrder;
 using BistroQ.Service.Auth;
 using BistroQ.Service.Common;
 using BistroQ.Service.Data;
@@ -129,6 +131,11 @@ public partial class App : Application
             services.AddTransient<ZoneOverviewViewModel>();
             services.AddTransient<ZoneTableGridViewModel>();
             services.AddTransient<TableOrderDetailViewModel>();
+
+            // Kitchen V&VM
+            services.AddTransient<KitchenOrderViewModel>();
+            services.AddTransient<KitchenOrderPage>();
+            services.AddTransient<OrderKanbanColumnViewModel>();
 
             // Auto Mapper
             services.AddAutoMapper((serviceProvider, cfg) =>

@@ -1,14 +1,16 @@
-using BistroQ.Presentation.Contracts.Services;
+﻿using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.ViewModels;
 using BistroQ.Presentation.ViewModels.AdminTable;
 using BistroQ.Presentation.ViewModels.AdminZone;
 using BistroQ.Presentation.ViewModels.CashierTable;
 using BistroQ.Presentation.ViewModels.Client;
+using BistroQ.Presentation.ViewModels.KitchenOrder;
 using BistroQ.Presentation.Views;
 using BistroQ.Presentation.Views.AdminTable;
 using BistroQ.Presentation.Views.AdminZone;
 using BistroQ.Presentation.Views.CashierTable;
 using BistroQ.Presentation.Views.Client;
+using BistroQ.Presentation.Views.KitchenOrder;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 using Microsoft.UI.Xaml.Controls;
@@ -32,6 +34,8 @@ public class PageService : IPageService
         Configure<AdminTableViewModel, AdminTablePage>();
         Configure<AdminTableAddPageViewModel, AdminTableAddPage>();
         Configure<AdminTableEditPageViewModel, AdminTableEditPage>();
+
+        Configure<KitchenOrderViewModel, KitchenOrderPage>();
     }
 
     public Type GetPageType(string key)
