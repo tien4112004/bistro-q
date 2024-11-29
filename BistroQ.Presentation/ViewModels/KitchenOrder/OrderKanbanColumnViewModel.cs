@@ -51,7 +51,10 @@ public partial class OrderKanbanColumnViewModel :
         }
     }
 
-    public async void HandleItemDroppedAsync(IEnumerable<KitchenOrderItemViewModel> items, KitchenColumnType sourceColumn)
+    public async void HandleItemDroppedAsync(
+        IEnumerable<KitchenOrderItemViewModel> items,
+        KitchenColumnType sourceColumn,
+        int insertIndex)
     {
         try
         {
@@ -62,7 +65,9 @@ public partial class OrderKanbanColumnViewModel :
 
             foreach (var item in items)
             {
-                Items.Add(item);
+
+                Items.Insert(insertIndex, item);
+                insertIndex++;
             }
         }
         catch (Exception ex)

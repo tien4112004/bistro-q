@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Foundation;
 
 namespace BistroQ.Presentation.Views.UserControls.Orders;
 
@@ -92,11 +93,31 @@ public sealed partial class OrderKanbanColumnControl : UserControl
 
     private void ListView_Drop(object sender, DragEventArgs e)
     {
+        var listView = sender as ListView;
+        var position = e.GetPosition(listView);
+
+        // Calculate insert index based on Y position
+        var insertIndex = listView.Items.Count;
+        for (int i = 0; i < listView.Items.Count; i++)
+        {
+            var item = listView.ContainerFromIndex(i) as ListViewItem;
+            if (item != null)
+            {
+                var itemBottom = item.TransformToVisual(listView)
+                                    .TransformPoint(new Point(0, item.ActualHeight));
+                if (position.Y < itemBottom.Y)
+                {
+                    insertIndex = i;
+                    break;
+                }
+            }
+        }
+
         if (e.DataView.Properties.TryGetValue("DraggedOrder", out var dragDataObj))
         {
             var dragData = dragDataObj as OrderItemDragData;
 
-            ViewModel.HandleItemDroppedAsync(dragData.OrderItems, dragData.SourceColumn);
+            ViewModel.HandleItemDroppedAsync(dragData.OrderItems, dragData.SourceColumn, insertIndex);
         }
     }
 }

@@ -7,4 +7,5 @@ public class OrderItemDragData
 {
     public IEnumerable<KitchenOrderItemViewModel> OrderItems { get; set; }
     public KitchenColumnType SourceColumn { get; set; }
+
 }
