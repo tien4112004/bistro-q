@@ -29,51 +29,8 @@
 
         <DataTemplate x:Key="SingleProductDataTemplate"
                       x:DataType="entities:Product">
-            <local:SingleProductControl Product="{x:Bind Mode=OneTime}" 
+            <local:SingleProductControl Product="{x:Bind Mode=OneWay}" 
                                         AddProductToCart="AddToCart" />
-            <!-- <Grid x:Name="SingleProductGrid"
-                  Margin="8" Padding="4"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch"
-                  Width="232">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="160" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Image Source="https://imageplaceholder.net/320x160" 
-                   Grid.Row="0" 
-                   Stretch="None" />
-                <StackPanel Grid.Row="1" Margin="0,8">
-                    <TextBlock Margin="2,6,0,0"
-                           Text="{x:Bind Name}"    
-                           FontSize="18"
-                           Style="{StaticResource SubtitleTextBlockStyle}" />
-                    <TextBlock Margin="0,4,0,0">
-                    <Run Text="{x:Bind Price, Converter={StaticResource NumberToCurreny}}" FontSize="16" FontWeight="SemiBold" />
-                    <Run Text=" / " FontSize="12" Foreground="{ThemeResource TextFillColorTertiary}" />
-                    <Run Text="{x:Bind Unit}" FontSize="12" Foreground="{StaticResource TextFillColorTertiary}" />
-                    </TextBlock>
-                    <TextBlock 
-                        x:Name="ProductDescriptionTextBlock"
-                        Text="Product description"
-                        Style="{StaticResource BodyTextBlockStyle}"
-                        Foreground="{StaticResource TextFillColorSecondary}"
-                        Margin="0,4,0,4" />
-                </StackPanel>
-                <StackPanel x:Name="QuantityControls" Grid.Row="2" 
-                        Orientation="Horizontal" 
-                        VerticalAlignment="Stretch"
-                        HorizontalAlignment="Center">
-                    <Button x:Uid="AddItemButton" 
-                        Margin="0,0,0,0"
-                        Padding="16,8"
-                        Style="{StaticResource AccentButtonStyle}"
-                        FontWeight="SemiBold"
-                        Click="AddToCartButton_Click"
-                        CommandParameter="{x:Bind}" />
-                </StackPanel>
-            </Grid>-->
         </DataTemplate>
     </UserControl.Resources>
     

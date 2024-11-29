@@ -68,6 +68,7 @@ public partial class ProductListViewModel : ObservableRecipient
     {
         try
         {
+            Debug.WriteLine("LoadProductAsync");
             Products.Clear();
             IsLoadingProduct = true;
 
@@ -77,8 +78,9 @@ public partial class ProductListViewModel : ObservableRecipient
             };
 
             var response = await _productService.GetProductsAsync(query);
-            await Task.Delay(800); // For test the loading animation
+            //await Task.Delay(800); // For test the loading animation
             Products = new ObservableCollection<Product>(response.Data);
+            Debug.WriteLine("LoadProductAsyncDone");
         }
         catch (Exception ex)
         {

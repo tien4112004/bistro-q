@@ -32,10 +32,6 @@ namespace BistroQ.Views.UserControls.Client
 
         private void ProductListControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (ViewModel == null)
-            {
-                ViewModel = App.GetService<ProductListViewModel>();
-            }
             DataContext = ViewModel;
         }
 
