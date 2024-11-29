@@ -71,7 +71,7 @@
                     CornerRadius="10" 
                     BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
                     BorderThickness="4"
-                    Padding="16,16,0,0">
+                    Padding="16,4,0,0">
                 <clientusercontrols:ProductListControl 
                     x:Name="ProductList"
                     ViewModel="{x:Bind ViewModel.ProductListViewModel, Mode=OneWay}"

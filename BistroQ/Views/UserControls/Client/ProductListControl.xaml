@@ -33,42 +33,91 @@
                                         AddProductToCart="AddToCart" />
         </DataTemplate>
     </UserControl.Resources>
-    
+
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock x:Uid="ClientHomePage_ProductListTitle" Style="{StaticResource SubtitleTextBlockStyle}" />
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <TextBlock x:Uid="ClientHomePage_ProductListTitle" 
+                       Style="{StaticResource SubtitleTextBlockStyle}" 
+                       VerticalAlignment="Center" 
+                       Margin="0,0,16,2" />
+            <ScrollViewer 
+                    x:Name="ScrollViewer" 
+                    HorizontalScrollMode="Enabled"
+                    HorizontalScrollBarVisibility="Hidden"
+                    ManipulationMode="System,TranslateX"
+                    ManipulationDelta="ScrollViewer_ManipulationDelta">
+                <ListView
+                    ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
+                    SelectedItem="{x:Bind ViewModel.SelectedCategory, Mode=TwoWay}"
+                    SelectionMode="Single"
+                    IsItemClickEnabled="True"
+                    SelectionChanged="CategoryList_SelectionChanged">
 
-        <ScrollView Grid.Column="0" Grid.Row="1">
-            <Grid x:Name="CategoryPanel"
-                    MinWidth="160"
-                    MaxWidth="200">
-                <ProgressRing IsActive="{x:Bind ViewModel.IsLoadingCategory, Mode=OneWay}"
-                              VerticalAlignment="Center" HorizontalAlignment="Center"
-                              Width="40" Height="40"
-                              Visibility="{x:Bind ViewModel.IsLoadingCategory, 
-                                                  Mode=OneWay,
-                                                  Converter={StaticResource BoolToVisibility}}" />
-                <ListView x:Name="CategoryList"
-                          ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
-                          ItemTemplate="{StaticResource CategoryItem}"
-                          SelectionMode="Single"
-                          SelectionChanged="CategoryList_SelectionChanged"
-                          SelectedItem="{x:Bind ViewModel.SelectedCategory, Mode=TwoWay}"
-                          HorizontalAlignment="Stretch"
-                          HorizontalContentAlignment="Stretch" >
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsStackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Padding" Value="16,2"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <ListViewItemPresenter
+                                            ContentTransitions="{TemplateBinding ContentTransitions}"
+                                            SelectionCheckMarkVisualEnabled="True"
+                                            CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+                                            CheckBoxBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+                                            DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+                                            DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
+                                            FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}"
+                                            FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                                            PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
+                                            PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
+                                            PointerOverForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
+                                            SelectedBackground="{ThemeResource SystemAccentColor}"
+                                            SelectedForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
+                                            SelectedPointerOverBackground="{ThemeResource SystemAccentColorDark1}"
+                                            PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
+                                            SelectedPressedBackground="{ThemeResource SystemAccentColorDark1}"
+                                            DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                            DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                            ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            CornerRadius="4,4,4,4"
+                                            ContentMargin="{TemplateBinding Padding}"
+                                            CheckMode="Inline"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="entities:Category">
+                            <TextBlock 
+                                Text="{x:Bind Name}" 
+                                Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
-            </Grid>
-        </ScrollView>
+            </ScrollViewer>
 
-        <ScrollView Grid.Column="1" Grid.Row="1">
+        </StackPanel>
+
+
+        <ScrollView Grid.Row="2">
             <Grid>
                 <ProgressRing IsActive="{x:Bind ViewModel.IsLoadingProduct, Mode=OneWay}"
                                 VerticalAlignment="Center" HorizontalAlignment="Center"
