@@ -34,4 +34,6 @@ public sealed partial class KitchenOrderPage : Page
             button.ChangeCursor(CursorType.Arrow);
         }
     }
+
+
 }

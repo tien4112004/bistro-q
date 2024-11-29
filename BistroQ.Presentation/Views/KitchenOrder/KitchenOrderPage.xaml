@@ -33,7 +33,7 @@
             <orderControls:OrderKanbanColumnControl 
                 Title="In Progress" 
                 TitleIconPath="ms-appx:///Assets/Icons/cooking-pot.png"
-                ViewModel="{x:Bind ViewModel.PendingColumnVM, Mode=OneWay}"/>
+                ViewModel="{x:Bind ViewModel.ProgressColumnVM, Mode=OneWay}"/>
         </Grid>
         
         <Grid Grid.Column="2" RowSpacing="10" MinWidth="100">
@@ -59,7 +59,7 @@
                     <TextBlock 
                         FontWeight="Bold"
                         FontSize="18"
-                        Foreground="White">Completed</TextBlock>
+                        Foreground="White">Complete</TextBlock>
                 </StackPanel>
             </Button>
             <Button 
@@ -80,7 +80,7 @@
                     <TextBlock 
                         FontWeight="Bold"
                         FontSize="18"
-                        Foreground="White">Cancelled</TextBlock>
+                        Foreground="White">Cancel</TextBlock>
                 </StackPanel>
             </Button>
         </Grid>

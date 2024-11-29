@@ -6,7 +6,7 @@ namespace BistroQ.Presentation.ViewModels.Models;
 public partial class KitchenOrderItemViewModel : ObservableObject
 {
     [ObservableProperty]
-    private int _orderDetailId;
+    private int _orderItemId;
 
     [ObservableProperty]
     private string? _orderId;

@@ -45,7 +45,7 @@
                     Foreground="{StaticResource TextBoxForegroundHeaderThemeBrush}"
                     Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
-            
+
             <TextBlock Grid.Column="1"
                        VerticalAlignment="Center"
                     Style="{StaticResource BodyTextBlockStyle}">
@@ -63,6 +63,9 @@
             CanReorderItems="True"
             Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            DragItemsStarting="ListView_DragItemsStarting"
+            DragOver="ListView_DragOver"
+            Drop="ListView_Drop"
             BorderThickness="1"
             CornerRadius="0,0,8,8"
             Padding="8">
@@ -172,10 +175,10 @@
 
                             <StackPanel Grid.Row="1" Margin="0,4,0,0" Spacing="8">
                                 <TextBlock 
-                                           Style="{ThemeResource SubtitleTextBlockStyle}"
-                                           Text="{x:Bind Product.Name, Mode=OneWay}"
-                                           TextWrapping="Wrap"
-                                           MaxLines="2"/>
+                                    Style="{ThemeResource SubtitleTextBlockStyle}"
+                                    Text="{x:Bind Product.Name, Mode=OneWay}"
+                                    TextWrapping="Wrap"
+                                    MaxLines="2"/>
                                 <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}">
                                     <Run Text="{x:Bind Quantity, Mode=OneWay}"/>
                                     <Run Text="{x:Bind Product.Unit, Mode=OneWay}"/>

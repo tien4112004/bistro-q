@@ -13,7 +13,7 @@ public class MockOrderItemDataService : IOrderItemDataService
 
     public Task<OrderItem> UpdateOrderItemStatusAsync(int orderItemId, OrderItemStatus status)
     {
-        var orderItem = _orderItems.FirstOrDefault(x => x.OrderDetailId == orderItemId);
+        var orderItem = _orderItems.FirstOrDefault(x => x.OrderItemId == orderItemId);
         if (orderItem != null)
         {
             orderItem.Status = status;
@@ -32,7 +32,7 @@ public class MockOrderItemDataService : IOrderItemDataService
     {
         new OrderItem
         {
-            OrderDetailId = 1,
+            OrderItemId = 1,
             OrderId = "1",
             ProductId = 1,
             Quantity = 1,
@@ -68,7 +68,7 @@ public class MockOrderItemDataService : IOrderItemDataService
         },
         new OrderItem
         {
-            OrderDetailId = 2,
+            OrderItemId = 2,
             OrderId = "2",
             ProductId = 2,
             Quantity = 2,
@@ -104,7 +104,7 @@ public class MockOrderItemDataService : IOrderItemDataService
         },
         new OrderItem
         {
-            OrderDetailId = 3,
+            OrderItemId = 3,
             OrderId = "3",
             ProductId = 3,
             Quantity = 3,
@@ -140,7 +140,7 @@ public class MockOrderItemDataService : IOrderItemDataService
         },
         new OrderItem
         {
-            OrderDetailId = 4,
+            OrderItemId = 4,
             OrderId = "4",
             ProductId = 4,
             Quantity = 4,

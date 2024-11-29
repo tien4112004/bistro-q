@@ -1,8 +1,11 @@
 ﻿using BistroQ.Presentation.Helpers;
+using BistroQ.Presentation.Models;
 using BistroQ.Presentation.ViewModels.KitchenOrder;
+using BistroQ.Presentation.ViewModels.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace BistroQ.Presentation.Views.UserControls.Orders;
 
@@ -53,6 +56,47 @@ public sealed partial class OrderKanbanColumnControl : UserControl
         if (sender is UIElement element)
         {
             element.ChangeCursor(CursorType.Arrow);
+        }
+    }
+
+    private void ListView_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
+    {
+        if (e.Items.Count > 0)
+        {
+            var items = e.Items.Select(i => i as KitchenOrderItemViewModel);
+
+            if (ViewModel.HasSelectedItems)
+            {
+                items = ViewModel.SelectedItems;
+            }
+
+            var dragData = new OrderItemDragData
+            {
+                OrderItems = items,
+                SourceColumn = ViewModel.ColumnType
+            };
+
+            e.Data.Properties.Add("DraggedOrder", dragData);
+            e.Data.RequestedOperation = DataPackageOperation.Move;
+        }
+    }
+
+    private void ListView_DragOver(object sender, DragEventArgs e)
+    {
+        if (e.DataView.Properties.TryGetValue("DraggedOrder", out var dragDataObj))
+        {
+            e.AcceptedOperation = DataPackageOperation.Move;
+            e.DragUIOverride.Caption = "Move order to " + Title;
+        }
+    }
+
+    private void ListView_Drop(object sender, DragEventArgs e)
+    {
+        if (e.DataView.Properties.TryGetValue("DraggedOrder", out var dragDataObj))
+        {
+            var dragData = dragDataObj as OrderItemDragData;
+
+            ViewModel.HandleItemDroppedAsync(dragData.OrderItems, dragData.SourceColumn);
         }
     }
 }
