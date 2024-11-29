@@ -35,6 +35,9 @@
         <ContentControl x:Name="PanelContentControl" 
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        Padding="4,4,4,6"
                         Grid.Row="1" />
     </Grid>
 </UserControl>

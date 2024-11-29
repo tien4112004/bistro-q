@@ -2,7 +2,6 @@
 using BistroQ.ViewModels.Client;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using System.Diagnostics;
 
 
 namespace BistroQ.Views.UserControls.Client
@@ -46,23 +45,6 @@ namespace BistroQ.Views.UserControls.Client
                 }
             }
         }
-
-        private void ProductList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (sender is GridViewItem item && item.DataContext is Product product)
-            {
-                ProductSelected.Invoke(this, product);
-                Debug.WriteLine(product);
-            }
-        }
-
-        //private void AddToCartButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (sender is Button button && button.DataContext is Product product)
-        //    {
-        //        AddProductToCart?.Invoke(this, product);
-        //    }
-        //}
 
         private void AddToCart(object sender, Product product)
         {

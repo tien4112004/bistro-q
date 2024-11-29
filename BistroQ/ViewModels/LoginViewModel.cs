@@ -2,7 +2,6 @@
 using BistroQ.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Diagnostics;
 using System.Windows.Input;
 
 namespace BistroQ.ViewModels;
@@ -28,7 +27,6 @@ public partial class LoginViewModel : ObservableObject
         _authService = authService;
         LoginCommand = new AsyncRelayCommand(async () =>
         {
-            Debug.WriteLine("Login command executed");
             await Login();
         });
 

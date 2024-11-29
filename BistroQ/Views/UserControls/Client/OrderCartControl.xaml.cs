@@ -53,11 +53,14 @@ public sealed partial class OrderCartControl : UserControl
     {
         if (OrderCartSelector.SelectedItem == SelectorBarItemCart)
         {
-            PanelContentControl.Content = new CartPage(ViewModel);
+            var cartControl = new CartControl(ViewModel);
+            PanelContentControl.Content = cartControl;
+            //cartControl.
         }
         else if (OrderCartSelector.SelectedItem == SelectorBarItemOrder)
         {
-            PanelContentControl.Content = new OrderPage();
+            var orderControl = new OrderControl(ViewModel);
+            PanelContentControl.Content = orderControl;
         }
     }
 }

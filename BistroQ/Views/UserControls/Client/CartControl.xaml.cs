@@ -4,11 +4,12 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Input;
 
-namespace BistroQ.Views.Client;
+namespace BistroQ.Views.UserControls.Client;
 
-public sealed partial class CartPage : Page, INotifyPropertyChanged
+public sealed partial class CartControl : UserControl, INotifyPropertyChanged
 {
     public OrderCartViewModel ViewModel { get; }
 
@@ -16,7 +17,7 @@ public sealed partial class CartPage : Page, INotifyPropertyChanged
 
     public ICommand RemoveProductFromCartCommand { get; }
 
-    public CartPage(OrderCartViewModel orderCartViewModel)
+    public CartControl(OrderCartViewModel orderCartViewModel)
     {
         ViewModel = orderCartViewModel;
         this.InitializeComponent();
@@ -32,6 +33,9 @@ public sealed partial class CartPage : Page, INotifyPropertyChanged
 
         RemoveProductFromCartCommand = new RelayCommand<OrderItem>(RemoveProductFromCart);
     }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+    public event EventHandler CheckoutRequested;
 
     private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
@@ -50,8 +54,6 @@ public sealed partial class CartPage : Page, INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CartIsEmpty)));
     }
 
-    public event PropertyChangedEventHandler PropertyChanged;
-
     private void RemoveProductFromCart(OrderItem item)
     {
         if (item == null)
@@ -59,5 +61,10 @@ public sealed partial class CartPage : Page, INotifyPropertyChanged
             return;
         }
         ViewModel.CartItems.Remove(item);
+    }
+
+    private void TableBillSummaryControl_CheckoutRequested(object sender, EventArgs e)
+    {
+        Debug.WriteLine("[Debug] Order clicked");
     }
 }

@@ -1,9 +1,11 @@
-﻿using BistroQ.Core.Contracts.Services;
+﻿
+using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Windows.Input;
 
 namespace BistroQ.ViewModels.Client;
@@ -23,6 +25,8 @@ public partial class OrderCartViewModel : ObservableRecipient
     [ObservableProperty]
     private string _errorMessage = string.Empty;
 
+    public decimal TotalCart => CartItems.Sum(x => x.Total.Value);
+
     public ObservableCollection<OrderItem> CartItems { get; set; } = new ObservableCollection<OrderItem>();
     public ObservableCollection<OrderItem> ProcessingItems { get; set; } = new ObservableCollection<OrderItem>();
     public ObservableCollection<OrderItem> CompletedItems { get; set; } = new ObservableCollection<OrderItem>();
@@ -33,10 +37,11 @@ public partial class OrderCartViewModel : ObservableRecipient
 
     public OrderCartViewModel(IOrderDataService orderDataService)
     {
-        Debug.WriteLine(1);
         _orderDataService = orderDataService;
         StartOrderCommand = new AsyncRelayCommand(StartOrder);
         CancelOrderCommand = new RelayCommand(CancelOrder);
+
+        CartItems.CollectionChanged += CartItems_CollectionChanged;
     }
 
     public void AddProductToCart(Product product)
@@ -57,7 +62,6 @@ public partial class OrderCartViewModel : ObservableRecipient
                 PriceAtPurchase = product.Price
             });
         }
-        _ = Task.CompletedTask;
     }
 
     public async Task LoadExistingOrderAsync()
@@ -83,8 +87,6 @@ public partial class OrderCartViewModel : ObservableRecipient
         try
         {
             IsLoading = true;
-
-            await Task.Delay(400); // TODO: This if for UI visualize only, remove it afterward  
 
             Order = await Task.Run(
                 async () =>
@@ -112,5 +114,35 @@ public partial class OrderCartViewModel : ObservableRecipient
 
         ErrorMessage = string.Empty;
         IsOrdering = false;
+    }
+
+    // CartItemChanged
+    private void CartItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.NewItems != null)
+        {
+            foreach (OrderItem item in e.NewItems)
+            {
+                item.PropertyChanged += OrderItem_PropertyChanged;
+            }
+        }
+
+        if (e.OldItems != null)
+        {
+            foreach (OrderItem item in e.OldItems)
+            {
+                item.PropertyChanged -= OrderItem_PropertyChanged;
+            }
+        }
+
+        OnPropertyChanged(nameof(TotalCart));
+    }
+
+    private void OrderItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(OrderItem.Total))
+        {
+            OnPropertyChanged(nameof(TotalCart));
+        }
     }
 }

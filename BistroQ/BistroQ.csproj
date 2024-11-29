@@ -22,7 +22,6 @@
     <None Remove="Views\AdminTable\AdminTableAddPage.xaml" />
     <None Remove="Views\AdminTable\AdminTableEditPage.xaml" />
     <None Remove="Views\AdminZone\AdminZoneAddPage.xaml" />
-    <None Remove="Views\Client\CartPage.xaml" />
     <None Remove="Views\TestAdminPage.xaml" />
     <None Remove="Views\TestKitchenPage.xaml" />
     <None Remove="Views\UserControls\Client\OrderCartControl.xaml" />
@@ -71,10 +70,10 @@
     <Page Update="Views\UserControls\Client\SingleProductControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="Views\Client\CartPage.xaml">
+    <Page Update="Views\Client\CartControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="Views\Client\OrderPage.xaml">
+    <Page Update="Views\Client\OrderControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\UserControls\Client\OrderCartControl.xaml">
