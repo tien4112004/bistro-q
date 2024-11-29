@@ -25,6 +25,8 @@ public class MappingProfile : Profile
         CreateMap<Order, OrderViewModel>().ReverseMap();
         CreateMap<OrderItem, OrderItemViewModel>();
         CreateMap<OrderItem, OrderItemViewModel>().ReverseMap();
+        CreateMap<OrderItem, KitchenOrderItemViewModel>()
+            .ForMember(dest => dest.Table, opt => opt.MapFrom(src => src.Order.Table));
         CreateMap<Product, ProductViewModel>();
         CreateMap<Product, ProductViewModel>().ReverseMap();
 

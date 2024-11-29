@@ -7,8 +7,13 @@
     xmlns:vm="using:BistroQ.Presentation.ViewModels.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:converters="using:BistroQ.Presentation.Converters" xmlns:interactivity="using:Microsoft.Xaml.Interactivity" xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:converters="using:BistroQ.Presentation.Converters" 
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <converters:DateTimeToTimeOnlyConverter x:Key="DateTimeToTimeOnly"/>
+        <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </UserControl.Resources>
 
     <Grid Grid.Column="0">
         <Grid.RowDefinitions>
@@ -108,7 +113,7 @@
             </ListView.ItemContainerStyle>
 
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="vm:OrderItemViewModel">
+                <DataTemplate x:DataType="vm:KitchenOrderItemViewModel">
                     <Grid Padding="0,8">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -116,11 +121,10 @@
                         </Grid.ColumnDefinitions>
 
                         <Grid Grid.Column="0" Width="100" Height="100" Margin="10,0">
-                            <Image x:Name="ProductImage"
-                                   Source="https://placehold.jp/200x200.png" 
+                            <Image Source="{x:Bind Product.ImageUrl, Mode=OneWay}"
                                    Width="100" Height="100"
                                    Stretch="UniformToFill"/>
-                            <ProgressRing x:Name="ImageLoadingRing"
+                            <ProgressRing 
                                  IsActive="False"
                                  Width="32" 
                                  Height="32"/>
@@ -140,35 +144,42 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0" 
-                                              Orientation="Horizontal" 
+                                            Orientation="Horizontal" 
                                               Spacing="4">
-                                    <FontIcon Glyph="&#xE121;" FontSize="16"/>
-                                    <TextBlock x:Name="TimeTextBlock" 
-                                               Text="3:00:00"
-                                               Style="{ThemeResource CaptionTextBlockStyle}"
-                                               VerticalAlignment="Center"/>
+                                    <FontIcon Glyph="&#xE121;" 
+                                              FontSize="16"/>
+                                    <TextBlock 
+                                        Text="{x:Bind CreatedAt, Mode=OneWay,
+                                               Converter={StaticResource DateTimeToTimeOnly}, ConverterParameter=HH:mm}"
+                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                        VerticalAlignment="Center"
+                                        Margin="0,-1,0,0"
+                                               />
                                 </StackPanel>
 
                                 <Border Grid.Column="1"
                                         Background="{ThemeResource AccentFillColorDefaultBrush}"
                                         CornerRadius="4"
                                         Padding="12,4">
-                                    <TextBlock x:Name="TableNumberTextBlock"
+                                    <TextBlock 
                                                 Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
-                                                Text="Table 1"
-                                                FontWeight="SemiBold"/>
+                                                FontWeight="SemiBold">
+                                        <Run Text="Table"/>
+                                        <Run Text="{x:Bind Table.Number, Mode=OneWay}"/>
+                                    </TextBlock>
                                 </Border>
                             </Grid>
 
                             <StackPanel Grid.Row="1" Margin="0,4,0,0" Spacing="8">
-                                <TextBlock x:Name="ProductNameTextBlock"
+                                <TextBlock 
                                            Style="{ThemeResource SubtitleTextBlockStyle}"
-                                           Text="Chicken Leg"
+                                           Text="{x:Bind Product.Name, Mode=OneWay}"
                                            TextWrapping="Wrap"
-                                           MaxLines="2"/>    
-                                <TextBlock x:Name="QuantityTextBlock"
-                                           Text="2 Plate"
-                                           Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                                           MaxLines="2"/>
+                                <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}">
+                                    <Run Text="{x:Bind Quantity, Mode=OneWay}"/>
+                                    <Run Text="{x:Bind Product.Unit, Mode=OneWay}"/>
+                                </TextBlock>
                             </StackPanel>
 
                             <Grid Grid.Row="2" Margin="0,8,0,0"
@@ -180,9 +191,7 @@
                                     CornerRadius="4"
                                     HorizontalAlignment="Left"
                                     Padding="12,4">
-                                    <TextBlock x:Name="ZoneTextBlock" 
-                                               Text="Zone 1"
-                                               />
+                                    <TextBlock Text="{x:Bind Table.ZoneName, Mode=OneWay}" />
                                 </Border>
                             </Grid>
                         </Grid>
