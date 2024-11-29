@@ -19,9 +19,11 @@ public sealed partial class OrderControl : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
+    public event EventHandler CheckoutRequested;
 
     private void TableBillSummaryControl_CheckoutRequested(object sender, EventArgs e)
     {
-        Debug.WriteLine("[Debug] Order clicked");
+        CheckoutRequested?.Invoke(this, null);
+        Debug.WriteLine("[Debug] Checkout clicked");
     }
 }

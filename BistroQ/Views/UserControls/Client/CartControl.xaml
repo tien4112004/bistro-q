@@ -157,7 +157,7 @@
         <StackPanel Grid.Row="1" Margin="2,4,2,0">
             <orders:TableBillSummaryControl 
                 VerticalAlignment="Bottom"
-                CheckoutRequested="TableBillSummaryControl_CheckoutRequested"
+                CheckoutRequested="TableBillSummaryControl_OrderRequested"
                 Total="{x:Bind ViewModel.TotalCart, Mode=OneWay}" />
         </StackPanel>
     </Grid>

@@ -35,7 +35,7 @@ public sealed partial class CartControl : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    public event EventHandler CheckoutRequested;
+    public event EventHandler<IEnumerable<OrderItem>> OrderRequested;
 
     private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
@@ -63,8 +63,16 @@ public sealed partial class CartControl : UserControl, INotifyPropertyChanged
         ViewModel.CartItems.Remove(item);
     }
 
-    private void TableBillSummaryControl_CheckoutRequested(object sender, EventArgs e)
+    private void TableBillSummaryControl_OrderRequested(object sender, EventArgs e)
     {
+        if (ViewModel?.CartItems == null || !ViewModel.CartItems.Any())
+        {
+            Debug.WriteLine("[Debug] No items in the cart to order.");
+            return;
+        }
+
+        var orderItems = ViewModel.CartItems.ToList();
+        OrderRequested?.Invoke(this, orderItems);
         Debug.WriteLine("[Debug] Order clicked");
     }
 }

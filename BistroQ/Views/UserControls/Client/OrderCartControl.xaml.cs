@@ -1,7 +1,8 @@
-﻿using BistroQ.ViewModels.Client;
-using BistroQ.Views.Client;
+﻿using BistroQ.Core.Entities;
+using BistroQ.ViewModels.Client;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System.Diagnostics;
 
 namespace BistroQ.Views.UserControls.Client;
 
@@ -21,6 +22,8 @@ public sealed partial class OrderCartControl : UserControl
     }
 
     public event EventHandler<OrderCartViewModel> ViewModelChanged;
+    public event EventHandler<IEnumerable<OrderItem>> OrderRequested;
+    public event EventHandler CheckoutRequested;
 
     public OrderCartControl()
     {
@@ -55,12 +58,25 @@ public sealed partial class OrderCartControl : UserControl
         {
             var cartControl = new CartControl(ViewModel);
             PanelContentControl.Content = cartControl;
-            //cartControl.
+            cartControl.OrderRequested += OrderCartControl_OrderRequested;   // Don't care the name of the event pls...
         }
         else if (OrderCartSelector.SelectedItem == SelectorBarItemOrder)
         {
             var orderControl = new OrderControl(ViewModel);
             PanelContentControl.Content = orderControl;
+
         }
+    }
+
+    private void OrderCartControl_OrderRequested(object sender, IEnumerable<OrderItem> orderItems)
+    {
+        //if (orderItems == null)
+        //{
+        //    return;
+        //}
+        Debug.WriteLine(orderItems);
+
+        // call order here
+        Debug.WriteLine("Call api order here");
     }
 }
