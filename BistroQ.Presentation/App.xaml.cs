@@ -25,6 +25,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using System.Diagnostics;
+using BistroQ.Service.Mock;
 
 namespace BistroQ.Presentation;
 
@@ -120,6 +121,7 @@ public partial class App : Application
             services.AddScoped<IZoneDataService, ZoneDataService>();
             services.AddScoped<ITableDataService, TableDataService>();
             services.AddScoped<IOrderDataService, OrderDataService>();
+            services.AddScoped<IOrderItemDataService, MockOrderItemDataService>();
 
             // Client V&VM
             services.AddTransient<HomePageViewModel>();

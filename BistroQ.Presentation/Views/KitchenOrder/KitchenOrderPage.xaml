@@ -15,7 +15,7 @@
         <converters:NumberToCurrencyConverter x:Key="CurrencyConverter"/>
     </Page.Resources>
 
-    <Grid ColumnSpacing="10">
+    <Grid ColumnSpacing="10" Padding="0,12">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
@@ -25,27 +25,64 @@
         <Grid >
             <orderControls:OrderKanbanColumnControl 
                 Title="Pending" 
+                TitleIconPath="ms-appx:///Assets/Icons/hourglass.png"
                 ViewModel="{x:Bind ViewModel.PendingColumnVM, Mode=OneWay}"/>
         </Grid>
         
         <Grid Grid.Column="1">
             <orderControls:OrderKanbanColumnControl 
                 Title="In Progress" 
+                TitleIconPath="ms-appx:///Assets/Icons/cooking-pot.png"
                 ViewModel="{x:Bind ViewModel.PendingColumnVM, Mode=OneWay}"/>
         </Grid>
         
-        <Grid Grid.Column="2">
+        <Grid Grid.Column="2" RowSpacing="10" MinWidth="100">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border Background="{ThemeResource SuccessBaseColor }">
-                <TextBlock Foreground="White">COMPLETED!</TextBlock>
-            </Border>
-            <Border Grid.Row="1" Background="{ThemeResource ErrorBaseColor}">
-                <TextBlock Foreground="White">CANCELLED!</TextBlock>
-            </Border>
+            <Button 
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Stretch"
+                Background="{ThemeResource SuccessBaseColor}"
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
+                CornerRadius="8">
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    Spacing="5"
+                    VerticalAlignment="Center">
+                    <BitmapIcon Foreground="White" 
+                                Width="30"
+                                UriSource="ms-appx:///Assets/Icons/square-check-big.png"/>
+                    <TextBlock 
+                        FontWeight="Bold"
+                        FontSize="18"
+                        Foreground="White">Completed</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button 
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Stretch"
+                Grid.Row="1" 
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
+                Background="{ThemeResource ErrorBaseColor}"
+                CornerRadius="8">
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    Spacing="5"
+                    VerticalAlignment="Center">
+                    <BitmapIcon Foreground="White" 
+                                Width="30"
+                                UriSource="ms-appx:///Assets/Icons/circle-x.png"/>
+                    <TextBlock 
+                        FontWeight="Bold"
+                        FontSize="18"
+                        Foreground="White">Cancelled</TextBlock>
+                </StackPanel>
+            </Button>
         </Grid>
     </Grid>
 </Page>

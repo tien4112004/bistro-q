@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using BistroQ.Domain.Enums;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BistroQ.Presentation.ViewModels.Models;
 
@@ -17,8 +18,14 @@ public partial class OrderItemViewModel : ObservableObject
     private int? _quantity;
 
     [ObservableProperty]
-    private string? _status;
-
+    private OrderItemStatus? _status;
+    
+    [ObservableProperty]
+    private DateTime? _createdAt;
+    
+    [ObservableProperty]
+    private DateTime? _updatedAt;
+    
     [ObservableProperty]
     private decimal? _priceAtPurchase;
 

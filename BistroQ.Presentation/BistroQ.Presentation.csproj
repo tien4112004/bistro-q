@@ -130,6 +130,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Assets\Icons\" />
     <Folder Include="Controls\" />
     <Folder Include="Views\Client\" />
   </ItemGroup>
