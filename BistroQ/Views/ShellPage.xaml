@@ -58,26 +58,13 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7FB;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-
-                <NavigationViewItem x:Uid="Shell_TestAdmin" Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.TestAdminViewModel">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe8fd;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-
-                <NavigationViewItem x:Uid="Shell_TestKitchen" Tag="Kitchen" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.TestKitchenViewModel">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe8fd;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-
                 <NavigationViewItem x:Uid="Shell_ClientHomePage" Tag="Client" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.Client.HomePageViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED56;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem x:Uid="Shell_CashierTablePage" Tag="Cashier" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.Cashier.CashierTableViewModel">
+                <NavigationViewItem x:Uid="Shell_CashierTablePage" Tag="Cashier" helpers:NavigationHelper.NavigateTo="BistroQ.ViewModels.CashierTable.CashierTableViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED56;"/>
                     </NavigationViewItem.Icon>

@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>BistroQ</RootNamespace>
     <ApplicationIcon>Assets/WindowIcon.ico</ApplicationIcon>
@@ -22,10 +22,16 @@
     <None Remove="Views\AdminTable\AdminTableAddPage.xaml" />
     <None Remove="Views\AdminTable\AdminTableEditPage.xaml" />
     <None Remove="Views\AdminZone\AdminZoneAddPage.xaml" />
-    <None Remove="Views\TestAdminPage.xaml" />
-    <None Remove="Views\TestKitchenPage.xaml" />
+    <None Remove="Views\CashierTable\CashierTable_ZoneControl.xaml" />
+    <None Remove="Views\CashierTable\Controls\ZoneOverviewControl.xaml" />
+    <None Remove="Views\CashierTable\Controls\ZoneTableGridControl.xaml" />
+    <None Remove="Views\UserControls\Orders\TableBillSummaryControl.xaml" />
+    <None Remove="Views\UserControls\Orders\TableOrderDetailsControl.xaml" />
     <None Remove="Views\UserControls\PaginationControl.xaml" />
     <None Remove="LoginWindow.xaml" />
+    <None Remove="Views\UserControls\Skeleton\RectangleSkeleton.xaml" />
+    <None Remove="Views\UserControls\Zones\ZoneOverviewControl.xaml" />
+    <None Remove="Views\UserControls\Zones\ZoneTableGridControl.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,10 +44,12 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.1.240916" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.1.240916" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231008000" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
     <PackageReference Include="WinUIEx" Version="2.3.2" />
@@ -54,6 +62,30 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\UserControls\Skeleton\RectangleSkeleton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\UserControls\Orders\TableBillSummaryControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\UserControls\Orders\TableOrderDetailsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\UserControls\Zones\ZoneTableGridControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\UserControls\Zones\ZoneOverviewControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Cashier\Controls\ZoneTableGridControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Cashier\Controls\ZoneOverviewControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Cashier\CashierTable_ZoneControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\Client\HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -65,12 +97,6 @@
     </Page>
     <Page Update="Views\AdminTable\AdminTableEditPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Views\TestKitchenPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Views\TestAdminPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\AdminZone\AdminZoneEditPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

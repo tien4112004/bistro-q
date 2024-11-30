@@ -1,13 +1,5 @@
 ﻿using BistroQ.Core.Contracts.Services;
-using BistroQ.Core.Dtos;
 using BistroQ.Core.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BistroQ.Core.Services;
 

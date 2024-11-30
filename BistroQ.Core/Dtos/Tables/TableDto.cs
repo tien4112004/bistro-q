@@ -10,4 +10,7 @@ public class TableDto
     public int? SeatsCount { get; set; }
 
     public string? ZoneName { get; set; }
+
+
+    public bool IsOccupied { get; set; }
 }
