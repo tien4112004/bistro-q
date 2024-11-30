@@ -18,8 +18,7 @@ public partial class OrderKanbanColumnViewModel :
     [ObservableProperty]
     private ObservableCollection<KitchenOrderItemViewModel> _items = new();
 
-    [ObservableProperty]
-    private ObservableCollection<KitchenOrderItemViewModel> _selectedItems = new();
+    public ObservableCollection<KitchenOrderItemViewModel> SelectedItems { get; } = new();
 
     public bool HasSelectedItems => SelectedItems.Any();
 

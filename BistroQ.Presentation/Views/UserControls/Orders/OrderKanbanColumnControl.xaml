@@ -8,6 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:BistroQ.Presentation.Converters" 
+    xmlns:customLV="using:BistroQ.Presentation.Controls"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -55,8 +56,12 @@
         </Grid>
 
         <!-- Items List -->
-        <ListView Grid.Row="1"
+        <customLV:CustomListView 
+            Grid.Row="1"
             ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
+            SelectionChanged="CustomListView_SelectionChanged"
+            Tag="{x:Bind Title, Mode=OneWay}"
+            SelectedItems="{x:Bind ViewModel.SelectedItems, Mode=OneWay}"
             AllowDrop="True"
             SelectionMode="Multiple"
             CanDragItems="True"
@@ -69,7 +74,7 @@
             BorderThickness="1"
             CornerRadius="0,0,8,8"
             Padding="8">
-            <ListView.ItemContainerStyle>
+            <customLV:CustomListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
@@ -113,7 +118,7 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-            </ListView.ItemContainerStyle>
+            </customLV:CustomListView.ItemContainerStyle>
 
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="vm:KitchenOrderItemViewModel">
@@ -201,6 +206,6 @@
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>
+        </customLV:CustomListView>
     </Grid>
 </UserControl>

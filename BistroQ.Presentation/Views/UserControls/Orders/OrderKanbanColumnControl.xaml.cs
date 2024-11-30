@@ -1,7 +1,9 @@
 ﻿using BistroQ.Presentation.Helpers;
+using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.Models;
 using BistroQ.Presentation.ViewModels.KitchenOrder;
 using BistroQ.Presentation.ViewModels.Models;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -118,6 +120,26 @@ public sealed partial class OrderKanbanColumnControl : UserControl
             var dragData = dragDataObj as OrderItemDragData;
 
             ViewModel.HandleItemDroppedAsync(dragData.OrderItems, dragData.SourceColumn, insertIndex);
+        }
+    }
+
+    private void CustomListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (sender is not ListView listView || listView.Tag is not string title || !e.AddedItems.Any())
+            return;
+
+        var messenger = App.GetService<IMessenger>();
+
+        // Map of column titles and their corresponding columns to clear
+        var columnsToClear = new Dictionary<string, string>
+        {
+            { "Pending", "In Progress" },
+            { "In Progress", "Pending" }
+        };
+
+        if (columnsToClear.TryGetValue(title, out var columnToClear))
+        {
+            messenger.Send(new CustomListViewSelectionChangedMessage(new List<object>(), columnToClear));
         }
     }
 }
