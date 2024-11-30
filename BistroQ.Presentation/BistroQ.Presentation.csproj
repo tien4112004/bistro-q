@@ -27,6 +27,7 @@
     <None Remove="Views\CashierTable\Controls\ZoneOverviewControl.xaml" />
     <None Remove="Views\CashierTable\Controls\ZoneTableGridControl.xaml" />
     <None Remove="Views\KitchenOrder\KitchenOrderPage.xaml" />
+    <None Remove="Views\UserControls\Orders\KitchenOrderButtonsControl.xaml" />
     <None Remove="Views\UserControls\Orders\OrderKanbanColumnControl.xaml" />
     <None Remove="Views\UserControls\Orders\TableBillSummaryControl.xaml" />
     <None Remove="Views\UserControls\Orders\TableOrderDetailsControl.xaml" />
@@ -63,6 +64,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\UserControls\Orders\KitchenOrderButtonsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Styles\Color.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

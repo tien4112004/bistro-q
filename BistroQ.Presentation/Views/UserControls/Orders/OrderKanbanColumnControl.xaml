@@ -104,7 +104,7 @@
                                     PointerOverForeground="{ThemeResource SystemControlForegroundBaseHighBrush}"
                                     SelectedBackground="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
                                     SelectedForeground="{ThemeResource SystemControlForegroundBaseHighBrush}"
-                                    SelectedPointerOverBackground="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                    SelectedPointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
                                     PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
                                     SelectedPressedBackground="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                                     DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
@@ -166,7 +166,7 @@
                                 </StackPanel>
 
                                 <Border Grid.Column="1"
-                                        Background="{ThemeResource AccentFillColorDefaultBrush}"
+                                        Background="{ThemeResource CyanBaseColor}"
                                         CornerRadius="4"
                                         Padding="12,4">
                                     <TextBlock 
@@ -195,7 +195,7 @@
                                   BorderThickness="0,1,0,0"
                                   Padding="0,8,0,0">
                                 <Border 
-                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                    Background="{ThemeResource SystemFillColorSolidNeutralBackground}"
                                     CornerRadius="4"
                                     HorizontalAlignment="Left"
                                     Padding="12,4">

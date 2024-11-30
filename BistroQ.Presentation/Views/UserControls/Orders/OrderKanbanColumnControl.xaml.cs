@@ -139,7 +139,7 @@ public sealed partial class OrderKanbanColumnControl : UserControl
 
         if (columnsToClear.TryGetValue(title, out var columnToClear))
         {
-            messenger.Send(new CustomListViewSelectionChangedMessage(new List<object>(), columnToClear));
+            messenger.Send(new ChangeCustomListViewSelectionMessage(new List<object>(), columnToClear));
         }
     }
 }

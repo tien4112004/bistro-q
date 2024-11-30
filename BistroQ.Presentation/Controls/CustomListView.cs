@@ -4,16 +4,17 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 namespace BistroQ.Presentation.Controls;
 
-public partial class CustomListView : ListView, IRecipient<CustomListViewSelectionChangedMessage>
+public partial class CustomListView : ListView, IRecipient<ChangeCustomListViewSelectionMessage>
 {
+    private readonly IMessenger _messenger;
     public CustomListView() : base()
     {
         SelectionChanged += CustomListView_SelectionChanged;
-        App.GetService<IMessenger>().RegisterAll(this);
+        _messenger = App.GetService<IMessenger>();
+        _messenger.RegisterAll(this);
     }
 
     public new IList SelectedItems
@@ -50,17 +51,15 @@ public partial class CustomListView : ListView, IRecipient<CustomListViewSelecti
         {
             SelectedItems.Add(item);
         }
+
+        _messenger.Send(new CustomListViewSelectionChangedMessage(SelectedItems, (string)Tag));
     }
 
-    public void Receive(CustomListViewSelectionChangedMessage message)
+    public void Receive(ChangeCustomListViewSelectionMessage message)
     {
         if (message.Title == (string)Tag)
         {
-            Debug.WriteLine("Received " + message.Title);
-
             SelectedItems = message.SelectedItems;
-
-            Debug.WriteLine(base.SelectedItems.Count);
         }
     }
 }
