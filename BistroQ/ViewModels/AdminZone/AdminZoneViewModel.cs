@@ -47,7 +47,7 @@ public partial class AdminZoneViewModel : ObservableRecipient, INavigationAware,
         _pagination = new Pagination
         {
             TotalItems = 0,
-            TotalPages = 0,
+            TotalPages = 1,
             CurrentPage = 1,
             PageSize = 10
         };

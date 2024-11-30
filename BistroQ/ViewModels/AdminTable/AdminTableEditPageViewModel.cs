@@ -1,23 +1,33 @@
-﻿using BistroQ.Contracts.ViewModels;
-using BistroQ.Core.Contracts.Services;
-using BistroQ.Core.Dtos;
+﻿using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Dtos.Tables;
 using BistroQ.Core.Dtos.Zones;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace BistroQ.ViewModels.AdminTable;
 
-public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigationAware
+public partial class AdminTableEditPageViewModel : ObservableRecipient
 {
-    public TableDto Table { get; set; }
+    [ObservableProperty]
+    private TableDto _table;
     [ObservableProperty]
     private UpdateTableRequestDto _request;
-    public AdminTableEditPageViewModel ViewModel;
-    public ObservableCollection<ZoneDto> Zones;
+    [ObservableProperty]
+    private bool _isProcessing = false;
+    [ObservableProperty]
+    private ObservableCollection<ZoneDto> _zones;
 
     private readonly ITableDataService _tableDataService;
     private readonly IZoneDataService _zoneDataService;
+
+    public ICommand EditCommand { get; }
+    //public ICommand FormChangedCommand { get; }
+
+    public event EventHandler<string> ShowSuccessDialog;
+    public event EventHandler<string> ShowErrorDialog;
+    public event EventHandler NavigateBack;
 
     public AdminTableEditPageViewModel(ITableDataService tableDataService, IZoneDataService zoneDataService)
     {
@@ -26,6 +36,7 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
         Request = new UpdateTableRequestDto();
         Zones = new ObservableCollection<ZoneDto>();
 
+        EditCommand = new AsyncRelayCommand(UpdateTableAsync, CanEditTable);
         LoadZonesAsync().ConfigureAwait(false);
     }
 
@@ -33,20 +44,48 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
     {
     }
 
-    public async Task<ApiResponse<TableDto>> UpdateTableAsync()
+
+    public async Task UpdateTableAsync()
     {
-        if (Request.ZoneId == null)
+        try
         {
-            throw new InvalidDataException("Please choose a zone.");
-        }
+            IsProcessing = true;
+            if (Request.ZoneId == null)
+            {
+                throw new InvalidDataException("Please choose a zone.");
+            }
 
-        if (Request.SeatsCount == null)
+            if (Request.SeatsCount == null)
+            {
+                throw new InvalidDataException("Seats count must be greater than 0.");
+            }
+
+            var result = await _tableDataService.UpdateTableAsync(Table.TableId.Value, Request);
+
+            if (result.Success)
+            {
+                ShowSuccessDialog?.Invoke(this, "Table added successfully.");
+                NavigateBack?.Invoke(this, EventArgs.Empty);
+            }
+            else
+            {
+                ShowErrorDialog?.Invoke(this, result.Error);
+
+            }
+        }
+        catch (Exception ex)
         {
-            throw new InvalidDataException("Seats count must be greater than 0.");
+            ShowErrorDialog?.Invoke(this, ex.Message);
         }
+        finally
+        {
+            IsProcessing = false;
+        }
+    }
 
-        var result = await _tableDataService.UpdateTableAsync(Table.TableId.Value, Request);
-        return result;
+    private bool CanEditTable()
+    {
+        return !IsProcessing;
     }
 
     public void OnNavigatedTo(object parameter)

@@ -14,7 +14,7 @@ namespace BistroQ.Views.AdminTable;
 /// </summary>
 public sealed partial class AdminTableEditPage : Page
 {
-    public AdminTableEditPageViewModel ViewModel { get; set; }
+    public AdminTableEditPageViewModel ViewModel { get; set; } = new AdminTableEditPageViewModel();
 
     public AdminTableEditPage()
     {
@@ -23,6 +23,24 @@ public sealed partial class AdminTableEditPage : Page
         var zoneDataService = App.GetService<IZoneDataService>();
         ViewModel = new AdminTableEditPageViewModel(tableDataService, zoneDataService);
         this.DataContext = ViewModel;
+
+        this.Loaded += AdminTableEditPage_Loaded;
+        ViewModel.ShowSuccessDialog += OnShowSuccessDialog;
+        ViewModel.ShowErrorDialog += OnShowErrorDialog;
+        ViewModel.NavigateBack += OnNavigateBack;
+
+        this.Unloaded += (s, e) =>
+        {
+            ViewModel.ShowSuccessDialog -= OnShowSuccessDialog;
+            ViewModel.ShowErrorDialog -= OnShowErrorDialog;
+            ViewModel.NavigateBack -= OnNavigateBack;
+        };
+    }
+
+    private async void AdminTableEditPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        await ViewModel.LoadZonesAsync();
+        TableEditPage_ZoneComboBox.SelectedValue = ViewModel.Request.ZoneId;
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -31,38 +49,11 @@ public sealed partial class AdminTableEditPage : Page
         if (tableDto != null)
         {
             ViewModel.Table = tableDto;
+            ViewModel.Request.ZoneId = tableDto.ZoneId;
+            ViewModel.Request.SeatsCount = tableDto.SeatsCount;
         }
 
         base.OnNavigatedTo(e);
-    }
-
-    private async void AdminTableEditPage_EditButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        try
-        {
-            var result = await ViewModel.UpdateTableAsync();
-
-            if (result.Success)
-            {
-                await new ContentDialog()
-                {
-                    XamlRoot = this.Content.XamlRoot,
-                    Title = "Update zone successfully",
-                    CloseButtonText = "OK"
-                }.ShowAsync();
-            }
-            Frame.GoBack();
-        }
-        catch (Exception ex)
-        {
-            await new ContentDialog()
-            {
-                XamlRoot = this.Content.XamlRoot,
-                Title = "Operation failed",
-                Content = $"Update zone failed with error: {ex.Message}",
-                CloseButtonText = "OK"
-            }.ShowAsync();
-        }
     }
 
     private void AdminTableEditPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -70,4 +61,32 @@ public sealed partial class AdminTableEditPage : Page
         Frame.GoBack();
     }
 
+    private async void OnShowSuccessDialog(object sender, string message)
+    {
+        var dialog = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = "Operation success",
+            Content = message,
+            CloseButtonText = "OK"
+        };
+        await dialog.ShowAsync();
+    }
+
+    private async void OnShowErrorDialog(object sender, string message)
+    {
+        var dialog = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = "Error",
+            Content = message,
+            CloseButtonText = "OK"
+        };
+        await dialog.ShowAsync();
+    }
+
+    private void OnNavigateBack(object sender, EventArgs e)
+    {
+        Frame.GoBack();
+    }
 }

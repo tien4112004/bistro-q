@@ -1,7 +1,9 @@
 ﻿using BistroQ.Core.Contracts.Services;
 using BistroQ.Core.Dtos.Zones;
 using BistroQ.ViewModels.AdminZone;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -22,49 +24,79 @@ public sealed partial class AdminZoneEditPage : Page
         ViewModel = new AdminZoneEditPageViewModel(zoneDataService);
         this.DataContext = ViewModel;
         this.InitializeComponent();
+
+        ViewModel.ShowSuccessDialog += OnShowSuccessDialog;
+        ViewModel.ShowErrorDialog += OnShowErrorDialog;
+        ViewModel.NavigateBack += OnNavigateBack;
+
+        Unloaded += (s, e) =>
+        {
+            ViewModel.ShowSuccessDialog -= OnShowSuccessDialog;
+            ViewModel.ShowErrorDialog -= OnShowErrorDialog;
+            ViewModel.NavigateBack -= OnNavigateBack;
+        };
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        var zoneDto = e.Parameter as ZoneDto;
-        if (zoneDto != null)
+        if (e.Parameter is ZoneDto zoneDto)
         {
-            ViewModel.Zone = zoneDto;
+            ViewModel.OnNavigatedTo(zoneDto);
         }
 
         base.OnNavigatedTo(e);
     }
 
-    private async void AdminZoneEditPage_EditButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void Text_KeyDown(object sender, KeyRoutedEventArgs e)
     {
-        try
+        if (e.Key == Windows.System.VirtualKey.Enter)
         {
-            var result = await ViewModel.UpdateZoneAsync();
-
-            if (result.Success)
-            {
-                await new ContentDialog()
-                {
-                    XamlRoot = this.Content.XamlRoot,
-                    Title = "Update zone successfully",
-                    CloseButtonText = "OK"
-                }.ShowAsync();
-            }
-            Frame.GoBack();
+            ViewModel.UpdateCommand.Execute(null);
         }
-        catch (Exception ex)
+        if (sender is TextBox textBox)
         {
-            await new ContentDialog()
-            {
-                XamlRoot = this.Content.XamlRoot,
-                Title = "Operation failed",
-                Content = $"Update zone failed with error: {ex.Message}",
-                CloseButtonText = "OK"
-            }.ShowAsync();
+            ViewModel.FormChangeCommand.Execute((textBox.Name, textBox.Text));
+        }
+    }
+
+    private void TextBox_LosingFocus(UIElement sender, LosingFocusEventArgs args)
+    {
+        if (sender is TextBox textBox)
+        {
+            ViewModel.FormChangeCommand.Execute((textBox.Name, textBox.Text));
         }
     }
 
     private void AdminZoneEditPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        Frame.GoBack();
+    }
+
+    private async void OnShowSuccessDialog(object sender, string message)
+    {
+        var dialog = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = "Operation success",
+            Content = message,
+            CloseButtonText = "OK"
+        };
+        await dialog.ShowAsync();
+    }
+
+    private async void OnShowErrorDialog(object sender, string message)
+    {
+        var dialog = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = "Error",
+            Content = message,
+            CloseButtonText = "OK"
+        };
+        await dialog.ShowAsync();
+    }
+
+    private void OnNavigateBack(object sender, EventArgs e)
     {
         Frame.GoBack();
     }

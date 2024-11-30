@@ -28,5 +28,25 @@ public static class ValidationRules
                 ? (true, string.Empty)
                 : (false, $"{fieldName} must contain only digits");
         }
+
+        public static (bool IsValid, string Message) IsPositive(object? value, string fieldName)
+        {
+            var strValue = value as string ?? string.Empty;
+            (bool, string) result = (false, "An error occured");
+            try
+            {
+                var v = int.Parse(strValue);
+                if (v > 0)
+                {
+                    result = (true, string.Empty);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = (false, ex.Message);
+            }
+
+            return result;
+        }
     }
 }
