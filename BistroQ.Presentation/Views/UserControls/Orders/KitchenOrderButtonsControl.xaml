@@ -21,7 +21,8 @@
              Background="{ThemeResource SuccessBaseColor}"
              PointerEntered="Button_PointerEntered"
              PointerExited="Button_PointerExited"
-             Click="CompleteButton_Click"
+             IsEnabled="{x:Bind ViewModel.IsCompleteButtonEnable, Mode=OneWay}"
+             Command="{x:Bind ViewModel.CompleteCommand, Mode=OneWay}"
              CornerRadius="8">
             <Button.Resources>
                 <ResourceDictionary>
@@ -49,7 +50,8 @@
              Background="{ThemeResource CyanBaseColor}"
              PointerEntered="Button_PointerEntered"
              PointerExited="Button_PointerExited"
-             Click="MoveButton_Click"
+             IsEnabled="{x:Bind ViewModel.IsMoveButtonEnable, Mode=OneWay}"
+             Command="{x:Bind ViewModel.MoveCommand, Mode=OneWay}"
              Grid.Row="1" 
              CornerRadius="8">
             <Button.Resources>
@@ -79,7 +81,8 @@
              PointerEntered="Button_PointerEntered"
              PointerExited="Button_PointerExited"
              Background="{ThemeResource ErrorBaseColor}"
-             Click="CancelButton_Click"
+             IsEnabled="{x:Bind ViewModel.IsCancelButtonEnable, Mode=OneWay}"
+             Command="{x:Bind ViewModel.CancelCommand, Mode=OneWay}"
              CornerRadius="8">
             <Button.Resources>
                 <ResourceDictionary>

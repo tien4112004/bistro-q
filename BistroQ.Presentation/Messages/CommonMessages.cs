@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using System.Collections.ObjectModel;
 
 namespace BistroQ.Presentation.Messages;
 
-public record ChangeCustomListViewSelectionMessage(IList SelectedItems, string Title);
+public record ChangeCustomListViewSelectionMessage<T>(ObservableCollection<T> SelectedItems, string Title);
 
-public record CustomListViewSelectionChangedMessage(IList SelectedItems, string Title);
+public record CustomListViewSelectionChangedMessage<T>(ObservableCollection<T> SelectedItems, string Title);

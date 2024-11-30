@@ -36,6 +36,6 @@
                 ViewModel="{x:Bind ViewModel.ProgressColumnVM, Mode=OneWay}"/>
         </Grid>
 
-        <orderControls:KitchenOrderButtonsControl Grid.Column="2" Items="{x:Bind ViewModel.SelectedItems, Mode=OneWay}"/>
+        <orderControls:KitchenOrderButtonsControl Grid.Column="2" ViewModel="{x:Bind ViewModel.KitchenOrderButtonsVM, Mode=OneWay}"/>
     </Grid>
 </Page>

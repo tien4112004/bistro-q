@@ -56,12 +56,12 @@
         </Grid>
 
         <!-- Items List -->
-        <customLV:CustomListView 
+        <customLV:KitchenListView
             Grid.Row="1"
             ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
             SelectionChanged="CustomListView_SelectionChanged"
             Tag="{x:Bind Title, Mode=OneWay}"
-            SelectedItems="{x:Bind ViewModel.SelectedItems, Mode=OneWay}"
+            SelectedItems="{x:Bind ViewModel.SelectedItems, Mode=TwoWay}"
             AllowDrop="True"
             SelectionMode="Multiple"
             CanDragItems="True"
@@ -74,7 +74,7 @@
             BorderThickness="1"
             CornerRadius="0,0,8,8"
             Padding="8">
-            <customLV:CustomListView.ItemContainerStyle>
+            <customLV:KitchenListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
@@ -118,7 +118,7 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-            </customLV:CustomListView.ItemContainerStyle>
+            </customLV:KitchenListView.ItemContainerStyle>
 
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="vm:KitchenOrderItemViewModel">
@@ -206,6 +206,6 @@
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </customLV:CustomListView>
+        </customLV:KitchenListView>
     </Grid>
 </UserControl>

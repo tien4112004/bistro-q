@@ -8,17 +8,19 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace BistroQ.Presentation.ViewModels.KitchenOrder;
 
 public partial class OrderKanbanColumnViewModel :
     ObservableObject,
-    IRecipient<RemoveOrderItemsMessage>
+    IRecipient<RemoveOrderItemsMessage>,
+    IDisposable
 {
     [ObservableProperty]
     private ObservableCollection<KitchenOrderItemViewModel> _items = new();
 
-    public ObservableCollection<KitchenOrderItemViewModel> SelectedItems { get; } = new();
+    public ObservableCollection<KitchenOrderItemViewModel> SelectedItems { get; set; } = new();
 
     public bool HasSelectedItems => SelectedItems.Any();
 
@@ -57,17 +59,20 @@ public partial class OrderKanbanColumnViewModel :
     {
         try
         {
+            var targetStatus = ColumnType == KitchenColumnType.Pending ? OrderItemStatus.Pending : OrderItemStatus.InProgress;
             await Task.WhenAll(
-                items.Select(i => _orderItemDataService.UpdateOrderItemStatusAsync(i.OrderItemId,
-                    ColumnType == KitchenColumnType.Pending ? OrderItemStatus.Pending : OrderItemStatus.InProgress)));
-            _messenger.Send(new RemoveOrderItemsMessage(items.Select(i => i.OrderItemId), sourceColumn));
+                items.Select(i => _orderItemDataService.UpdateOrderItemStatusAsync(i.OrderItemId, targetStatus)));
 
             foreach (var item in items)
             {
-
+                item.Status = targetStatus;
                 Items.Insert(insertIndex, item);
                 insertIndex++;
             }
+
+            _messenger.Send(new RemoveOrderItemsMessage(items.Select(i => i.OrderItemId), sourceColumn));
+
+            Debug.WriteLine(JsonSerializer.Serialize(Items.Select((item) => item.Status)));
         }
         catch (Exception ex)
         {
@@ -77,16 +82,20 @@ public partial class OrderKanbanColumnViewModel :
 
     public async void Receive(RemoveOrderItemsMessage message)
     {
-        if (message.Source == ColumnType)
+        if (message.Source != ColumnType) return;
+
+        var itemsToRemove = Items
+            .Where(i => message.OrderItemIds.Contains(i.OrderItemId))
+            .ToList();
+
+        foreach (var item in itemsToRemove)
         {
-            foreach (var itemId in message.OrderItemIds)
-            {
-                var item = Items.FirstOrDefault(i => i.OrderItemId == itemId);
-                if (item != null)
-                {
-                    Items.Remove(item);
-                }
-            }
+            Items.Remove(item);
         }
+    }
+
+    public void Dispose()
+    {
+        _messenger.UnregisterAll(this);
     }
 }

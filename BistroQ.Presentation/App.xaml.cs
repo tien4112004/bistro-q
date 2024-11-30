@@ -20,12 +20,12 @@ using BistroQ.Presentation.Views.KitchenOrder;
 using BistroQ.Service.Auth;
 using BistroQ.Service.Common;
 using BistroQ.Service.Data;
+using BistroQ.Service.Mock;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using System.Diagnostics;
-using BistroQ.Service.Mock;
 
 namespace BistroQ.Presentation;
 
@@ -138,6 +138,7 @@ public partial class App : Application
             services.AddTransient<KitchenOrderViewModel>();
             services.AddTransient<KitchenOrderPage>();
             services.AddTransient<OrderKanbanColumnViewModel>();
+            services.AddTransient<KitchenOrderButtonsViewModel>();
 
             // Auto Mapper
             services.AddAutoMapper((serviceProvider, cfg) =>

@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
+using System.Collections.ObjectModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 
@@ -139,7 +140,7 @@ public sealed partial class OrderKanbanColumnControl : UserControl
 
         if (columnsToClear.TryGetValue(title, out var columnToClear))
         {
-            messenger.Send(new ChangeCustomListViewSelectionMessage(new List<object>(), columnToClear));
+            messenger.Send(new ChangeCustomListViewSelectionMessage<KitchenOrderItemViewModel>(new ObservableCollection<KitchenOrderItemViewModel>(), columnToClear));
         }
     }
 }

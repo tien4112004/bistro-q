@@ -1,7 +1,5 @@
 ﻿using BistroQ.Presentation.Helpers;
-using BistroQ.Presentation.Messages;
-using BistroQ.Presentation.ViewModels.Models;
-using CommunityToolkit.Mvvm.Messaging;
+using BistroQ.Presentation.ViewModels.KitchenOrder;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -13,52 +11,26 @@ namespace BistroQ.Presentation.Views.UserControls.Orders;
 
 public sealed partial class KitchenOrderButtonsControl : UserControl
 {
-    private readonly IMessenger _messenger = App.GetService<IMessenger>();
+    public KitchenOrderButtonsViewModel ViewModel { get; set; }
 
-    public IEnumerable<KitchenOrderItemViewModel> Items { get; set; } = new List<KitchenOrderItemViewModel>();
-
-    public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(
-        nameof(Items),
-        typeof(IEnumerable<KitchenOrderItemViewModel>),
+    public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
+        nameof(ViewModel),
+        typeof(KitchenOrderButtonsViewModel),
         typeof(KitchenOrderButtonsControl),
         new PropertyMetadata(null));
 
     public KitchenOrderButtonsControl()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
     {
-        var button = sender as UIElement;
-        if (button != null)
-        {
-            button.ChangeCursor(CursorType.Hand);
-        }
+        (sender as UIElement)?.ChangeCursor(CursorType.Hand);
     }
 
     private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
     {
-        var button = sender as UIElement;
-
-        if (button != null)
-        {
-            button.ChangeCursor(CursorType.Arrow);
-        }
-    }
-
-    private void CompleteButton_Click(object sender, RoutedEventArgs e)
-    {
-        _messenger.Send(new KitchenActionMessage(Items.Select((item) => item.OrderItemId), Enums.KitchenAction.Complete));
-    }
-
-    private void MoveButton_Click(object sender, RoutedEventArgs e)
-    {
-        _messenger.Send(new KitchenActionMessage(Items.Select((item) => item.OrderItemId), Enums.KitchenAction.Move));
-    }
-
-    private void CancelButton_Click(object sender, RoutedEventArgs e)
-    {
-        _messenger.Send(new KitchenActionMessage(Items.Select((item) => item.OrderItemId), Enums.KitchenAction.Cancel));
+        (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
     }
 }
