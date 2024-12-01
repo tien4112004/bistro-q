@@ -6,6 +6,7 @@
     xmlns:local="using:BistroQ.Presentation.Views.AdminTable"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    
     mc:Ignorable="d"
     Background="Transparent">
 
@@ -30,17 +31,21 @@
                       SelectedValuePath="ZoneId"
                       SelectedValue="{x:Bind ViewModel.Table.ZoneId, Mode=TwoWay}"
                       Width="300" />
-            <TextBox x:Name="TableEditPage_SeatsCountTextBox"
-                        x:Uid="TableEditPage_SeatsCountTextBox"
-                        Text="{x:Bind ViewModel.Request.SeatsCount, Mode=TwoWay}"
-                        Width="300"
-                        Margin="0,16,0,0"/>
+            <NumberBox x:Name="TableEditPage_SeatsCountNumberBox"
+                       x:Uid="TableEditPage_SeatsCountTextBox"
+                       Text="{x:Bind ViewModel.Request.SeatsCount, 
+                                      Mode=TwoWay}"
+                       SpinButtonPlacementMode="Inline"
+                       Minimum="1"
+                       ValidationMode="InvalidInputOverwritten" 
+                       Width="300"
+                       Margin="0,16,0,0"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <Button x:Name="AdminTableEditPage_EditButton"
                     x:Uid="AdminTableEditPage_EditButton" 
                     Style="{StaticResource AccentButtonStyle}" Width="80"
-                    Click="AdminTableEditPage_EditButton_Click" 
+                    Command="{x:Bind ViewModel.EditCommand}" 
                     Margin="0,0,16,0"/>
             <Button x:Name="AdminTableEditPage_CancelButton"
                     x:Uid="CancelButton" Width="80" 

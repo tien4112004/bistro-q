@@ -5,54 +5,82 @@ using BistroQ.Domain.Dtos.Zones;
 using BistroQ.Presentation.Contracts.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 using AutoMapper;
+using BistroQ.Presentation.Contracts.Services;
+using BistroQ.Presentation.Services;
 using BistroQ.Presentation.ViewModels.Models;
+using CommunityToolkit.Mvvm.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminTable;
 
 public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigationAware
 {
+    public ObservableCollection<ZoneViewModel> Zones;
     public TableViewModel Table { get; set; }
     [ObservableProperty]
     private UpdateTableRequest _request;
-    public AdminTableEditPageViewModel ViewModel;
-    public ObservableCollection<ZoneViewModel> Zones;
 
+    [ObservableProperty]
+    private bool _isProcessing = false;
+    
     private readonly ITableDataService _tableDataService;
     private readonly IZoneDataService _zoneDataService;
+    private readonly IAdminDialogService _adminDialogService;
     private readonly IMapper _mapper;
-
+    public ICommand EditCommand { get; }
+    
     public AdminTableEditPageViewModel(ITableDataService tableDataService, 
-        IZoneDataService zoneDataService, 
+        IZoneDataService zoneDataService,
         IMapper mapper)
     {
         _tableDataService = tableDataService;
         _zoneDataService = zoneDataService;
         _mapper = mapper;
+        _adminDialogService = new AdminTableDialogService();
         Request = new UpdateTableRequest();
         Zones = new ObservableCollection<ZoneViewModel>();
+        
+        EditCommand = new AsyncRelayCommand(UpdateTableAsync, CanEditTable);
 
         LoadZonesAsync().ConfigureAwait(false);
     }
 
-    public AdminTableEditPageViewModel()
+    public event EventHandler NavigateBack;
+
+    public async Task UpdateTableAsync()
     {
+        try
+        {
+            IsProcessing = true;
+            if (Request.ZoneId == null)
+            {
+                throw new InvalidDataException("Please choose a zone.");
+            }
+
+            if (Request.SeatsCount == null)
+            {
+                throw new InvalidDataException("Seats count must be greater than 0.");
+            }
+            
+            await _tableDataService.UpdateTableAsync(Table.TableId.Value, Request);
+            
+            await _adminDialogService.ShowSuccessDialog("Table updated successfully.");
+            NavigateBack?.Invoke(this, EventArgs.Empty);
+        }
+        catch (Exception ex)
+        {
+            await _adminDialogService.ShowErrorDialog(ex.Message);
+        }
+        finally
+        {
+            IsProcessing = false;
+        }
     }
-
-    public async Task<TableViewModel> UpdateTableAsync()
+    
+    private bool CanEditTable()
     {
-        if (Request.ZoneId == null)
-        {
-            throw new InvalidDataException("Please choose a zone.");
-        }
-
-        if (Request.SeatsCount == null)
-        {
-            throw new InvalidDataException("Seats count must be greater than 0.");
-        }
-
-        var table = await _tableDataService.UpdateTableAsync(Table.TableId.Value, Request);
-        return _mapper.Map<TableViewModel>(table);
+        return !IsProcessing;
     }
 
     public void OnNavigatedTo(object parameter)

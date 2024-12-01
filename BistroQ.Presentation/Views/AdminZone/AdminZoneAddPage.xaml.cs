@@ -2,14 +2,8 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace BistroQ.Presentation.Views.AdminZone;
 
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class AdminZoneAddPage : Page
 {
     public AdminZoneAddPageViewModel ViewModel { get; set; }
@@ -19,34 +13,13 @@ public sealed partial class AdminZoneAddPage : Page
         ViewModel = App.GetService<AdminZoneAddPageViewModel>();
         this.DataContext = ViewModel;
         this.InitializeComponent();
-    }
+        
+        ViewModel.NavigateBack += OnNavigateBack;
 
-    private async void AdminZoneAddPage_AddButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        try
+        Unloaded += (s, e) =>
         {
-            var result = await ViewModel.AddZone();
-
-            await new ContentDialog()
-            {
-                XamlRoot = this.Content.XamlRoot,
-                Title = "Add new zone successfully",
-                Content = "Successfully added zone: " + ViewModel.Request.Name,
-                CloseButtonText = "OK"
-            }.ShowAsync();
-            
-            Frame.GoBack();
-        }
-        catch (Exception ex)
-        {
-            await new ContentDialog()
-            {
-                XamlRoot = this.Content.XamlRoot,
-                Title = "Operation failed",
-                Content = $"Add new zone failed with error: {ex.Message}",
-                CloseButtonText = "OK"
-            }.ShowAsync();
-        }
+            ViewModel.NavigateBack -= OnNavigateBack;
+        };
     }
 
     private void AdminZoneAddPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -54,8 +27,8 @@ public sealed partial class AdminZoneAddPage : Page
         Frame.GoBack();
     }
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
+    private void OnNavigateBack(object sender, EventArgs e)
     {
-        base.OnNavigatedTo(e);
+        Frame.GoBack();
     }
 }

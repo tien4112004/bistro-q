@@ -3,14 +3,8 @@ using BistroQ.Presentation.ViewModels.Models;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace BistroQ.Presentation.Views.AdminTable;
 
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class AdminTableEditPage : Page
 {
     public AdminTableEditPageViewModel ViewModel { get; set; }
@@ -20,6 +14,20 @@ public sealed partial class AdminTableEditPage : Page
         InitializeComponent();
         ViewModel = App.GetService<AdminTableEditPageViewModel>();
         this.DataContext = ViewModel;
+
+        this.Loaded += AdminTableEditPage_Loaded;
+        ViewModel.NavigateBack += OnNavigateBack;
+    
+        this.Unloaded += (s, e) =>
+        {
+            ViewModel.NavigateBack -= OnNavigateBack;
+        };
+    }
+
+    private async void AdminTableEditPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        await ViewModel.LoadZonesAsync();
+        TableEditPage_ZoneComboBox.SelectedValue = ViewModel.Request.ZoneId;
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -33,36 +41,13 @@ public sealed partial class AdminTableEditPage : Page
         base.OnNavigatedTo(e);
     }
 
-    private async void AdminTableEditPage_EditButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        try
-        {
-            var result = await ViewModel.UpdateTableAsync();
-
-            await new ContentDialog()
-            {
-                XamlRoot = this.Content.XamlRoot,
-                Title = "Update table successfully",
-                CloseButtonText = "OK"
-            }.ShowAsync();
-
-            Frame.GoBack();
-        }
-        catch (Exception ex)
-        {
-            await new ContentDialog()
-            {
-                XamlRoot = this.Content.XamlRoot,
-                Title = "Operation failed",
-                Content = $"Update table failed with error: {ex.Message}",
-                CloseButtonText = "OK"
-            }.ShowAsync();
-        }
-    }
-
     private void AdminTableEditPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         Frame.GoBack();
     }
 
+    private void OnNavigateBack(object sender, EventArgs e)
+    {
+        Frame.GoBack();
+    }
 }

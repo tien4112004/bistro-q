@@ -46,7 +46,17 @@ public partial class ValidatorBase : INotifyPropertyChanged, INotifyDataErrorInf
     {
         UpdateErrors(propertyName, new List<string>());
     }
-
+    
+    ///<summary>
+    /// Clears all validation errors
+    /// </summary>
+    public void ClearErrors()
+    {
+        _errors.Clear();
+        ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(string.Empty));
+        OnPropertyChanged(nameof(Errors));
+    }
+    
     /// <summary>
     /// Validates a specific property value using registered validators
     /// </summary>

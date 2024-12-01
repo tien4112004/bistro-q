@@ -1,10 +1,14 @@
-﻿using AutoMapper;
+﻿using System.Windows.Input;
+using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos;
 using BistroQ.Domain.Dtos.Zones;
+using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
+using BistroQ.Presentation.Models;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminZone;
 
@@ -12,28 +16,60 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
 {
     public ZoneViewModel Zone { get; set; }
     [ObservableProperty]
-    private UpdateZoneRequest request;
+    private UpdateZoneRequest _request;
+    [ObservableProperty]
+    private bool _isProcessing = false;
+    [ObservableProperty]
+    private AddZoneForm _form = new();
+    [ObservableProperty]
+    private string _errorMessage = "";
+    
     public AdminZoneEditPageViewModel ViewModel;
 
     private readonly IZoneDataService _zoneDataService;
-    private readonly IMapper _mapper;
+    private readonly IAdminDialogService _adminDialogService;
 
-    public AdminZoneEditPageViewModel(IZoneDataService zoneDataService, IMapper mapper)
+    public ICommand UpdateCommand { get; }
+
+    public event EventHandler NavigateBack;
+    public AdminZoneEditPageViewModel(IZoneDataService zoneDataService)
     {
         _zoneDataService = zoneDataService;
         Request = new UpdateZoneRequest();
-        _mapper = mapper;
+        _zoneDataService = zoneDataService;
+        
+        UpdateCommand = new AsyncRelayCommand(async () => await UpdateZoneAsync(), CanUpdate);
     }
 
-    public async Task<ZoneViewModel> UpdateZoneAsync()
+    public async Task UpdateZoneAsync()
     {
-        if (string.IsNullOrEmpty(Request.Name))
+        Form.ValidateAll();
+        if (!CanUpdate())
         {
-            throw new InvalidDataException("Name cannot be null");
+            await _adminDialogService.ShowErrorDialog("Data is invalid. Please check again.");
+            return;
         }
 
-        var zone = await _zoneDataService.UpdateZoneAsync(Zone.ZoneId.Value, Request);
-        return _mapper.Map<ZoneViewModel>(zone);
+        try
+        {
+            IsProcessing = true;
+            ErrorMessage = string.Empty;
+
+            _request.Name = Form.Name;
+            await _zoneDataService.UpdateZoneAsync(Zone.ZoneId.Value, _request);
+            
+            await _adminDialogService.ShowSuccessDialog($"Successfully updated zone: {Request.Name}");
+            NavigateBack?.Invoke(this, EventArgs.Empty);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+            await _adminDialogService.ShowErrorDialog(ex.Message);
+        }
+        finally
+        {
+            IsProcessing = false;
+        }
     }
 
     public void OnNavigatedTo(object parameter)
@@ -43,6 +79,11 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
             Zone = selectedZone;
             Request.Name = Zone?.Name ?? string.Empty;
         }
+    }
+    
+    public bool CanUpdate()
+    {
+        return !Form.HasErrors && !IsProcessing;
     }
 
     public void OnNavigatedFrom()
