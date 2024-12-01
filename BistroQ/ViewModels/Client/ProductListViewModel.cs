@@ -57,7 +57,7 @@ public partial class ProductListViewModel : ObservableRecipient
         var categories = await _categoryService.GetAllCategoriesAsync();
         var allCategory = new Category
         {
-            Name = "All"
+            Name = "All",
         };
         Categories = new List<Category> { allCategory }.Concat(categories).ToList();
         IsLoadingCategory = false;

@@ -80,6 +80,8 @@ public partial class OrderCartViewModel : ObservableRecipient
         }
         Order = existingOrder;
         IsOrdering = true;
+
+        SeparateOrdersByStatus();
     }
 
     private async Task StartOrder()
@@ -136,6 +138,7 @@ public partial class OrderCartViewModel : ObservableRecipient
         }
 
         OnPropertyChanged(nameof(TotalCart));
+        SeparateOrdersByStatus();
     }
 
     private void OrderItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -145,4 +148,28 @@ public partial class OrderCartViewModel : ObservableRecipient
             OnPropertyChanged(nameof(TotalCart));
         }
     }
+
+    private void SeparateOrdersByStatus()
+    {
+        ProcessingItems.Clear();
+        CompletedItems.Clear();
+
+        foreach (var item in Order.OrderItems)
+        {
+            if (item.Status == "Processing")
+            {
+                ProcessingItems.Add(item);
+            }
+            else if (item.Status == "Completed")
+            {
+                CompletedItems.Add(item);
+            }
+        }
+
+        OnPropertyChanged(nameof(IsProcessingItemsEmpty));
+        OnPropertyChanged(nameof(IsCompletedItemsEmpty));
+    }
+
+    public bool IsProcessingItemsEmpty => !ProcessingItems.Any();
+    public bool IsCompletedItemsEmpty => !CompletedItems.Any();
 }

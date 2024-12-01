@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using BistroQ.Core.Enums;
+using System.ComponentModel;
 
 namespace BistroQ.Core.Entities;
 
@@ -12,6 +13,8 @@ public class OrderItem : INotifyPropertyChanged
 
     public int Quantity { get; set; }
 
+    public string Status { get; set; } = OrderItemStatus.InProgress;
+
     public decimal? Total => Quantity * PriceAtPurchase ?? 0;
 
     public decimal? PriceAtPurchase { get; set; }
@@ -21,8 +24,4 @@ public class OrderItem : INotifyPropertyChanged
     public virtual Product? Product { get; set; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
-    //protected virtual void OnPropertyChanged(string propertyName)
-    //{
-    //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    //}
 }

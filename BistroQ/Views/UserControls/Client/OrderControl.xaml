@@ -91,12 +91,12 @@
                      HorizontalContentAlignment="Stretch">
                     <StackPanel>
                         <TextBlock Foreground="{StaticResource TextFillColorPrimaryBrush}" 
-                                   Visibility="{x:Bind ProcessingOrdersIsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+                                   Visibility="{x:Bind ViewModel.IsProcessingItemsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                                    Margin="12,0,0,0"
                                    Text="You have no processing order." />
 
                         <ListView 
-                            ItemsSource="{x:Bind ViewModel.Order.OrderItems, Mode=OneWay}"
+                            ItemsSource="{x:Bind ViewModel.ProcessingItems, Mode=OneWay}"
                             ItemTemplate="{StaticResource OrderItemDataTemplate}"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch" />
@@ -115,12 +115,12 @@
                           HorizontalContentAlignment="Stretch">
                     <StackPanel>
                         <TextBlock Foreground="{StaticResource TextFillColorPrimaryBrush}" 
-                                   Visibility="{x:Bind CompletedOrdersIsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+                                   Visibility="{x:Bind ViewModel.IsCompletedItemsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                                    Margin="12,0,0,0"
                                    Text="You have no completed order." />
 
                         <ListView 
-                            ItemsSource="{x:Bind ViewModel.Order.OrderItems, Mode=OneWay}"
+                            ItemsSource="{x:Bind ViewModel.CompletedItems, Mode=OneWay}"
                             ItemTemplate="{StaticResource OrderItemDataTemplate}"
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch" />
