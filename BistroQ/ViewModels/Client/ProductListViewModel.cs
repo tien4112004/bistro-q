@@ -59,6 +59,7 @@ public partial class ProductListViewModel : ObservableRecipient
         {
             Name = "All",
         };
+        Debug.WriteLine(allCategory.CategoryId);
         Categories = new List<Category> { allCategory }.Concat(categories).ToList();
         IsLoadingCategory = false;
     }
