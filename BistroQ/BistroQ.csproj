@@ -54,10 +54,6 @@
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
     <PackageReference Include="WinUIEx" Version="2.3.2" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\BistroQ.Core\BistroQ.Core.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
