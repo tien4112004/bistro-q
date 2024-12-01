@@ -7,7 +7,6 @@ using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Diagnostics;
-using System.Text.Json;
 
 namespace BistroQ.Presentation.ViewModels.KitchenOrder;
 
@@ -15,7 +14,8 @@ public partial class KitchenOrderViewModel :
     ObservableObject,
     INavigationAware,
     IRecipient<CustomListViewSelectionChangedMessage<KitchenOrderItemViewModel>>,
-    IRecipient<KitchenActionMessage>
+    IRecipient<KitchenActionMessage>,
+    IDisposable
 {
     public OrderKanbanColumnViewModel PendingColumnVM { get; set; }
     public OrderKanbanColumnViewModel ProgressColumnVM { get; set; }
@@ -66,7 +66,92 @@ public partial class KitchenOrderViewModel :
 
     public void Receive(KitchenActionMessage message)
     {
-        Debug.WriteLine($"Received message: {message.Action}");
-        Debug.WriteLine($"Selected items: " + JsonSerializer.Serialize(message.OrderItemIds));
+        switch (message.Action)
+        {
+            case KitchenAction.Complete:
+                Complete(message.OrderItems);
+                break;
+            case KitchenAction.Move:
+                Move(message.OrderItems);
+                break;
+            case KitchenAction.Cancel:
+                Cancel(message.OrderItems);
+                break;
+        }
+    }
+
+    private async void Complete(IEnumerable<KitchenOrderItemViewModel> orderItems)
+    {
+        try
+        {
+            await Task.WhenAll(
+                orderItems.Select(i => _orderItemDataService.UpdateOrderItemStatusAsync(i.OrderItemId, OrderItemStatus.Completed)));
+
+            foreach (var item in orderItems)
+            {
+                item.Status = OrderItemStatus.Completed;
+                ProgressColumnVM.Items.Remove(item);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+        }
+    }
+
+    private async void Move(IEnumerable<KitchenOrderItemViewModel> orderItems)
+    {
+        try
+        {
+            var targetStatus = orderItems.First().Status == OrderItemStatus.Pending
+                ? OrderItemStatus.InProgress
+                : OrderItemStatus.Pending;
+            await Task.WhenAll(
+                orderItems.Select(i => _orderItemDataService.UpdateOrderItemStatusAsync(i.OrderItemId, targetStatus)));
+
+
+            foreach (var item in orderItems)
+            {
+                item.Status = targetStatus;
+                if (targetStatus == OrderItemStatus.InProgress)
+                {
+                    PendingColumnVM.Items.Remove(item);
+                    ProgressColumnVM.Items.Add(item);
+                }
+                else
+                {
+                    ProgressColumnVM.Items.Remove(item);
+                    PendingColumnVM.Items.Add(item);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+        }
+    }
+
+    private async void Cancel(IEnumerable<KitchenOrderItemViewModel> orderItems)
+    {
+        try
+        {
+            await Task.WhenAll(
+                orderItems.Select(i => _orderItemDataService.UpdateOrderItemStatusAsync(i.OrderItemId, OrderItemStatus.Cancelled)));
+
+            foreach (var item in orderItems)
+            {
+                item.Status = OrderItemStatus.Cancelled;
+                PendingColumnVM.Items.Remove(item);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+        }
+    }
+
+    public void Dispose()
+    {
+        _messenger.UnregisterAll(this);
     }
 }

@@ -8,7 +8,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Text.Json;
 
 namespace BistroQ.Presentation.ViewModels.KitchenOrder;
 
@@ -72,13 +71,13 @@ public partial class OrderKanbanColumnViewModel :
 
             _messenger.Send(new RemoveOrderItemsMessage(items.Select(i => i.OrderItemId), sourceColumn));
 
-            Debug.WriteLine(JsonSerializer.Serialize(Items.Select((item) => item.Status)));
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex.Message);
         }
     }
+
 
     public async void Receive(RemoveOrderItemsMessage message)
     {

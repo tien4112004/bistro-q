@@ -9,13 +9,13 @@ namespace BistroQ.Presentation.Controls;
 public partial class CustomListView<T> : ListView, IRecipient<ChangeCustomListViewSelectionMessage<T>>, IDisposable
 {
     private readonly IMessenger _messenger;
-    private bool _disposed;
 
     public CustomListView() : base()
     {
         SelectionChanged += CustomListView_SelectionChanged;
         _messenger = App.GetService<IMessenger>();
         _messenger.RegisterAll(this);
+        this.Unloaded += (sender, e) => Dispose();
     }
 
     public new ObservableCollection<T> SelectedItems
@@ -64,8 +64,6 @@ public partial class CustomListView<T> : ListView, IRecipient<ChangeCustomListVi
 
     public void Dispose()
     {
-        if (_disposed) return;
-        _disposed = true;
         _messenger.UnregisterAll(this);
     }
 }

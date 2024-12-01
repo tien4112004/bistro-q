@@ -15,13 +15,13 @@ public partial class KitchenOrderButtonsViewModel : ObservableObject, IDisposabl
     public ObservableCollection<KitchenOrderItemViewModel> Items { get; set; } = new();
 
     [ObservableProperty]
-    private bool _isCompleteButtonEnable;
+    private bool _canComplete;
 
     [ObservableProperty]
-    private bool _isMoveButtonEnable;
+    private bool _canMove;
 
     [ObservableProperty]
-    private bool _isCancelButtonEnable;
+    private bool _canCancel;
 
     public KitchenOrderButtonsViewModel(IMessenger messenger)
     {
@@ -30,30 +30,30 @@ public partial class KitchenOrderButtonsViewModel : ObservableObject, IDisposabl
     public void UpdateStates(IEnumerable<KitchenOrderItemViewModel> items)
     {
         Items = new ObservableCollection<KitchenOrderItemViewModel>(items);
-        IsCompleteButtonEnable = Items.Any(item => item.Status == OrderItemStatus.InProgress);
-        IsMoveButtonEnable = Items.Any();
-        IsCancelButtonEnable = Items.Any(item => item.Status == OrderItemStatus.Pending);
+        CanComplete = Items.Any(item => item.Status == OrderItemStatus.InProgress);
+        CanMove = Items.Any();
+        CanCancel = Items.Any(item => item.Status == OrderItemStatus.Pending);
     }
 
     [RelayCommand]
     private void Complete()
     {
-        if (IsCompleteButtonEnable)
-            _messenger.Send(new KitchenActionMessage(Items.Select(item => item.OrderItemId), KitchenAction.Complete));
+        if (CanComplete)
+            _messenger.Send(new KitchenActionMessage(Items, KitchenAction.Complete));
     }
 
     [RelayCommand]
     private void Move()
     {
-        if (IsMoveButtonEnable)
-            _messenger.Send(new KitchenActionMessage(Items.Select(item => item.OrderItemId), KitchenAction.Move));
+        if (CanMove)
+            _messenger.Send(new KitchenActionMessage(Items, KitchenAction.Move));
     }
 
     [RelayCommand]
     private void Cancel()
     {
-        if (IsCancelButtonEnable)
-            _messenger.Send(new KitchenActionMessage(Items.Select(item => item.OrderItemId), KitchenAction.Cancel));
+        if (CanCancel)
+            _messenger.Send(new KitchenActionMessage(Items, KitchenAction.Cancel));
     }
 
     public void Dispose()
