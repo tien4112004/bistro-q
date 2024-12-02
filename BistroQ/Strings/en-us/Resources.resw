@@ -219,4 +219,16 @@
   <data name="AdminZoneAddPage_AddButtonText/Text" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="ClientHomePage_ProductListTitle/Text" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="ClientHomePage_IsProcessingProductTitle/Header" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="ClientHomePage_CompletedProductTitle/Header" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="AddItemButton/Content" xml:space="preserve">
+    <value>Add</value>
+  </data>
 </root>

@@ -1,92 +1,51 @@
-﻿using BistroQ.Contracts.ViewModels;
+﻿using BistroQ.Contracts.Services;
+using BistroQ.Contracts.ViewModels;
 using BistroQ.Core.Contracts.Services;
-using BistroQ.Core.Models.Entities;
+using BistroQ.Core.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace BistroQ.ViewModels.Client;
 
 public partial class HomePageViewModel : ObservableRecipient, INavigationAware
 {
-    private readonly IOrderDataService _orderDataService;
-
-    public Order Order { get; set; }
-
-    [ObservableProperty]
-    private bool _isOrdering;
+    public ProductListViewModel ProductListViewModel { get; }
+    public OrderCartViewModel OrderCartViewModel { get; }
 
     [ObservableProperty]
-    private bool _isLoading = false;
+    private bool _errorMessage;
 
-    [ObservableProperty]
-    private string _errorMessage = string.Empty;
+    public ICommand AddProductToCartCommand { get; private set; }
 
-    public ICommand StartOrderCommand { get; }
-    public ICommand CancelOrderCommand { get; }
-    public HomePageViewModel(IOrderDataService orderDataService)
+    public HomePageViewModel(
+        IDialogService dialogService,
+        IOrderDataService orderDataService,
+        ICategoryService categoryService,
+        IProductService productService)
     {
-        _orderDataService = orderDataService;
-        StartOrderCommand = new AsyncRelayCommand(StartOrder);
-        CancelOrderCommand = new RelayCommand(CancelOrder);
+        ProductListViewModel = App.GetService<ProductListViewModel>();
+        OrderCartViewModel = App.GetService<OrderCartViewModel>();
+
+        OrderCartViewModel.OrderStartedCommand = new RelayCommand<Order>(OnOrderStarted);
+
+        AddProductToCartCommand = new RelayCommand<Product>(OnAddProductToCart);
     }
 
-    private async Task StartOrder()
+    private void OnAddProductToCart(Product product)
     {
-        try
-        {
-            IsLoading = true;
-
-            await Task.Delay(400); // TODO: This if for UI visualize only, remove it afterward  
-
-            Order = await Task.Run(
-                async () =>
-                {
-                    return await _orderDataService.CreateOrderAsync();
-                });
-            IsOrdering = true;
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage = ex.Message;
-        }
-        finally
-        {
-            IsLoading = false;
-        }
+        OrderCartViewModel.AddProductToCart(product);
     }
 
-    private void CancelOrder()
+    private void OnOrderStarted(Order order)
     {
-        _orderDataService.DeleteOrderAsync();
-        Order = null;
-
-        ErrorMessage = string.Empty;
-        IsOrdering = false;
     }
 
     public async void OnNavigatedTo(object parameter)
     {
-        IsLoading = true;
-        var existingOrder = await Task.Run(async () =>
-        {
-            return await _orderDataService.GetOrderAsync();
-
-        });
-
-        IsLoading = false;
-
-        if (existingOrder == null)
-        {
-            return;
-        }
-        Order = existingOrder;
-        IsOrdering = true;
+        await OrderCartViewModel.LoadExistingOrderAsync();
+        await ProductListViewModel.LoadCategoriesAsync();
+        await ProductListViewModel.LoadProductAsync();
     }
 
     public void OnNavigatedFrom()

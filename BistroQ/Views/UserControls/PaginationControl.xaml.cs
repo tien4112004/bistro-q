@@ -63,7 +63,6 @@ public partial class PaginationControl : UserControl
         }
     }
 
-    // TODO: Fix page number at initial state (page = 0)
     private void OnPaginationPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         UpdateCommandStates();

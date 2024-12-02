@@ -94,13 +94,12 @@
 
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="model:ZoneDto">
-                            <TextBlock 
+                        <TextBlock 
                                 Text="{x:Bind Name}" 
                                 Style="{ThemeResource BodyStrongTextBlockStyle}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
         </ScrollViewer>
 
         <StackPanel Grid.Column="2" x:Name="ButtonContainer" 

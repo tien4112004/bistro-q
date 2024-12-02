@@ -1,24 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BistroQ.Core.Enums;
+using System.ComponentModel;
 
-namespace BistroQ.Core.Models.Entities;
+namespace BistroQ.Core.Entities;
 
-public class OrderItem
+public class OrderItem : INotifyPropertyChanged
 {
-    public int OrderDetailId { get; set; }
+    public string OrderItemId { get; set; } = null;
 
     public string? OrderId { get; set; }
 
-    public int? ProductId { get; set; }
+    public int ProductId { get; set; }
 
-    public int? Quantity { get; set; }
+    public int Quantity { get; set; }
+
+    public string Status { get; set; } = OrderItemStatus.InProgress;
 
     public decimal? Total => Quantity * PriceAtPurchase ?? 0;
 
     public decimal? PriceAtPurchase { get; set; }
 
-    public Product Product { get; set; }
+    public virtual Order? Order { get; set; }
+
+    public virtual Product? Product { get; set; }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 }
