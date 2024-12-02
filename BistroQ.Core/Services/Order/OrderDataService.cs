@@ -1,5 +1,5 @@
 ﻿using BistroQ.Core.Contracts.Services;
-using BistroQ.Core.Models.Entities;
+using BistroQ.Core.Entities;
 
 namespace BistroQ.Core.Services;
 

@@ -114,8 +114,6 @@
 
             </StackPanel>
 
-
-
             <orderControls:TableBillSummaryControl Grid.Row="1"  Total="{x:Bind ViewModel.Order.TotalAmount, Mode=OneWay}" 
                                                CheckoutRequested="TableBillSummaryControl_CheckoutRequested" />
         </Grid>

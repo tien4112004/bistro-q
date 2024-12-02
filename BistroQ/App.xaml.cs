@@ -68,6 +68,7 @@ public partial class App : Application
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<IDialogService, DialogService>();
 
             // Http
             services.AddTransient<AuthenticationDelegatingHandler>();
@@ -108,15 +109,24 @@ public partial class App : Application
             services.AddTransient<AdminTableEditPageViewModel>();
             services.AddTransient<AdminTableEditPage>();
 
-
+            // Data Services
             services.AddScoped<IZoneDataService, ZoneDataService>();
             services.AddScoped<ITableDataService, TableDataService>();
-            services.AddScoped<IAdminZoneService, AdminZoneService>();
             services.AddScoped<IOrderDataService, OrderDataService>();
+            services.AddScoped<ICategoryDataService, CategoryDataService>();
+            services.AddScoped<IProductDataService, ProductDataService>();
+
+            // Client services
+            services.AddScoped<IAdminZoneService, AdminZoneService>();
             services.AddScoped<IAdminTableService, AdminTableService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
+
             // Client V&VM
             services.AddTransient<HomePageViewModel>();
             services.AddTransient<HomePage>();
+            services.AddTransient<ProductListViewModel>();
+            services.AddTransient<OrderCartViewModel>();
 
             // Cashier V&VM
             services.AddTransient<CashierTableViewModel>();

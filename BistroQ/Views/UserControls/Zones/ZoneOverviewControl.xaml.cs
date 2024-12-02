@@ -1,7 +1,6 @@
 ﻿using BistroQ.Core.Dtos.Zones;
 using BistroQ.Models;
 using BistroQ.ViewModels.CashierTable;
-using CommunityToolkit.WinUI.Controls;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;

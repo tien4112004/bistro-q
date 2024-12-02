@@ -1,4 +1,4 @@
-﻿using BistroQ.Core.Models.Entities;
+﻿using BistroQ.Core.Entities;
 
 namespace BistroQ.Core.Contracts.Services;
 

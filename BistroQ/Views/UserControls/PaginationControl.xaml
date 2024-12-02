@@ -32,7 +32,12 @@
         </TextBlock>
         <Button Content="&lt;&lt;" Command="{x:Bind FirstPageCommand}" Margin="24,0,0,0" VerticalAlignment="Center"/>
         <Button Content="&lt;" Command="{x:Bind PreviousPageCommand}" Margin="8,0,8,0" VerticalAlignment="Center"/>
-        <NumberBox Width="44" Value="{x:Bind Pagination.CurrentPage, Mode=TwoWay}" VerticalAlignment="Center" ValidationMode="InvalidInputOverwritten" />
+        <NumberBox x:Name="CurrentPageNumberBox"
+                   Width="44" 
+                   Value="{x:Bind Pagination.CurrentPage, Mode=TwoWay}" 
+                   VerticalAlignment="Center" 
+                   ValidationMode="InvalidInputOverwritten" 
+                   Minimum="1" Maximum="{x:Bind Pagination.TotalPages, Mode=OneWay}" />
         <Button Content=">" Command="{x:Bind NextPageCommand}" Margin="8,0,8,0" VerticalAlignment="Center"/>
         <Button Content=">>" Command="{x:Bind LastPageCommand}" Margin="0,0,0,0" VerticalAlignment="Center"/>
     </StackPanel>

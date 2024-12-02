@@ -4,8 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:local="using:BistroQ.Views.UserControls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:local="using:BistroQ.Views.UserControls" xmlns:control="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:converter="using:BistroQ.Converters"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </Page.Resources>
 
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
@@ -13,6 +17,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+
         <Grid Grid.Row="0" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -89,5 +94,17 @@
             </controls:DataGrid.Columns>
         </controls:DataGrid>
         <local:PaginationControl Pagination="{x:Bind ViewModel.Pagination, Mode=TwoWay}" Grid.Row="2" Margin="0,0,0,24" />
+
+        <!-- Loading Overlay 
+        <Grid Background="Transparent" Visibility="{x:Bind ViewModel.IsLoading, 
+                                                             Mode=OneWay, 
+                                                             Converter={StaticResource BoolToVisibility}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <control:ProgressRing IsActive="True" Width="48" Height="48"/>
+            </StackPanel>
+        </Grid> -->
     </Grid>
 </Page>

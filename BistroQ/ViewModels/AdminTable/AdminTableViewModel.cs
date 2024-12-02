@@ -18,7 +18,8 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IAdminTableService _adminTableService;
     private readonly INavigationService _navigationService;
-    private bool _isLoading;
+    [ObservableProperty]
+    private bool _isLoading = true;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor("EditCommand")]
@@ -47,7 +48,7 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
         _pagination = new Pagination
         {
             TotalItems = 0,
-            TotalPages = 0,
+            TotalPages = 1,
             CurrentPage = 1,
             PageSize = 10
         };

@@ -5,9 +5,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BistroQ.Views.AdminTable"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:converter="using:BistroQ.Converters" xmlns:control="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     mc:Ignorable="d"
     Background="Transparent">
+
+    <Page.Resources>
+        <converter:ReverseBooleanConverter x:Key="ReverseBool"/>
+        <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <converter:StringToVisibilityConverter x:Key="StringToVisibility"/>
+        <converter:FirstValidationErrorConverter x:Key="FirstError"/>
+    </Page.Resources>
 
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
@@ -21,24 +29,43 @@
                         ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
                         DisplayMemberPath="Name"
                         SelectedValuePath="ZoneId"
-                        SelectedValue="{x:Bind ViewModel.Request.ZoneId, Mode=TwoWay}"
+                        SelectedValue="{x:Bind ViewModel.Form.ZoneId, Mode=TwoWay}"
                         Width="300" />
-            <TextBox x:Name="TableAddPage_SeatsCountTextBox"
-                        x:Uid="TableAddPage_SeatsCountTextBox"
-                        Text="{x:Bind ViewModel.Request.SeatsCount, Mode=TwoWay}"
+            <NumberBox x:Name="TableAddPage_SeatsCountNumberBox"
+                        x:Uid="TableAddPage_SeatsCountNumberBox"
+                        Text="{x:Bind ViewModel.Form.SeatsCount, Mode=TwoWay}"
+                        SpinButtonPlacementMode="Inline"
                         Width="300"
+                        Minimum="1"
                         Margin="0,16,0,0"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button x:Name="AdminTableAddPage_AddButton"
-                    x:Uid="AdminTableAddPage_AddButton" 
-                    Style="{StaticResource AccentButtonStyle}" Width="80"
-                    Click="AdminTableAddPage_AddButton_Click" 
-                    Margin="0,0,16,0"/>
+            <Button Style="{StaticResource AccentButtonStyle}" Width="80"
+                    Command="{x:Bind ViewModel.AddCommand}"
+                    IsEnabled="{x:Bind ViewModel.IsProcessing, 
+                                Mode=OneWay,
+                                Converter={StaticResource ReverseBool}}"
+                    Margin="0,0,16,0">
+                <Grid>
+                    <control:ProgressRing
+                             IsActive="{x:Bind ViewModel.IsProcessing, Mode=OneWay}"
+                             Foreground="White"
+                             Width="20"
+                             Height="20"/>
+
+                    <TextBlock 
+                            x:Uid="AdminTableAddPage_AddButtonText" 
+                            Visibility="{x:Bind ViewModel.IsProcessing, 
+                                        Mode=OneWay, 
+                                        Converter ={StaticResource BoolToVisibility}, 
+                                        ConverterParameter=invert}"
+                            />
+                </Grid>
+            </Button>
             <Button x:Name="AdminTableAddPage_CancelButton"
                     x:Uid="CancelButton" Width="80" 
                     Click="AdminTableAddPage_CancelButton_Click"
                     />
-        </StackPanel>    
+        </StackPanel>
     </Grid>
 </Page>
