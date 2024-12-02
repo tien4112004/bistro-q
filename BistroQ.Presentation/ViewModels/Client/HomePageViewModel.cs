@@ -1,11 +1,11 @@
-﻿using BistroQ.Presentation.Contracts.Services;
+﻿using BistroQ.Domain.Contracts.Services;
+using BistroQ.Domain.Contracts.Services.Data;
+using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
-using BistroQ.Domain.Contracts.Services;
+using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
-using BistroQ.Domain.Contracts.Services.Data;
-using BistroQ.Presentation.ViewModels.Models;
 
 namespace BistroQ.Presentation.ViewModels.Client;
 
@@ -13,9 +13,6 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
 {
     public ProductListViewModel ProductListViewModel { get; }
     public OrderCartViewModel OrderCartViewModel { get; }
-
-    [ObservableProperty]
-    private bool _errorMessage;
 
     public ICommand AddProductToCartCommand { get; private set; }
 
