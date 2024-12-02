@@ -85,11 +85,11 @@
                                             PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
                                             PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
                                             PointerOverForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
-                                            SelectedBackground="{ThemeResource SystemAccentColor}"
+                                            SelectedBackground="{ThemeResource AccentAcrylicBackgroundFillColorDefaultBrush}"
                                             SelectedForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
-                                            SelectedPointerOverBackground="{ThemeResource SystemAccentColorDark1}"
+                                            SelectedPointerOverBackground="{ThemeResource AccentFillColorTertiaryBrush}"
                                             PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
-                                            SelectedPressedBackground="{ThemeResource SystemAccentColorDark1}"
+                                            SelectedPressedBackground="{ThemeResource AccentFillColorTertiaryBrush}"
                                             DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
                                             DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
                                             ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
@@ -108,7 +108,8 @@
                         <DataTemplate x:DataType="entities:Category">
                             <TextBlock 
                                 Text="{x:Bind Name}" 
-                                Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                                Style="{ThemeResource BodyStrongTextBlockStyle}"
+                                Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
