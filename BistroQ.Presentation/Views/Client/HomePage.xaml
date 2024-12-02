@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Page
     x:Class="BistroQ.Presentation.Views.Client.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -7,12 +7,16 @@
     xmlns:converter="using:BistroQ.Presentation.Converters"
     xmlns:control="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:entities="using:BistroQ.Presentation" 
+    xmlns:usercontrols="using:BistroQ.Presentation.Views.UserControls"
+    xmlns:clientusercontrols="using:BistroQ.Presentation.Views.UserControls.Client"
     mc:Ignorable="d"
     Background="Transparent">
 
     <Page.Resources>
         <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <converter:ReverseBooleanConverter x:Key="ReverseBool" />
     </Page.Resources>
 
     <Grid x:Name="ContentArea">
@@ -20,25 +24,25 @@
             x:Name="EntryContent"
             VerticalAlignment="Center" 
             Background="Transparent"
-            Visibility="{x:Bind ViewModel.IsOrdering, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
+            Visibility="{x:Bind ViewModel.OrderCartViewModel.IsOrdering, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
             HorizontalAlignment="Center">
 
             <Button 
                 x:Name="EntryButton"
-                Command="{x:Bind ViewModel.StartOrderCommand}"
+                Command="{x:Bind ViewModel.OrderCartViewModel.StartOrderCommand, Mode=OneWay}"
                 Style="{ThemeResource AccentButtonStyle}"
                 Width="140"
                 Padding="20,10"
                 FontSize="20">
                 <Grid>
                     <TextBlock Text="Start Ordering"
-                        Visibility="{x:Bind ViewModel.IsLoading, 
+                        Visibility="{x:Bind ViewModel.OrderCartViewModel.IsLoading, 
                                     Mode=OneWay, 
                                     Converter ={StaticResource BoolToVisibility}, 
                                     ConverterParameter=invert}"
                         Style="{StaticResource BaseTextBlockStyle}"/>
                     <control:ProgressRing 
-                         IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                         IsActive="{x:Bind ViewModel.OrderCartViewModel.IsLoading, Mode=OneWay}"
                          Foreground="White"
                          Width="20"
                          Height="20"/>
@@ -54,21 +58,25 @@
 
         <Grid
             x:Name="MainContent"
-            Visibility="{x:Bind ViewModel.IsOrdering, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+            Visibility="{x:Bind ViewModel.OrderCartViewModel.IsOrdering, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
             Margin="0,0,0,30"
             >
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="7*" />
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="3*" MaxWidth="360" />
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Background="{StaticResource CardBackgroundFillColorDefaultBrush}" CornerRadius="10" 
-                    BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="4">
-                <TextBlock Padding="10,10" Foreground="{StaticResource TextFillColorPrimaryBrush}">
-                    Product List
-                </TextBlock>
+            <Border Background="{StaticResource CardBackgroundFillColorDefaultBrush}" 
+                    CornerRadius="10" 
+                    BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
+                    BorderThickness="4"
+                    Padding="16,4,0,0">
+                <clientusercontrols:ProductListControl 
+                    x:Name="ProductList"
+                    ViewModel="{x:Bind ViewModel.ProductListViewModel, Mode=OneWay}"
+                    AddProductToCart="ProductList_AddProductToCart" />
             </Border>
 
             <Rectangle Grid.Column="1"
@@ -76,21 +84,14 @@
                Margin="6,0"
                />
 
-            <Border Grid.Column="2" Background="{StaticResource CardBackgroundFillColorDefaultBrush}" CornerRadius="10" 
-                    BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="4">
-                <StackPanel>
-                    <TextBlock Padding="10,10" Foreground="{StaticResource TextFillColorPrimaryBrush}">
-                    Order Summary
-                    </TextBlock>
-                    
-                    <!--  TODO: Delete this in the final version -->
-                    <Button
-                        Command="{x:Bind ViewModel.CancelOrderCommand}"
-                        Style="{StaticResource AccentButtonStyle}"
-                        >
-                        Test Cancel Order (Used for testing UI)
-                    </Button>
-                </StackPanel>
+            <Border Grid.Column="2" 
+                    Background="{StaticResource CardBackgroundFillColorDefaultBrush}" CornerRadius="10" 
+                    BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
+                    BorderThickness="4"
+                    Padding="0,0,4,0">
+                <clientusercontrols:OrderCartControl
+                    x:Name="OrderCart"
+                    ViewModel="{x:Bind ViewModel.OrderCartViewModel, Mode=OneWay}" />
             </Border>
         </Grid>
     </Grid>

@@ -1,4 +1,5 @@
 ﻿using BistroQ.Domain.Contracts.Services;
+using BistroQ.Domain.Contracts.Services.Data;
 using BistroQ.Domain.Services.Http;
 using BistroQ.Presentation.Activation;
 using BistroQ.Presentation.Contracts.Services;
@@ -18,6 +19,7 @@ using BistroQ.Presentation.Views.Client;
 using BistroQ.Service.Auth;
 using BistroQ.Service.Common;
 using BistroQ.Service.Data;
+using BistroQ.Services;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -118,10 +120,16 @@ public partial class App : Application
             services.AddScoped<IZoneDataService, ZoneDataService>();
             services.AddScoped<ITableDataService, TableDataService>();
             services.AddScoped<IOrderDataService, OrderDataService>();
+            services.AddScoped<ICategoryDataService, CategoryDataService>();
+            services.AddScoped<IProductDataService, ProductDataService>();
+            services.AddScoped<IDialogService, DialogService>();
+
 
             // Client V&VM
             services.AddTransient<HomePageViewModel>();
             services.AddTransient<HomePage>();
+            services.AddTransient<ProductListViewModel>();
+            services.AddTransient<OrderCartViewModel>();
 
             // Cashier V&VM
             services.AddTransient<CashierTableViewModel>();

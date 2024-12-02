@@ -18,7 +18,10 @@ public partial class OrderItemViewModel : ObservableObject
 
     [ObservableProperty]
     private decimal? _priceAtPurchase;
-
+    
+    [ObservableProperty]
+    private string? _status;
+    
     public decimal? Total => Quantity * PriceAtPurchase;
 
     [ObservableProperty]

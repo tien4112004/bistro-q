@@ -28,7 +28,6 @@ public partial class LoginViewModel : ObservableObject
         _authService = authService;
         LoginCommand = new AsyncRelayCommand(async () =>
         {
-            Debug.WriteLine("Login command executed");
             await Login();
         });
 

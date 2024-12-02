@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BistroQ.Domain.Dtos.Category;
 using BistroQ.Domain.Dtos.Order;
 using BistroQ.Domain.Dtos.Products;
 using BistroQ.Domain.Dtos.Tables;
@@ -27,6 +28,8 @@ public class MappingProfile : Profile
         CreateMap<OrderItem, OrderItemViewModel>().ReverseMap();
         CreateMap<Product, ProductViewModel>();
         CreateMap<Product, ProductViewModel>().ReverseMap();
+        CreateMap<Category, CategoryViewModel>();
+        CreateMap<Category, CategoryViewModel>().ReverseMap();
 
         /**
          * 
@@ -45,5 +48,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
 
         CreateMap<ProductResponse, Product>();
+        
+        CreateMap<CategoryResponse, Category>()
+            .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products));
     }
 }
