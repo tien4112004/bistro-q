@@ -49,7 +49,7 @@
             </Button>
 
             <TextBlock x:Name="EntryErrorTextBlock" 
-                Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                Text="{x:Bind ViewModel.OrderCartViewModel.ErrorMessage, Mode=OneWay}"
                 Foreground="Red"
                 Margin="0,10,0,0"
                 />

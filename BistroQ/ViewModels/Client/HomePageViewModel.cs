@@ -13,9 +13,6 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
     public ProductListViewModel ProductListViewModel { get; }
     public OrderCartViewModel OrderCartViewModel { get; }
 
-    [ObservableProperty]
-    private bool _errorMessage;
-
     public ICommand AddProductToCartCommand { get; private set; }
 
     public HomePageViewModel(
