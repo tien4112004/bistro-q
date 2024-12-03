@@ -8,6 +8,7 @@ using BistroQ.Presentation.ViewModels.States;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Diagnostics;
+using BistroQ.Presentation.ViewModels.KitchenOrder.Strategies;
 
 namespace BistroQ.Presentation.ViewModels.KitchenOrder;
 
@@ -27,17 +28,25 @@ public partial class KitchenOrderViewModel :
 
     private readonly IMessenger _messenger;
 
+    private readonly KitchenStrategyFactory _strategyFactory;
+
     [ObservableProperty]
     private List<OrderItemViewModel> _selectedItems = new();
 
     [ObservableProperty]
     private KitchenOrderState _state = new();
 
-    public KitchenOrderViewModel(IOrderItemDataService orderItemDataService, IMessenger messenger, KitchenOrderButtonsViewModel kitchenOrderButtonsViewModel)
+    public KitchenOrderViewModel(IOrderItemDataService orderItemDataService,
+        IMessenger messenger,
+        KitchenStrategyFactory strategyFactory,
+        OrderKanbanColumnViewModel pendingColumnVM,
+        OrderKanbanColumnViewModel progressColumnVM,
+        KitchenOrderButtonsViewModel kitchenOrderButtonsViewModel)
     {
-        PendingColumnVM = App.GetService<OrderKanbanColumnViewModel>();
-        ProgressColumnVM = App.GetService<OrderKanbanColumnViewModel>();
+        PendingColumnVM = pendingColumnVM;
+        ProgressColumnVM = progressColumnVM;
         KitchenOrderButtonsVM = kitchenOrderButtonsViewModel;
+        _strategyFactory = strategyFactory;
         _orderItemDataService = orderItemDataService;
         _messenger = messenger;
         _messenger.RegisterAll(this);
@@ -78,83 +87,10 @@ public partial class KitchenOrderViewModel :
 
     public void Receive(KitchenActionMessage message)
     {
-        switch (message.Action)
-        {
-            case KitchenAction.Complete:
-                Complete(message.OrderItems);
-                break;
-            case KitchenAction.Move:
-                Move(message.OrderItems);
-                break;
-            case KitchenAction.Cancel:
-                Cancel(message.OrderItems);
-                break;
-        }
-    }
-
-    private async void Complete(IEnumerable<OrderItemViewModel> orderItems)
-    {
         try
         {
-            await Task.WhenAll(
-                orderItems.Select(i => _orderItemDataService.UpdateOrderItemStatusAsync(i.OrderItemId, OrderItemStatus.Completed)));
-
-            foreach (var item in orderItems)
-            {
-                item.Status = OrderItemStatus.Completed;
-                State.ProgressItems.Remove(item);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex.Message);
-        }
-    }
-
-    private async void Move(IEnumerable<OrderItemViewModel> orderItems)
-    {
-        try
-        {
-            var targetStatus = orderItems.First().Status == OrderItemStatus.Pending
-                ? OrderItemStatus.InProgress
-                : OrderItemStatus.Pending;
-            await Task.WhenAll(
-                orderItems.Select(i => _orderItemDataService.UpdateOrderItemStatusAsync(i.OrderItemId, targetStatus)));
-
-
-            foreach (var item in orderItems)
-            {
-                item.Status = targetStatus;
-                if (targetStatus == OrderItemStatus.InProgress)
-                {
-                    State.PendingItems.Remove(item);
-                    State.ProgressItems.Add(item);
-                }
-                else
-                {
-                    State.ProgressItems.Remove(item);
-                    State.PendingItems.Add(item);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex.Message);
-        }
-    }
-
-    private async void Cancel(IEnumerable<OrderItemViewModel> orderItems)
-    {
-        try
-        {
-            await Task.WhenAll(
-                orderItems.Select(i => _orderItemDataService.UpdateOrderItemStatusAsync(i.OrderItemId, OrderItemStatus.Cancelled)));
-
-            foreach (var item in orderItems)
-            {
-                item.Status = OrderItemStatus.Cancelled;
-                State.PendingItems.Remove(item);
-            }
+            var strategy = _strategyFactory.GetStrategy(message.Action, State);
+            strategy.ExecuteAsync(State.SelectedItems);
         }
         catch (Exception ex)
         {

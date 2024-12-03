@@ -12,6 +12,7 @@ using BistroQ.Presentation.ViewModels.AdminZone;
 using BistroQ.Presentation.ViewModels.CashierTable;
 using BistroQ.Presentation.ViewModels.Client;
 using BistroQ.Presentation.ViewModels.KitchenOrder;
+using BistroQ.Presentation.ViewModels.KitchenOrder.Strategies;
 using BistroQ.Presentation.Views;
 using BistroQ.Presentation.Views.AdminTable;
 using BistroQ.Presentation.Views.AdminZone;
@@ -97,6 +98,7 @@ public partial class App : Application
             services.AddHttpClient();
             services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<ITokenStorageService, TokenSecureStorageService>();
+            services.AddSingleton<KitchenStrategyFactory>();
 
             // Views and ViewModels
             services.AddTransient<MainViewModel>();
