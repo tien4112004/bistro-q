@@ -26,13 +26,6 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
         OrderCartViewModel = App.GetService<OrderCartViewModel>();
 
         OrderCartViewModel.OrderStartedCommand = new RelayCommand<OrderViewModel>(OnOrderStarted);
-
-        AddProductToCartCommand = new RelayCommand<ProductViewModel>(OnAddProductToCart);
-    }
-
-    private void OnAddProductToCart(ProductViewModel product)
-    {
-        OrderCartViewModel.AddProductToCart(product);
     }
 
     private void OnOrderStarted(OrderViewModel order)

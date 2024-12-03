@@ -75,8 +75,7 @@
                     Padding="16,4,0,0">
                 <clientusercontrols:ProductListControl 
                     x:Name="ProductList"
-                    ViewModel="{x:Bind ViewModel.ProductListViewModel, Mode=OneWay}"
-                    AddProductToCart="ProductList_AddProductToCart" />
+                    ViewModel="{x:Bind ViewModel.ProductListViewModel, Mode=OneWay}" />
             </Border>
 
             <Rectangle Grid.Column="1"

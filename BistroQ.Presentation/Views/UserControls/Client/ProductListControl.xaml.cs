@@ -1,6 +1,8 @@
 ﻿using BistroQ.Domain.Models.Entities;
+using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Client;
 using BistroQ.Presentation.ViewModels.Models;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -21,7 +23,6 @@ public sealed partial class ProductListControl : UserControl
         set => SetValue(ViewModelProperty, value);
     }
 
-    public event EventHandler<ProductViewModel> AddProductToCart;
     public event EventHandler<ProductViewModel> ProductSelected;
 
     public ProductListControl()
@@ -45,11 +46,6 @@ public sealed partial class ProductListControl : UserControl
                 ViewModel.ChangeCategoryCommand.Execute(ViewModel.SelectedCategory);
             }
         }
-    }
-
-    private void AddToCart(object sender, ProductViewModel product)
-    {
-        AddProductToCart?.Invoke(this, product);
     }
 
     private void ScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)

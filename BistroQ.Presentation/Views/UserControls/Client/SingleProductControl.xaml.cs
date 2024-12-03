@@ -1,4 +1,6 @@
-﻿using BistroQ.Presentation.ViewModels.Models;
+﻿using BistroQ.Presentation.Messages;
+using BistroQ.Presentation.ViewModels.Models;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -24,7 +26,7 @@ public sealed partial class SingleProductControl : UserControl
         this.InitializeComponent();
     }
 
-    public event EventHandler<ProductViewModel> AddProductToCart;
+    // public event EventHandler<ProductViewModel> AddProductToCart;
     public event EventHandler<ProductViewModel> ProductClicked;
 
     private void AddToCartButton_Click(object sender, RoutedEventArgs e)
@@ -32,7 +34,8 @@ public sealed partial class SingleProductControl : UserControl
 
         if (sender is Button button && button.DataContext is ProductViewModel product)
         {
-            AddProductToCart?.Invoke(this, product);
+            // AddProductToCart?.Invoke(this, product);
+            App.GetService<IMessenger>().Send(new AddProductToCartMessage(product));
         }
     }
 }

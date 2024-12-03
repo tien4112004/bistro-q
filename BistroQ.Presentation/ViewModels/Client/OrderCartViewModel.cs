@@ -7,14 +7,17 @@ using System.ComponentModel;
 using System.Windows.Input;
 using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
+using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Models;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace BistroQ.Presentation.ViewModels.Client;
 
-public partial class OrderCartViewModel : ObservableRecipient
+public partial class OrderCartViewModel : ObservableRecipient, IRecipient<AddProductToCartMessage>, IDisposable
 {
     private readonly IOrderDataService _orderDataService;
     private readonly IMapper _mapper;
+    private readonly IMessenger _messenger;
 
     public OrderViewModel Order { get; set; }
 
@@ -37,34 +40,16 @@ public partial class OrderCartViewModel : ObservableRecipient
     public ICommand CancelOrderCommand { get; }
     public ICommand OrderStartedCommand { get; set; }
 
-    public OrderCartViewModel(IOrderDataService orderDataService, IMapper mapper)
+    public OrderCartViewModel(IOrderDataService orderDataService, IMapper mapper, IMessenger messenger)
     {
         _orderDataService = orderDataService;
         _mapper = mapper;
+        _messenger = messenger;
+        messenger.RegisterAll(this);
         StartOrderCommand = new AsyncRelayCommand(StartOrder);
         CancelOrderCommand = new RelayCommand(CancelOrder);
 
         CartItems.CollectionChanged += CartItems_CollectionChanged;
-    }
-
-    public void AddProductToCart(ProductViewModel product)
-    {
-        var existingOrderItem = CartItems.FirstOrDefault(od => od.ProductId == product.ProductId);
-        if (existingOrderItem != null)
-        {
-            existingOrderItem.Quantity++;
-        }
-        else
-        {
-            CartItems.Add(new OrderItemViewModel
-            {
-                OrderId = Order.OrderId,
-                ProductId = product.ProductId,
-                Product = product,
-                Quantity = 1,
-                PriceAtPurchase = product.Price
-            });
-        }
     }
 
     public async Task LoadExistingOrderAsync()
@@ -177,4 +162,29 @@ public partial class OrderCartViewModel : ObservableRecipient
 
     public bool IsProcessingItemsEmpty => !ProcessingItems.Any();
     public bool IsCompletedItemsEmpty => !CompletedItems.Any();
+    public void Receive(AddProductToCartMessage message)
+    {
+        var product = message.Product;
+        var existingOrderItem = CartItems.FirstOrDefault(od => od.ProductId == product.ProductId);
+        if (existingOrderItem != null)
+        {
+            existingOrderItem.Quantity++;
+        }
+        else
+        {
+            CartItems.Add(new OrderItemViewModel
+            {
+                OrderId = Order.OrderId,
+                ProductId = product.ProductId,
+                Product = product,
+                Quantity = 1,
+                PriceAtPurchase = product.Price
+            });
+        }
+    }
+
+    public void Dispose()
+    {
+        _messenger.UnregisterAll(this);
+    }
 }
