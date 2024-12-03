@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BistroQ.Domain.Dtos.Category;
 using BistroQ.Domain.Dtos.Order;
+using BistroQ.Domain.Dtos.Orders;
 using BistroQ.Domain.Dtos.Products;
 using BistroQ.Domain.Dtos.Tables;
 using BistroQ.Domain.Dtos.Zones;

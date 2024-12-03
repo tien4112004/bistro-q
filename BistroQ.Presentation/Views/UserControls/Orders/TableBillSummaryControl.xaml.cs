@@ -16,6 +16,12 @@ public sealed partial class TableBillSummaryControl : UserControl
         set => SetValue(TotalProperty, value);
     }
 
+    public string? ButtonText
+    {
+        get => (string?)GetValue(ButtonTextProperty);
+        set => SetValue(ButtonTextProperty, value);
+    }
+    
     public static readonly DependencyProperty TotalProperty =
         DependencyProperty.Register(
             nameof(Total),
@@ -23,6 +29,13 @@ public sealed partial class TableBillSummaryControl : UserControl
             typeof(TableBillSummaryControl),
             new PropertyMetadata(null));
 
+    public static readonly DependencyProperty ButtonTextProperty =
+        DependencyProperty.Register(
+            nameof(ButtonText),
+            typeof(string),
+            typeof(TableBillSummaryControl),
+            new PropertyMetadata(null));
+    
     public event EventHandler CheckoutRequested;
 
     private void Button_Click(object sender, RoutedEventArgs e)

@@ -2,13 +2,15 @@ namespace BistroQ.Domain.Models.Entities;
 
 public class OrderItem
 {
-    public int OrderDetailId { get; set; }
+    public int OrderItemId { get; set; }
 
     public string? OrderId { get; set; }
 
     public int? ProductId { get; set; }
 
     public int? Quantity { get; set; }
+    
+    public string? Status { get; set; }
 
     public decimal? PriceAtPurchase { get; set; }
 

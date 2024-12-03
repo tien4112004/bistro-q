@@ -116,8 +116,10 @@
 
 
 
-            <orderControls:TableBillSummaryControl Grid.Row="1"  Total="{x:Bind ViewModel.Order.TotalAmount, Mode=OneWay}" 
-                                               CheckoutRequested="{x:Bind ViewModel.CheckoutRequestedCommand, Mode=OneWay}" />
+            <orderControls:TableBillSummaryControl Grid.Row="1"
+                                                   ButtonText="Checkout"
+                                                   Total="{x:Bind ViewModel.Order.TotalAmount, Mode=OneWay}" 
+                                                   CheckoutRequested="{x:Bind ViewModel.CheckoutRequestedCommand, Mode=OneWay}" />
         </Grid>
     </Grid>
 

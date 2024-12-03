@@ -1,4 +1,6 @@
-﻿namespace BistroQ.Domain.Dtos.Order;
+﻿using BistroQ.Domain.Dtos.Orders;
+
+namespace BistroQ.Domain.Dtos.Order;
 
 public class OrderDetailResponse
 {
