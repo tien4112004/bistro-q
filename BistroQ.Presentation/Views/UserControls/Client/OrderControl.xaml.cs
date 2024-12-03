@@ -1,7 +1,9 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
 using System.Diagnostics;
+using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Client;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace BistroQ.Presentation.Views.UserControls.Client;
 
@@ -19,11 +21,10 @@ public sealed partial class OrderControl : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    public event EventHandler CheckoutRequested;
 
     private void TableBillSummaryControl_CheckoutRequested(object sender, EventArgs e)
     {
-        CheckoutRequested?.Invoke(this, null);
+        App.GetService<IMessenger>().Send(new CheckoutRequestedMessage(ViewModel.Order.TableId));
         Debug.WriteLine("[Debug] Checkout clicked");
     }
 }

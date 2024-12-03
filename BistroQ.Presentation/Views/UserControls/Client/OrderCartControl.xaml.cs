@@ -1,8 +1,5 @@
 ﻿
-using System.Diagnostics;
-using BistroQ.Domain.Models.Entities;
 using BistroQ.Presentation.ViewModels.Client;
-using BistroQ.Presentation.ViewModels.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -24,9 +21,6 @@ public sealed partial class OrderCartControl : UserControl
     }
 
     public event EventHandler<OrderCartViewModel> ViewModelChanged;
-    public event EventHandler<IEnumerable<OrderItem>> OrderRequested;
-    public event EventHandler CheckoutRequested;
-
     public OrderCartControl()
     {
         this.InitializeComponent();
@@ -51,7 +45,7 @@ public sealed partial class OrderCartControl : UserControl
 
     private void OnViewModelChanged(OrderCartViewModel newViewModel)
     {
-        ViewModelChanged?.Invoke(this, newViewModel);
+        ViewModelChanged?.Invoke(this, newViewModel); 
     }
 
     private void OrderCartSelector_SelectionChanged(object sender, SelectorBarSelectionChangedEventArgs e)
@@ -60,25 +54,11 @@ public sealed partial class OrderCartControl : UserControl
         {
             var cartControl = new CartControl(ViewModel);
             PanelContentControl.Content = cartControl;
-            cartControl.OrderRequested += OrderCartControl_OrderRequested;   // Don't care the name of the event pls...
         }
         else if (OrderCartSelector.SelectedItem == SelectorBarItemOrder)
         {
             var orderControl = new OrderControl(ViewModel);
             PanelContentControl.Content = orderControl;
-
         }
-    }
-
-    private void OrderCartControl_OrderRequested(object sender, IEnumerable<OrderItemViewModel> orderItems)
-    {
-        //if (orderItems == null)
-        //{
-        //    return;
-        //}
-        Debug.WriteLine(orderItems);
-
-        // call order here
-        Debug.WriteLine("Call api order here");
     }
 }

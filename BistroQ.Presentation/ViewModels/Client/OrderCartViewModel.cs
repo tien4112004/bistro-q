@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
@@ -13,7 +14,12 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace BistroQ.Presentation.ViewModels.Client;
 
-public partial class OrderCartViewModel : ObservableRecipient, IRecipient<AddProductToCartMessage>, IDisposable
+public partial class OrderCartViewModel : 
+    ObservableRecipient, 
+    IRecipient<AddProductToCartMessage>, 
+    IRecipient<OrderRequestedMessage>,
+    IRecipient<CheckoutRequestedMessage>,
+    IDisposable
 {
     private readonly IOrderDataService _orderDataService;
     private readonly IMapper _mapper;
@@ -181,6 +187,16 @@ public partial class OrderCartViewModel : ObservableRecipient, IRecipient<AddPro
                 PriceAtPurchase = product.Price
             });
         }
+    }
+    
+    public void Receive(OrderRequestedMessage message)
+    {
+        Debug.WriteLine("[Debug] Order requested message received, number of items: " + message.OrderItems.Count());
+    }
+    
+    public void Receive(CheckoutRequestedMessage message)
+    {
+        Debug.WriteLine("[Debug] Checkout requested message received, table to be checked out: " + message.TableId);
     }
 
     public void Dispose()

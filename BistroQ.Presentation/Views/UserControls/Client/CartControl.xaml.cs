@@ -4,9 +4,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
 using BistroQ.Domain.Models.Entities;
+using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Client;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
 
 namespace BistroQ.Presentation.Views.UserControls.Client;
@@ -37,8 +39,6 @@ public sealed partial class CartControl : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    public event EventHandler<IEnumerable<OrderItemViewModel>> OrderRequested;
-
     private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(ViewModel.CartItems))
@@ -74,7 +74,7 @@ public sealed partial class CartControl : UserControl, INotifyPropertyChanged
         }
 
         var orderItems = ViewModel.CartItems.ToList();
-        OrderRequested?.Invoke(this, orderItems);
+        App.GetService<IMessenger>().Send(new OrderRequestedMessage(orderItems));
         Debug.WriteLine("[Debug] Order clicked");
     }
 }
