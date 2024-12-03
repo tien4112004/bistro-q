@@ -26,18 +26,19 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
     
     private readonly ITableDataService _tableDataService;
     private readonly IZoneDataService _zoneDataService;
-    private readonly IAdminDialogService _adminDialogService;
+    private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
     public ICommand EditCommand { get; }
     
     public AdminTableEditPageViewModel(ITableDataService tableDataService, 
         IZoneDataService zoneDataService,
+        IDialogService dialogService,
         IMapper mapper)
     {
         _tableDataService = tableDataService;
         _zoneDataService = zoneDataService;
+        _dialogService = dialogService;
         _mapper = mapper;
-        _adminDialogService = new AdminTableDialogService();
         Request = new UpdateTableRequest();
         Zones = new ObservableCollection<ZoneViewModel>();
         
@@ -65,12 +66,12 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
             
             await _tableDataService.UpdateTableAsync(Table.TableId.Value, Request);
             
-            await _adminDialogService.ShowSuccessDialog("Table updated successfully.");
+            await _dialogService.ShowSuccessDialog("Table updated successfully.", "Success");
             NavigateBack?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
         {
-            await _adminDialogService.ShowErrorDialog(ex.Message);
+            await _dialogService.ShowErrorDialog(ex.Message, "Error");
         }
         finally
         {

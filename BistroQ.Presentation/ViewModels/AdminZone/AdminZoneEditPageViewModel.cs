@@ -27,7 +27,7 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
     public AdminZoneEditPageViewModel ViewModel;
 
     private readonly IZoneDataService _zoneDataService;
-    private readonly IAdminDialogService _adminDialogService;
+    private readonly IDialogService _dialogService;
 
     public ICommand UpdateCommand { get; }
 
@@ -46,7 +46,7 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
         Form.ValidateAll();
         if (!CanUpdate())
         {
-            await _adminDialogService.ShowErrorDialog("Data is invalid. Please check again.");
+            await _dialogService.ShowErrorDialog("Data is invalid. Please check again.", "Error");
             return;
         }
 
@@ -58,13 +58,13 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
             _request.Name = Form.Name;
             await _zoneDataService.UpdateZoneAsync(Zone.ZoneId.Value, _request);
             
-            await _adminDialogService.ShowSuccessDialog($"Successfully updated zone: {Request.Name}");
+            await _dialogService.ShowSuccessDialog($"Successfully updated zone: {Request.Name}", "Success");
             NavigateBack?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
         {
             ErrorMessage = ex.Message;
-            await _adminDialogService.ShowErrorDialog(ex.Message);
+            await _dialogService.ShowErrorDialog(ex.Message, "Error");
         }
         finally
         {

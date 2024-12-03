@@ -28,18 +28,22 @@ public partial class AdminTableAddPageViewModel : ObservableRecipient
 
     private readonly ITableDataService _tableDataService;
     private readonly IZoneDataService _zoneDataService;
-    private readonly IAdminDialogService _adminDialogService;
+    private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
 
     public ICommand AddCommand { get; }
 
-    public AdminTableAddPageViewModel(ITableDataService tableDataService, IZoneDataService zoneDataService, IMapper mapper)
+    public AdminTableAddPageViewModel(
+        ITableDataService tableDataService, 
+        IZoneDataService zoneDataService, 
+        IDialogService dialogService,
+        IMapper mapper)
     {
         _request = new CreateTableRequest();
         Zones = new ObservableCollection<ZoneViewModel>();
-        _adminDialogService = new AdminTableDialogService();
         _tableDataService = tableDataService;
         _zoneDataService = zoneDataService;
+        _dialogService = dialogService;
         _mapper = mapper;
         AddCommand = new AsyncRelayCommand(AddTableAsync, CanAddTable);
     }
@@ -69,12 +73,12 @@ public partial class AdminTableAddPageViewModel : ObservableRecipient
 
             await _tableDataService.CreateTableAsync(_request);
 
-            await _adminDialogService.ShowSuccessDialog("Table added successfully.");
+            await _dialogService.ShowSuccessDialog("Table added successfully.", "Success");
             NavigateBack?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
         {
-            await _adminDialogService.ShowErrorDialog(ex.Message);
+            await _dialogService.ShowErrorDialog(ex.Message, "Error");
         }
         finally
         {

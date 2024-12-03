@@ -21,17 +21,17 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigatio
     private string _errorMessage = string.Empty;
 
     private readonly IZoneDataService _zoneDataService;
-    private readonly IAdminDialogService _adminDialogService;
+    private readonly IDialogService _dialogService;
 
     public ICommand AddCommand { get; }
 
     public event EventHandler NavigateBack;
 
-    public AdminZoneAddPageViewModel(IZoneDataService zoneDataService)
+    public AdminZoneAddPageViewModel(IZoneDataService zoneDataService, IDialogService dialogService)
     {
         _request = new CreateZoneRequest();
         _zoneDataService = zoneDataService;
-        _adminDialogService = new AdminZoneDialogService();
+        _dialogService = dialogService;
 
         AddCommand = new AsyncRelayCommand(AddZoneAsync, CanAdd);
     }
@@ -46,7 +46,7 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigatio
         Form.ValidateAll();
         if (!CanAdd())
         {
-            await _adminDialogService.ShowErrorDialog("Data is invalid. Please check again.");
+            await _dialogService.ShowErrorDialog("Data is invalid. Please check again.", "Error");
             return;
         }
 
@@ -58,13 +58,13 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigatio
 
             await _zoneDataService.CreateZoneAsync(_request);
 
-            await _adminDialogService.ShowErrorDialog("Successfully added zone: " + _request.Name);
+            await _dialogService.ShowErrorDialog("Successfully added zone: " + _request.Name, "Success");
             NavigateBack?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
         {
             ErrorMessage = ex.Message;
-            await _adminDialogService.ShowErrorDialog(ex.Message);
+            await _dialogService.ShowErrorDialog(ex.Message, "Error");
         }
         finally
         {

@@ -19,7 +19,6 @@ using BistroQ.Presentation.Views.Client;
 using BistroQ.Service.Auth;
 using BistroQ.Service.Common;
 using BistroQ.Service.Data;
-using BistroQ.Services;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

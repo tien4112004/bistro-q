@@ -20,7 +20,7 @@ namespace BistroQ.Presentation.ViewModels;
 
 public partial class AdminTableViewModel : ObservableRecipient, INavigationAware, IDisposable
 {
-    private readonly IAdminDialogService _adminTableDialogService;
+    private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
     private readonly ITableDataService _tableDataService;
     private readonly INavigationService _navigationService;
@@ -37,6 +37,7 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
     public AdminTableViewModel(
         INavigationService navigationService,
         ITableDataService tableDataService,
+        IDialogService dialogService,
         IMapper mapper,
         IMessenger messenger)
     {
@@ -44,7 +45,7 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
         _tableDataService = tableDataService;
         _mapper = mapper;
         _messenger = messenger;
-        _adminTableDialogService = new AdminTableDialogService();
+        _dialogService = dialogService;
 
         State.PropertyChanged += StatePropertyChanged;
 
@@ -104,7 +105,7 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
         }
         catch (Exception ex)
         {
-            await _adminTableDialogService.ShowErrorDialog(ex.Message);
+            await _dialogService.ShowErrorDialog(ex.Message, "Error");
         }
         finally
         {
@@ -129,25 +130,25 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
 
         try
         {
-            var result = await _adminTableDialogService.ShowConfirmDeleteDialog();
+            var result = await _dialogService.ShowConfirmDeleteDialog();
             if (result != ContentDialogResult.Primary) return;
 
             var success = await _tableDataService.DeleteTableAsync(State.SelectedTable.TableId.Value);
             if (success)
             {
-                await _adminTableDialogService.ShowSuccessDialog("Table deleted successfully.");
+                await _dialogService.ShowSuccessDialog("Table deleted successfully.", "Success");
                 State.Source.Remove(State.SelectedTable);
                 State.SelectedTable = null;
                 await LoadDataAsync();
             }
             else
             {
-                await _adminTableDialogService.ShowErrorDialog("Failed to delete table.");
+                await _dialogService.ShowErrorDialog("Failed to delete table.", "Error");
             }
         }
         catch (Exception ex)
         {
-            await _adminTableDialogService.ShowErrorDialog(ex.Message);
+            await _dialogService.ShowErrorDialog(ex.Message, "Error");
         }
     }
 
