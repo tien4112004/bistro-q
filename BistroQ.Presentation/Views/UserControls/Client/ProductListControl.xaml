@@ -50,7 +50,7 @@
                     HorizontalScrollMode="Enabled"
                     HorizontalScrollBarVisibility="Hidden"
                     ManipulationMode="System,TranslateX"
-                    ManipulationDelta="ScrollViewer_ManipulationDelta">
+                    ManipulationDelta="HorizontalScrollViewer_ManipulationDelta">
                 <ListView
                     ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
                     SelectedItem="{x:Bind ViewModel.SelectedCategory, Mode=TwoWay}"
@@ -117,7 +117,11 @@
         </StackPanel>
 
 
-        <ScrollView Grid.Row="2">
+        <ScrollViewer Grid.Row="2"
+                      VerticalScrollMode="Enabled"
+                      VerticalScrollBarVisibility="Hidden"
+                      ManipulationMode="System,TranslateY"
+                      ManipulationDelta="VerticalScrollViewer_ManipulationDelta">
             <Grid>
                 <ProgressRing IsActive="{x:Bind ViewModel.IsLoadingProduct, Mode=OneWay}"
                                 VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -130,7 +134,6 @@
                           ItemsSource="{x:Bind ViewModel.Products, Mode=OneWay}"
                           ItemTemplate="{StaticResource SingleProductDataTemplate}"
                           SelectedItem="{x:Bind ViewModel.SelectedProduct, Mode=OneWay}"
-                          ScrollViewer.VerticalScrollMode="Enabled"
                           HorizontalAlignment="Center"
                           HorizontalContentAlignment="Center">
                     <GridView.ItemContainerStyle>
@@ -171,6 +174,6 @@
                     </GridView.ItemContainerStyle>
                 </GridView>
             </Grid>
-        </ScrollView>
+        </ScrollViewer>
     </Grid>
 </UserControl>

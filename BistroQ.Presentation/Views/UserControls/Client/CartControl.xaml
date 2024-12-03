@@ -141,7 +141,13 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="0" VerticalAlignment="Stretch">
+        <ScrollViewer Grid.Row="0" 
+                      VerticalAlignment="Stretch"
+                      VerticalScrollMode="Enabled"
+                      VerticalScrollBarVisibility="Hidden"
+                      ManipulationMode="System,TranslateY"
+                      ManipulationDelta="VerticalScrollViewer_ManipulationDelta"
+                      >
             <StackPanel>
                 <ListView ItemsSource="{x:Bind ViewModel.CartItems, Mode=TwoWay}"
                           ItemTemplate="{StaticResource CartItemDataTemplate}"

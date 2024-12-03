@@ -10,6 +10,7 @@ using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 
 namespace BistroQ.Presentation.Views.UserControls.Client;
 
@@ -76,5 +77,16 @@ public sealed partial class CartControl : UserControl, INotifyPropertyChanged
         var orderItems = ViewModel.CartItems.ToList();
         App.GetService<IMessenger>().Send(new OrderRequestedMessage(orderItems));
         Debug.WriteLine("[Debug] Order clicked");
+    }
+    
+    private void VerticalScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+    {
+        const double SCROLL_SPEED = 1.25;
+        var scrollViewer = (ScrollViewer)sender;
+        scrollViewer.ChangeView(
+            null,
+            scrollViewer.VerticalOffset - e.Delta.Translation.Y * SCROLL_SPEED,
+            null,
+            true);
     }
 }

@@ -79,7 +79,12 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <ScrollViewer>
+        <ScrollViewer
+            VerticalScrollMode="Enabled"
+            VerticalScrollBarVisibility="Hidden"
+            ManipulationMode="System,TranslateY"
+            ManipulationDelta="VerticalScrollViewer_ManipulationDelta"
+            >
             <StackPanel Padding="4,4,4,0">
                 <!-- Processing Orders -->
                 <Expander x:Uid="ClientHomePage_IsProcessingProductTitle"

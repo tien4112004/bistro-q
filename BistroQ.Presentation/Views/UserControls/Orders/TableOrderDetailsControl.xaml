@@ -66,55 +66,57 @@
 
 
 
-            <StackPanel VerticalAlignment="Stretch" Grid.Row="0"
->
-                <TextBlock
-                    Text="This table is currently available!"
-                    Foreground="{StaticResource SystemFillColorSuccessBrush}"
-                    Visibility="{x:Bind ViewModel.DoesNotHaveOrder, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
-                />
-                <TextBlock
-                    Foreground="{StaticResource SystemFillColorCriticalBrush}"
-                    Text="This table haven't ordered any product!"
-                    Visibility="{x:Bind ViewModel.DoesNotHaveOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
-                />
+            <ScrollViewer Grid.Row="0"
+                VerticalAlignment="Stretch"
+                VerticalScrollMode="Enabled"
+                VerticalScrollBarVisibility="Hidden"
+                ManipulationMode="System,TranslateY"
+                ManipulationDelta="VerticalScrollViewer_ManipulationDelta">
 
-                <controls:DataGrid
-                    x:Name="OrderItemsGrid"
-                    AutoGenerateColumns="False"
-                    GridLinesVisibility="All"
-                    IsTapEnabled="False"
-                    IsDoubleTapEnabled="False"
-                    IsReadOnly="True"
-                    Visibility="{x:Bind ViewModel.HasOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
-                    ItemsSource="{x:Bind ViewModel.Order.OrderItems, Mode=OneWay}"
-                >
-                    <controls:DataGrid.Resources>
-                        <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
-                    </controls:DataGrid.Resources>
-                    <controls:DataGrid.Columns>
-                        <controls:DataGridTextColumn 
-                            Header="Product Name" 
-                            Binding="{Binding Product.Name}"
-                            Width="*"/>
-                        <controls:DataGridTextColumn 
-                            Header="Price" 
-                            Binding="{Binding Product.Price, Converter={StaticResource NumberToCurreny}}" 
-                            Width="Auto"/>
-                        <controls:DataGridTextColumn 
-                            Header="Quantity" 
-                            Binding="{Binding Quantity}" 
-                            Width="Auto"/>
-                        <controls:DataGridTextColumn
-                            Header="Total"
-                            Binding="{Binding Total, Converter={StaticResource NumberToCurreny}}"
-                            Width="Auto"/>
-                    </controls:DataGrid.Columns>
-                </controls:DataGrid>
+                <StackPanel VerticalAlignment="Stretch" >
+                    <TextBlock
+                        Text="This table is currently available!"
+                        Foreground="{StaticResource SystemFillColorSuccessBrush}"
+                        Visibility="{x:Bind ViewModel.DoesNotHaveOrder, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
+                    <TextBlock
+                        Foreground="{StaticResource SystemFillColorCriticalBrush}"
+                        Text="This table haven't ordered any product!"
+                        Visibility="{x:Bind ViewModel.DoesNotHaveOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
 
-            </StackPanel>
+                    <controls:DataGrid
+                        x:Name="OrderItemsGrid"
+                        AutoGenerateColumns="False"
+                        GridLinesVisibility="All"
+                        IsTapEnabled="False"
+                        IsDoubleTapEnabled="False"
+                        IsReadOnly="True"
+                        Visibility="{x:Bind ViewModel.HasOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+                        ItemsSource="{x:Bind ViewModel.Order.OrderItems, Mode=OneWay}">
+                        <controls:DataGrid.Resources>
+                            <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                        </controls:DataGrid.Resources>
+                        <controls:DataGrid.Columns>
+                            <controls:DataGridTextColumn 
+                                Header="Product Name" 
+                                Binding="{Binding Product.Name}"
+                                Width="*"/>
+                            <controls:DataGridTextColumn 
+                                Header="Price" 
+                                Binding="{Binding Product.Price, Converter={StaticResource NumberToCurreny}}" 
+                                Width="Auto"/>
+                            <controls:DataGridTextColumn 
+                                Header="Quantity" 
+                                Binding="{Binding Quantity}" 
+                                Width="Auto"/>
+                            <controls:DataGridTextColumn
+                                Header="Total"
+                                Binding="{Binding Total, Converter={StaticResource NumberToCurreny}}"
+                                Width="Auto"/>
+                        </controls:DataGrid.Columns>
+                    </controls:DataGrid>
 
-
+                </StackPanel>
+            </ScrollViewer>
 
             <orderControls:TableBillSummaryControl Grid.Row="1"
                                                    ButtonText="Checkout"

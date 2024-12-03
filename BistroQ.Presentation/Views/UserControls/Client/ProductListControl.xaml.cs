@@ -48,13 +48,24 @@ public sealed partial class ProductListControl : UserControl
         }
     }
 
-    private void ScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+    private void HorizontalScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
     {
         const double SCROLL_SPEED = 1.25;
         var scrollViewer = (ScrollViewer)sender;
         scrollViewer.ChangeView(
             scrollViewer.HorizontalOffset - e.Delta.Translation.X * SCROLL_SPEED,
             null,
+            null,
+            true);
+    }
+    
+    private void VerticalScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+    {
+        const double SCROLL_SPEED = 1.25;
+        var scrollViewer = (ScrollViewer)sender;
+        scrollViewer.ChangeView(
+            null,
+            scrollViewer.VerticalOffset - e.Delta.Translation.Y * SCROLL_SPEED,
             null,
             true);
     }
