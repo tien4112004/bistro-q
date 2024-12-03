@@ -1,17 +1,11 @@
-using BistroQ.Presentation.Contracts.Services;
+﻿using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace BistroQ.Presentation.Views;
 
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class LoginPage : Page
 {
     public LoginViewModel ViewModel { get; }
@@ -26,10 +20,10 @@ public sealed partial class LoginPage : Page
         ViewModel.NavigationRequested += async (s, e) =>
         {
             await App.GetService<IActivationService>().ActivateAsync(EventArgs.Empty);
-            window.Close();
+            _window.Close();
         };
 
-        ViewModel.CloseRequested += (s, e) => window.Close();
+        ViewModel.CloseRequested += (s, e) => _window.Close();
     }
 
     private async void On_Loaded(object sender, RoutedEventArgs e)
@@ -38,6 +32,17 @@ public sealed partial class LoginPage : Page
         {
             ViewModel.RequestNavigation();
         }
+    }
+
+    private void On_UnLoaded(object sender, RoutedEventArgs e)
+    {
+        ViewModel.NavigationRequested -= async (s, e) =>
+        {
+            await App.GetService<IActivationService>().ActivateAsync(EventArgs.Empty);
+            _window.Close();
+        };
+
+        ViewModel.CloseRequested -= (s, e) => _window.Close();
     }
 
     private void Text_KeyDown(object sender, KeyRoutedEventArgs e)

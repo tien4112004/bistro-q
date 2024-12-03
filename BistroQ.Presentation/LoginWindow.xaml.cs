@@ -1,4 +1,4 @@
-using BistroQ.Presentation.Views;
+﻿using BistroQ.Presentation.Views;
 using Microsoft.UI.Xaml;
 
 namespace BistroQ.Presentation;

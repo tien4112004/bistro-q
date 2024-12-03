@@ -1,44 +1,84 @@
-﻿using AutoMapper;
-using BistroQ.Domain.Contracts.Services;
-using BistroQ.Domain.Dtos;
+﻿using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos.Zones;
-using BistroQ.Presentation.ViewModels.Models;
+using BistroQ.Presentation.Contracts.Services;
+using BistroQ.Presentation.Contracts.ViewModels;
+using BistroQ.Presentation.Models;
+using BistroQ.Presentation.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminZone;
 
-public partial class AdminZoneAddPageViewModel : ObservableRecipient
+public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigationAware
 {
+    private CreateZoneRequest _request;
     [ObservableProperty]
-    private CreateZoneRequest request;
+    private bool _isProcessing = false;
+    [ObservableProperty]
+    private AddZoneForm _form = new();
+    [ObservableProperty]
+    private string _errorMessage = string.Empty;
 
     private readonly IZoneDataService _zoneDataService;
-    private readonly IMapper _mapper;
+    private readonly IDialogService _dialogService;
 
-    public AdminZoneAddPageViewModel(IZoneDataService zoneDataService, IMapper mapper)
+    public ICommand AddCommand { get; }
+
+    public event EventHandler NavigateBack;
+
+    public AdminZoneAddPageViewModel(IZoneDataService zoneDataService, IDialogService dialogService)
     {
-        Request = new CreateZoneRequest();
+        _request = new CreateZoneRequest();
         _zoneDataService = zoneDataService;
-        _mapper = mapper;
+        _dialogService = dialogService;
+
+        AddCommand = new AsyncRelayCommand(AddZoneAsync, CanAdd);
     }
 
-    public async Task<ZoneViewModel> AddZone()
+    public bool CanAdd()
     {
-        if (string.IsNullOrEmpty(request.Name))
-        {
-            throw new InvalidDataException("Name cannot be null");
-        }
-        var zone = await _zoneDataService.CreateZoneAsync(request);
-        return _mapper.Map<ZoneViewModel>(zone);
+        return !Form.HasErrors && !IsProcessing;
     }
 
-    //public void OnNavigatedFrom()
-    //{
+    public async Task AddZoneAsync()
+    {
+        Form.ValidateAll();
+        if (!CanAdd())
+        {
+            await _dialogService.ShowErrorDialog("Data is invalid. Please check again.", "Error");
+            return;
+        }
 
-    //}
+        try
+        {
+            IsProcessing = true;
+            ErrorMessage = string.Empty;
+            _request.Name = Form.Name;
 
-    //public void OnNavigatedTo(object parameter)
-    //{
-    //    throw new NotImplementedException();
-    //}
+            await _zoneDataService.CreateZoneAsync(_request);
+
+            await _dialogService.ShowErrorDialog("Successfully added zone: " + _request.Name, "Success");
+            NavigateBack?.Invoke(this, EventArgs.Empty);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+            await _dialogService.ShowErrorDialog(ex.Message, "Error");
+        }
+        finally
+        {
+            IsProcessing = false;
+        }
+    }
+
+    public void OnNavigatedTo(object parameter)
+    {
+        Form.ClearErrors();
+    }
+
+    public void OnNavigatedFrom()
+    {
+        //
+    }
 }

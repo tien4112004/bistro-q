@@ -1,4 +1,4 @@
-﻿namespace BistroQ.Domain.Models.Entities;
+namespace BistroQ.Domain.Models.Entities;
 
 public class Order
 {

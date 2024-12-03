@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace BistroQ.Domain.Models.Entities;
 
 public class Product
@@ -21,6 +15,4 @@ public class Product
     public decimal? DiscountPrice { get; set; }
     
     public string? ImageUrl { get; set; }
-    
-    public int? ImageId { get; set; }
 }

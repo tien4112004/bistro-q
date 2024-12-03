@@ -26,9 +26,6 @@
     <None Remove="Views\CashierTable\CashierTable_ZoneControl.xaml" />
     <None Remove="Views\CashierTable\Controls\ZoneOverviewControl.xaml" />
     <None Remove="Views\CashierTable\Controls\ZoneTableGridControl.xaml" />
-    <None Remove="Views\KitchenOrder\KitchenOrderPage.xaml" />
-    <None Remove="Views\UserControls\Orders\KitchenOrderButtonsControl.xaml" />
-    <None Remove="Views\UserControls\Orders\OrderKanbanColumnControl.xaml" />
     <None Remove="Views\UserControls\Orders\TableBillSummaryControl.xaml" />
     <None Remove="Views\UserControls\Orders\TableOrderDetailsControl.xaml" />
     <None Remove="Views\UserControls\PaginationControl.xaml" />
@@ -64,18 +61,6 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Page Update="Views\UserControls\Orders\KitchenOrderButtonsControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Styles\Color.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Views\UserControls\Orders\OrderKanbanColumnControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Views\KitchenOrder\KitchenOrderPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Update="Views\UserControls\Orders\TableBillSummaryControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -99,6 +84,7 @@
     </Page>
     <Page Update="Views\Client\HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\AdminTable\AdminTableEditPage.xaml">
       <Generator>MSBuild:Compile</Generator>

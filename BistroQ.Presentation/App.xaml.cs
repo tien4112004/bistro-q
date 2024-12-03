@@ -1,4 +1,5 @@
 ﻿using BistroQ.Domain.Contracts.Services;
+using BistroQ.Domain.Contracts.Services.Data;
 using BistroQ.Domain.Services.Http;
 using BistroQ.Presentation.Activation;
 using BistroQ.Presentation.Contracts.Services;
@@ -122,10 +123,16 @@ public partial class App : Application
             services.AddScoped<ITableDataService, TableDataService>();
             services.AddScoped<IOrderDataService, OrderDataService>();
             services.AddScoped<IOrderItemDataService, MockOrderItemDataService>();
+            services.AddScoped<ICategoryDataService, CategoryDataService>();
+            services.AddScoped<IProductDataService, ProductDataService>();
+            services.AddScoped<IDialogService, DialogService>();
+
 
             // Client V&VM
             services.AddTransient<HomePageViewModel>();
             services.AddTransient<HomePage>();
+            services.AddTransient<ProductListViewModel>();
+            services.AddTransient<OrderCartViewModel>();
 
             // Cashier V&VM
             services.AddTransient<CashierTableViewModel>();
@@ -159,7 +166,11 @@ public partial class App : Application
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
-        Debug.WriteLine(e);
+        if (e.Exception != null)
+        {
+            Debug.WriteLine(e.Exception.Message);
+            Debug.WriteLine(e.Exception.StackTrace);
+        }
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)

@@ -5,47 +5,85 @@ using BistroQ.Domain.Dtos.Zones;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
+using BistroQ.Presentation.Contracts.Services;
+using BistroQ.Presentation.Models;
+using BistroQ.Presentation.Services;
+using CommunityToolkit.Mvvm.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminTable;
 
 public partial class AdminTableAddPageViewModel : ObservableRecipient
 {
+    private CreateTableRequest _request;
+    
     [ObservableProperty]
-    private CreateTableRequest request;
+    private bool _isProcessing = false;
+    [ObservableProperty]
+    private AddTableForm _form = new();
+    
     public ObservableCollection<ZoneViewModel> Zones;
+    
+    public event EventHandler NavigateBack;
 
     private readonly ITableDataService _tableDataService;
     private readonly IZoneDataService _zoneDataService;
+    private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
 
-    public AdminTableAddPageViewModel(ITableDataService tableDataService, IZoneDataService zoneDataService, IMapper mapper)
+    public ICommand AddCommand { get; }
+
+    public AdminTableAddPageViewModel(
+        ITableDataService tableDataService, 
+        IZoneDataService zoneDataService, 
+        IDialogService dialogService,
+        IMapper mapper)
     {
-        Request = new CreateTableRequest();
+        _request = new CreateTableRequest();
         Zones = new ObservableCollection<ZoneViewModel>();
         _tableDataService = tableDataService;
         _zoneDataService = zoneDataService;
+        _dialogService = dialogService;
         _mapper = mapper;
+        AddCommand = new AsyncRelayCommand(AddTableAsync, CanAddTable);
+    }
+    
+    private bool CanAddTable()
+    {
+        return !IsProcessing;
     }
 
-    public async Task<TableViewModel> AddTable()
+    public async Task AddTableAsync()
     {
-        var allZoneList = await _zoneDataService.GetGridDataAsync(new ZoneCollectionQueryParams
+        try
         {
-            Size = (int)short.MaxValue
-        });
+            IsProcessing = true;
+            _request.ZoneId = Form.ZoneId;
+            _request.SeatsCount = Form.SeatsCount;
 
-        if (Request.ZoneId == null)
-        {
-            throw new InvalidDataException("Please choose a zone.");
+            if (_request.ZoneId == 0)
+            {
+                throw new InvalidDataException("Zone must be selected.");
+            }
+            
+            if (_request.SeatsCount == null)
+            {
+                throw new InvalidDataException("Seats count must be greater than 0.");
+            }
+
+            await _tableDataService.CreateTableAsync(_request);
+
+            await _dialogService.ShowSuccessDialog("Table added successfully.", "Success");
+            NavigateBack?.Invoke(this, EventArgs.Empty);
         }
-
-        if (Request.SeatsCount == null)
+        catch (Exception ex)
         {
-            throw new InvalidDataException("Seats count must be greater than 0.");
+            await _dialogService.ShowErrorDialog(ex.Message, "Error");
         }
-
-        var table = await _tableDataService.CreateTableAsync(request);
-        return _mapper.Map<TableViewModel>(table);
+        finally
+        {
+            IsProcessing = false;
+        }
     }
 
     public async Task LoadZonesAsync()

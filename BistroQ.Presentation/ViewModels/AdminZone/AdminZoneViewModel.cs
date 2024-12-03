@@ -23,7 +23,7 @@ public partial class AdminZoneViewModel :
     INavigationAware,
     IDisposable
 {
-    private readonly IAdminDialogService _adminZoneDialogService;
+    private readonly IDialogService _dialogService;
     private readonly INavigationService _navigationService;
     private readonly IZoneDataService _zoneDataService;
     private readonly IMapper _mapper;
@@ -41,13 +41,14 @@ public partial class AdminZoneViewModel :
     public AdminZoneViewModel(
         INavigationService navigationService,
         IZoneDataService zoneDataService,
+        IDialogService dialogService,
         IMapper mapper,
         IMessenger messenger)
     {
         _navigationService = navigationService;
         _zoneDataService = zoneDataService;
         _mapper = mapper;
-        _adminZoneDialogService = new AdminZoneDialogService();
+        _dialogService = dialogService;
 
         State.PropertyChanged += StatePropertyChanged;
 
@@ -107,7 +108,7 @@ public partial class AdminZoneViewModel :
         }
         catch (Exception ex)
         {
-            await _adminZoneDialogService.ShowErrorDialog(ex.Message);
+            await _dialogService.ShowErrorDialog(ex.Message, "Error");
         }
         finally
         {
@@ -132,25 +133,25 @@ public partial class AdminZoneViewModel :
 
         try
         {
-            var result = await _adminZoneDialogService.ShowConfirmDeleteDialog();
+            var result = await _dialogService.ShowConfirmDeleteDialog();
             if (result != ContentDialogResult.Primary) return;
 
             var success = await _zoneDataService.DeleteZoneAsync(State.SelectedZone.ZoneId.Value);
             if (success)
             {
-                await _adminZoneDialogService.ShowSuccessDialog("Zone deleted successfully.");
+                await _dialogService.ShowSuccessDialog("Zone deleted successfully.", "Success");
                 State.Source.Remove(State.SelectedZone);
                 State.SelectedZone = null;
                 await LoadDataAsync();
             }
             else
             {
-                await _adminZoneDialogService.ShowErrorDialog("Failed to delete zone.");
+                await _dialogService.ShowErrorDialog("Failed to delete zone.", "Error");
             }
         }
         catch (Exception ex)
         {
-            await _adminZoneDialogService.ShowErrorDialog(ex.Message);
+            await _dialogService.ShowErrorDialog(ex.Message, "Error");
         }
     }
 
