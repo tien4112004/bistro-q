@@ -121,7 +121,7 @@
             </customLV:KitchenListView.ItemContainerStyle>
 
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="vm:KitchenOrderItemViewModel">
+                <DataTemplate x:DataType="vm:OrderItemViewModel">
                     <Grid Padding="0,8">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>

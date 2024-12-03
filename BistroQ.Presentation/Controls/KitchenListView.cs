@@ -2,4 +2,4 @@
 
 namespace BistroQ.Presentation.Controls;
 
-public class KitchenListView : CustomListView<KitchenOrderItemViewModel> { }
+public class KitchenListView : CustomListView<OrderItemViewModel> { }

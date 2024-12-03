@@ -12,7 +12,7 @@ public partial class KitchenOrderButtonsViewModel : ObservableObject, IDisposabl
 {
     private readonly IMessenger _messenger;
 
-    public ObservableCollection<KitchenOrderItemViewModel> Items { get; set; } = new();
+    public ObservableCollection<OrderItemViewModel> Items { get; set; } = new();
 
     [ObservableProperty]
     private bool _canComplete;
@@ -27,9 +27,9 @@ public partial class KitchenOrderButtonsViewModel : ObservableObject, IDisposabl
     {
         _messenger = messenger;
     }
-    public void UpdateStates(IEnumerable<KitchenOrderItemViewModel> items)
+    public void UpdateStates(IEnumerable<OrderItemViewModel> items)
     {
-        Items = new ObservableCollection<KitchenOrderItemViewModel>(items);
+        Items = new ObservableCollection<OrderItemViewModel>(items);
         CanComplete = Items.Any(item => item.Status == OrderItemStatus.InProgress);
         CanMove = Items.Any();
         CanCancel = Items.Any(item => item.Status == OrderItemStatus.Pending);
@@ -39,21 +39,27 @@ public partial class KitchenOrderButtonsViewModel : ObservableObject, IDisposabl
     private void Complete()
     {
         if (CanComplete)
+        {
             _messenger.Send(new KitchenActionMessage(Items, KitchenAction.Complete));
+        }
     }
 
     [RelayCommand]
     private void Move()
     {
         if (CanMove)
+        {
             _messenger.Send(new KitchenActionMessage(Items, KitchenAction.Move));
+        }
     }
 
     [RelayCommand]
     private void Cancel()
     {
         if (CanCancel)
+        {
             _messenger.Send(new KitchenActionMessage(Items, KitchenAction.Cancel));
+        }
     }
 
     public void Dispose()

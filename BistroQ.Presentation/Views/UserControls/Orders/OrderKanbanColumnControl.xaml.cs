@@ -67,7 +67,7 @@ public sealed partial class OrderKanbanColumnControl : UserControl
     {
         if (e.Items.Count > 0)
         {
-            var items = e.Items.Select(i => i as KitchenOrderItemViewModel);
+            var items = e.Items.Select(i => i as OrderItemViewModel);
 
             if (ViewModel.HasSelectedItems)
             {
@@ -140,7 +140,7 @@ public sealed partial class OrderKanbanColumnControl : UserControl
 
         if (columnsToClear.TryGetValue(title, out var columnToClear))
         {
-            messenger.Send(new ChangeCustomListViewSelectionMessage<KitchenOrderItemViewModel>(new ObservableCollection<KitchenOrderItemViewModel>(), columnToClear));
+            messenger.Send(new ChangeCustomListViewSelectionMessage<OrderItemViewModel>(new ObservableCollection<OrderItemViewModel>(), columnToClear));
         }
     }
 }

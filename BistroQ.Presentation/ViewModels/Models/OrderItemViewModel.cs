@@ -29,6 +29,8 @@ public partial class OrderItemViewModel : ObservableObject
     [ObservableProperty]
     private decimal? _priceAtPurchase;
 
+    [ObservableProperty]
+    private TableViewModel? _table;
     public decimal? Total => Quantity * PriceAtPurchase;
 
     [ObservableProperty]

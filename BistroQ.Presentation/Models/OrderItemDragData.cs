@@ -5,7 +5,7 @@ namespace BistroQ.Presentation.Models;
 
 public class OrderItemDragData
 {
-    public IEnumerable<KitchenOrderItemViewModel> OrderItems { get; set; }
+    public IEnumerable<OrderItemViewModel> OrderItems { get; set; }
     public KitchenColumnType SourceColumn { get; set; }
 
 }

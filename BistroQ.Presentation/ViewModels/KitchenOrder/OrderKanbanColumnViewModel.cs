@@ -17,9 +17,9 @@ public partial class OrderKanbanColumnViewModel :
     IDisposable
 {
     [ObservableProperty]
-    private ObservableCollection<KitchenOrderItemViewModel> _items = new();
+    private ObservableCollection<OrderItemViewModel> _items = new();
 
-    public ObservableCollection<KitchenOrderItemViewModel> SelectedItems { get; set; } = new();
+    public ObservableCollection<OrderItemViewModel> SelectedItems { get; set; } = new();
 
     public bool HasSelectedItems => SelectedItems.Any();
 
@@ -42,8 +42,8 @@ public partial class OrderKanbanColumnViewModel :
         try
         {
             var orderItems = await _orderItemDataService.GetOrderItemsByStatusAsync(status);
-            var orderItemViewModels = _mapper.Map<IEnumerable<KitchenOrderItemViewModel>>(orderItems);
-            Items = new ObservableCollection<KitchenOrderItemViewModel>(orderItemViewModels);
+            var orderItemViewModels = _mapper.Map<IEnumerable<OrderItemViewModel>>(orderItems);
+            Items = new ObservableCollection<OrderItemViewModel>(orderItemViewModels);
         }
         catch (Exception ex)
         {
@@ -52,7 +52,7 @@ public partial class OrderKanbanColumnViewModel :
     }
 
     public async void HandleItemDroppedAsync(
-        IEnumerable<KitchenOrderItemViewModel> items,
+        IEnumerable<OrderItemViewModel> items,
         KitchenColumnType sourceColumn,
         int insertIndex)
     {

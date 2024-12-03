@@ -4,6 +4,7 @@ using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Enums;
 using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Models;
+using BistroQ.Presentation.ViewModels.States;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Diagnostics;
@@ -13,7 +14,7 @@ namespace BistroQ.Presentation.ViewModels.KitchenOrder;
 public partial class KitchenOrderViewModel :
     ObservableObject,
     INavigationAware,
-    IRecipient<CustomListViewSelectionChangedMessage<KitchenOrderItemViewModel>>,
+    IRecipient<CustomListViewSelectionChangedMessage<OrderItemViewModel>>,
     IRecipient<KitchenActionMessage>,
     IDisposable
 {
@@ -27,7 +28,10 @@ public partial class KitchenOrderViewModel :
     private readonly IMessenger _messenger;
 
     [ObservableProperty]
-    private List<KitchenOrderItemViewModel> _selectedItems = new();
+    private List<OrderItemViewModel> _selectedItems = new();
+
+    [ObservableProperty]
+    private KitchenOrderState _state = new();
 
     public KitchenOrderViewModel(IOrderItemDataService orderItemDataService, IMessenger messenger, KitchenOrderButtonsViewModel kitchenOrderButtonsViewModel)
     {
@@ -51,17 +55,25 @@ public partial class KitchenOrderViewModel :
     {
         PendingColumnVM.ColumnType = KitchenColumnType.Pending;
         PendingColumnVM.LoadItems(OrderItemStatus.Pending);
+        State.PendingItems = PendingColumnVM.Items;
+
         ProgressColumnVM.ColumnType = KitchenColumnType.InProgress;
         ProgressColumnVM.LoadItems(OrderItemStatus.InProgress);
+        State.ProgressItems = ProgressColumnVM.Items;
     }
 
-    public void Receive(CustomListViewSelectionChangedMessage<KitchenOrderItemViewModel> message)
+    public void Receive(CustomListViewSelectionChangedMessage<OrderItemViewModel> message)
     {
-
-        SelectedItems.Clear();
-        SelectedItems.AddRange(PendingColumnVM.SelectedItems);
-        SelectedItems.AddRange(ProgressColumnVM.SelectedItems);
-        KitchenOrderButtonsVM.UpdateStates(SelectedItems);
+        State.SelectedItems.Clear();
+        foreach (var item in PendingColumnVM.SelectedItems)
+        {
+            State.SelectedItems.Add(item);
+        }
+        foreach (var item in ProgressColumnVM.SelectedItems)
+        {
+            State.SelectedItems.Add(item);
+        }
+        KitchenOrderButtonsVM.UpdateStates(State.SelectedItems);
     }
 
     public void Receive(KitchenActionMessage message)
@@ -80,7 +92,7 @@ public partial class KitchenOrderViewModel :
         }
     }
 
-    private async void Complete(IEnumerable<KitchenOrderItemViewModel> orderItems)
+    private async void Complete(IEnumerable<OrderItemViewModel> orderItems)
     {
         try
         {
@@ -90,7 +102,7 @@ public partial class KitchenOrderViewModel :
             foreach (var item in orderItems)
             {
                 item.Status = OrderItemStatus.Completed;
-                ProgressColumnVM.Items.Remove(item);
+                State.ProgressItems.Remove(item);
             }
         }
         catch (Exception ex)
@@ -99,7 +111,7 @@ public partial class KitchenOrderViewModel :
         }
     }
 
-    private async void Move(IEnumerable<KitchenOrderItemViewModel> orderItems)
+    private async void Move(IEnumerable<OrderItemViewModel> orderItems)
     {
         try
         {
@@ -115,13 +127,13 @@ public partial class KitchenOrderViewModel :
                 item.Status = targetStatus;
                 if (targetStatus == OrderItemStatus.InProgress)
                 {
-                    PendingColumnVM.Items.Remove(item);
-                    ProgressColumnVM.Items.Add(item);
+                    State.PendingItems.Remove(item);
+                    State.ProgressItems.Add(item);
                 }
                 else
                 {
-                    ProgressColumnVM.Items.Remove(item);
-                    PendingColumnVM.Items.Add(item);
+                    State.ProgressItems.Remove(item);
+                    State.PendingItems.Add(item);
                 }
             }
         }
@@ -131,7 +143,7 @@ public partial class KitchenOrderViewModel :
         }
     }
 
-    private async void Cancel(IEnumerable<KitchenOrderItemViewModel> orderItems)
+    private async void Cancel(IEnumerable<OrderItemViewModel> orderItems)
     {
         try
         {
@@ -141,7 +153,7 @@ public partial class KitchenOrderViewModel :
             foreach (var item in orderItems)
             {
                 item.Status = OrderItemStatus.Cancelled;
-                PendingColumnVM.Items.Remove(item);
+                State.PendingItems.Remove(item);
             }
         }
         catch (Exception ex)
