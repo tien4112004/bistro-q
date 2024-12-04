@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos.Order;
 using BistroQ.Domain.Models.Entities;
@@ -18,7 +18,7 @@ public class OrderDataService : IOrderDataService
 
     public async Task<Order> CreateOrderAsync()
     {
-        var response = await _apiClient.PostAsync<OrderDetailResponse>("api/ClientOrder", null);
+        var response = await _apiClient.PostAsync<OrderDetailResponse>("api/Client/Order", null);
 
         if (response.Success)
         {
@@ -31,7 +31,7 @@ public class OrderDataService : IOrderDataService
 
     public async Task<Order?> GetOrderAsync()
     {
-        var response = await _apiClient.GetAsync<OrderDetailResponse>("api/ClientOrder", null);
+        var response = await _apiClient.GetAsync<OrderDetailResponse>("api/Client/Order", null);
         if (response.Success)
         {
             var order = _mapper.Map<Order>(response.Data);
@@ -42,7 +42,7 @@ public class OrderDataService : IOrderDataService
 
     public async Task DeleteOrderAsync()
     {
-        var response = await _apiClient.DeleteAsync<OrderDetailResponse>("api/ClientOrder", null);
+        var response = await _apiClient.DeleteAsync<OrderDetailResponse>("api/Client/Order", null);
         if (!response.Success)
         {
             throw new Exception(response.Message);
