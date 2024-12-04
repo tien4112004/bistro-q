@@ -60,11 +60,11 @@ public partial class OrderItemGridViewModel :
             if (ex is ObjectDisposedException e)
             {
                 Debug.WriteLine(
-                            "Disposed object details:\n" +
-        $"Object Name: {e.ObjectName}\n" +
-        $"Message: {e.Message}\n" +
-        $"Source: {e.Source}\n" +
-        $"Stack Trace: {e.StackTrace}"
+                        "Disposed object details:\n" +
+                        $"Object Name: {e.ObjectName}\n" +
+                        $"Message: {e.Message}\n" +
+                        $"Source: {e.Source}\n" +
+                        $"Stack Trace: {e.StackTrace}"
                     );
             }
             await _dialogService.ShowErrorDialog(ex.Message, "Error");
@@ -91,7 +91,7 @@ public partial class OrderItemGridViewModel :
 
     public void Receive(PageSizeChangedMessage message)
     {
-        State.Query.Page = message.NewPageSize;
+        State.Query.Size = message.NewPageSize;
         LoadItemsAsync();
     }
 

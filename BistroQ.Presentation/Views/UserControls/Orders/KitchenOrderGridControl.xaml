@@ -8,7 +8,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converters="using:BistroQ.Presentation.Converters"
     xmlns:skeleton="using:BistroQ.Presentation.Controls.Skeleton"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" 
+    xmlns:models="using:BistroQ.Presentation.ViewModels.Models" 
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -43,11 +44,11 @@
                                              IsReadOnly="True" 
                                              Header="Zone Name"
                                              Tag="ZoneName" />
-                <controls:DataGridTextColumn Binding="{Binding CreatedAt, Converter={StaticResource DateTimeToTimeOnly}}" 
+                <controls:DataGridTextColumn Binding="{Binding CreatedAt, Converter={StaticResource DateTimeToTimeOnly}, ConverterParameter=HH:mm}" 
                                              IsReadOnly="True"
                                              Header="Ordered At"
                                              Tag="OrderedAt" />
-                <controls:DataGridTextColumn Binding="{Binding UpdatedAt, Converter={StaticResource DateTimeToTimeOnly}}" 
+                <controls:DataGridTextColumn Binding="{Binding UpdatedAt, Converter={StaticResource DateTimeToTimeOnly}, ConverterParameter=HH:mm}" 
                                              IsReadOnly="True"
                                              Header="Action At"
                                              Tag="ActionAt" />
