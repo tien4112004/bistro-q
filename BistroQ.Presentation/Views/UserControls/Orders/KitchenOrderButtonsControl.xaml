@@ -28,19 +28,22 @@
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SuccessHoverColor}"/>
                     <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="{ThemeResource CardBackgroundFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForeground" Color="{ThemeResource TextOnAccentFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="{ThemeResource TextOnAccentFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{ThemeResource TextFillColorPrimary}"/>
                 </ResourceDictionary>
             </Button.Resources>
             <StackPanel
                  HorizontalAlignment="Center"
                  Spacing="5"
                  VerticalAlignment="Center">
-                <BitmapIcon Foreground="White" 
+                <BitmapIcon 
                          Width="30"
                          UriSource="ms-appx:///Assets/Icons/square-check-big.png"/>
                 <TextBlock 
                  FontWeight="Bold"
                  FontSize="18"
-                 Foreground="White">Complete</TextBlock>
+                 >Complete</TextBlock>
             </StackPanel>
         </Button>
 
@@ -58,19 +61,22 @@
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource CyanHoverColor}"/>
                     <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="{ThemeResource CardBackgroundFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForeground" Color="{ThemeResource TextOnAccentFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="{ThemeResource TextOnAccentFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{ThemeResource TextFillColorPrimary}"/>
                 </ResourceDictionary>
             </Button.Resources>
             <StackPanel
              HorizontalAlignment="Center"
              Spacing="5"
              VerticalAlignment="Center">
-                <BitmapIcon Foreground="White" 
+                <BitmapIcon 
                          Width="30"
                          UriSource="ms-appx:///Assets/Icons/move-horizontal.png"/>
                 <TextBlock 
                  FontWeight="Bold"
                  FontSize="18"
-                 Foreground="White">Move</TextBlock>
+                 >Move</TextBlock>
             </StackPanel>
         </Button>
 
@@ -88,19 +94,22 @@
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource ErrorHoverColor}"/>
                     <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="{ThemeResource CardBackgroundFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForeground" Color="{ThemeResource TextOnAccentFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="{ThemeResource TextOnAccentFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{ThemeResource TextFillColorPrimary}"/>
                 </ResourceDictionary>
             </Button.Resources>
             <StackPanel
              HorizontalAlignment="Center"
              Spacing="5"
              VerticalAlignment="Center">
-                <BitmapIcon Foreground="White" 
+                <BitmapIcon 
                          Width="30"
                          UriSource="ms-appx:///Assets/Icons/circle-x.png"/>
                 <TextBlock 
                  FontWeight="Bold"
                  FontSize="18"
-                 Foreground="White">Cancel</TextBlock>
+                 >Cancel</TextBlock>
             </StackPanel>
         </Button>
     </Grid>

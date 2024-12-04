@@ -11,6 +11,7 @@ using BistroQ.Presentation.ViewModels.AdminTable;
 using BistroQ.Presentation.ViewModels.AdminZone;
 using BistroQ.Presentation.ViewModels.CashierTable;
 using BistroQ.Presentation.ViewModels.Client;
+using BistroQ.Presentation.ViewModels.KitchenHistory;
 using BistroQ.Presentation.ViewModels.KitchenOrder;
 using BistroQ.Presentation.ViewModels.KitchenOrder.Strategies;
 using BistroQ.Presentation.Views;
@@ -18,6 +19,7 @@ using BistroQ.Presentation.Views.AdminTable;
 using BistroQ.Presentation.Views.AdminZone;
 using BistroQ.Presentation.Views.CashierTable;
 using BistroQ.Presentation.Views.Client;
+using BistroQ.Presentation.Views.KitchenHistory;
 using BistroQ.Presentation.Views.KitchenOrder;
 using BistroQ.Service.Auth;
 using BistroQ.Service.Common;
@@ -148,6 +150,8 @@ public partial class App : Application
             services.AddTransient<KitchenOrderPage>();
             services.AddTransient<OrderKanbanColumnViewModel>();
             services.AddTransient<KitchenOrderButtonsViewModel>();
+            services.AddTransient<KitchenHistoryPage>();
+            services.AddTransient<KitchenHistoryViewModel>();
 
             // Auto Mapper
             services.AddAutoMapper((serviceProvider, cfg) =>

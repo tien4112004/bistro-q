@@ -219,9 +219,6 @@
   <data name="AdminZoneAddPage_AddButtonText/Text" xml:space="preserve">
     <value>Add</value>
   </data>
-  <data name="AdminZoneAddPage_AddButtonText/Text" xml:space="preserve">
-    <value>Add</value>
-  </data>
   <data name="ClientHomePage_ProductListTitle/Text" xml:space="preserve">
     <value>Menu</value>
   </data>
@@ -233,5 +230,11 @@
   </data>
   <data name="AddItemButton/Content" xml:space="preserve">
     <value>Add</value>
+  </data>
+  <data name="Shell_KitchenOrderPage.Content" xml:space="preserve">
+    <value>Current Order</value>
+  </data>
+  <data name="Shell_KitchenHistoryPage.Content" xml:space="preserve">
+    <value>All Orders</value>
   </data>
 </root>

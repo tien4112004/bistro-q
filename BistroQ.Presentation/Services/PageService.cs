@@ -4,12 +4,14 @@ using BistroQ.Presentation.ViewModels.AdminTable;
 using BistroQ.Presentation.ViewModels.AdminZone;
 using BistroQ.Presentation.ViewModels.CashierTable;
 using BistroQ.Presentation.ViewModels.Client;
+using BistroQ.Presentation.ViewModels.KitchenHistory;
 using BistroQ.Presentation.ViewModels.KitchenOrder;
 using BistroQ.Presentation.Views;
 using BistroQ.Presentation.Views.AdminTable;
 using BistroQ.Presentation.Views.AdminZone;
 using BistroQ.Presentation.Views.CashierTable;
 using BistroQ.Presentation.Views.Client;
+using BistroQ.Presentation.Views.KitchenHistory;
 using BistroQ.Presentation.Views.KitchenOrder;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -36,6 +38,7 @@ public class PageService : IPageService
         Configure<AdminTableEditPageViewModel, AdminTableEditPage>();
 
         Configure<KitchenOrderViewModel, KitchenOrderPage>();
+        Configure<KitchenHistoryViewModel, KitchenHistoryPage>();
     }
 
     public Type GetPageType(string key)

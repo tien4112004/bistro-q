@@ -170,8 +170,8 @@
                                         CornerRadius="4"
                                         Padding="12,4">
                                     <TextBlock 
-                                                Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
-                                                FontWeight="SemiBold">
+                                        Foreground="{StaticResource TextOnAccentAAFillColorPrimaryBrush}"
+                                        FontWeight="SemiBold">
                                         <Run Text="Table"/>
                                         <Run Text="{x:Bind Table.Number, Mode=OneWay}"/>
                                     </TextBlock>
@@ -195,11 +195,13 @@
                                   BorderThickness="0,1,0,0"
                                   Padding="0,8,0,0">
                                 <Border 
-                                    Background="{ThemeResource SystemFillColorSolidNeutralBackground}"
+                                    Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}"
                                     CornerRadius="4"
                                     HorizontalAlignment="Left"
                                     Padding="12,4">
-                                    <TextBlock Text="{x:Bind Table.ZoneName, Mode=OneWay}" />
+                                    <TextBlock 
+                                        Foreground="{ThemeResource TextFillColorPrimary}"
+                                        Text="{x:Bind Table.ZoneName, Mode=OneWay}" />
                                 </Border>
                             </Grid>
                         </Grid>

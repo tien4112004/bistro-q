@@ -16,6 +16,7 @@
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="TableAvailableBrush" Color="{ThemeResource CardBackgroundFillColorDefaultBrush}"/>
                 </ResourceDictionary>
+                <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.Controls.Segmented/Segmented/Segmented.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

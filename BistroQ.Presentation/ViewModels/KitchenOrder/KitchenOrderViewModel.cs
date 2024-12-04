@@ -3,12 +3,12 @@ using BistroQ.Domain.Enums;
 using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Enums;
 using BistroQ.Presentation.Messages;
+using BistroQ.Presentation.ViewModels.KitchenOrder.Strategies;
 using BistroQ.Presentation.ViewModels.Models;
 using BistroQ.Presentation.ViewModels.States;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Diagnostics;
-using BistroQ.Presentation.ViewModels.KitchenOrder.Strategies;
 
 namespace BistroQ.Presentation.ViewModels.KitchenOrder;
 
@@ -21,7 +21,6 @@ public partial class KitchenOrderViewModel :
 {
     public OrderKanbanColumnViewModel PendingColumnVM { get; set; }
     public OrderKanbanColumnViewModel ProgressColumnVM { get; set; }
-
     public KitchenOrderButtonsViewModel KitchenOrderButtonsVM { get; set; }
 
     private readonly IOrderItemDataService _orderItemDataService;
@@ -29,9 +28,6 @@ public partial class KitchenOrderViewModel :
     private readonly IMessenger _messenger;
 
     private readonly KitchenStrategyFactory _strategyFactory;
-
-    [ObservableProperty]
-    private List<OrderItemViewModel> _selectedItems = new();
 
     [ObservableProperty]
     private KitchenOrderState _state = new();
