@@ -1,5 +1,7 @@
 ﻿using BistroQ.Domain.Enums;
+using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.KitchenHistory;
+using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.WinUI.Controls;
 using Microsoft.UI.Xaml.Controls;
 
@@ -39,6 +41,6 @@ public sealed partial class KitchenHistoryPage : Page
         }
 
         var type = _statusItems[Segmented.SelectedIndex].Status;
-        ViewModel.LoadItemsCommand.Execute(type);
+        App.GetService<IMessenger>().Send(new OrderGridStatusChangedMessage(type));
     }
 }

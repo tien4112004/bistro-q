@@ -6,16 +6,11 @@
     xmlns:local="using:BistroQ.Presentation.Views.KitchenHistory"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:converters="using:BistroQ.Presentation.Converters"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
-    xmlns:controls2="using:CommunityToolkit.WinUI.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:userControls="using:BistroQ.Presentation.Views.UserControls.Orders"
     xmlns:pagin="using:BistroQ.Presentation.Views.UserControls"
     mc:Ignorable="d"
     Background="Transparent">
-
-    <Page.Resources>
-        <converters:DateTimeToTimeOnlyConverter x:Key="DateTimeToTimeOnly"/>
-    </Page.Resources>
 
 
     <Grid RowSpacing="10">
@@ -29,51 +24,16 @@
                     Orientation="Horizontal"
                     Padding="10,0"
                     Background="Transparent">
-            <controls2:Segmented 
+            <controls:Segmented 
                 x:Name="Segmented"
                 HorizontalAlignment="Center"
                 SelectedIndex="0"
                 SelectionChanged="Segmented_SelectionChanged"
                 SelectionMode="Single">
-            </controls2:Segmented>
+            </controls:Segmented>
         </StackPanel>
 
-        <controls:DataGrid
-            Grid.Row="1"
-            GridLinesVisibility="Horizontal"
-            ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
-            AutoGenerateColumns="False"
-            >
-            <controls:DataGrid.Resources>
-                <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="{StaticResource CardBackgroundFillColorSecondary}" />
-            </controls:DataGrid.Resources>
-             <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Binding="{Binding Product.Name}" 
-                                             IsReadOnly="True"
-                                             Header="Name"
-                                             Tag="TableId" />
-                <controls:DataGridTextColumn Binding="{Binding Quantity}" 
-                                             IsReadOnly="True"
-                                             Header="Quantity"
-                                             Tag="Name" />
-                <controls:DataGridTextColumn Binding="{Binding Table.Number}" 
-                                             IsReadOnly="True"
-                                             Header="Table Number"
-                                             Tag="Name" />
-                <controls:DataGridTextColumn Binding="{Binding Table.ZoneName}" 
-                                             IsReadOnly="True" 
-                                             Header="Zone Name"
-                                             Tag="Name" />
-                <controls:DataGridTextColumn Binding="{Binding CreatedAt, Converter={StaticResource DateTimeToTimeOnly}}" 
-                                             IsReadOnly="True"
-                                             Header="Ordered At"
-                                             Tag="TableCount" />
-                <controls:DataGridTextColumn Binding="{Binding UpdatedAt, Converter={StaticResource DateTimeToTimeOnly}}" 
-                                             IsReadOnly="True"
-                                             Header="Action At"
-                                             Tag="TableCount" />
-            </controls:DataGrid.Columns>
-        </controls:DataGrid>
+        <userControls:KitchenOrderGridControl Grid.Row="1" ViewModel="{x:Bind ViewModel.OrderItemGridViewModel, Mode=OneWay}"/>
 
         <pagin:PaginationControl Grid.Row="2" Margin="0,0,0,24"/>
     </Grid>

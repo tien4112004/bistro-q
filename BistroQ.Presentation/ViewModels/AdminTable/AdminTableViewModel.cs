@@ -3,7 +3,6 @@ using BistroQ.Domain.Contracts.Services;
 using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Messages;
-using BistroQ.Presentation.Services;
 using BistroQ.Presentation.ViewModels.AdminTable;
 using BistroQ.Presentation.ViewModels.Models;
 using BistroQ.Presentation.ViewModels.States;
@@ -184,6 +183,6 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
 
     public void Dispose()
     {
-
+        _messenger.UnregisterAll(this);
     }
 }

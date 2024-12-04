@@ -1,43 +1,20 @@
-﻿using AutoMapper;
-using BistroQ.Domain.Contracts.Services;
-using BistroQ.Domain.Enums;
-using BistroQ.Presentation.Contracts.ViewModels;
-using BistroQ.Presentation.ViewModels.Models;
+﻿using BistroQ.Presentation.Contracts.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.KitchenHistory;
 
 public partial class KitchenHistoryViewModel : ObservableObject, INavigationAware
 {
-    [ObservableProperty]
-    private ObservableCollection<OrderItemViewModel>? _items;
+    public OrderItemGridViewModel OrderItemGridViewModel { get; set; }
 
-    private readonly IMapper _mapper;
-    private readonly IOrderItemDataService _orderItemDataService;
-
-    public ICommand LoadItemsCommand { get; }
-
-    public KitchenHistoryViewModel(IMapper mapper, IOrderItemDataService orderItemDataService)
+    public KitchenHistoryViewModel(OrderItemGridViewModel orderItemGridViewModel)
     {
-        _mapper = mapper;
-        _orderItemDataService = orderItemDataService;
-
-        LoadItemsCommand = new AsyncRelayCommand<OrderItemStatus>(LoadItemsAsync);
-    }
-
-    private async Task LoadItemsAsync(OrderItemStatus status)
-    {
-        var orderItems = await _orderItemDataService.GetOrderItemsByStatusAsync(status);
-
-        Items = new ObservableCollection<OrderItemViewModel>(orderItems.Select(_mapper.Map<OrderItemViewModel>));
+        OrderItemGridViewModel = orderItemGridViewModel;
     }
 
     public void OnNavigatedTo(object parameter)
     {
-        //
+        OrderItemGridViewModel.LoadItemsAsync();
     }
 
     public void OnNavigatedFrom()

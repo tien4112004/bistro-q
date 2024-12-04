@@ -27,6 +27,7 @@
     <None Remove="Views\CashierTable\Controls\ZoneOverviewControl.xaml" />
     <None Remove="Views\CashierTable\Controls\ZoneTableGridControl.xaml" />
     <None Remove="Views\KitchenHistory\KitchenHistoryPage.xaml" />
+    <None Remove="Views\UserControls\Orders\KitchenOrderGridControl.xaml" />
     <None Remove="Views\UserControls\Orders\TableBillSummaryControl.xaml" />
     <None Remove="Views\UserControls\Orders\TableOrderDetailsControl.xaml" />
     <None Remove="Views\UserControls\PaginationControl.xaml" />
@@ -62,6 +63,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\UserControls\Orders\KitchenOrderGridControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\KitchenHistory\KitchenHistoryPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

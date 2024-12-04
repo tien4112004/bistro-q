@@ -1,6 +1,9 @@
 ﻿using BistroQ.Domain.Contracts.Services;
+using BistroQ.Domain.Dtos;
+using BistroQ.Domain.Dtos.Orders;
 using BistroQ.Domain.Enums;
 using BistroQ.Domain.Models.Entities;
+using System.Text.Json;
 
 namespace BistroQ.Service.Mock;
 
@@ -8,7 +11,29 @@ public class MockOrderItemDataService : IOrderItemDataService
 {
     public MockOrderItemDataService()
     {
+        var orderItem = _orderItems.First();
 
+        for (int i = 0; i < 12; i++)
+        {
+            var item = JsonSerializer.Deserialize<OrderItem>(
+                JsonSerializer.Serialize(orderItem));
+            item.OrderItemId = i + 100;
+            item.Quantity = i + 100;
+            item.Status = OrderItemStatus.Completed;
+            _orderItems.Add(item);
+            item.UpdatedAt = DateTime.Now - TimeSpan.FromMinutes(i);
+        }
+
+        for (int i = 0; i < 15; i++)
+        {
+            var item = JsonSerializer.Deserialize<OrderItem>(
+                JsonSerializer.Serialize(orderItem));
+            item.OrderItemId = i + 200;
+            item.Quantity = i + 200;
+            item.Status = OrderItemStatus.Cancelled;
+            item.UpdatedAt = DateTime.Now - TimeSpan.FromMinutes(i);
+            _orderItems.Add(item);
+        }
     }
 
     public Task<OrderItem> UpdateOrderItemStatusAsync(int orderItemId, OrderItemStatus status)
@@ -26,6 +51,40 @@ public class MockOrderItemDataService : IOrderItemDataService
     public Task<IEnumerable<OrderItem>> GetOrderItemsByStatusAsync(OrderItemStatus status)
     {
         return Task.FromResult(_orderItems.Where(x => x.Status == status));
+    }
+
+    public async Task<ApiCollectionResponse<IEnumerable<OrderItem>>> GetOrderItemsAsync(OrderItemColletionQueryParams queryParams = null)
+    {
+        await Task.Delay(200); // Simulate a delay
+        IQueryable<OrderItem> query = _orderItems.AsQueryable();
+
+        // Filter by status
+        query = queryParams.Status switch
+        {
+            "Pending" => query.Where(x => x.Status == OrderItemStatus.Pending),
+            "InProgress" => query.Where(x => x.Status == OrderItemStatus.InProgress),
+            "Completed" => query.Where(x => x.Status == OrderItemStatus.Completed),
+            "Cancelled" => query.Where(x => x.Status == OrderItemStatus.Cancelled),
+            _ => query
+        };
+
+        var count = query.Count();
+
+        // Sort by updated at desc
+        query = query.OrderByDescending(x => x.UpdatedAt);
+
+        // Pagination
+        var skip = (queryParams.Page - 1) * queryParams.Size;
+        var take = queryParams.Size;
+
+        var items = query.Skip(skip).Take(take).ToList();
+
+        return new ApiCollectionResponse<IEnumerable<OrderItem>>(items,
+            count,
+            queryParams.Page,
+            (int)Math.Ceiling(count / (double)queryParams.Size)
+            );
+
     }
 
     private readonly List<OrderItem> _orderItems = new List<OrderItem>

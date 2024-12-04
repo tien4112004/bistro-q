@@ -152,6 +152,7 @@ public partial class App : Application
             services.AddTransient<KitchenOrderButtonsViewModel>();
             services.AddTransient<KitchenHistoryPage>();
             services.AddTransient<KitchenHistoryViewModel>();
+            services.AddTransient<OrderItemGridViewModel>();
 
             // Auto Mapper
             services.AddAutoMapper((serviceProvider, cfg) =>
