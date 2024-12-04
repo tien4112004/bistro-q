@@ -7,6 +7,7 @@ using BistroQ.Presentation.ViewModels.States;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.KitchenHistory;
 
@@ -38,7 +39,6 @@ public partial class OrderItemGridViewModel :
         _messenger.RegisterAll(this);
     }
 
-
     public async void LoadItemsAsync()
     {
         try
@@ -57,6 +57,16 @@ public partial class OrderItemGridViewModel :
         }
         catch (Exception ex)
         {
+            if (ex is ObjectDisposedException e)
+            {
+                Debug.WriteLine(
+                            "Disposed object details:\n" +
+        $"Object Name: {e.ObjectName}\n" +
+        $"Message: {e.Message}\n" +
+        $"Source: {e.Source}\n" +
+        $"Stack Trace: {e.StackTrace}"
+                    );
+            }
             await _dialogService.ShowErrorDialog(ex.Message, "Error");
         }
         finally

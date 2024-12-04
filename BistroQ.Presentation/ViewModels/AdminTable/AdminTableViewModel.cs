@@ -17,7 +17,12 @@ using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels;
 
-public partial class AdminTableViewModel : ObservableRecipient, INavigationAware, IDisposable
+public partial class AdminTableViewModel :
+    ObservableRecipient,
+    INavigationAware,
+    IDisposable,
+    IRecipient<PageSizeChangedMessage>,
+    IRecipient<CurrentPageChangedMessage>
 {
     private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
@@ -54,17 +59,7 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
         SortCommand = new RelayCommand<(string column, string direction)>(ExecuteSortCommand);
         SearchCommand = new RelayCommand(ExecuteSearchCommand);
 
-        _messenger.Register<PageSizeChangedMessage>(this, async (r, m) =>
-        {
-            State.Query.Size = m.NewPageSize;
-            await LoadDataAsync();
-        });
-
-        _messenger.Register<CurrentPageChangedMessage>(this, async (r, m) =>
-        {
-            State.Query.Page = m.NewCurrentPage;
-            await LoadDataAsync();
-        });
+        _messenger.RegisterAll(this);
     }
 
     private void StatePropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -179,6 +174,17 @@ public partial class AdminTableViewModel : ObservableRecipient, INavigationAware
     {
         State.ReturnToFirstPage();
         _ = LoadDataAsync();
+    }
+    public async void Receive(CurrentPageChangedMessage message)
+    {
+        State.Query.Page = message.NewCurrentPage;
+        await LoadDataAsync();
+    }
+
+    public async void Receive(PageSizeChangedMessage message)
+    {
+        State.Query.Size = message.NewPageSize;
+        await LoadDataAsync();
     }
 
     public void Dispose()
