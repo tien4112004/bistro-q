@@ -1,5 +1,4 @@
-using BistroQ.Presentation.Helpers;
-
+﻿using BistroQ.Presentation.Helpers;
 using Windows.UI.ViewManagement;
 
 namespace BistroQ.Presentation;

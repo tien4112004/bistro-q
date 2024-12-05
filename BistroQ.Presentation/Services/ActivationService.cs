@@ -1,11 +1,9 @@
-using BistroQ.Presentation.Activation;
+﻿using BistroQ.Presentation.Activation;
 using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Views;
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace BistroQ.Presentation.Services;
 

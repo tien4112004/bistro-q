@@ -11,14 +11,20 @@ using BistroQ.Presentation.ViewModels.AdminTable;
 using BistroQ.Presentation.ViewModels.AdminZone;
 using BistroQ.Presentation.ViewModels.CashierTable;
 using BistroQ.Presentation.ViewModels.Client;
+using BistroQ.Presentation.ViewModels.KitchenHistory;
+using BistroQ.Presentation.ViewModels.KitchenOrder;
+using BistroQ.Presentation.ViewModels.KitchenOrder.Strategies;
 using BistroQ.Presentation.Views;
 using BistroQ.Presentation.Views.AdminTable;
 using BistroQ.Presentation.Views.AdminZone;
 using BistroQ.Presentation.Views.CashierTable;
 using BistroQ.Presentation.Views.Client;
+using BistroQ.Presentation.Views.KitchenHistory;
+using BistroQ.Presentation.Views.KitchenOrder;
 using BistroQ.Service.Auth;
 using BistroQ.Service.Common;
 using BistroQ.Service.Data;
+using BistroQ.Service.Mock;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -94,6 +100,7 @@ public partial class App : Application
             services.AddHttpClient();
             services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<ITokenStorageService, TokenSecureStorageService>();
+            services.AddSingleton<KitchenStrategyFactory>();
 
             // Views and ViewModels
             services.AddTransient<MainViewModel>();
@@ -119,6 +126,7 @@ public partial class App : Application
             services.AddScoped<IZoneDataService, ZoneDataService>();
             services.AddScoped<ITableDataService, TableDataService>();
             services.AddScoped<IOrderDataService, OrderDataService>();
+            services.AddScoped<IOrderItemDataService, MockOrderItemDataService>();
             services.AddScoped<ICategoryDataService, CategoryDataService>();
             services.AddScoped<IProductDataService, ProductDataService>();
             services.AddScoped<IDialogService, DialogService>();
@@ -136,6 +144,15 @@ public partial class App : Application
             services.AddTransient<ZoneOverviewViewModel>();
             services.AddTransient<ZoneTableGridViewModel>();
             services.AddTransient<TableOrderDetailViewModel>();
+
+            // Kitchen V&VM
+            services.AddTransient<KitchenOrderViewModel>();
+            services.AddTransient<KitchenOrderPage>();
+            services.AddTransient<OrderKanbanColumnViewModel>();
+            services.AddTransient<KitchenOrderButtonsViewModel>();
+            services.AddTransient<KitchenHistoryPage>();
+            services.AddTransient<KitchenHistoryViewModel>();
+            services.AddTransient<OrderItemGridViewModel>();
 
             // Auto Mapper
             services.AddAutoMapper((serviceProvider, cfg) =>
@@ -156,7 +173,11 @@ public partial class App : Application
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
-        Debug.WriteLine(e);
+        if (e.Exception != null)
+        {
+            Debug.WriteLine(e.Exception.Message);
+            Debug.WriteLine(e.Exception.StackTrace);
+        }
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)

@@ -8,8 +8,9 @@ using System.Data;
 
 namespace BistroQ.Presentation.Views.UserControls;
 
-public partial class PaginationControl : UserControl
+public partial class PaginationControl : UserControl, IDisposable, IRecipient<PaginationChangedMessage>
 {
+    private bool _isDisposed;
     private readonly IMessenger _messenger = App.GetService<IMessenger>();
 
     public static readonly DependencyProperty PaginationProperty = DependencyProperty.Register(
@@ -44,15 +45,8 @@ public partial class PaginationControl : UserControl
         NextPageCommand = new RelayCommand(NextPage, CanNextPage);
         LastPageCommand = new RelayCommand(LastPage, CanLastPage);
 
-        _messenger.Register<PaginationChangedMessage>(this, (r, m) =>
-        {
-            Pagination.TotalItems = m.TotalItems;
-            Pagination.CurrentPage = m.CurrentPage;
-            Pagination.TotalPages = m.TotalPages;
-            UpdateCommandStates();
-        });
+        _messenger.RegisterAll(this);
     }
-
     private static void OnPaginationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is PaginationControl control)
@@ -103,4 +97,25 @@ public partial class PaginationControl : UserControl
 
     private void LastPage() => _messenger.Send(new CurrentPageChangedMessage(Pagination.TotalPages));
     private bool CanLastPage() => Pagination?.CurrentPage < Pagination?.TotalPages;
+
+    private void PaginationControl_Unloaded(object sender, RoutedEventArgs e)
+    {
+        _messenger.UnregisterAll(this);
+    }
+
+    public void Receive(PaginationChangedMessage message)
+    {
+        if (_isDisposed) return;
+
+        Pagination.TotalItems = message.TotalItems;
+        Pagination.CurrentPage = message.CurrentPage;
+        Pagination.TotalPages = message.TotalPages;
+        UpdateCommandStates();
+    }
+
+    public void Dispose()
+    {
+        _isDisposed = true;
+        _messenger.UnregisterAll(this);
+    }
 }
