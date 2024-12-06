@@ -23,6 +23,15 @@ public partial class KitchenOrderButtonsViewModel : ObservableObject, IDisposabl
     [ObservableProperty]
     private bool _canCancel;
 
+    [ObservableProperty]
+    private bool _isCompleteLoading;
+
+    [ObservableProperty]
+    private bool _isMoveLoading;
+
+    [ObservableProperty]
+    private bool _isCancelLoading;
+
     public KitchenOrderButtonsViewModel(IMessenger messenger)
     {
         _messenger = messenger;
@@ -40,6 +49,10 @@ public partial class KitchenOrderButtonsViewModel : ObservableObject, IDisposabl
     {
         if (CanComplete)
         {
+            CanComplete = false;
+            CanMove = false;
+            CanCancel = false;
+            IsCompleteLoading = true;
             _messenger.Send(new KitchenActionMessage(KitchenAction.Complete));
         }
     }
@@ -49,6 +62,10 @@ public partial class KitchenOrderButtonsViewModel : ObservableObject, IDisposabl
     {
         if (CanMove)
         {
+            CanComplete = false;
+            CanMove = false;
+            CanCancel = false;
+            IsMoveLoading = true;
             _messenger.Send(new KitchenActionMessage(KitchenAction.Move));
         }
     }
@@ -58,8 +75,19 @@ public partial class KitchenOrderButtonsViewModel : ObservableObject, IDisposabl
     {
         if (CanCancel)
         {
+            CanComplete = false;
+            CanMove = false;
+            CanCancel = false;
+            IsCancelLoading = true;
             _messenger.Send(new KitchenActionMessage(KitchenAction.Cancel));
         }
+    }
+
+    public void ResetLoadingState()
+    {
+        IsCompleteLoading = false;
+        IsMoveLoading = false;
+        IsCancelLoading = false;
     }
 
     public void Dispose()

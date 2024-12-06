@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Presentation.Contracts.Services;
+using BistroQ.Presentation.Helpers;
 using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Models;
 using BistroQ.Presentation.ViewModels.States;
@@ -45,7 +46,7 @@ public partial class OrderItemGridViewModel :
         {
             State.IsLoading = true;
 
-            var result = await _dataService.GetOrderItemsAsync(State.Query);
+            var result = await TaskHelper.WithMinimumDelay(_dataService.GetOrderItemsAsync(State.Query), 200);
 
             var items = _mapper.Map<IEnumerable<OrderItemViewModel>>(result.Data);
             State.Items = new ObservableCollection<OrderItemViewModel>(items);

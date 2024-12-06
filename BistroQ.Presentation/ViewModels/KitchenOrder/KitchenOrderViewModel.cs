@@ -1,7 +1,9 @@
 ﻿using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Enums;
+using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Enums;
+using BistroQ.Presentation.Helpers;
 using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.KitchenOrder.Strategies;
 using BistroQ.Presentation.ViewModels.Models;
@@ -25,6 +27,8 @@ public partial class KitchenOrderViewModel :
 
     private readonly IOrderItemDataService _orderItemDataService;
 
+    private readonly IDialogService _dialogService;
+
     private readonly IMessenger _messenger;
 
     private readonly KitchenStrategyFactory _strategyFactory;
@@ -34,6 +38,7 @@ public partial class KitchenOrderViewModel :
 
     public KitchenOrderViewModel(IOrderItemDataService orderItemDataService,
         IMessenger messenger,
+        IDialogService dialogService,
         KitchenStrategyFactory strategyFactory,
         OrderKanbanColumnViewModel pendingColumnVM,
         OrderKanbanColumnViewModel progressColumnVM,
@@ -41,6 +46,7 @@ public partial class KitchenOrderViewModel :
     {
         PendingColumnVM = pendingColumnVM;
         ProgressColumnVM = progressColumnVM;
+        _dialogService = dialogService;
         KitchenOrderButtonsVM = kitchenOrderButtonsViewModel;
         _strategyFactory = strategyFactory;
         _orderItemDataService = orderItemDataService;
@@ -86,11 +92,16 @@ public partial class KitchenOrderViewModel :
         try
         {
             var strategy = _strategyFactory.GetStrategy(message.Action, State);
-            await strategy.ExecuteAsync(State.SelectedItems);
+            await TaskHelper.WithMinimumDelay(strategy.ExecuteAsync(State.SelectedItems), 200);
         }
         catch (Exception ex)
         {
+            await _dialogService.ShowErrorDialog(ex.Message, "Error");
             Debug.WriteLine(ex.Message);
+        }
+        finally
+        {
+            KitchenOrderButtonsVM.ResetLoadingState();
         }
     }
 
