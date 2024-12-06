@@ -20,8 +20,6 @@ public class OrderItemDataService : IOrderItemDataService
 
     public async Task<IEnumerable<OrderItem>> BulkUpdateOrderItemsStatusAsync(IEnumerable<int> orderItemIds, OrderItemStatus status)
     {
-        await Task.Delay(1000);
-
         var response = await _apiClient.PatchAsync<IEnumerable<DetailOrderItemResponse>>("api/Kitchen/Order/Status",
             new UpdateOrderItemStatusRequest
             {

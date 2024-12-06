@@ -87,12 +87,14 @@ public partial class OrderItemGridViewModel :
     {
         State.Reset();
         State.Query.Status = message.Status.ToString();
+        State.ReturnToFirstPage();
         LoadItemsAsync();
     }
 
     public void Receive(PageSizeChangedMessage message)
     {
         State.Query.Size = message.NewPageSize;
+        State.ReturnToFirstPage();
         LoadItemsAsync();
     }
 
