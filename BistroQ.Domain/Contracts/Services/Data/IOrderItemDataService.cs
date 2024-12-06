@@ -9,6 +9,8 @@ public interface IOrderItemDataService
 {
     public Task<OrderItem> UpdateOrderItemStatusAsync(int orderItemId, OrderItemStatus status);
 
+    public Task<IEnumerable<OrderItem>> BulkUpdateOrderItemsStatusAsync(IEnumerable<int> orderItemIds, OrderItemStatus status);
+
     public Task<IEnumerable<OrderItem>> GetOrderItemsByStatusAsync(OrderItemStatus status);
 
     public Task<ApiCollectionResponse<IEnumerable<OrderItem>>> GetOrderItemsAsync(OrderItemColletionQueryParams queryParams);

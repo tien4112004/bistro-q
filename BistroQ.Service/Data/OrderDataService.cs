@@ -18,7 +18,7 @@ public class OrderDataService : IOrderDataService
 
     public async Task<Order> CreateOrderAsync()
     {
-        var response = await _apiClient.PostAsync<OrderDetailResponse>("api/ClientOrder", null);
+        var response = await _apiClient.PostAsync<DetailOrderResponse>("api/ClientOrder", null);
 
         if (response.Success)
         {
@@ -31,7 +31,7 @@ public class OrderDataService : IOrderDataService
 
     public async Task<Order?> GetOrderAsync()
     {
-        var response = await _apiClient.GetAsync<OrderDetailResponse>("api/ClientOrder", null);
+        var response = await _apiClient.GetAsync<DetailOrderResponse>("api/ClientOrder", null);
         if (response.Success)
         {
             var order = _mapper.Map<Order>(response.Data);
@@ -42,7 +42,7 @@ public class OrderDataService : IOrderDataService
 
     public async Task DeleteOrderAsync()
     {
-        var response = await _apiClient.DeleteAsync<OrderDetailResponse>("api/ClientOrder", null);
+        var response = await _apiClient.DeleteAsync<DetailOrderResponse>("api/ClientOrder", null);
         if (!response.Success)
         {
             throw new Exception(response.Message);
@@ -51,7 +51,7 @@ public class OrderDataService : IOrderDataService
 
     public async Task<Order> GetOrderByCashierAsync(int tableId)
     {
-        var response = await _apiClient.GetAsync<OrderDetailResponse>($"api/CashierOrder/{tableId}", null);
+        var response = await _apiClient.GetAsync<DetailOrderResponse>($"api/CashierOrder/{tableId}", null);
         if (response.Success)
         {
             var order = _mapper.Map<Order>(response.Data);
@@ -63,7 +63,7 @@ public class OrderDataService : IOrderDataService
 
     public async Task<IEnumerable<Order>> GetCurrentOrdersByCashierAsync()
     {
-        var response = await _apiClient.GetAsync<IEnumerable<OrderDetailResponse>>($"api/CashierOrder", null);
+        var response = await _apiClient.GetAsync<IEnumerable<DetailOrderResponse>>($"api/CashierOrder", null);
         if (response.Success)
         {
             var orders = _mapper.Map<IEnumerable<Order>>(response.Data);
