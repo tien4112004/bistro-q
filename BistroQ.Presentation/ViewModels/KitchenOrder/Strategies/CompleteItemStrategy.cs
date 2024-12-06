@@ -16,14 +16,12 @@ public class CompleteItemStrategy : IOrderItemActionStrategy
         State = state;
     }
 
-    public async void ExecuteAsync(IEnumerable<OrderItemViewModel> orderItems)
+    public async Task ExecuteAsync(IEnumerable<OrderItemViewModel> orderItems)
     {
-        var orderItemViewModels = orderItems as OrderItemViewModel[] ?? orderItems.ToArray();
-        await Task.WhenAll(
-            orderItemViewModels.Select(i =>
-                _orderItemDataService.UpdateOrderItemStatusAsync(i.OrderItemId, OrderItemStatus.Completed)));
+        var orderItemList = orderItems.ToList();
+        await _orderItemDataService.BulkUpdateOrderItemsStatusAsync(orderItems.Select(i => i.OrderItemId), OrderItemStatus.Completed);
 
-        foreach (var item in orderItemViewModels)
+        foreach (var item in orderItemList)
         {
             item.Status = OrderItemStatus.Completed;
             State.ProgressItems.Remove(item);

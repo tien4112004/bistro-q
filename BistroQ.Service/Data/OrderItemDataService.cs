@@ -4,7 +4,6 @@ using BistroQ.Domain.Dtos;
 using BistroQ.Domain.Dtos.Orders;
 using BistroQ.Domain.Enums;
 using BistroQ.Domain.Models.Entities;
-using System.Diagnostics;
 
 namespace BistroQ.Service.Data;
 
@@ -21,11 +20,11 @@ public class OrderItemDataService : IOrderItemDataService
 
     public async Task<IEnumerable<OrderItem>> BulkUpdateOrderItemsStatusAsync(IEnumerable<int> orderItemIds, OrderItemStatus status)
     {
-        var response = await _apiClient.PutAsync<IEnumerable<DetailOrderItemResponse>>("api/Kitchen/Order/Status",
+        var response = await _apiClient.PatchAsync<IEnumerable<DetailOrderItemResponse>>("api/Kitchen/Order/Status",
             new UpdateOrderItemStatusRequest
             {
-                OrderItemIds = orderItemIds,
-                Status = status
+                OrderItemIds = orderItemIds.Select(x => x.ToString()),
+                Status = status.ToString()
             });
 
         if (response.Success)
@@ -33,7 +32,7 @@ public class OrderItemDataService : IOrderItemDataService
             return _mapper.Map<IEnumerable<OrderItem>>(response.Data);
         }
 
-        throw new Exception("Failed to update order items status");
+        throw new Exception(response.Message);
     }
 
     public async Task<ApiCollectionResponse<IEnumerable<OrderItem>>> GetOrderItemsAsync(OrderItemColletionQueryParams queryParams = null)
@@ -42,6 +41,8 @@ public class OrderItemDataService : IOrderItemDataService
         {
             queryParams = new OrderItemColletionQueryParams();
         }
+        queryParams.OrderBy = "UpdatedAt";
+        queryParams.OrderDirection = "desc";
 
         var response = await _apiClient.GetCollectionAsync<IEnumerable<DetailOrderItemResponse>>("api/Kitchen/Order", queryParams);
 
@@ -52,7 +53,7 @@ public class OrderItemDataService : IOrderItemDataService
             return new ApiCollectionResponse<IEnumerable<OrderItem>>(orderItems, response.TotalItems, response.CurrentPage, response.TotalPages);
         }
 
-        throw new Exception("Failed to get order items");
+        throw new Exception(response.Message);
     }
 
     public async Task<IEnumerable<OrderItem>> GetOrderItemsByStatusAsync(OrderItemStatus status)
@@ -68,20 +69,19 @@ public class OrderItemDataService : IOrderItemDataService
 
         if (response.Success)
         {
-            Debug.WriteLine(response.Data.FirstOrDefault().Product.ImageUrl);
             return _mapper.Map<IEnumerable<OrderItem>>(response.Data);
         }
 
-        throw new Exception("Failed to get order items by status");
+        throw new Exception(response.Message);
     }
 
     public async Task<OrderItem?> UpdateOrderItemStatusAsync(int orderItemId, OrderItemStatus status)
     {
-        var response = await _apiClient.PutAsync<IEnumerable<DetailOrderItemResponse>>("api/Kitchen/Order/Status",
+        var response = await _apiClient.PatchAsync<IEnumerable<DetailOrderItemResponse>>("api/Kitchen/Order/Status",
             new UpdateOrderItemStatusRequest
             {
-                OrderItemIds = new List<int>(orderItemId),
-                Status = status
+                OrderItemIds = new List<string>(orderItemId),
+                Status = status.ToString()
             });
 
         if (response.Success)
@@ -90,6 +90,6 @@ public class OrderItemDataService : IOrderItemDataService
             return orderItems.FirstOrDefault();
         }
 
-        throw new Exception("Failed to update order items status");
+        throw new Exception(response.Message);
     }
 }

@@ -6,5 +6,5 @@ namespace BistroQ.Presentation.ViewModels.KitchenOrder.Strategies;
 public interface IOrderItemActionStrategy
 {
     public KitchenOrderState State { get; set; }
-    public void ExecuteAsync(IEnumerable<OrderItemViewModel> orderItems);
+    public Task ExecuteAsync(IEnumerable<OrderItemViewModel> orderItems);
 }

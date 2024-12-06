@@ -5,7 +5,7 @@ using BistroQ.Presentation.ViewModels.States;
 
 namespace BistroQ.Presentation.ViewModels.KitchenOrder.Strategies;
 
-public class MoveItemStrategy: IOrderItemActionStrategy
+public class MoveItemStrategy : IOrderItemActionStrategy
 {
     private readonly IOrderItemDataService _orderItemDataService;
     public KitchenOrderState State { get; set; }
@@ -16,27 +16,29 @@ public class MoveItemStrategy: IOrderItemActionStrategy
         State = state;
     }
 
-    public async void ExecuteAsync(IEnumerable<OrderItemViewModel> orderItems)
+    public async Task ExecuteAsync(IEnumerable<OrderItemViewModel> orderItems)
     {
-        var orderItemViewModels = orderItems as OrderItemViewModel[] ?? orderItems.ToArray();
-        var targetStatus = orderItemViewModels.First().Status == OrderItemStatus.Pending
+        var orderItemsList = orderItems.ToList();
+
+        var targetStatus = orderItemsList[0].Status == OrderItemStatus.Pending
             ? OrderItemStatus.InProgress
             : OrderItemStatus.Pending;
-        await Task.WhenAll(
-            orderItemViewModels.Select(i => _orderItemDataService.UpdateOrderItemStatusAsync(i.OrderItemId, targetStatus)));
 
-        foreach (var item in orderItemViewModels)
+        await _orderItemDataService.BulkUpdateOrderItemsStatusAsync(orderItems.Select(x => x.OrderItemId), targetStatus);
+
+
+        for (var i = 0; i < orderItemsList.Count(); i++)
         {
-            item.Status = targetStatus;
+            orderItemsList[i].Status = targetStatus;
             if (targetStatus == OrderItemStatus.InProgress)
             {
-                State.PendingItems.Remove(item);
-                State.ProgressItems.Add(item);
+                State.PendingItems.Remove(orderItemsList[i]);
+                State.ProgressItems.Add(orderItemsList[i]);
             }
             else
             {
-                State.ProgressItems.Remove(item);
-                State.PendingItems.Add(item);
+                State.ProgressItems.Remove(orderItemsList[i]);
+                State.PendingItems.Add(orderItemsList[i]);
             }
         }
     }

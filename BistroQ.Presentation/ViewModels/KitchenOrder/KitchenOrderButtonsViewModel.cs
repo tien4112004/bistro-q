@@ -40,7 +40,7 @@ public partial class KitchenOrderButtonsViewModel : ObservableObject, IDisposabl
     {
         if (CanComplete)
         {
-            _messenger.Send(new KitchenActionMessage(Items, KitchenAction.Complete));
+            _messenger.Send(new KitchenActionMessage(KitchenAction.Complete));
         }
     }
 
@@ -49,7 +49,7 @@ public partial class KitchenOrderButtonsViewModel : ObservableObject, IDisposabl
     {
         if (CanMove)
         {
-            _messenger.Send(new KitchenActionMessage(Items, KitchenAction.Move));
+            _messenger.Send(new KitchenActionMessage(KitchenAction.Move));
         }
     }
 
@@ -58,7 +58,7 @@ public partial class KitchenOrderButtonsViewModel : ObservableObject, IDisposabl
     {
         if (CanCancel)
         {
-            _messenger.Send(new KitchenActionMessage(Items, KitchenAction.Cancel));
+            _messenger.Send(new KitchenActionMessage(KitchenAction.Cancel));
         }
     }
 
