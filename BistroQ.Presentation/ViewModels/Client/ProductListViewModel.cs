@@ -1,12 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AutoMapper;
+using BistroQ.Domain.Contracts.Services.Data;
+using BistroQ.Domain.Dtos.Products;
+using BistroQ.Presentation.ViewModels.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
-using AutoMapper;
-using BistroQ.Domain.Contracts.Services.Data;
-using BistroQ.Domain.Dtos.Products;
-using BistroQ.Presentation.ViewModels.Models;
 
 namespace BistroQ.Presentation.ViewModels.Client;
 
@@ -58,7 +58,7 @@ public partial class ProductListViewModel : ObservableRecipient
     public async Task LoadCategoriesAsync()
     {
         IsLoadingCategory = true;
-        var categoriesData = await _categoryService.GetAllCategoriesAsync();
+        var categoriesData = await _categoryService.GetCategoriesAsync();
         var categories = _mapper.Map<IEnumerable<CategoryViewModel>>(categoriesData);
         var allCategory = new CategoryViewModel
         {

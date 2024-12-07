@@ -213,6 +213,38 @@
   <data name="AdminTableEditPage_EditButton/Content" xml:space="preserve">
     <value>Update</value>
   </data>
+  
+  <data name="Shell_AdminCategory.Content" xml:space="preserve">
+    <value>Manage Categories</value>
+  </data>
+  <data name="AdminCategory_DataGrid_Column_Id/Header" xml:space="preserve">
+    <value>Category ID</value>
+  </data>
+  <data name="AdminCategory_DataGrid_Column_Name/Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="AdminCategory_DataGrid_Column_ProductCount/Header" xml:space="preserve">
+    <value>Number of products</value>
+  </data>
+  <data name="AdminCategory_DataGrid_AddNewButtonText/Text" xml:space="preserve">
+    <value>Add new</value>
+  </data>
+  <data name="CancelButton/Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="AdminCategoryAddPage_AddButtonText/Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AdminCategoryEditPage_EditButtonText/Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="CategoryIdTextBox/Header" xml:space="preserve">
+    <value>Category ID</value>
+  </data>
+  <data name="CategoryNameTextBox/Header" xml:space="preserve">
+    <value>Category name</value>
+  </data>
+
   <data name="Shell_CashierTablePage.Content" xml:space="preserve">
     <value>Table</value>
   </data>
@@ -237,4 +269,5 @@
   <data name="Shell_KitchenHistoryPage.Content" xml:space="preserve">
     <value>All Orders</value>
   </data>
+  
 </root>
