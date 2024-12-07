@@ -1,5 +1,6 @@
 ﻿using BistroQ.Presentation.ViewModels.Client;
 using BistroQ.Presentation.ViewModels.Models;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -14,6 +15,8 @@ public sealed partial class ProductListControl : UserControl
         typeof(ProductListControl),
         new PropertyMetadata(null));
 
+    private IMessenger _messenger = App.GetService<IMessenger>();
+
     public ProductListViewModel ViewModel
     {
         get => (ProductListViewModel)GetValue(ViewModelProperty);
@@ -26,6 +29,7 @@ public sealed partial class ProductListControl : UserControl
     {
         this.InitializeComponent();
         this.Loaded += ProductListControl_Loaded;
+        _messenger.RegisterAll(this);
     }
 
     private void ProductListControl_Loaded(object sender, RoutedEventArgs e)

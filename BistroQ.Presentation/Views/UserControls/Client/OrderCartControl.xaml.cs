@@ -1,12 +1,20 @@
 ﻿
+using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Client;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace BistroQ.Presentation.Views.UserControls.Client;
 
-public sealed partial class OrderCartControl : UserControl
+public sealed partial class OrderCartControl :
+    UserControl,
+    IRecipient<OrderRequestedMessage>,
+    IRecipient<AddProductToCartMessage>,
+    IDisposable
 {
+    private IMessenger _messenger = App.GetService<IMessenger>();
+
     public static readonly DependencyProperty ViewModelProperty =
         DependencyProperty.Register(
             nameof(ViewModel),
@@ -25,6 +33,7 @@ public sealed partial class OrderCartControl : UserControl
     {
         this.InitializeComponent();
         this.Loaded += OrderCartControl_Loaded;
+        _messenger.RegisterAll(this);
     }
 
     private void OrderCartControl_Loaded(object sender, RoutedEventArgs e)
@@ -62,4 +71,23 @@ public sealed partial class OrderCartControl : UserControl
             PanelContentControl.Content = orderControl;
         }
     }
+
+    public void Receive(OrderRequestedMessage message)
+    {
+        OrderCartSelector.SelectedItem = SelectorBarItemOrder;
+    }
+
+    public void Receive(AddProductToCartMessage message)
+    {
+        if (OrderCartSelector.SelectedItem != SelectorBarItemCart)
+        {
+            OrderCartSelector.SelectedItem = SelectorBarItemCart;
+        }
+    }
+
+    public void Dispose()
+    {
+        _messenger.UnregisterAll(this);
+    }
+
 }
