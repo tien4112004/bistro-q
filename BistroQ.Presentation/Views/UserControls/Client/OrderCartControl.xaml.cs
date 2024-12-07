@@ -45,7 +45,7 @@ public sealed partial class OrderCartControl : UserControl
 
     private void OnViewModelChanged(OrderCartViewModel newViewModel)
     {
-        ViewModelChanged?.Invoke(this, newViewModel); 
+        ViewModelChanged?.Invoke(this, newViewModel);
     }
 
     private void OrderCartSelector_SelectionChanged(object sender, SelectorBarSelectionChangedEventArgs e)
@@ -57,6 +57,7 @@ public sealed partial class OrderCartControl : UserControl
         }
         else if (OrderCartSelector.SelectedItem == SelectorBarItemOrder)
         {
+            ViewModel.LoadExistingOrderAsync();
             var orderControl = new OrderControl(ViewModel);
             PanelContentControl.Content = orderControl;
         }

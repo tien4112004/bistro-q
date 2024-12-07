@@ -72,4 +72,17 @@ public class OrderDataService : IOrderDataService
 
         throw new Exception(response.Message);
     }
+
+    public async Task<IEnumerable<OrderItem>> CreateOrderItems(IEnumerable<OrderItem> cart)
+    {
+        var response = await _apiClient.PostAsync<IEnumerable<OrderItem>>($"api/Client/Order/Items", cart);
+        if (response.Success)
+        {
+            var addedItems = response.Data;
+            return addedItems;
+        }
+
+        throw new Exception(response.Message);
+    }
+
 }

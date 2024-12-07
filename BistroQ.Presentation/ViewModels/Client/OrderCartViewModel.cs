@@ -1,21 +1,22 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AutoMapper;
+using BistroQ.Domain.Contracts.Services;
+using BistroQ.Domain.Models.Entities;
+using BistroQ.Presentation.Messages;
+using BistroQ.Presentation.ViewModels.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
-using AutoMapper;
-using BistroQ.Domain.Contracts.Services;
-using BistroQ.Presentation.Messages;
-using BistroQ.Presentation.ViewModels.Models;
-using CommunityToolkit.Mvvm.Messaging;
 
 namespace BistroQ.Presentation.ViewModels.Client;
 
-public partial class OrderCartViewModel : 
-    ObservableRecipient, 
-    IRecipient<AddProductToCartMessage>, 
+public partial class OrderCartViewModel :
+    ObservableRecipient,
+    IRecipient<AddProductToCartMessage>,
     IRecipient<OrderRequestedMessage>,
     IRecipient<CheckoutRequestedMessage>,
     IDisposable
@@ -160,7 +161,7 @@ public partial class OrderCartViewModel :
                 CompletedItems.Add(item);
             }
         }
-        
+
         OnPropertyChanged(nameof(IsProcessingItemsEmpty));
         OnPropertyChanged(nameof(IsCompletedItemsEmpty));
     }
@@ -187,12 +188,22 @@ public partial class OrderCartViewModel :
             });
         }
     }
-    
+
     public void Receive(OrderRequestedMessage message)
     {
+        try
+        {
+            var cart = CartItems.Select(item => _mapper.Map<OrderItem>(item)).ToList();
+            _orderDataService.CreateOrderItems(cart);
+            CartItems.Clear();
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e.Message);
+        }
         Debug.WriteLine("[Debug] Order requested message received, number of items: " + message.OrderItems.Count());
     }
-    
+
     public void Receive(CheckoutRequestedMessage message)
     {
         Debug.WriteLine("[Debug] Checkout requested message received, table to be checked out: " + message.TableId);
