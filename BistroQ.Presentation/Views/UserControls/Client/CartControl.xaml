@@ -155,13 +155,13 @@
                           HorizontalContentAlignment="Stretch" />
 
                 <TextBlock Foreground="{StaticResource TextFillColorPrimary}" 
-                           Margin="4,0,0,0"
+                           Margin="8"
                            Visibility="{x:Bind CartIsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                            Text="Your cart is currently empty." />
             </StackPanel>
         </ScrollViewer>
 
-        <StackPanel Grid.Row="1" Margin="2,4,2,0">
+        <StackPanel Grid.Row="1" Margin="6,4,4,0">
             <orders:TableBillSummaryControl 
                 VerticalAlignment="Bottom"
                 ButtonText="Order"

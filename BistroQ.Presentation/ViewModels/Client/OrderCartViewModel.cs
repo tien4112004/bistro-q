@@ -152,7 +152,7 @@ public partial class OrderCartViewModel :
 
         foreach (var item in Order.OrderItems)
         {
-            if (item.Status == "Processing")
+            if (item.Status == "InProgress")
             {
                 ProcessingItems.Add(item);
             }
