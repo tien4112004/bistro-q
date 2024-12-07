@@ -49,7 +49,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
 
         CreateMap<ProductResponse, Product>();
-        
+
         CreateMap<CategoryResponse, Category>()
             .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products));
     }

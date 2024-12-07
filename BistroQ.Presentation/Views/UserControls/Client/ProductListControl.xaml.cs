@@ -1,8 +1,5 @@
-﻿using BistroQ.Domain.Models.Entities;
-using BistroQ.Presentation.Messages;
-using BistroQ.Presentation.ViewModels.Client;
+﻿using BistroQ.Presentation.ViewModels.Client;
 using BistroQ.Presentation.ViewModels.Models;
-using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -58,7 +55,7 @@ public sealed partial class ProductListControl : UserControl
             null,
             true);
     }
-    
+
     private void VerticalScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
     {
         const double SCROLL_SPEED = 1.25;
