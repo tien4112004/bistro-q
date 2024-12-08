@@ -3,7 +3,6 @@ using BistroQ.Domain.Contracts.Services;
 using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Messages;
-using BistroQ.Presentation.Services;
 using BistroQ.Presentation.ViewModels.AdminZone;
 using BistroQ.Presentation.ViewModels.Models;
 using BistroQ.Presentation.ViewModels.States;
@@ -96,7 +95,7 @@ public partial class AdminZoneViewModel :
         try
         {
             State.IsLoading = true;
-            var result = await _zoneDataService.GetZonesAsync(State.Query);
+            var result = await _zoneDataService.GetGridDataAsync(State.Query);
 
             var zones = _mapper.Map<IEnumerable<ZoneViewModel>>(result.Data);
             State.Source = new ObservableCollection<ZoneViewModel>(zones);

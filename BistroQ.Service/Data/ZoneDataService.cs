@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos;
 using BistroQ.Domain.Dtos.Zones;
@@ -17,13 +17,13 @@ namespace BistroQ.Service.Data
             _mapper = mapper;
         }
 
-        public async Task<ApiCollectionResponse<IEnumerable<Zone>>> GetGridDataAsync(ZoneCollectionQueryParams query = null)
+        public async Task<ApiCollectionResponse<IEnumerable<ZoneResponse>>> GetGridDataAsync(ZoneCollectionQueryParams query = null)
         {
             var response = await _apiClient.GetCollectionAsync<IEnumerable<ZoneResponse>>("/api/admin/zone", query);
             if (response.Success)
             {
-                var zones = _mapper.Map<IEnumerable<Zone>>(response.Data);
-                return new ApiCollectionResponse<IEnumerable<Zone>>
+                var zones = response.Data;
+                return new ApiCollectionResponse<IEnumerable<ZoneResponse>>
                     (zones, response.TotalItems, response.CurrentPage, response.TotalPages);
             }
             throw new Exception("Failed to get zones");
@@ -36,19 +36,19 @@ namespace BistroQ.Service.Data
             {
                 return _mapper.Map<Zone>(response.Data);
             }
-            
+
             throw new Exception(response.Message);
         }
 
         public async Task<Zone> UpdateZoneAsync(int zoneId, UpdateZoneRequest request)
         {
             var response = await _apiClient.PutAsync<ZoneResponse>($"api/admin/zone/{zoneId}", request);
-            
+
             if (response.Success)
             {
                 return _mapper.Map<Zone>(response.Data);
             }
-            
+
             throw new Exception(response.Message);
         }
 
@@ -59,33 +59,33 @@ namespace BistroQ.Service.Data
             {
                 throw new Exception(response.Message);
             }
-            
+
             return true;
         }
 
         public async Task<ApiCollectionResponse<IEnumerable<Zone>>> GetZonesAsync(ZoneCollectionQueryParams query = null)
         {
             var response = await _apiClient.GetCollectionAsync<IEnumerable<ZoneResponse>>("/api/zone", query);
-            
+
             if (response.Success)
             {
                 var zones = _mapper.Map<IEnumerable<Zone>>(response.Data);
                 return new ApiCollectionResponse<IEnumerable<Zone>>
                     (zones, response.TotalItems, response.CurrentPage, response.TotalPages);
             }
-            
+
             throw new Exception("Failed to get zones");
         }
 
         public async Task<Zone> GetZoneByIdAsync(int zoneId)
         {
             var response = await _apiClient.GetAsync<ZoneResponse>($"api/zone/{zoneId}", null);
-            
+
             if (response.Success)
             {
                 return _mapper.Map<Zone>(response.Data);
             }
-            
+
             throw new Exception(response.Message);
         }
     }
