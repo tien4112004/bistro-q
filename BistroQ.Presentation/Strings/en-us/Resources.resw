@@ -142,7 +142,7 @@
     <value>Number of tables</value>
   </data>
   <data name="AdminZone_DataGrid_AddNewButtonText/Text" xml:space="preserve">
-    <value>Add new</value>
+    <value>Add</value>
   </data>
   <data name="CancelButton/Content" xml:space="preserve">
     <value>Cancel</value>
@@ -215,9 +215,6 @@
   </data>
   <data name="Shell_CashierTablePage.Content" xml:space="preserve">
     <value>Table</value>
-  </data>
-  <data name="AdminZoneAddPage_AddButtonText/Text" xml:space="preserve">
-    <value>Add</value>
   </data>
   <data name="AdminZoneAddPage_AddButtonText/Text" xml:space="preserve">
     <value>Add</value>

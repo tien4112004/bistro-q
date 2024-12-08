@@ -196,6 +196,7 @@ public partial class OrderCartViewModel :
             var cart = CartItems.Select(item => _mapper.Map<OrderItem>(item)).ToList();
             _orderDataService.CreateOrderItems(cart);
             CartItems.Clear();
+            _messenger.Send(new OrderSucceededMessage());
         }
         catch (Exception e)
         {

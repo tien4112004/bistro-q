@@ -9,7 +9,7 @@ namespace BistroQ.Presentation.Views.UserControls.Client;
 
 public sealed partial class OrderCartControl :
     UserControl,
-    IRecipient<OrderRequestedMessage>,
+    IRecipient<OrderSucceededMessage>,
     IRecipient<AddProductToCartMessage>,
     IDisposable
 {
@@ -72,7 +72,7 @@ public sealed partial class OrderCartControl :
         }
     }
 
-    public void Receive(OrderRequestedMessage message)
+    public void Receive(OrderSucceededMessage message)
     {
         OrderCartSelector.SelectedItem = SelectorBarItemOrder;
     }
