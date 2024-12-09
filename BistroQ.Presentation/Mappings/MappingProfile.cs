@@ -50,8 +50,15 @@ public class MappingProfile : Profile
         CreateMap<OrderItemDetailResponse, OrderItem>()
             .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
 
-        CreateMap<ProductResponse, Product>();
-        
+        CreateMap<ProductResponse, Product>()
+            .ForMember(dest => dest.Category, opt => opt.MapFrom(
+                src => new Category
+                {
+                    CategoryId = src.CategoryId,
+                    Name = src.CategoryName
+                }
+            ));
+
         CreateMap<CategoryResponse, Category>()
             .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products));
     }

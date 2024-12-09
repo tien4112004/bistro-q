@@ -1,6 +1,7 @@
 ﻿using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.ViewModels;
 using BistroQ.Presentation.ViewModels.AdminCategory;
+using BistroQ.Presentation.ViewModels.AdminProduct;
 using BistroQ.Presentation.ViewModels.AdminTable;
 using BistroQ.Presentation.ViewModels.AdminZone;
 using BistroQ.Presentation.ViewModels.CashierTable;
@@ -9,6 +10,7 @@ using BistroQ.Presentation.ViewModels.KitchenHistory;
 using BistroQ.Presentation.ViewModels.KitchenOrder;
 using BistroQ.Presentation.Views;
 using BistroQ.Presentation.Views.AdminCategory;
+using BistroQ.Presentation.Views.AdminProduct;
 using BistroQ.Presentation.Views.AdminTable;
 using BistroQ.Presentation.Views.AdminZone;
 using BistroQ.Presentation.Views.CashierTable;
@@ -42,6 +44,10 @@ public class PageService : IPageService
         Configure<AdminCategoryViewModel, AdminCategoryPage>();
         Configure<AdminCategoryAddPageViewModel, AdminCategoryAddPage>();
         Configure<AdminCategoryEditPageViewModel, AdminCategoryEditPage>();
+
+        Configure<AdminProductViewModel, AdminProductPage>();
+        Configure<AdminProductAddPageViewModel, AdminProductAddPage>();
+        Configure<AdminProductEditPageViewModel, AdminProductEditPage>();
 
         Configure<KitchenOrderViewModel, KitchenOrderPage>();
         Configure<KitchenHistoryViewModel, KitchenHistoryPage>();

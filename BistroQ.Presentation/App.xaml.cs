@@ -8,6 +8,7 @@ using BistroQ.Presentation.Models;
 using BistroQ.Presentation.Services;
 using BistroQ.Presentation.ViewModels;
 using BistroQ.Presentation.ViewModels.AdminCategory;
+using BistroQ.Presentation.ViewModels.AdminProduct;
 using BistroQ.Presentation.ViewModels.AdminTable;
 using BistroQ.Presentation.ViewModels.AdminZone;
 using BistroQ.Presentation.ViewModels.CashierTable;
@@ -17,6 +18,7 @@ using BistroQ.Presentation.ViewModels.KitchenOrder;
 using BistroQ.Presentation.ViewModels.KitchenOrder.Strategies;
 using BistroQ.Presentation.Views;
 using BistroQ.Presentation.Views.AdminCategory;
+using BistroQ.Presentation.Views.AdminProduct;
 using BistroQ.Presentation.Views.AdminTable;
 using BistroQ.Presentation.Views.AdminZone;
 using BistroQ.Presentation.Views.CashierTable;
@@ -129,6 +131,12 @@ public partial class App : Application
             services.AddTransient<AdminCategoryAddPage>();
             services.AddTransient<AdminCategoryEditPageViewModel>();
             services.AddTransient<AdminCategoryEditPage>();
+            services.AddTransient<AdminProductViewModel>();
+            services.AddTransient<AdminProductPage>();
+            services.AddTransient<AdminProductAddPageViewModel>();
+            services.AddTransient<AdminProductAddPage>();
+            services.AddTransient<AdminProductEditPageViewModel>();
+            services.AddTransient<AdminProductEditPage>();
 
 
             services.AddScoped<IZoneDataService, ZoneDataService>();

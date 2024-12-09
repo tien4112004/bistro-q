@@ -1,4 +1,4 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BistroQ.Presentation.ViewModels.Models;
 
@@ -9,9 +9,6 @@ public partial class ProductViewModel : ObservableObject
 
     [ObservableProperty]
     private string _name = string.Empty;
-
-    [ObservableProperty]
-    private int? _categoryId;
 
     [ObservableProperty]
     private decimal? _price;
@@ -27,4 +24,7 @@ public partial class ProductViewModel : ObservableObject
 
     [ObservableProperty]
     private int? _imageId;
+
+    [ObservableProperty]
+    private CategoryViewModel? _category;
 }

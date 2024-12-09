@@ -245,6 +245,46 @@
     <value>Category name</value>
   </data>
 
+    <data name="Shell_AdminProduct.Content" xml:space="preserve">
+    <value>Manage Products</value>
+  </data>
+  <data name="AdminProduct_DataGrid_Column_Id/Header" xml:space="preserve">
+    <value>Product ID</value>
+  </data>
+  <data name="AdminProduct_DataGrid_Column_Name/Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="AdminProduct_DataGrid_Column_CategoryId/Header" xml:space="preserve">
+    <value>CategoryId</value>
+  </data>  
+  <data name="AdminProduct_DataGrid_Column_CategoryName/Header" xml:space="preserve">
+    <value>CategoryName</value>
+  </data>  
+  <data name="AdminProduct_DataGrid_Column_Price/Header" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="AdminProduct_DataGrid_Column_DiscountPrice/Header" xml:space="preserve">
+    <value>Discount Price</value>
+  </data>
+  <data name="AdminProduct_DataGrid_Column_Unit/Header" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="AdminProduct_DataGrid_Column_ImageUrl/Header" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="AdminProduct_DataGrid_AddNewButtonText/Text" xml:space="preserve">
+    <value>Add new</value>
+  </data>
+  <data name="CancelButton/Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="AdminProductAddPage_AddButtonText/Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AdminProductEditPage_EditButtonText/Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+
   <data name="Shell_CashierTablePage.Content" xml:space="preserve">
     <value>Table</value>
   </data>

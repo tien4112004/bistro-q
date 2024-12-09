@@ -1,4 +1,4 @@
-using Microsoft.UI.Xaml.Data;
+﻿using Microsoft.UI.Xaml.Data;
 using System.Globalization;
 
 namespace BistroQ.Presentation.Converters;
@@ -26,7 +26,7 @@ public class NumberToCurrencyConverter : IValueConverter
     {
         if (value is string stringValue)
         {
-            if (int.TryParse(stringValue, out int result))
+            if (decimal.TryParse(stringValue, NumberStyles.Currency, _vietnameseCulture, out decimal result))
             {
                 return result;
             }
