@@ -157,10 +157,19 @@ public partial class AdminTableViewModel :
 
     public void AdminTableDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
     {
+        var dataGrid = sender as DataGrid;
         var column = e.Column;
         var sortDirection = column.SortDirection == null || column.SortDirection == DataGridSortDirection.Descending
             ? "asc"
             : "des";
+
+        foreach (var col in dataGrid.Columns)
+        {
+            if (col != column)
+            {
+                col.SortDirection = null;
+            }
+        }
 
         column.SortDirection = sortDirection == "asc"
             ? DataGridSortDirection.Ascending

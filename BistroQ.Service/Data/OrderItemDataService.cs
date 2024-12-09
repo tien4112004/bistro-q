@@ -18,7 +18,7 @@ public class OrderItemDataService : IOrderItemDataService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<OrderItem>> BulkUpdateOrderItemsStatusAsync(IEnumerable<int> orderItemIds, OrderItemStatus status)
+    public async Task<IEnumerable<OrderItem>> BulkUpdateOrderItemsStatusAsync(IEnumerable<string> orderItemIds, OrderItemStatus status)
     {
         var response = await _apiClient.PatchAsync<IEnumerable<DetailOrderItemResponse>>("api/Kitchen/Order/Status",
             new UpdateOrderItemStatusRequest

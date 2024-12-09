@@ -6,7 +6,7 @@ namespace BistroQ.Presentation.ViewModels.Models;
 public partial class OrderItemViewModel : ObservableObject
 {
     [ObservableProperty]
-    private int _orderItemId;
+    private string _orderItemId;
 
     [ObservableProperty]
     private string? _orderId;
@@ -31,6 +31,7 @@ public partial class OrderItemViewModel : ObservableObject
 
     [ObservableProperty]
     private TableViewModel? _table;
+
     public decimal? Total => Quantity * PriceAtPurchase;
 
     [ObservableProperty]

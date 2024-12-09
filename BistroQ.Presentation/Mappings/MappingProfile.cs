@@ -23,6 +23,7 @@ public class MappingProfile : Profile
         CreateMap<Table, TableViewModel>().ReverseMap();
         CreateMap<Zone, ZoneViewModel>();
         CreateMap<Zone, ZoneViewModel>().ReverseMap();
+        CreateMap<ZoneResponse, ZoneViewModel>();
         CreateMap<Order, OrderViewModel>();
         CreateMap<Order, OrderViewModel>().ReverseMap();
         CreateMap<OrderItem, OrderItemViewModel>();

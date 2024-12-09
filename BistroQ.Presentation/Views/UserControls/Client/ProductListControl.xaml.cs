@@ -1,6 +1,4 @@
-﻿using BistroQ.Domain.Models.Entities;
-using BistroQ.Presentation.Messages;
-using BistroQ.Presentation.ViewModels.Client;
+﻿using BistroQ.Presentation.ViewModels.Client;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
@@ -17,6 +15,8 @@ public sealed partial class ProductListControl : UserControl
         typeof(ProductListControl),
         new PropertyMetadata(null));
 
+    private IMessenger _messenger = App.GetService<IMessenger>();
+
     public ProductListViewModel ViewModel
     {
         get => (ProductListViewModel)GetValue(ViewModelProperty);
@@ -29,6 +29,7 @@ public sealed partial class ProductListControl : UserControl
     {
         this.InitializeComponent();
         this.Loaded += ProductListControl_Loaded;
+        _messenger.RegisterAll(this);
     }
 
     private void ProductListControl_Loaded(object sender, RoutedEventArgs e)
@@ -58,7 +59,7 @@ public sealed partial class ProductListControl : UserControl
             null,
             true);
     }
-    
+
     private void VerticalScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
     {
         const double SCROLL_SPEED = 1.25;

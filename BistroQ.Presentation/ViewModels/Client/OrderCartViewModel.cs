@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Enums;
+using BistroQ.Domain.Models.Entities;
 using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -191,6 +192,17 @@ public partial class OrderCartViewModel :
 
     public void Receive(OrderRequestedMessage message)
     {
+        try
+        {
+            var cart = CartItems.Select(item => _mapper.Map<OrderItem>(item)).ToList();
+            _orderDataService.CreateOrderItems(cart);
+            CartItems.Clear();
+            _messenger.Send(new OrderSucceededMessage());
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e.Message);
+        }
         Debug.WriteLine("[Debug] Order requested message received, number of items: " + message.OrderItems.Count());
     }
 

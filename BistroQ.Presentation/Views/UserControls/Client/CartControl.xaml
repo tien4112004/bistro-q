@@ -22,34 +22,41 @@
 
         <Style x:Key="DeleteButtonStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
             <Setter Property="BorderBrush" Value="White" />
+            <Setter Property="BorderThickness" Value="4" />
             <Setter Property="Width" Value="32" />
             <Setter Property="Padding" Value="4,4" />
-            <Setter Property="CornerRadius" Value="10" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Grid x:Name="RootGrid" Background="{TemplateBinding Background}" Width="32" Height="26">
+                        <Grid x:Name="RootGrid" 
+                              Background="{TemplateBinding Background}" 
+                              Width="32" Height="26" CornerRadius="6" 
+                              BorderBrush="White" BorderThickness="1">
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
                                     <VisualState x:Name="Normal" />
                                     <VisualState x:Name="PointerOver">
                                         <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" 
-                                                                   Storyboard.TargetName="RootGrid" 
-                                                                   Duration="Automatic">
-                                                <DiscreteObjectKeyFrame KeyTime="0" 
-                                                                Value="{StaticResource SystemFillColorCriticalBrush}" />
-                                            </ObjectAnimationUsingKeyFrames>
+                                            <ColorAnimation Storyboard.TargetName="RootGrid"
+                                                    Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
+                                                    To="{StaticResource SystemFillColorCritical}"
+                                                    Duration="0:0:0.1" />
+                                            <!--<ColorAnimation Storyboard.TargetName="Icon"
+                                                    Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
+                                                    To="{StaticResource TextOnAccentFillColorPrimaryBrush}"
+                                                    Duration="0:0:0.1" />-->
                                         </Storyboard>
                                     </VisualState>
                                     <VisualState x:Name="Pressed">
                                         <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" 
-                                                                   Storyboard.TargetName="RootGrid" 
-                                                                   Duration="Automatic">
-                                                <DiscreteObjectKeyFrame KeyTime="0" 
-                                                                Value="{StaticResource SystemFillColorCriticalBrush}" />
-                                            </ObjectAnimationUsingKeyFrames>
+                                            <ColorAnimation Storyboard.TargetName="RootGrid"
+                                                    Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
+                                                    To="DimGray"
+                                                    Duration="0:0:0.1" />
+                                            <!--<ColorAnimation Storyboard.TargetName="Icon"
+                                                    Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
+                                                    To="{StaticResource TextOnAccentFillColorPrimaryBrush}"
+                                                    Duration="0:0:0.1" />-->
                                         </Storyboard>
                                     </VisualState>
                                 </VisualStateGroup>
@@ -111,7 +118,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Grid.Column="3">
-                            <FontIcon Glyph="&#xE74D;" FontSize="14" />
+                            <FontIcon x:Name="Icon" Glyph="&#xE74D;" FontSize="14" />
                         </Button>
                     </Grid>
 
@@ -155,13 +162,13 @@
                           HorizontalContentAlignment="Stretch" />
 
                 <TextBlock Foreground="{StaticResource TextFillColorPrimary}" 
-                           Margin="4,0,0,0"
+                           Margin="8"
                            Visibility="{x:Bind CartIsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                            Text="Your cart is currently empty." />
             </StackPanel>
         </ScrollViewer>
 
-        <StackPanel Grid.Row="1" Margin="2,4,2,0">
+        <StackPanel Grid.Row="1" Margin="6,4,4,0">
             <orders:TableBillSummaryControl 
                 VerticalAlignment="Bottom"
                 ButtonText="Order"

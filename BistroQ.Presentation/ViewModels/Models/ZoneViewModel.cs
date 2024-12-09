@@ -1,5 +1,4 @@
-using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BistroQ.Presentation.ViewModels.Models;
 
@@ -12,5 +11,5 @@ public partial class ZoneViewModel : ObservableObject
     private string? _name;
 
     [ObservableProperty]
-    private ObservableCollection<TableViewModel>? _tables;
+    private int _tableCount;
 }

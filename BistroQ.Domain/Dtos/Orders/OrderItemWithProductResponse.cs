@@ -4,7 +4,7 @@ namespace BistroQ.Domain.Dtos.Orders;
 
 public class OrderItemWithProductResponse
 {
-    public int? OrderItemId { get; set; } = null!;
+    public string? OrderItemId { get; set; } = null!;
 
     public int? ProductId { get; set; } = null!;
 

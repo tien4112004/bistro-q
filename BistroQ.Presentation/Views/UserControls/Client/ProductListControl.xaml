@@ -130,6 +130,9 @@
                                 Visibility="{x:Bind ViewModel.IsLoadingProduct, 
                                                 Mode=OneWay,
                                                 Converter={StaticResource BoolToVisibility}}" />
+                <TextBlock Text="There is no product available." 
+                           Margin="0,16,0,0" 
+                           Visibility="{x:Bind ViewModel.IsEmptyList, Mode=OneWay, Converter={StaticResource BoolToVisibility}}" />
                 <GridView x:Name="ProductList"
                           ItemsSource="{x:Bind ViewModel.Products, Mode=OneWay}"
                           ItemTemplate="{StaticResource SingleProductDataTemplate}"

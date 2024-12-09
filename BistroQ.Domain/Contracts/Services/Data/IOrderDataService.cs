@@ -1,17 +1,18 @@
-using BistroQ.Domain.Models.Entities;
+﻿using BistroQ.Domain.Models.Entities;
 
 namespace BistroQ.Domain.Contracts.Services;
 
 public interface IOrderDataService
 {
-    public Task<Order> CreateOrderAsync();
+    Task<Order> CreateOrderAsync();
 
-    public Task<Order?> GetOrderAsync();
+    Task<Order?> GetOrderAsync();
 
-    public Task DeleteOrderAsync();
+    Task DeleteOrderAsync();
 
-    public Task<Order> GetOrderByCashierAsync(int tableId);
+    Task<Order> GetOrderByCashierAsync(int tableId);
 
-    public Task<IEnumerable<Order>> GetCurrentOrdersByCashierAsync();
+    Task<IEnumerable<Order>> GetCurrentOrdersByCashierAsync();
 
+    Task<IEnumerable<OrderItem>> CreateOrderItems(IEnumerable<OrderItem> cart);
 }

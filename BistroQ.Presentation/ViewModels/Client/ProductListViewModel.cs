@@ -1,12 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AutoMapper;
+using BistroQ.Domain.Contracts.Services.Data;
+using BistroQ.Domain.Dtos.Products;
+using BistroQ.Presentation.ViewModels.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
-using AutoMapper;
-using BistroQ.Domain.Contracts.Services.Data;
-using BistroQ.Domain.Dtos.Products;
-using BistroQ.Presentation.ViewModels.Models;
 
 namespace BistroQ.Presentation.ViewModels.Client;
 
@@ -30,6 +30,9 @@ public partial class ProductListViewModel : ObservableRecipient
 
     [ObservableProperty]
     private ProductViewModel _selectedProduct;
+
+    [ObservableProperty]
+    private bool _isEmptyList = false;
 
     [ObservableProperty]
     private ObservableCollection<ProductViewModel> _products = new ObservableCollection<ProductViewModel>();
@@ -83,6 +86,7 @@ public partial class ProductListViewModel : ObservableRecipient
             var response = await _productService.GetProductsAsync(query);
             var products = _mapper.Map<IEnumerable<ProductViewModel>>(response.Data);
             Products = new ObservableCollection<ProductViewModel>(products);
+            IsEmptyList = !(Products.Any());
         }
         catch (Exception ex)
         {
