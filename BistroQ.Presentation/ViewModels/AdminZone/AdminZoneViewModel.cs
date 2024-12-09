@@ -199,5 +199,7 @@ public partial class AdminZoneViewModel :
         {
             State.PropertyChanged -= StatePropertyChanged;
         }
+
+        _messenger.UnregisterAll(this);
     }
 }

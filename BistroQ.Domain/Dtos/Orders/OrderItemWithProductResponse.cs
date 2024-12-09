@@ -2,7 +2,7 @@
 
 namespace BistroQ.Domain.Dtos.Orders;
 
-public class OrderItemDetailResponse
+public class OrderItemWithProductResponse
 {
     public string? OrderItemId { get; set; } = null!;
 
@@ -13,5 +13,10 @@ public class OrderItemDetailResponse
     public int Quantity { get; set; }
 
     public string Status { get; set; } = null!;
+
+    public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
     public ProductResponse Product { get; set; }
 }

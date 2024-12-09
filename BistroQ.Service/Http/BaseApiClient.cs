@@ -1,4 +1,4 @@
-using BistroQ.Domain.Contracts.Services;
+﻿using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos;
 using Newtonsoft.Json;
 using System.Text;
@@ -36,6 +36,18 @@ public class BaseApiClient : IBaseApiClient
         );
 
         var response = await _httpClient.PutAsync(url, request);
+        return await HandleResponse<T>(response);
+    }
+
+    public async Task<ApiResponse<T>> PatchAsync<T>(string url, object contentValue)
+    {
+        var request = new StringContent(
+            JsonConvert.SerializeObject(contentValue),
+            Encoding.UTF8,
+            "application/json"
+        );
+
+        var response = await _httpClient.PatchAsync(url, request);
         return await HandleResponse<T>(response);
     }
 
@@ -120,4 +132,5 @@ public class BaseApiClient : IBaseApiClient
             return null;
         }
     }
+
 }

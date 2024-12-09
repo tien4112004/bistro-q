@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
+using BistroQ.Domain.Enums;
 using BistroQ.Domain.Models.Entities;
 using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Models;
@@ -152,11 +153,11 @@ public partial class OrderCartViewModel :
 
         foreach (var item in Order.OrderItems)
         {
-            if (item.Status == "InProgress")
+            if (item.Status == OrderItemStatus.InProgress)
             {
                 ProcessingItems.Add(item);
             }
-            else if (item.Status == "Completed")
+            else if (item.Status == OrderItemStatus.Completed)
             {
                 CompletedItems.Add(item);
             }

@@ -1,16 +1,14 @@
-﻿using BistroQ.Domain.Contracts.Services;
-using BistroQ.Domain.Dtos;
+﻿using AutoMapper;
+using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos.Tables;
 using BistroQ.Domain.Dtos.Zones;
+using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
+using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using AutoMapper;
-using BistroQ.Presentation.Contracts.Services;
-using BistroQ.Presentation.Services;
-using BistroQ.Presentation.ViewModels.Models;
-using CommunityToolkit.Mvvm.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminTable;
 
@@ -23,14 +21,14 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
 
     [ObservableProperty]
     private bool _isProcessing = false;
-    
+
     private readonly ITableDataService _tableDataService;
     private readonly IZoneDataService _zoneDataService;
     private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
     public ICommand EditCommand { get; }
-    
-    public AdminTableEditPageViewModel(ITableDataService tableDataService, 
+
+    public AdminTableEditPageViewModel(ITableDataService tableDataService,
         IZoneDataService zoneDataService,
         IDialogService dialogService,
         IMapper mapper)
@@ -41,7 +39,7 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
         _mapper = mapper;
         Request = new UpdateTableRequest();
         Zones = new ObservableCollection<ZoneViewModel>();
-        
+
         EditCommand = new AsyncRelayCommand(UpdateTableAsync, CanEditTable);
 
         LoadZonesAsync().ConfigureAwait(false);
@@ -63,9 +61,9 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
             {
                 throw new InvalidDataException("Seats count must be greater than 0.");
             }
-            
+
             await _tableDataService.UpdateTableAsync(Table.TableId.Value, Request);
-            
+
             await _dialogService.ShowSuccessDialog("Table updated successfully.", "Success");
             NavigateBack?.Invoke(this, EventArgs.Empty);
         }
@@ -78,7 +76,7 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
             IsProcessing = false;
         }
     }
-    
+
     private bool CanEditTable()
     {
         return !IsProcessing;

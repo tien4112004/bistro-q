@@ -7,6 +7,8 @@ namespace BistroQ.Presentation.Services;
 public class DialogService : IDialogService
 {
     private readonly XamlRoot _xamlRoot;
+    private static readonly SemaphoreSlim _semaphore = new(1);
+
 
     public DialogService()
     {
@@ -25,7 +27,15 @@ public class DialogService : IDialogService
             SecondaryButtonStyle = Application.Current.Resources["AccentButtonStyle"] as Style
         };
 
-        return await dialog.ShowAsync();
+        await _semaphore.WaitAsync();
+        try
+        {
+            return await dialog.ShowAsync();
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 
     public async Task ShowSuccessDialog(string message, string title = "Success")
@@ -37,7 +47,15 @@ public class DialogService : IDialogService
             Content = message,
             CloseButtonText = "OK"
         };
-        await dialog.ShowAsync();
+        await _semaphore.WaitAsync();
+        try
+        {
+            await dialog.ShowAsync();
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 
     public async Task ShowErrorDialog(string message, string title = "Error")
@@ -49,12 +67,28 @@ public class DialogService : IDialogService
             Content = message,
             CloseButtonText = "OK"
         };
-        await dialog.ShowAsync();
+        await _semaphore.WaitAsync();
+        try
+        {
+            await dialog.ShowAsync();
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
-    
+
     public async Task ShowDialogAsync(ContentDialog dialog)
     {
         dialog.XamlRoot = _xamlRoot;
-        await dialog.ShowAsync();
+        await _semaphore.WaitAsync();
+        try
+        {
+            await dialog.ShowAsync();
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 }

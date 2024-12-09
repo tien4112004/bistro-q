@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="BistroQ.Presentation.Views.KitchenHistory.KitchenHistoryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BistroQ.Presentation.Views.KitchenHistory"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:userControls="using:BistroQ.Presentation.Views.UserControls.Orders"
+    xmlns:pagin="using:BistroQ.Presentation.Views.UserControls"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+
+    <Grid RowSpacing="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" x:Name="ButtonContainer" 
+                    Orientation="Horizontal"
+                    Padding="10,0"
+                    Background="Transparent">
+            <controls:Segmented 
+                x:Name="Segmented"
+                HorizontalAlignment="Center"
+                SelectedIndex="0"
+                SelectionChanged="Segmented_SelectionChanged"
+                SelectionMode="Single">
+            </controls:Segmented>
+        </StackPanel>
+
+        <userControls:KitchenOrderGridControl Grid.Row="1" ViewModel="{x:Bind ViewModel.OrderItemGridViewModel, Mode=OneWay}"/>
+
+        <pagin:PaginationControl Grid.Row="2" Margin="0,0,0,24"/>
+    </Grid>
+</Page>

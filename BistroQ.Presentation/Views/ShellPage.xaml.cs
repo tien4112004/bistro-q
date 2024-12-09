@@ -1,12 +1,10 @@
+﻿using BistroQ.Domain.Contracts.Services;
 using BistroQ.Presentation.Contracts.Services;
-using BistroQ.Domain.Contracts.Services;
 using BistroQ.Presentation.Helpers;
 using BistroQ.Presentation.ViewModels;
-
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-
 using Windows.System;
 
 namespace BistroQ.Presentation.Views;
@@ -98,10 +96,14 @@ public sealed partial class ShellPage : Page
 
     private async void LogOut_Click(object sender, RoutedEventArgs e)
     {
+        App.MainWindow.Hide();
+
         await App.GetService<IAuthService>().LogoutAsync();
 
-        new LoginWindow().Activate();
+        var loginWindow = new LoginWindow();
+        loginWindow.Activate();
 
+        await Task.Delay(1000);
         App.MainWindow.Close();
     }
 }

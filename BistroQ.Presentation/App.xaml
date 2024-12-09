@@ -9,12 +9,14 @@
                 <ResourceDictionary Source="/Styles/FontSizes.xaml" />
                 <ResourceDictionary Source="/Styles/Thickness.xaml" />
                 <ResourceDictionary Source="/Styles/TextBlock.xaml" />
+                <ResourceDictionary Source="/Styles/Color.xaml"/>
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="TableOccupiedBrush" Color="#FFE6E6"/>
                 </ResourceDictionary>
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="TableAvailableBrush" Color="{ThemeResource CardBackgroundFillColorDefaultBrush}"/>
                 </ResourceDictionary>
+                <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.Controls.Segmented/Segmented/Segmented.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

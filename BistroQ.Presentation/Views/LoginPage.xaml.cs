@@ -20,10 +20,10 @@ public sealed partial class LoginPage : Page
         ViewModel.NavigationRequested += async (s, e) =>
         {
             await App.GetService<IActivationService>().ActivateAsync(EventArgs.Empty);
-            window.Close();
+            _window.Close();
         };
 
-        ViewModel.CloseRequested += (s, e) => window.Close();
+        ViewModel.CloseRequested += (s, e) => _window.Close();
     }
 
     private async void On_Loaded(object sender, RoutedEventArgs e)

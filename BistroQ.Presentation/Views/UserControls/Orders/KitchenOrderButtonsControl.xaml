@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="BistroQ.Presentation.Views.UserControls.Orders.KitchenOrderButtonsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BistroQ.Presentation.Views.UserControls.Orders"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:converters="using:BistroQ.Presentation.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </UserControl.Resources>
+
+    <Grid RowSpacing="10" MinWidth="100">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Button 
+             VerticalAlignment="Stretch"
+             HorizontalAlignment="Stretch"
+             Background="{ThemeResource SuccessBaseColor}"
+             PointerEntered="Button_PointerEntered"
+             PointerExited="Button_PointerExited"
+             IsEnabled="{x:Bind ViewModel.CanComplete, Mode=OneWay}"
+             Command="{x:Bind ViewModel.CompleteCommand, Mode=OneWay}"
+             CornerRadius="8">
+            <Button.Resources>
+                <ResourceDictionary>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SuccessHoverColor}"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="{ThemeResource CardBackgroundFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForeground" Color="{ThemeResource TextOnAccentFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="{ThemeResource TextOnAccentFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{ThemeResource TextFillColorPrimary}"/>
+                </ResourceDictionary>
+            </Button.Resources>
+            <Grid>
+                <controls:ProgressRing
+                     IsActive="{x:Bind ViewModel.IsCompleteLoading, Mode=OneWay}"
+                     Width="30"
+                     Height="30"
+                     Margin="0,0,0,0"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"/>
+
+                <StackPanel
+                     Visibility="{x:Bind ViewModel.IsCompleteLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
+                     HorizontalAlignment="Center"
+                     Spacing="5"
+                     VerticalAlignment="Center">
+                    <BitmapIcon 
+                         Width="30"
+                         UriSource="ms-appx:///Assets/Icons/square-check-big.png"/>
+                    <TextBlock 
+                         FontWeight="Bold"
+                         FontSize="18"
+                         >Complete</TextBlock>
+                </StackPanel>
+            </Grid>
+        </Button>
+
+        <Button 
+             VerticalAlignment="Stretch"
+             HorizontalAlignment="Stretch"
+             Background="{ThemeResource CyanBaseColor}"
+             PointerEntered="Button_PointerEntered"
+             PointerExited="Button_PointerExited"
+             IsEnabled="{x:Bind ViewModel.CanMove, Mode=OneWay}"
+             Command="{x:Bind ViewModel.MoveCommand, Mode=OneWay}"
+             Grid.Row="1" 
+             CornerRadius="8">
+            <Button.Resources>
+                <ResourceDictionary>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource CyanHoverColor}"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="{ThemeResource CardBackgroundFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForeground" Color="{ThemeResource TextOnAccentFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="{ThemeResource TextOnAccentFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{ThemeResource TextFillColorPrimary}"/>
+                </ResourceDictionary>
+            </Button.Resources>
+            <Grid>
+                <controls:ProgressRing
+                     IsActive="{x:Bind ViewModel.IsMoveLoading, Mode=OneWay}"
+                     Width="30"
+                     Height="30"
+                     Margin="0,0,0,0"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"/>
+
+                <StackPanel
+                     Visibility="{x:Bind ViewModel.IsMoveLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
+                     HorizontalAlignment="Center"
+                     Spacing="5"
+                     VerticalAlignment="Center">
+                    <BitmapIcon 
+                         Width="30"
+                         UriSource="ms-appx:///Assets/Icons/move-horizontal.png"/>
+                    <TextBlock 
+                         FontWeight="Bold"
+                         FontSize="18"
+                         >Move</TextBlock>
+                </StackPanel>
+            </Grid>
+        </Button>
+
+        <Button 
+             VerticalAlignment="Stretch"
+             HorizontalAlignment="Stretch"
+             Grid.Row="2" 
+             PointerEntered="Button_PointerEntered"
+             PointerExited="Button_PointerExited"
+             Background="{ThemeResource ErrorBaseColor}"
+             IsEnabled="{x:Bind ViewModel.CanCancel, Mode=OneWay}"
+             Command="{x:Bind ViewModel.CancelCommand, Mode=OneWay}"
+             CornerRadius="8">
+            <Button.Resources>
+                <ResourceDictionary>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource ErrorHoverColor}"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="{ThemeResource CardBackgroundFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForeground" Color="{ThemeResource TextOnAccentFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="{ThemeResource TextOnAccentFillColorDefault}"/>
+                    <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{ThemeResource TextFillColorPrimary}"/>
+                </ResourceDictionary>
+            </Button.Resources>
+            <Grid>
+                <controls:ProgressRing
+                     IsActive="{x:Bind ViewModel.IsCancelLoading, Mode=OneWay}"
+                     Width="30"
+                     Height="30"
+                     Margin="0,0,0,0"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"/>
+
+                <StackPanel
+                     Visibility="{x:Bind ViewModel.IsCancelLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
+                     HorizontalAlignment="Center"
+                     Spacing="5"
+                     VerticalAlignment="Center">
+                    <BitmapIcon 
+                         Width="30"
+                         UriSource="ms-appx:///Assets/Icons/circle-x.png"/>
+                    <TextBlock 
+                         FontWeight="Bold"
+                         FontSize="18"
+                         >Cancel</TextBlock>
+                </StackPanel>
+            </Grid>
+        </Button>
+    </Grid>
+</UserControl>

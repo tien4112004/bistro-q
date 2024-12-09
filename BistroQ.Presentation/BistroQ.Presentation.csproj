@@ -19,19 +19,15 @@
     <Compile Remove="Services\IAdminZoneService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Styles\Color.xaml" />
     <None Remove="Views\AdminTable\AdminTableAddPage.xaml" />
     <None Remove="Views\AdminTable\AdminTableEditPage.xaml" />
     <None Remove="Views\AdminZone\AdminZoneAddPage.xaml" />
     <None Remove="Views\CashierTable\CashierTable_ZoneControl.xaml" />
     <None Remove="Views\CashierTable\Controls\ZoneOverviewControl.xaml" />
     <None Remove="Views\CashierTable\Controls\ZoneTableGridControl.xaml" />
-    <None Remove="Views\UserControls\Client\CartControl.xaml" />
-    <None Remove="Views\UserControls\Client\CategoryListControl.xaml" />
-    <None Remove="Views\UserControls\Client\OrderCartControl.xaml" />
-    <None Remove="Views\UserControls\Client\OrderControl.xaml" />
-    <None Remove="Views\UserControls\Client\ProductListControl.xaml" />
-    <None Remove="Views\UserControls\Client\SingleProductControl.xaml" />
-    <None Remove="Views\UserControls\ItemQuantityControl.xaml" />
+    <None Remove="Views\KitchenHistory\KitchenHistoryPage.xaml" />
+    <None Remove="Views\UserControls\Orders\KitchenOrderGridControl.xaml" />
     <None Remove="Views\UserControls\Orders\TableBillSummaryControl.xaml" />
     <None Remove="Views\UserControls\Orders\TableOrderDetailsControl.xaml" />
     <None Remove="Views\UserControls\PaginationControl.xaml" />
@@ -67,23 +63,11 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Page Update="Views\UserControls\Client\CartControl.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    <Page Update="Views\UserControls\Orders\KitchenOrderGridControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="Views\UserControls\Client\OrderCartControl.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Views\UserControls\Client\OrderControl.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Views\UserControls\Client\ProductListControl.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Views\UserControls\Client\SingleProductControl.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Views\UserControls\ItemQuantityControl.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    <Page Update="Views\KitchenHistory\KitchenHistoryPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\UserControls\Orders\TableBillSummaryControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -144,7 +128,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controls\" />
+    <Folder Include="Assets\Icons\" />
     <Folder Include="Views\Client\" />
   </ItemGroup>
   
