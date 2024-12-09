@@ -37,7 +37,7 @@ public partial class OrderKanbanColumnViewModel :
         messenger.RegisterAll(this);
     }
 
-    public async void LoadItems(OrderItemStatus status)
+    public async Task LoadItems(OrderItemStatus status)
     {
         try
         {
@@ -51,7 +51,7 @@ public partial class OrderKanbanColumnViewModel :
         }
     }
 
-    public async void HandleItemDroppedAsync(
+    public async Task HandleItemDroppedAsync(
         IEnumerable<OrderItemViewModel> items,
         KitchenColumnType sourceColumn,
         int insertIndex)
@@ -59,8 +59,7 @@ public partial class OrderKanbanColumnViewModel :
         try
         {
             var targetStatus = ColumnType == KitchenColumnType.Pending ? OrderItemStatus.Pending : OrderItemStatus.InProgress;
-            await Task.WhenAll(
-                items.Select(i => _orderItemDataService.UpdateOrderItemStatusAsync(i.OrderItemId, targetStatus)));
+            await _orderItemDataService.BulkUpdateOrderItemsStatusAsync(items.Select(i => i.OrderItemId), targetStatus);
 
             foreach (var item in items)
             {

@@ -28,6 +28,10 @@
                 <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="{StaticResource CardBackgroundFillColorSecondary}" />
             </controls:DataGrid.Resources>
             <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Binding="{Binding OrderItemId}" 
+                                             IsReadOnly="True"
+                                             Header="Id"
+                                             Tag="OrderItemId" />
                 <controls:DataGridTextColumn Binding="{Binding Product.Name}" 
                                              IsReadOnly="True"
                                              Header="Name"

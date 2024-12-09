@@ -20,4 +20,6 @@ public class ApiCollectionResponse<T>
     public int TotalPages { get; set; }
 
     public int TotalItems { get; set; } = 0;
+
+    public string Message { get; set; }
 }
