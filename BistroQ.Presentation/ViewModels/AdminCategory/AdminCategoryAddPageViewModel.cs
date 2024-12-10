@@ -11,7 +11,6 @@ namespace BistroQ.Presentation.ViewModels.AdminCategory;
 
 public partial class AdminCategoryAddPageViewModel : ObservableRecipient, INavigationAware
 {
-    private CreateCategoryRequest _request;
     [ObservableProperty]
     private bool _isProcessing = false;
     [ObservableProperty]
@@ -28,22 +27,17 @@ public partial class AdminCategoryAddPageViewModel : ObservableRecipient, INavig
 
     public AdminCategoryAddPageViewModel(ICategoryDataService categoryDataService, IDialogService dialogService)
     {
-        _request = new CreateCategoryRequest();
         _categoryDataService = categoryDataService;
         _dialogService = dialogService;
 
-        AddCommand = new AsyncRelayCommand(AddCategoryAsync, CanAdd);
+        AddCommand = new AsyncRelayCommand(AddCategoryAsync);
     }
 
-    public bool CanAdd()
-    {
-        return !Form.HasErrors && !IsProcessing;
-    }
 
     public async Task AddCategoryAsync()
     {
         Form.ValidateAll();
-        if (!CanAdd())
+        if (Form.HasErrors)
         {
             await _dialogService.ShowErrorDialog("Data is invalid. Please check again.", "Error");
             return;
@@ -53,11 +47,14 @@ public partial class AdminCategoryAddPageViewModel : ObservableRecipient, INavig
         {
             IsProcessing = true;
             ErrorMessage = string.Empty;
-            _request.Name = Form.Name;
 
-            await _categoryDataService.CreateCategoryAsync(_request);
+            var request = new CreateCategoryRequest
+            {
+                Name = Form.Name
+            };
+            await _categoryDataService.CreateCategoryAsync(request);
 
-            await _dialogService.ShowErrorDialog("Successfully added category: " + _request.Name, "Success");
+            await _dialogService.ShowErrorDialog("Successfully added category: " + request.Name, "Success");
             NavigateBack?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)

@@ -3,7 +3,6 @@ using BistroQ.Domain.Dtos.Zones;
 using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Models;
-using BistroQ.Presentation.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
@@ -12,7 +11,6 @@ namespace BistroQ.Presentation.ViewModels.AdminZone;
 
 public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigationAware
 {
-    private CreateZoneRequest _request;
     [ObservableProperty]
     private bool _isProcessing = false;
     [ObservableProperty]
@@ -29,7 +27,6 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigatio
 
     public AdminZoneAddPageViewModel(IZoneDataService zoneDataService, IDialogService dialogService)
     {
-        _request = new CreateZoneRequest();
         _zoneDataService = zoneDataService;
         _dialogService = dialogService;
 
@@ -54,11 +51,15 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigatio
         {
             IsProcessing = true;
             ErrorMessage = string.Empty;
-            _request.Name = Form.Name;
 
-            await _zoneDataService.CreateZoneAsync(_request);
+            var request = new CreateZoneRequest
+            {
+                Name = Form.Name
+            };
 
-            await _dialogService.ShowErrorDialog("Successfully added zone: " + _request.Name, "Success");
+            await _zoneDataService.CreateZoneAsync(request);
+
+            await _dialogService.ShowErrorDialog("Successfully added zone: " + request.Name, "Success");
             NavigateBack?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)

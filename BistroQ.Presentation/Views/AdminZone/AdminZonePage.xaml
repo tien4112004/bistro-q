@@ -73,11 +73,11 @@
                                              x:Uid="AdminZone_DataGrid_Column_Name" 
                                              IsReadOnly="True" Width="300"
                                              Tag="Name" />
-                <controls:DataGridTextColumn Binding="{Binding TableCount}" 
+                <!--<controls:DataGridTextColumn Binding="{Binding TableCount}" 
                                              x:Uid="AdminZone_DataGrid_Column_TableCount" 
                                              IsReadOnly="True"
                                              Tag="TableCount" />
-                <!-- <controls:DataGridTextColumn Header="Status" IsReadOnly="True" />-->
+                <controls:DataGridTextColumn Header="Status" IsReadOnly="True" />-->
             </controls:DataGrid.Columns>
         </controls:DataGrid>
         <local:PaginationControl Grid.Row="2" Margin="0,0,0,24" />

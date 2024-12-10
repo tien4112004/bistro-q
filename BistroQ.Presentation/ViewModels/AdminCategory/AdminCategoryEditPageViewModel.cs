@@ -14,8 +14,6 @@ public partial class AdminCategoryEditPageViewModel : ObservableRecipient, INavi
 {
     public CategoryViewModel Category { get; set; }
     [ObservableProperty]
-    private UpdateCategoryRequest _request;
-    [ObservableProperty]
     private bool _isProcessing = false;
     [ObservableProperty]
     private AddCategoryForm _form = new();
@@ -33,7 +31,6 @@ public partial class AdminCategoryEditPageViewModel : ObservableRecipient, INavi
     {
         _categoryDataService = categoryDataService;
         _dialogService = dialogService;
-        Request = new UpdateCategoryRequest();
 
         UpdateCommand = new AsyncRelayCommand(async () => await UpdateCategoryAsync(), CanUpdate);
     }
@@ -52,10 +49,14 @@ public partial class AdminCategoryEditPageViewModel : ObservableRecipient, INavi
             IsProcessing = true;
             ErrorMessage = string.Empty;
 
-            _request.Name = Form.Name;
-            await _categoryDataService.UpdateCategoryAsync(Category.CategoryId.Value, _request);
+            var request = new UpdateCategoryRequest
+            {
+                Name = Form.Name
+            };
 
-            await _dialogService.ShowSuccessDialog($"Successfully updated category: {Request.Name}", "Success");
+            await _categoryDataService.UpdateCategoryAsync(Category.CategoryId.Value, request);
+
+            await _dialogService.ShowSuccessDialog($"Successfully updated category: {request.Name}", "Success");
             NavigateBack?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
@@ -79,7 +80,7 @@ public partial class AdminCategoryEditPageViewModel : ObservableRecipient, INavi
         if (parameter is CategoryViewModel selectedCategory)
         {
             Category = selectedCategory;
-            Request.Name = Category?.Name ?? string.Empty;
+            Form.Name = Category?.Name ?? string.Empty;
         }
     }
 

@@ -13,7 +13,6 @@ namespace BistroQ.Presentation.ViewModels.AdminTable;
 
 public partial class AdminTableAddPageViewModel : ObservableRecipient
 {
-    private CreateTableRequest _request;
 
     [ObservableProperty]
     private bool _isProcessing = false;
@@ -37,7 +36,6 @@ public partial class AdminTableAddPageViewModel : ObservableRecipient
         IDialogService dialogService,
         IMapper mapper)
     {
-        _request = new CreateTableRequest();
         Zones = new ObservableCollection<ZoneViewModel>();
         _tableDataService = tableDataService;
         _zoneDataService = zoneDataService;
@@ -56,20 +54,23 @@ public partial class AdminTableAddPageViewModel : ObservableRecipient
         try
         {
             IsProcessing = true;
-            _request.ZoneId = Form.ZoneId;
-            _request.SeatsCount = Form.SeatsCount;
+            var request = new CreateTableRequest
+            {
+                ZoneId = Form.ZoneId,
+                SeatsCount = Form.SeatsCount
+            };
 
-            if (_request.ZoneId == 0)
+            if (request.ZoneId == 0)
             {
                 throw new InvalidDataException("Zone must be selected.");
             }
 
-            if (_request.SeatsCount == null)
+            if (request.SeatsCount == null)
             {
                 throw new InvalidDataException("Seats count must be greater than 0.");
             }
 
-            await _tableDataService.CreateTableAsync(_request);
+            await _tableDataService.CreateTableAsync(request);
 
             await _dialogService.ShowSuccessDialog("Table added successfully.", "Success");
             NavigateBack?.Invoke(this, EventArgs.Empty);

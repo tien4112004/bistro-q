@@ -2,6 +2,16 @@
 
 public static class ValidationRules
 {
+    public static class IntRules
+    {
+        public static (bool IsValid, string Message) NotEmpty(object? value, string fieldName)
+        {
+            return value is null
+                ? (false, $"{fieldName} is required")
+                : (true, string.Empty);
+        }
+    }
+
     public static class StringRules
     {
         public static (bool IsValid, string Message) NotEmpty(object? value, string fieldName)

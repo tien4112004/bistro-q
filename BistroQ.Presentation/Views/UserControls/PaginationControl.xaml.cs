@@ -91,10 +91,10 @@ public partial class PaginationControl : UserControl, IDisposable, IRecipient<Pa
     private void FirstPage() => _messenger.Send(new CurrentPageChangedMessage(1));
     private bool CanFirstPage() => Pagination?.CurrentPage > 1;
 
-    private void PreviousPage() => _messenger.Send(new CurrentPageChangedMessage(Pagination.CurrentPage - 1));
+    private void PreviousPage() => _messenger.Send(new CurrentPageChangedMessage(--Pagination.CurrentPage));
     private bool CanPreviousPage() => Pagination?.CurrentPage > 1;
 
-    private void NextPage() => _messenger.Send(new CurrentPageChangedMessage(Pagination.CurrentPage + 1));
+    private void NextPage() => _messenger.Send(new CurrentPageChangedMessage(++Pagination.CurrentPage));
     private bool CanNextPage() => Pagination?.CurrentPage < Pagination?.TotalPages;
 
     private void LastPage() => _messenger.Send(new CurrentPageChangedMessage(Pagination.TotalPages));
