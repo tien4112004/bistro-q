@@ -8,6 +8,7 @@ using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminProduct;
@@ -80,13 +81,23 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
                 throw new InvalidDataException("Category must be selected.");
             }
 
-            await _productDataService.CreateProductAsync(request);
+            if (Form.ImageFile == null)
+            {
+                await _productDataService.CreateProductAsync(request);
+            }
+            else
+            {
+                await _productDataService.CreateProductAsync(request,
+                    Form.ImageFile.Stream, Form.ImageFile.FileName, Form.ImageFile.ContentType);
+            }
+
 
             await _dialogService.ShowSuccessDialog("Successfully added product: " + request.Name, "Success");
             NavigateBack?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
         {
+            Debug.WriteLine(ex.StackTrace);
             ErrorMessage = ex.Message;
             await _dialogService.ShowErrorDialog(ex.Message, "Error");
         }

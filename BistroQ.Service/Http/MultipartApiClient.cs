@@ -27,9 +27,15 @@ public class MultipartApiClient : IMultipartApiClient
 
         if (jsonContent != null)
         {
-            var jsonString = JsonConvert.SerializeObject(jsonContent);
-            var jsonPart = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            content.Add(jsonPart, jsonPartName);
+            var properties = jsonContent.GetType().GetProperties();
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(jsonContent)?.ToString();
+                if (value != null)
+                {
+                    content.Add(new StringContent(value), $"{jsonPartName}.{property.Name}");
+                }
+            }
         }
 
         if (files != null)

@@ -1,6 +1,6 @@
-using System.Text;
-using BistroQ.Domain.Contracts.Services;
+﻿using BistroQ.Domain.Contracts.Services;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace BistroQ.Service.Common;
 

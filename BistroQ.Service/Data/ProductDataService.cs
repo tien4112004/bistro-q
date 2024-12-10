@@ -80,4 +80,19 @@ public class ProductDataService : IProductDataService
 
         throw new Exception("Failed to get products");
     }
+
+    public async Task<Product> CreateProductAsync(CreateProductRequest request, Stream stream, string fileName, string contentType)
+    {
+        var response = await _multipartApiClient.PostMultipartAsync<ProductResponse>("/api/admin/product",
+            request, "Product", new Dictionary<string, (Stream Stream, string FileName, string ContentType)>
+        {
+            { "Image", (stream, fileName, contentType) }
+        });
+
+        if (response.Success)
+        {
+            return _mapper.Map<Product>(response.Data);
+        }
+        throw new Exception(response.Message);
+    }
 }

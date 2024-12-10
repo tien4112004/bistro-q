@@ -1,4 +1,5 @@
-﻿using BistroQ.Presentation.ViewModels.AdminProduct;
+﻿using BistroQ.Presentation.Models;
+using BistroQ.Presentation.ViewModels.AdminProduct;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.Storage.Pickers;
@@ -61,6 +62,9 @@ public sealed partial class AdminProductAddPage : Page
         if (file != null)
         {
             ViewModel.Form.ImageUrl = file.Path;
+            ViewModel.IsProcessing = true;
+            ViewModel.Form.ImageFile = await FileWrapper.FromStorageFileAsync(file);
+            ViewModel.IsProcessing = false;
         }
     }
 }

@@ -19,6 +19,8 @@ public class AddProductForm : ValidatorBase
     public decimal? DiscountPrice { get; set; }
     public string? ImageUrl { get; set; }
 
+    public FileWrapper? ImageFile { get; set; }
+
     public void AddProductNameValidator()
     {
         AddValidator(nameof(Name), (value) =>
