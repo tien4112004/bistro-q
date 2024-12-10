@@ -1,7 +1,6 @@
 ﻿using BistroQ.Domain.Contracts.Http;
 using BistroQ.Domain.Dtos;
 using Newtonsoft.Json;
-using System.Text;
 
 namespace BistroQ.Service.Http;
 
@@ -52,6 +51,7 @@ public class MultipartApiClient : IMultipartApiClient
         return await HandleResponse<T>(response);
     }
 
+
     public async Task<ApiResponse<T>> PutMultipartAsync<T>(string url, object jsonContent, string jsonPartName,
         Dictionary<string, (Stream Stream, string FileName, string ContentType)> files)
     {
@@ -59,9 +59,15 @@ public class MultipartApiClient : IMultipartApiClient
 
         if (jsonContent != null)
         {
-            var jsonString = JsonConvert.SerializeObject(jsonContent);
-            var jsonPart = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            content.Add(jsonPart, jsonPartName);
+            var properties = jsonContent.GetType().GetProperties();
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(jsonContent)?.ToString();
+                if (value != null)
+                {
+                    content.Add(new StringContent(value), $"{jsonPartName}.{property.Name}");
+                }
+            }
         }
 
         if (files != null)
@@ -75,6 +81,34 @@ public class MultipartApiClient : IMultipartApiClient
         }
 
         var response = await _httpClient.PutAsync(url, content);
+        return await HandleResponse<T>(response);
+    }
+
+    public async Task<ApiResponse<T>> PutMultipartAsync<T>(string url, Dictionary<string, (Stream Stream, string FileName, string ContentType)> files)
+    {
+        using var content = new MultipartFormDataContent();
+        foreach (var file in files)
+        {
+            var fileContent = new StreamContent(file.Value.Stream);
+            fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.Value.ContentType);
+            content.Add(fileContent, file.Key, file.Value.FileName);
+        }
+
+        var response = await _httpClient.PutAsync(url, content);
+        return await HandleResponse<T>(response);
+    }
+
+    public async Task<ApiResponse<T>> PatchMultipartAsync<T>(string url, Dictionary<string, (Stream Stream, string FileName, string ContentType)> files)
+    {
+        using var content = new MultipartFormDataContent();
+        foreach (var file in files)
+        {
+            var fileContent = new StreamContent(file.Value.Stream);
+            fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.Value.ContentType);
+            content.Add(fileContent, file.Key, file.Value.FileName);
+        }
+
+        var response = await _httpClient.PatchAsync(url, content);
         return await HandleResponse<T>(response);
     }
 
@@ -109,4 +143,5 @@ public class MultipartApiClient : IMultipartApiClient
             };
         }
     }
+
 }

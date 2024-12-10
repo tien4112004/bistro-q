@@ -9,4 +9,8 @@ public interface IMultipartApiClient
         Dictionary<string, (Stream Stream, string FileName, string ContentType)> files);
     Task<ApiResponse<T>> PutMultipartAsync<T>(string url, object jsonContent, string jsonPartName,
         Dictionary<string, (Stream Stream, string FileName, string ContentType)> files);
+
+    Task<ApiResponse<T>> PutMultipartAsync<T>(string url, Dictionary<string, (Stream Stream, string FileName, string ContentType)> files);
+    Task<ApiResponse<T>> PatchMultipartAsync<T>(string url, Dictionary<string, (Stream Stream, string FileName, string ContentType)> files);
+
 }

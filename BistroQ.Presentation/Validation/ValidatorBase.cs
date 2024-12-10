@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -46,7 +46,7 @@ public partial class ValidatorBase : INotifyPropertyChanged, INotifyDataErrorInf
     {
         UpdateErrors(propertyName, new List<string>());
     }
-    
+
     ///<summary>
     /// Clears all validation errors
     /// </summary>
@@ -56,7 +56,7 @@ public partial class ValidatorBase : INotifyPropertyChanged, INotifyDataErrorInf
         ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(string.Empty));
         OnPropertyChanged(nameof(Errors));
     }
-    
+
     /// <summary>
     /// Validates a specific property value using registered validators
     /// </summary>

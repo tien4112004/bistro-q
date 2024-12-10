@@ -95,4 +95,19 @@ public class ProductDataService : IProductDataService
         }
         throw new Exception(response.Message);
     }
+
+    public async Task<Product> UpdateProductImageAsync(int productId, Stream stream, string fileName, string contentType)
+    {
+        var response = await _multipartApiClient.PatchMultipartAsync<ProductResponse>($"api/admin/product/{productId}",
+            new Dictionary<string, (Stream Stream, string FileName, string ContentType)>
+            {
+                {"image", (stream, fileName, contentType) }
+            });
+
+        if (response.Success)
+        {
+            return _mapper.Map<Product>(response.Data);
+        }
+        throw new Exception(response.Message);
+    }
 }

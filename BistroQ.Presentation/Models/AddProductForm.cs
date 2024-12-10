@@ -9,6 +9,7 @@ public class AddProductForm : ValidatorBase
         AddProductNameValidator();
         AddProductUnitValidator();
         AddProductPriceValidator();
+        AddProductCategoryValidator();
     }
 
     public int? ProductId { get; set; }
@@ -20,6 +21,16 @@ public class AddProductForm : ValidatorBase
     public string? ImageUrl { get; set; }
 
     public FileWrapper? ImageFile { get; set; }
+
+    public void AddProductCategoryValidator()
+    {
+        AddValidator(nameof(CategoryId), (value) =>
+        {
+            return value.Validate(
+                v => ValidationRules.IntRules.NotEmpty(v, "Category")
+            ).Where(r => !r.IsValid).ToList();
+        });
+    }
 
     public void AddProductNameValidator()
     {
@@ -69,5 +80,6 @@ public class AddProductForm : ValidatorBase
         ValidateProperty(nameof(Name), Name);
         ValidateProperty(nameof(Unit), Unit);
         ValidateProperty(nameof(Price), Price);
+        ValidateProperty(nameof(CategoryId), CategoryId);
     }
 }

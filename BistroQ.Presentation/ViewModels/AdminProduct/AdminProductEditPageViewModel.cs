@@ -71,6 +71,10 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
                 CategoryId = Form.CategoryId
             };
 
+            if (Form.ImageFile != null)
+            {
+                await _productDataService.UpdateProductImageAsync(Form.ProductId.Value, Form.ImageFile.Stream, Form.ImageFile.FileName, Form.ImageFile.ContentType);
+            }
             await _productDataService.UpdateProductAsync(Form.ProductId.Value, request);
 
             await _dialogService.ShowSuccessDialog($"Successfully updated product: {request.Name}", "Success");

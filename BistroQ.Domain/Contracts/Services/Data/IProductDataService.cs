@@ -14,5 +14,7 @@ public interface IProductDataService
 
     Task<Product> UpdateProductAsync(int productId, UpdateProductRequest request);
 
+    Task<Product> UpdateProductImageAsync(int productId, Stream Stream, string FileName, string ContentType);
+
     Task<bool> DeleteProductAsync(int productId);
 }

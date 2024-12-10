@@ -9,7 +9,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminProduct;
 
@@ -22,6 +21,11 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
     [ObservableProperty]
     private string _errorMessage = string.Empty;
 
+    partial void OnFormChanged(AddProductForm value)
+    {
+        AddCommand.NotifyCanExecuteChanged();
+    }
+
     public ObservableCollection<CategoryViewModel> Categories;
 
     private readonly IProductDataService _productDataService;
@@ -29,7 +33,7 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
     private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
 
-    public ICommand AddCommand { get; }
+    public IRelayCommand AddCommand { get; }
 
     public event EventHandler NavigateBack;
 
@@ -45,18 +49,13 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
         _mapper = mapper;
         Categories = new ObservableCollection<CategoryViewModel>();
 
-        AddCommand = new AsyncRelayCommand(AddProductAsync, CanAdd);
-    }
-
-    public bool CanAdd()
-    {
-        return !Form.HasErrors && !IsProcessing;
+        AddCommand = new AsyncRelayCommand(AddProductAsync);
     }
 
     public async Task AddProductAsync()
     {
         Form.ValidateAll();
-        if (!CanAdd())
+        if (Form.HasErrors)
         {
             await _dialogService.ShowErrorDialog("Data is invalid. Please check again.", "Error");
             return;
@@ -75,11 +74,6 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
                 Unit = Form.Unit,
                 DiscountPrice = Form.DiscountPrice
             };
-
-            if (request.CategoryId == 0)
-            {
-                throw new InvalidDataException("Category must be selected.");
-            }
 
             if (Form.ImageFile == null)
             {
