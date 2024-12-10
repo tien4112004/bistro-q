@@ -1,6 +1,9 @@
-﻿using BistroQ.Presentation.ViewModels.AdminProduct;
+﻿using BistroQ.Presentation.Models;
+using BistroQ.Presentation.ViewModels.AdminProduct;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using Windows.Storage.Pickers;
+using WinRT.Interop;
 
 namespace BistroQ.Presentation.Views.AdminProduct;
 
@@ -67,5 +70,27 @@ public sealed partial class AdminProductEditPage : Page
     private void ProductEditPage_DiscountPriceNumberBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
     {
         ViewModel.Form.ResetError(nameof(ViewModel.Form.DiscountPrice));
+    }
+
+    private async void ProductEditPage_SelectImageButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        FileOpenPicker fileOpenPicker = new()
+        {
+            ViewMode = PickerViewMode.Thumbnail,
+            FileTypeFilter = { ".jpg", ".jpeg", ".png", ".gif" },
+        };
+
+        var windowHandle = WindowNative.GetWindowHandle(App.MainWindow);
+        InitializeWithWindow.Initialize(fileOpenPicker, windowHandle);
+
+        var file = await fileOpenPicker.PickSingleFileAsync();
+
+        if (file != null)
+        {
+            ViewModel.Form.ImageUrl = file.Path;
+            ViewModel.IsProcessing = true;
+            ViewModel.Form.ImageFile = await FileWrapper.FromStorageFileAsync(file);
+            ViewModel.IsProcessing = false;
+        }
     }
 }
