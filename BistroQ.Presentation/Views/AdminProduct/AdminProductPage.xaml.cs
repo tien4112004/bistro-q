@@ -11,7 +11,6 @@ public sealed partial class AdminProductPage : Page
     public AdminProductPage()
     {
         ViewModel = App.GetService<AdminProductViewModel>();
-        this.DataContext = ViewModel;
         InitializeComponent();
     }
 

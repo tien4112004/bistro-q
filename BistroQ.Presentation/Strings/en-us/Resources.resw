@@ -285,6 +285,47 @@
     <value>Edit</value>
   </data>
 
+  <data name="ProductAddPage_CategoryComboBox/Header" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="ProductNameTextBox/Header" xml:space="preserve">
+      <value>Product name</value>
+  </data>
+  <data name="ProductUnitTextBox/Header" xml:space="preserve">
+      <value>Unit</value>
+  </data>
+  <data name="ProductAddPage_PriceTextBox/Header" xml:space="preserve">
+      <value>Price</value>
+  </data>
+  <data name="ProductAddPage_DiscountPriceTextBox/Header" xml:space="preserve">
+      <value>Discount price</value>
+  </data>
+  <data name="ProductAddPage_PreviewImage/AutomationProperties.Name" xml:space="preserve">
+      <value>Product image preview</value>
+  </data>
+
+  <data name="ProductIdTextBox/Header" xml:space="preserve">
+    <value>Product ID</value>
+  </data>
+  <data name="ProductEditPage_CategoryComboBox/Header" xml:space="preserve">
+      <value>Category</value>
+  </data>
+  <data name="ProductNameTextBox/Header" xml:space="preserve">
+      <value>Product name</value>
+  </data>
+  <data name="ProductUnitTextBox/Header" xml:space="preserve">
+      <value>Unit</value>
+  </data>
+  <data name="ProductEditPage_PriceTextBox/Header" xml:space="preserve">
+      <value>Price</value>
+  </data>
+  <data name="ProductEditPage_DiscountPriceTextBox/Header" xml:space="preserve">
+      <value>Discount price</value>
+  </data>
+  <data name="ProductEditPage_PreviewImage/AutomationProperties.Name" xml:space="preserve">
+      <value>Product image preview</value>
+  </data>
+
   <data name="Shell_CashierTablePage.Content" xml:space="preserve">
     <value>Table</value>
   </data>

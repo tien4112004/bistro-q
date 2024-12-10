@@ -13,9 +13,10 @@ public class AddProductForm : ValidatorBase
 
     public string Name { get; set; }
     public int CategoryId { get; set; }
-    public decimal? Price { get; set; }
+    public decimal Price { get; set; }
     public string Unit { get; set; }
     public decimal? DiscountPrice { get; set; }
+    public string? ImageUrl { get; set; }
 
     public void AddProductNameValidator()
     {
@@ -55,7 +56,7 @@ public class AddProductForm : ValidatorBase
         AddValidator(nameof(DiscountPrice), (value) =>
         {
             return value.Validate(
-                v => ValidationRules.DecimalRules.Min(v, 0, "Price")
+                v => ValidationRules.DecimalRules.Min(v, 0, "Discount Price")
             ).Where(r => !r.IsValid).ToList();
         });
     }

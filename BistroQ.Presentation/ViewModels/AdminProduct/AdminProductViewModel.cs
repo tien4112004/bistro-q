@@ -29,7 +29,7 @@ public partial class AdminProductViewModel :
     private readonly IMessenger _messenger;
 
     [ObservableProperty]
-    private AdminProductState state = new();
+    private AdminProductState _state = new();
 
     public IRelayCommand AddCommand { get; }
     public IRelayCommand EditCommand { get; }
@@ -120,8 +120,10 @@ public partial class AdminProductViewModel :
         }
     }
 
-    private void NavigateToAddPage() =>
+    private void NavigateToAddPage()
+    {
         _navigationService.NavigateTo(typeof(AdminProductAddPageViewModel).FullName);
+    }
 
     private void NavigateToEditPage()
     {

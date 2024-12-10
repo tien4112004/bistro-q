@@ -8,6 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:control="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:f="using:Windows.Globalization.NumberFormatting"
     mc:Ignorable="d"
     Background="Transparent">
 
@@ -15,8 +16,16 @@
         <converter:ReverseBooleanConverter x:Key="ReverseBool"/>
         <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
         <converter:StringToVisibilityConverter x:Key="StringToVisibility"/>
+        <converter:StringToImageSourceConverter x:Key="StringToImageSource"/>
         <converter:FirstValidationErrorConverter x:Key="FirstError"/>
         <converter:NumberToCurrencyConverter x:Key="NumberToCurrency"/>
+        <converter:DecimalToDoubleConverter x:Key="DecimalToDouble"/>
+        <f:DecimalFormatter 
+            x:Key="DecimalFormatter" 
+            FractionDigits="0"
+            IsGrouped="True"
+            IntegerDigits="1"
+            SignificantDigits="3"/>
     </Page.Resources>
 
     <Grid Background="Transparent">
@@ -56,24 +65,37 @@
 
             <NumberBox x:Name="ProductAddPage_PriceNumberBox"
                        x:Uid="ProductAddPage_PriceTextBox"
-                       Value="{x:Bind ViewModel.Form.Price, Mode=TwoWay, Converter={StaticResource NumberToCurrency}}"
+                       Value="{x:Bind ViewModel.Form.Price, Mode=TwoWay, Converter={StaticResource DecimalToDouble}}"
                        SpinButtonPlacementMode="Inline"
                        Minimum="0"
                        SmallChange="1000"
+                       PlaceholderText="0"
                        LargeChange="10000"
-                       ValidationMode="InvalidInputOverwritten" 
+                       ValidationMode="InvalidInputOverwritten"
                        Width="300"
+                       NumberFormatter="{StaticResource DecimalFormatter}"
                        Margin="0,0,0,16"/>
 
             <NumberBox x:Name="ProductAddPage_DiscountPriceNumberBox"
                        x:Uid="ProductAddPage_DiscountPriceTextBox"
-                       Value="{x:Bind ViewModel.Form.DiscountPrice, Mode=TwoWay, Converter={StaticResource NumberToCurrency}}"
+                       Value="{x:Bind ViewModel.Form.DiscountPrice, Mode=TwoWay, Converter={StaticResource DecimalToDouble}}"
                        SpinButtonPlacementMode="Inline"
                        Minimum="0"
+                       PlaceholderText="0"
                        SmallChange="1000"
                        LargeChange="10000"
                        ValidationMode="InvalidInputOverwritten" 
+                       NumberFormatter="{StaticResource DecimalFormatter}"
                        Width="300"/>
+
+            <Image x:Name="ProductAddPage_PreviewImage"
+                   x:Uid="ProductAddPage_PreviewImage"
+                   Source="{x:Bind ViewModel.Form.ImageUrl, Mode=OneWay, Converter={StaticResource StringToImageSource}}"
+                   Width="200"
+                   Height="200"
+                   Stretch="Uniform"
+                   Margin="0,8,0,0"
+                   Visibility="{x:Bind ViewModel.Form.ImageUrl, Mode=OneWay, Converter={StaticResource StringToVisibility}}"/>
 
             <TextBlock Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
                       Visibility="{x:Bind ViewModel.ErrorMessage, 

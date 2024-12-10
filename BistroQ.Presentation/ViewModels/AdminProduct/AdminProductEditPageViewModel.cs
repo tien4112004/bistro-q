@@ -9,6 +9,8 @@ using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Text.Json;
 using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminProduct;
@@ -66,15 +68,18 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
             IsProcessing = true;
             ErrorMessage = string.Empty;
 
-            Request.Name = Form.Name;
-            Request.CategoryId = Form.CategoryId;
-            Request.Price = Form.Price ?? 0;
-            Request.Unit = Form.Unit;
-            Request.DiscountPrice = Form.DiscountPrice;
+            var request = new UpdateProductRequest
+            {
+                Name = Form.Name,
+                Price = Form.Price,
+                Unit = Form.Unit,
+                DiscountPrice = Form.DiscountPrice,
+                CategoryId = Form.CategoryId
+            };
 
-            await _productDataService.UpdateProductAsync(Product.ProductId.Value, Request);
+            await _productDataService.UpdateProductAsync(Product.ProductId.Value, request);
 
-            await _dialogService.ShowSuccessDialog($"Successfully updated product: {Request.Name}", "Success");
+            await _dialogService.ShowSuccessDialog($"Successfully updated product: {request.Name}", "Success");
             NavigateBack?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
@@ -112,10 +117,12 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
         if (parameter is ProductViewModel selectedProduct)
         {
             Product = selectedProduct;
-            Request.Name = Product?.Name ?? string.Empty;
-            Request.Price = Product?.Price ?? 0;
-            Request.Unit = Product?.Unit ?? string.Empty;
-            Request.DiscountPrice = Product?.DiscountPrice ?? 0;
+            Form.Name = Product?.Name ?? string.Empty;
+            Form.Price = Product?.Price ?? 0;
+            Form.Unit = Product?.Unit ?? string.Empty;
+            Form.DiscountPrice = Product?.DiscountPrice ?? 0;
+            Form.CategoryId = Product?.Category?.CategoryId ?? 0;
+            Debug.WriteLine(JsonSerializer.Serialize(Form));
         }
     }
 

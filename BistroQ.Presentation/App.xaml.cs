@@ -131,7 +131,7 @@ public partial class App : Application
             services.AddTransient<AdminCategoryAddPage>();
             services.AddTransient<AdminCategoryEditPageViewModel>();
             services.AddTransient<AdminCategoryEditPage>();
-            services.AddTransient<AdminProductViewModel>();
+            services.AddScoped<AdminProductViewModel>();
             services.AddTransient<AdminProductPage>();
             services.AddTransient<AdminProductAddPageViewModel>();
             services.AddTransient<AdminProductAddPage>();

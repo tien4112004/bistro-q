@@ -70,7 +70,7 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
             {
                 Name = Form.Name,
                 CategoryId = Form.CategoryId,
-                Price = Form.Price ?? 0,
+                Price = Form.Price,
                 Unit = Form.Unit,
                 DiscountPrice = Form.DiscountPrice
             };

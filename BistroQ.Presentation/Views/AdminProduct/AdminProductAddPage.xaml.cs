@@ -1,5 +1,6 @@
 ﻿using BistroQ.Presentation.ViewModels.AdminProduct;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 
 namespace BistroQ.Presentation.Views.AdminProduct;
 
@@ -35,5 +36,10 @@ public sealed partial class AdminProductAddPage : Page
     private void OnNavigateBack(object sender, EventArgs e)
     {
         Frame.GoBack();
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
     }
 }
