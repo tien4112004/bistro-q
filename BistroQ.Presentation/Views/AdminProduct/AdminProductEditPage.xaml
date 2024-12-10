@@ -45,6 +45,7 @@
 
             <ComboBox x:Name="ProductEditPage_CategoryComboBox"
                       x:Uid="ProductEditPage_CategoryComboBox"
+                      GettingFocus="ProductEditPage_CategoryComboBox_GettingFocus"
                       ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="CategoryId"
@@ -55,6 +56,7 @@
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                 <TextBox x:Name="Name"
                          x:Uid="ProductNameTextBox"
+                         GettingFocus="Name_GettingFocus"
                          Text="{x:Bind ViewModel.Form.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Width="300" />
                 <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
@@ -67,12 +69,14 @@
 
             <TextBox x:Name="Unit"
                      x:Uid="ProductUnitTextBox"
+                     GettingFocus="Unit_GettingFocus"
                      Text="{x:Bind ViewModel.Form.Unit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Width="300"
                      Margin="0,0,0,16" />
 
             <NumberBox x:Name="ProductEditPage_PriceNumberBox"
                        x:Uid="ProductEditPage_PriceTextBox"
+                       GettingFocus="ProductEditPage_PriceNumberBox_GettingFocus"
                        Value="{x:Bind ViewModel.Form.Price, Mode=TwoWay, Converter={StaticResource DecimalToDouble}}"
                        SpinButtonPlacementMode="Inline"
                        Minimum="0"
@@ -86,6 +90,7 @@
 
             <NumberBox x:Name="ProductEditPage_DiscountPriceNumberBox"
                        x:Uid="ProductEditPage_DiscountPriceTextBox"
+                       GettingFocus="ProductEditPage_DiscountPriceNumberBox_GettingFocus"
                        Value="{x:Bind ViewModel.Form.DiscountPrice, Mode=TwoWay, Converter={StaticResource DecimalToDouble}}"
                        SpinButtonPlacementMode="Inline"
                        Minimum="0"

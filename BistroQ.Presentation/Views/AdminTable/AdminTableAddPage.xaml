@@ -26,6 +26,7 @@
         <StackPanel Orientation="Vertical" Background="Transparent" HorizontalAlignment="Left">
             <ComboBox x:Name="TableAddPage_ZoneComboBox"
                       x:Uid="TableAddPage_ZoneComboBox"
+                      GettingFocus="TableAddPage_ZoneComboBox_GettingFocus"
                       ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="ZoneId"
@@ -34,6 +35,7 @@
 
             <NumberBox x:Name="TableAddPage_SeatsCountNumberBox"
                        x:Uid="TableAddPage_SeatsCountNumberBox"
+                       GettingFocus="TableAddPage_SeatsCountNumberBox_GettingFocus"
                        Text="{x:Bind ViewModel.Form.SeatsCount, Mode=TwoWay}"
                        SpinButtonPlacementMode="Inline"
                        Width="300"

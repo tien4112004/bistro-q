@@ -82,6 +82,8 @@ public partial class PaginationControl : UserControl, IDisposable, IRecipient<Pa
             if (int.TryParse(item.Content.ToString(), out int pageSize))
             {
                 _messenger.Send(new PageSizeChangedMessage(pageSize));
+                _messenger.Send(new CurrentPageChangedMessage(1));
+                Pagination.CurrentPage = 1;
             }
         }
     }

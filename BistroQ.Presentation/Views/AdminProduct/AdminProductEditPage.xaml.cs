@@ -43,4 +43,29 @@ public sealed partial class AdminProductEditPage : Page
     {
         Frame.GoBack();
     }
+
+    private void ProductEditPage_CategoryComboBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.CategoryId));
+    }
+
+    private void Name_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Name));
+    }
+
+    private void Unit_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Unit));
+    }
+
+    private void ProductEditPage_PriceNumberBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Price));
+    }
+
+    private void ProductEditPage_DiscountPriceNumberBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.DiscountPrice));
+    }
 }

@@ -30,4 +30,9 @@ public sealed partial class AdminCategoryAddPage : Page
     {
         Frame.GoBack();
     }
+
+    private void Name_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Name));
+    }
 }

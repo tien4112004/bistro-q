@@ -67,4 +67,29 @@ public sealed partial class AdminProductAddPage : Page
             ViewModel.IsProcessing = false;
         }
     }
+
+    private void ProductAddPage_CategoryComboBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.CategoryId));
+    }
+
+    private void Name_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Name));
+    }
+
+    private void ProductAddPage_PriceNumberBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Price));
+    }
+
+    private void ProductAddPage_DiscountPriceNumberBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.DiscountPrice));
+    }
+
+    private void Unit_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Unit));
+    }
 }

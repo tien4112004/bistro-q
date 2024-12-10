@@ -1,6 +1,4 @@
-using BistroQ.Domain.Contracts.Services;
-using BistroQ.Domain.Dtos.Zones;
-using BistroQ.Presentation.ViewModels.AdminZone;
+﻿using BistroQ.Presentation.ViewModels.AdminZone;
 using BistroQ.Presentation.ViewModels.Models;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -44,5 +42,10 @@ public sealed partial class AdminZoneEditPage : Page
     private void AdminZoneEditPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         Frame.GoBack();
+    }
+
+    private void Name_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Name));
     }
 }
