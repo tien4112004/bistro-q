@@ -1,5 +1,4 @@
 ﻿using BistroQ.Presentation.ViewModels.AdminProduct;
-using BistroQ.Presentation.ViewModels.Models;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
@@ -27,17 +26,11 @@ public sealed partial class AdminProductEditPage : Page
     private async void AdminProductEditPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         await ViewModel.LoadCategoriesAsync();
-        ProductEditPage_CategoryComboBox.SelectedValue = ViewModel.Request.CategoryId;
+        ProductEditPage_CategoryComboBox.SelectedValue = ViewModel.Form.CategoryId;
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        var productDto = e.Parameter as ProductViewModel;
-        if (productDto != null)
-        {
-            ViewModel.Product = productDto;
-        }
-
         base.OnNavigatedTo(e);
     }
 

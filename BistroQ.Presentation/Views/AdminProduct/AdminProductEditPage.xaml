@@ -37,7 +37,7 @@
         <StackPanel Orientation="Vertical" Background="Transparent" HorizontalAlignment="Left">
             <TextBox x:Name="ProductIdTextBox"
                      x:Uid="ProductIdTextBox"
-                     Text="{x:Bind ViewModel.Product.ProductId, Mode=OneTime}"
+                     Text="{x:Bind ViewModel.Form.ProductId, Mode=OneTime}"
                      IsReadOnly="True"
                      IsEnabled="False"
                      Width="300"
@@ -48,7 +48,7 @@
                       ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="CategoryId"
-                      SelectedValue="{x:Bind ViewModel.Product.Category.CategoryId, Mode=TwoWay}"
+                      SelectedValue="{x:Bind ViewModel.Form.CategoryId, Mode=TwoWay}"
                       Width="300"
                       Margin="0,0,0,16" />
 
