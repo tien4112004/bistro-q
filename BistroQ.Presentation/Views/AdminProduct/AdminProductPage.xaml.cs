@@ -12,6 +12,7 @@ public sealed partial class AdminProductPage : Page
     {
         ViewModel = App.GetService<AdminProductViewModel>();
         InitializeComponent();
+        this.Unloaded += (s, e) => ViewModel.Dispose();
     }
 
     private void Control2_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

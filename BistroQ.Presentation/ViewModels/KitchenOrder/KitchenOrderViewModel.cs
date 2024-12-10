@@ -96,6 +96,9 @@ public partial class KitchenOrderViewModel :
 
     public void Dispose()
     {
+        KitchenOrderButtonsVM.Dispose();
+        PendingColumnVM.Dispose();
+        ProgressColumnVM.Dispose();
         _messenger.UnregisterAll(this);
     }
 }

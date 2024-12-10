@@ -126,5 +126,6 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
 
     public void OnNavigatedFrom()
     {
+
     }
 }

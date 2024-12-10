@@ -13,6 +13,7 @@ public sealed partial class AdminCategoryPage : Page
         ViewModel = App.GetService<AdminCategoryViewModel>();
         this.DataContext = ViewModel;
         InitializeComponent();
+        this.Unloaded += (s, e) => ViewModel.Dispose();
     }
 
     private void Control2_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

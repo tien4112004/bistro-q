@@ -87,12 +87,14 @@ public partial class AdminProductViewModel :
 
     public async void OnNavigatedTo(object parameter)
     {
+        State.Reset();
         await LoadDataAsync();
     }
 
     public void OnNavigatedFrom()
     {
         State.SelectedProduct = null;
+        State.Reset();
     }
 
     private async Task LoadDataAsync()

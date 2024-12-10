@@ -1,5 +1,4 @@
-﻿using BistroQ.Domain.Models.Entities;
-using BistroQ.Presentation.ViewModels.Client;
+﻿using BistroQ.Presentation.ViewModels.Client;
 using BistroQ.Presentation.ViewModels.Models;
 using Microsoft.UI.Xaml.Controls;
 

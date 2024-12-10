@@ -19,6 +19,6 @@ public partial class KitchenHistoryViewModel : ObservableObject, INavigationAwar
 
     public void OnNavigatedFrom()
     {
-        //
+        OrderItemGridViewModel.Dispose();
     }
 }

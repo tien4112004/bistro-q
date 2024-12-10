@@ -11,5 +11,6 @@ public sealed partial class KitchenOrderPage : Page
     {
         ViewModel = App.GetService<KitchenOrderViewModel>();
         InitializeComponent();
+        this.Unloaded += (s, e) => ViewModel.Dispose();
     }
 }

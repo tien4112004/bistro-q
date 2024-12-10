@@ -88,7 +88,11 @@ public partial class PaginationControl : UserControl, IDisposable, IRecipient<Pa
         }
     }
 
-    private void FirstPage() => _messenger.Send(new CurrentPageChangedMessage(1));
+    private void FirstPage()
+    {
+        Pagination.CurrentPage = 1;
+        _messenger.Send(new CurrentPageChangedMessage(1));
+    }
     private bool CanFirstPage() => Pagination?.CurrentPage > 1;
 
     private void PreviousPage() => _messenger.Send(new CurrentPageChangedMessage(--Pagination.CurrentPage));
@@ -97,7 +101,11 @@ public partial class PaginationControl : UserControl, IDisposable, IRecipient<Pa
     private void NextPage() => _messenger.Send(new CurrentPageChangedMessage(++Pagination.CurrentPage));
     private bool CanNextPage() => Pagination?.CurrentPage < Pagination?.TotalPages;
 
-    private void LastPage() => _messenger.Send(new CurrentPageChangedMessage(Pagination.TotalPages));
+    private void LastPage()
+    {
+        Pagination.CurrentPage = Pagination.TotalPages;
+        _messenger.Send(new CurrentPageChangedMessage(Pagination.TotalPages));
+    }
     private bool CanLastPage() => Pagination?.CurrentPage < Pagination?.TotalPages;
 
     private void PaginationControl_Unloaded(object sender, RoutedEventArgs e)
@@ -109,9 +117,12 @@ public partial class PaginationControl : UserControl, IDisposable, IRecipient<Pa
     {
         if (_isDisposed) return;
 
-        Pagination.TotalItems = message.TotalItems;
-        Pagination.CurrentPage = message.CurrentPage;
-        Pagination.TotalPages = message.TotalPages;
+        Pagination = new PaginationViewModel
+        {
+            TotalItems = message.TotalItems,
+            CurrentPage = message.CurrentPage,
+            TotalPages = message.TotalPages
+        };
         UpdateCommandStates();
     }
 

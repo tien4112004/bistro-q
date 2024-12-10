@@ -9,5 +9,6 @@ public sealed partial class CashierTablePage : Page
     {
         ViewModel = App.GetService<CashierTableViewModel>();
         this.InitializeComponent();
+        this.Unloaded += (s, e) => ViewModel.Dispose();
     }
 }
