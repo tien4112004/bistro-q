@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BistroQ.Domain.Contracts.Http;
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Contracts.Services.Data;
 using BistroQ.Domain.Dtos;
@@ -10,12 +11,14 @@ namespace BistroQ.Service.Data;
 public class ProductDataService : IProductDataService
 {
     private readonly IApiClient _apiClient;
+    private readonly IMultipartApiClient _multipartApiClient;
     private readonly IMapper _mapper;
 
-    public ProductDataService(IApiClient apiClient, IMapper mapper)
+    public ProductDataService(IApiClient apiClient, IMapper mapper, IMultipartApiClient multipartApiClient)
     {
         _apiClient = apiClient;
         _mapper = mapper;
+        _multipartApiClient = multipartApiClient;
     }
 
     public async Task<ApiCollectionResponse<IEnumerable<Product>>> GetGridDataAsync(ProductCollectionQueryParams query = null)

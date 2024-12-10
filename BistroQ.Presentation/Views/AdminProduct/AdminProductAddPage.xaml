@@ -88,6 +88,12 @@
                        NumberFormatter="{StaticResource DecimalFormatter}"
                        Width="300"/>
 
+            <Button
+                x:Name="ProductAddPage_SelectImageButton"
+                x:Uid="ProductAddPage_SelectImageButton"
+                Content="Select Image"
+                Click="ProductAddPage_SelectImageButton_Click"/>
+            
             <Image x:Name="ProductAddPage_PreviewImage"
                    x:Uid="ProductAddPage_PreviewImage"
                    Source="{x:Bind ViewModel.Form.ImageUrl, Mode=OneWay, Converter={StaticResource StringToImageSource}}"

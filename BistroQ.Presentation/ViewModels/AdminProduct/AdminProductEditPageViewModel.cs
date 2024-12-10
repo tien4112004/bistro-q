@@ -115,6 +115,7 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
             Form.Price = selectedProduct?.Price ?? 0;
             Form.Unit = selectedProduct?.Unit ?? string.Empty;
             Form.DiscountPrice = selectedProduct?.DiscountPrice ?? 0;
+            Form.ImageUrl = selectedProduct?.ImageUrl;
             Form.CategoryId = selectedProduct?.Category?.CategoryId ?? 0;
         }
     }

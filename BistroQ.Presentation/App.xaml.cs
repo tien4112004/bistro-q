@@ -1,4 +1,5 @@
-﻿using BistroQ.Domain.Contracts.Services;
+﻿using BistroQ.Domain.Contracts.Http;
+using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Contracts.Services.Data;
 using BistroQ.Domain.Services.Http;
 using BistroQ.Presentation.Activation;
@@ -28,6 +29,7 @@ using BistroQ.Presentation.Views.KitchenOrder;
 using BistroQ.Service.Auth;
 using BistroQ.Service.Common;
 using BistroQ.Service.Data;
+using BistroQ.Service.Http;
 using BistroQ.Service.Mock;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
@@ -87,16 +89,22 @@ public partial class App : Application
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Http
+            var BASE_URI = new Uri(Environment.GetEnvironmentVariable("API_BASE_URI") ?? "http://localhost:5256");
             services.AddTransient<AuthenticationDelegatingHandler>();
             services.AddHttpClient<IApiClient, ApiClient>(client =>
             {
-                client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_BASE_URI") ?? "http://localhost:5256");
+                client.BaseAddress = BASE_URI;
             })
             .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
             services.AddHttpClient<IPublicApiClient, PublicApiClient>(client =>
             {
-                client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_BASE_URI") ?? "http://localhost:5256");
+                client.BaseAddress = BASE_URI;
             });
+            services.AddHttpClient<IMultipartApiClient, MultipartApiClient>(client =>
+            {
+                client.BaseAddress = BASE_URI;
+            })
+            .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
 
             // Core Services
             services.AddSingleton<ISampleDataService, SampleDataService>();

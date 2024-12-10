@@ -1,6 +1,8 @@
 ﻿using BistroQ.Presentation.ViewModels.AdminProduct;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using Windows.Storage.Pickers;
+using WinRT.Interop;
 
 namespace BistroQ.Presentation.Views.AdminProduct;
 
@@ -41,5 +43,24 @@ public sealed partial class AdminProductAddPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
+    }
+
+    private async void ProductAddPage_SelectImageButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        FileOpenPicker fileOpenPicker = new()
+        {
+            ViewMode = PickerViewMode.Thumbnail,
+            FileTypeFilter = { ".jpg", ".jpeg", ".png", ".gif" },
+        };
+
+        var windowHandle = WindowNative.GetWindowHandle(App.MainWindow);
+        InitializeWithWindow.Initialize(fileOpenPicker, windowHandle);
+
+        var file = await fileOpenPicker.PickSingleFileAsync();
+
+        if (file != null)
+        {
+            ViewModel.Form.ImageUrl = file.Path;
+        }
     }
 }
