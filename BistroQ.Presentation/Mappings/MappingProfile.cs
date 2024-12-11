@@ -23,6 +23,7 @@ public class MappingProfile : Profile
         CreateMap<Table, TableViewModel>().ReverseMap();
         CreateMap<Zone, ZoneViewModel>();
         CreateMap<Zone, ZoneViewModel>().ReverseMap();
+        CreateMap<ZoneResponse, ZoneViewModel>();
         CreateMap<Order, OrderViewModel>();
         CreateMap<Order, OrderViewModel>().ReverseMap();
         CreateMap<OrderItem, OrderItemViewModel>();
@@ -45,10 +46,15 @@ public class MappingProfile : Profile
         CreateMap<ZoneDetailResponse, Zone>()
             .ForMember(dest => dest.Tables, opt => opt.MapFrom(src => src.Tables));
 
-        CreateMap<OrderDetailResponse, Order>()
+        CreateMap<OrderResponse, Order>();
+        CreateMap<DetailOrderResponse, Order>()
             .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItems));
-        CreateMap<OrderItemDetailResponse, OrderItem>()
+        CreateMap<OrderItemWithProductResponse, OrderItem>()
             .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
+        CreateMap<DetailOrderItemResponse, OrderItem>()
+            .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product))
+            .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
+            .ForPath(dest => dest.Order.Table, opt => opt.MapFrom(src => src.Table));
 
         CreateMap<ProductResponse, Product>()
             .ForMember(dest => dest.Category, opt => opt.MapFrom(

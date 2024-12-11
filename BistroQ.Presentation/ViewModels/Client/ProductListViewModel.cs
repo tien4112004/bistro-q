@@ -32,6 +32,9 @@ public partial class ProductListViewModel : ObservableRecipient
     private ProductViewModel _selectedProduct;
 
     [ObservableProperty]
+    private bool _isEmptyList = false;
+
+    [ObservableProperty]
     private ObservableCollection<ProductViewModel> _products = new ObservableCollection<ProductViewModel>();
 
     public ICommand ChangeCategoryCommand { get; set; }
@@ -58,7 +61,8 @@ public partial class ProductListViewModel : ObservableRecipient
     public async Task LoadCategoriesAsync()
     {
         IsLoadingCategory = true;
-        var categoriesData = await _categoryService.GetCategoriesAsync();
+        var categoriesResponse = await _categoryService.GetCategoriesAsync();
+        var categoriesData = categoriesResponse.Data;
         var categories = _mapper.Map<IEnumerable<CategoryViewModel>>(categoriesData);
         var allCategory = new CategoryViewModel
         {
@@ -83,6 +87,7 @@ public partial class ProductListViewModel : ObservableRecipient
             var response = await _productService.GetProductsAsync(query);
             var products = _mapper.Map<IEnumerable<ProductViewModel>>(response.Data);
             Products = new ObservableCollection<ProductViewModel>(products);
+            IsEmptyList = !(Products.Any());
         }
         catch (Exception ex)
         {

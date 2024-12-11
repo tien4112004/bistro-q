@@ -30,7 +30,6 @@ using BistroQ.Service.Auth;
 using BistroQ.Service.Common;
 using BistroQ.Service.Data;
 using BistroQ.Service.Http;
-using BistroQ.Service.Mock;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -150,7 +149,7 @@ public partial class App : Application
             services.AddScoped<IZoneDataService, ZoneDataService>();
             services.AddScoped<ITableDataService, TableDataService>();
             services.AddScoped<IOrderDataService, OrderDataService>();
-            services.AddScoped<IOrderItemDataService, MockOrderItemDataService>();
+            services.AddScoped<IOrderItemDataService, OrderItemDataService>();
             services.AddScoped<ICategoryDataService, CategoryDataService>();
             services.AddScoped<IProductDataService, ProductDataService>();
             services.AddScoped<IDialogService, DialogService>();

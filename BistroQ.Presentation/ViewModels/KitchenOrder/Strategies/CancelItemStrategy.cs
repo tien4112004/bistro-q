@@ -5,7 +5,7 @@ using BistroQ.Presentation.ViewModels.States;
 
 namespace BistroQ.Presentation.ViewModels.KitchenOrder.Strategies;
 
-public class CancelItemStrategy: IOrderItemActionStrategy
+public class CancelItemStrategy : IOrderItemActionStrategy
 {
     private readonly IOrderItemDataService _orderItemDataService;
     public KitchenOrderState State { get; set; }
@@ -16,13 +16,13 @@ public class CancelItemStrategy: IOrderItemActionStrategy
         State = state;
     }
 
-    public async void ExecuteAsync(IEnumerable<OrderItemViewModel> orderItems)
+    public async Task ExecuteAsync(IEnumerable<OrderItemViewModel> orderItems)
     {
-        var orderItemViewModels = orderItems as OrderItemViewModel[] ?? orderItems.ToArray();
-        await Task.WhenAll(
-            orderItemViewModels.Select(i => _orderItemDataService.UpdateOrderItemStatusAsync(i.OrderItemId, OrderItemStatus.Cancelled)));
+        var orderItemList = orderItems.ToList();
 
-        foreach (var item in orderItemViewModels)
+        await _orderItemDataService.BulkUpdateOrderItemsStatusAsync(orderItems.Select(x => x.OrderItemId), OrderItemStatus.Cancelled);
+
+        foreach (var item in orderItemList)
         {
             item.Status = OrderItemStatus.Cancelled;
             State.PendingItems.Remove(item);

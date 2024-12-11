@@ -73,19 +73,19 @@
                 <controls:DataGridTextColumn Binding="{Binding Number}" 
                                              x:Uid="AdminTable_DataGrid_Column_TableNumber" 
                                              IsReadOnly="True"
-                                             Tag="Name" />
+                                             Tag="Number" />
                 <controls:DataGridTextColumn Binding="{Binding ZoneId}" 
                                              x:Uid="AdminTable_DataGrid_Column_ZoneId" 
                                              IsReadOnly="True"
-                                             Tag="Name" />
+                                             Tag="ZoneId" />
                 <controls:DataGridTextColumn Binding="{Binding ZoneName}" 
                                              x:Uid="AdminTable_DataGrid_Column_ZoneName" 
                                              IsReadOnly="True" Width="300"
-                                             Tag="Name" />
+                                             Tag="Zone.Name" />
                 <controls:DataGridTextColumn Binding="{Binding SeatsCount}" 
                                              x:Uid="AdminTable_DataGrid_Column_SeatsCount" 
                                              IsReadOnly="True"
-                                             Tag="TableCount" />
+                                             Tag="SeatsCount" />
                 <!-- <controls:DataGridTextColumn Header="Status" IsReadOnly="True" />-->
             </controls:DataGrid.Columns>
         </controls:DataGrid>

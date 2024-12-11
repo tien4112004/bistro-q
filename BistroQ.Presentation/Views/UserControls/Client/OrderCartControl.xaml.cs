@@ -1,12 +1,20 @@
 ﻿
+using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Client;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace BistroQ.Presentation.Views.UserControls.Client;
 
-public sealed partial class OrderCartControl : UserControl
+public sealed partial class OrderCartControl :
+    UserControl,
+    IRecipient<OrderSucceededMessage>,
+    IRecipient<AddProductToCartMessage>,
+    IDisposable
 {
+    private IMessenger _messenger = App.GetService<IMessenger>();
+
     public static readonly DependencyProperty ViewModelProperty =
         DependencyProperty.Register(
             nameof(ViewModel),
@@ -25,6 +33,7 @@ public sealed partial class OrderCartControl : UserControl
     {
         this.InitializeComponent();
         this.Loaded += OrderCartControl_Loaded;
+        _messenger.RegisterAll(this);
     }
 
     private void OrderCartControl_Loaded(object sender, RoutedEventArgs e)
@@ -45,7 +54,7 @@ public sealed partial class OrderCartControl : UserControl
 
     private void OnViewModelChanged(OrderCartViewModel newViewModel)
     {
-        ViewModelChanged?.Invoke(this, newViewModel); 
+        ViewModelChanged?.Invoke(this, newViewModel);
     }
 
     private void OrderCartSelector_SelectionChanged(object sender, SelectorBarSelectionChangedEventArgs e)
@@ -57,8 +66,29 @@ public sealed partial class OrderCartControl : UserControl
         }
         else if (OrderCartSelector.SelectedItem == SelectorBarItemOrder)
         {
+            ViewModel.LoadExistingOrderAsync();
             var orderControl = new OrderControl(ViewModel);
             PanelContentControl.Content = orderControl;
         }
     }
+
+    public void Receive(OrderSucceededMessage message)
+    {
+        Thread.Sleep(200);
+        OrderCartSelector.SelectedItem = SelectorBarItemOrder;
+    }
+
+    public void Receive(AddProductToCartMessage message)
+    {
+        if (OrderCartSelector.SelectedItem != SelectorBarItemCart)
+        {
+            OrderCartSelector.SelectedItem = SelectorBarItemCart;
+        }
+    }
+
+    public void Dispose()
+    {
+        _messenger.UnregisterAll(this);
+    }
+
 }

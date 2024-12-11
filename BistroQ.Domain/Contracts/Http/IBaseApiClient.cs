@@ -1,4 +1,4 @@
-using BistroQ.Domain.Dtos;
+﻿using BistroQ.Domain.Dtos;
 
 namespace BistroQ.Domain.Contracts.Services;
 
@@ -26,6 +26,15 @@ public interface IBaseApiClient
     Task<ApiResponse<T>> PutAsync<T>(string url, object contentValue);
 
     /// <summary>
+    /// Sends a PATCH request to the specified URL with the given content.
+    /// </summary>
+    /// <typeparam name="T">The return type of the request to the REST API.</typeparam>
+    /// <param name="url">The URL to send the PATCH request to.</param>
+    /// <param name="contentValue">The content to include in the PATCH request.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the response of type <typeparamref name="T"/>.</returns>
+    Task<ApiResponse<T>> PatchAsync<T>(string url, object contentValue);
+
+    /// <summary>
     /// Sends a GET request to the specified URL and returns the response.
     /// </summary>
     /// <typeparam name="T">The return type of the request to the REST API.</typeparam>
@@ -42,5 +51,12 @@ public interface IBaseApiClient
     /// <returns>A task that represents the asynchronous operation, containing the response of type <typeparamref name="T"/>.</returns>
     Task<ApiResponse<T>> DeleteAsync<T>(string url, object contentValue);
 
+    /// <summary>
+    /// Sends a GET request to the specified URL and returns a collection response.
+    /// </summary>
+    /// <typeparam name="T">The return type of the request to the REST API.</typeparam>
+    /// <param name="url">The URL to send the GET request to.</param>
+    /// <param name="contentValue">The content to include in the GET request.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the collection response of type <typeparamref name="T"/>.</returns>
     Task<ApiCollectionResponse<T>> GetCollectionAsync<T>(string url, object contentValue) where T : class;
 }

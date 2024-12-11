@@ -95,7 +95,7 @@ public partial class AdminZoneViewModel :
         try
         {
             State.IsLoading = true;
-            var result = await _zoneDataService.GetZonesAsync(State.Query);
+            var result = await _zoneDataService.GetGridDataAsync(State.Query);
 
             var zones = _mapper.Map<IEnumerable<ZoneViewModel>>(result.Data);
             State.Source = new ObservableCollection<ZoneViewModel>(zones);
@@ -165,10 +165,19 @@ public partial class AdminZoneViewModel :
 
     public void AdminZoneDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
     {
+        var dataGrid = sender as DataGrid;
         var column = e.Column;
         var sortDirection = column.SortDirection == null || column.SortDirection == DataGridSortDirection.Descending
             ? "asc"
             : "des";
+
+        foreach (var col in dataGrid.Columns)
+        {
+            if (col != column)
+            {
+                col.SortDirection = null;
+            }
+        }
 
         column.SortDirection = sortDirection == "asc"
             ? DataGridSortDirection.Ascending
