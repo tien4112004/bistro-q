@@ -29,6 +29,7 @@
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                 <TextBox x:Name="Name"
                          x:Uid="ZoneNameTextBox"
+                         GettingFocus="Name_GettingFocus"
                          Text="{x:Bind ViewModel.Form.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Width="300" />
                 <TextBlock Text="{x:Bind ViewModel.Form.Errors, 

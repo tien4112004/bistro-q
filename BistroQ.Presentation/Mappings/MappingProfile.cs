@@ -56,7 +56,14 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
             .ForPath(dest => dest.Order.Table, opt => opt.MapFrom(src => src.Table));
 
-        CreateMap<ProductResponse, Product>();
+        CreateMap<ProductResponse, Product>()
+            .ForMember(dest => dest.Category, opt => opt.MapFrom(
+                src => new Category
+                {
+                    CategoryId = src.CategoryId,
+                    Name = src.CategoryName
+                }
+            ));
 
         CreateMap<CategoryResponse, Category>()
             .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products));

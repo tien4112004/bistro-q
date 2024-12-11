@@ -17,7 +17,7 @@ public sealed partial class AdminTableEditPage : Page
 
         this.Loaded += AdminTableEditPage_Loaded;
         ViewModel.NavigateBack += OnNavigateBack;
-    
+
         this.Unloaded += (s, e) =>
         {
             ViewModel.NavigateBack -= OnNavigateBack;

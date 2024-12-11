@@ -1,4 +1,5 @@
-﻿using BistroQ.Domain.Contracts.Services;
+﻿using BistroQ.Domain.Contracts.Http;
+using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Contracts.Services.Data;
 using BistroQ.Domain.Services.Http;
 using BistroQ.Presentation.Activation;
@@ -7,6 +8,8 @@ using BistroQ.Presentation.Mappings;
 using BistroQ.Presentation.Models;
 using BistroQ.Presentation.Services;
 using BistroQ.Presentation.ViewModels;
+using BistroQ.Presentation.ViewModels.AdminCategory;
+using BistroQ.Presentation.ViewModels.AdminProduct;
 using BistroQ.Presentation.ViewModels.AdminTable;
 using BistroQ.Presentation.ViewModels.AdminZone;
 using BistroQ.Presentation.ViewModels.CashierTable;
@@ -15,6 +18,8 @@ using BistroQ.Presentation.ViewModels.KitchenHistory;
 using BistroQ.Presentation.ViewModels.KitchenOrder;
 using BistroQ.Presentation.ViewModels.KitchenOrder.Strategies;
 using BistroQ.Presentation.Views;
+using BistroQ.Presentation.Views.AdminCategory;
+using BistroQ.Presentation.Views.AdminProduct;
 using BistroQ.Presentation.Views.AdminTable;
 using BistroQ.Presentation.Views.AdminZone;
 using BistroQ.Presentation.Views.CashierTable;
@@ -24,6 +29,7 @@ using BistroQ.Presentation.Views.KitchenOrder;
 using BistroQ.Service.Auth;
 using BistroQ.Service.Common;
 using BistroQ.Service.Data;
+using BistroQ.Service.Http;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -82,16 +88,22 @@ public partial class App : Application
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Http
+            var BASE_URI = new Uri(Environment.GetEnvironmentVariable("API_BASE_URI") ?? "http://localhost:5256");
             services.AddTransient<AuthenticationDelegatingHandler>();
             services.AddHttpClient<IApiClient, ApiClient>(client =>
             {
-                client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_BASE_URI") ?? "http://localhost:5256");
+                client.BaseAddress = BASE_URI;
             })
             .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
             services.AddHttpClient<IPublicApiClient, PublicApiClient>(client =>
             {
-                client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_BASE_URI") ?? "http://localhost:5256");
+                client.BaseAddress = BASE_URI;
             });
+            services.AddHttpClient<IMultipartApiClient, MultipartApiClient>(client =>
+            {
+                client.BaseAddress = BASE_URI;
+            })
+            .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
 
             // Core Services
             services.AddSingleton<ISampleDataService, SampleDataService>();
@@ -108,18 +120,30 @@ public partial class App : Application
             services.AddTransient<ShellViewModel>();
             services.AddTransient<LoginViewModel>();
             // AdminZone V&VM
-            services.AddScoped<AdminZoneViewModel>();
+            services.AddTransient<AdminZoneViewModel>();
             services.AddTransient<AdminZonePage>();
             services.AddTransient<AdminZoneAddPageViewModel>();
             services.AddTransient<AdminZoneAddPage>();
             services.AddTransient<AdminZoneEditPageViewModel>();
             services.AddTransient<AdminZoneEditPage>();
-            services.AddScoped<AdminTableViewModel>();
+            services.AddTransient<AdminTableViewModel>();
             services.AddTransient<AdminTablePage>();
             services.AddTransient<AdminTableAddPageViewModel>();
             services.AddTransient<AdminTableAddPage>();
             services.AddTransient<AdminTableEditPageViewModel>();
             services.AddTransient<AdminTableEditPage>();
+            services.AddTransient<AdminCategoryViewModel>();
+            services.AddTransient<AdminCategoryPage>();
+            services.AddTransient<AdminCategoryAddPageViewModel>();
+            services.AddTransient<AdminCategoryAddPage>();
+            services.AddTransient<AdminCategoryEditPageViewModel>();
+            services.AddTransient<AdminCategoryEditPage>();
+            services.AddTransient<AdminProductViewModel>();
+            services.AddTransient<AdminProductPage>();
+            services.AddTransient<AdminProductAddPageViewModel>();
+            services.AddTransient<AdminProductAddPage>();
+            services.AddTransient<AdminProductEditPageViewModel>();
+            services.AddTransient<AdminProductEditPage>();
 
 
             services.AddScoped<IZoneDataService, ZoneDataService>();

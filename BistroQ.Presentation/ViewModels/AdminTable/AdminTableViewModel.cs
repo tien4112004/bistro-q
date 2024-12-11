@@ -198,6 +198,11 @@ public partial class AdminTableViewModel :
 
     public void Dispose()
     {
+        if (State != null)
+        {
+            State.PropertyChanged -= StatePropertyChanged;
+        }
+
         _messenger.UnregisterAll(this);
     }
 }

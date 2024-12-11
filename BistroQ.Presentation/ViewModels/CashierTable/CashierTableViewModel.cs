@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
 
-public partial class CashierTableViewModel : ObservableObject, INavigationAware, IRecipient<CheckoutRequestedMessage>
+public partial class CashierTableViewModel : ObservableObject, INavigationAware, IRecipient<CheckoutRequestedMessage>, IDisposable
 {
     public ZoneOverviewViewModel ZoneOverviewVM;
     public ZoneTableGridViewModel ZoneTableGridVM;
@@ -34,11 +34,17 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware,
 
     public void OnNavigatedFrom()
     {
-        //
     }
 
     public void Receive(CheckoutRequestedMessage message)
     {
         Debug.WriteLine("Checkout requested");
+    }
+
+    public void Dispose()
+    {
+        ZoneTableGridVM.Dispose();
+        TableOrderDetailVM.Dispose();
+        _messenger.UnregisterAll(this);
     }
 }

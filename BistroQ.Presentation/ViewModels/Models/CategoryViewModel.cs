@@ -7,10 +7,6 @@ public partial class CategoryViewModel : ObservableObject
     [ObservableProperty]
     private string? _name;
 
-    private int? _categoryId = null;
-    public int? CategoryId
-    {
-        get => _categoryId;
-        set => _categoryId = value;
-    }
+    [ObservableProperty]
+    private int? _categoryId;
 }

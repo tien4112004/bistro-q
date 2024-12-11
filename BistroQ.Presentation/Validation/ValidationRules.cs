@@ -1,7 +1,17 @@
-namespace BistroQ.Presentation.Validation;
+﻿namespace BistroQ.Presentation.Validation;
 
 public static class ValidationRules
 {
+    public static class IntRules
+    {
+        public static (bool IsValid, string Message) NotEmpty(object? value, string fieldName)
+        {
+            return value is null
+                ? (false, $"{fieldName} is required")
+                : (true, string.Empty);
+        }
+    }
+
     public static class StringRules
     {
         public static (bool IsValid, string Message) NotEmpty(object? value, string fieldName)
@@ -27,6 +37,23 @@ public static class ValidationRules
             return isDigitOnly
                 ? (true, string.Empty)
                 : (false, $"{fieldName} must contain only digits");
+        }
+    }
+
+    public static class DecimalRules
+    {
+        public static (bool IsValid, string Message) NotEmpty(object? value, string fieldName)
+        {
+            return value is null
+                ? (false, $"{fieldName} is required")
+                : (true, string.Empty);
+        }
+
+        public static (bool IsValid, string Message) Min(object? value, decimal minValue, string fieldName)
+        {
+            return value is decimal decimalValue && decimalValue < minValue
+                ? (false, $"{fieldName} must be greater than or equal to {minValue}")
+                : (true, string.Empty);
         }
     }
 }

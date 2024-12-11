@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
 
-public partial class TableOrderDetailViewModel : ObservableObject, IRecipient<TableSelectedMessage>
+public partial class TableOrderDetailViewModel : ObservableObject, IRecipient<TableSelectedMessage>, IDisposable
 {
     private readonly IOrderDataService _orderDataService;
     private readonly IMapper _mapper;
@@ -76,5 +76,10 @@ public partial class TableOrderDetailViewModel : ObservableObject, IRecipient<Ta
     public void Receive(TableSelectedMessage message)
     {
         OnTableChangedAsync(message.TableId);
+    }
+
+    public void Dispose()
+    {
+        _messenger.UnregisterAll(this);
     }
 }

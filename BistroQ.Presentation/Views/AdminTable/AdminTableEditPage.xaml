@@ -37,7 +37,7 @@
                                       Mode=TwoWay}"
                        SpinButtonPlacementMode="Inline"
                        Minimum="1"
-                       ValidationMode="InvalidInputOverwritten" 
+                       ValidationMode="InvalidInputOverwritten"
                        Width="300"
                        Margin="0,16,0,0"/>
         </StackPanel>

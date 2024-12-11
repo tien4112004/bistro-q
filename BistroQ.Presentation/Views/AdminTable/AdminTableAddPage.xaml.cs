@@ -13,9 +13,9 @@ public sealed partial class AdminTableAddPage : Page
         this.InitializeComponent();
         ViewModel = App.GetService<AdminTableAddPageViewModel>();
         this.DataContext = ViewModel;
-        
+
         this.Loaded += AdminTableAddPage_Loaded;
-        
+
         ViewModel.NavigateBack += OnNavigateBack;
 
         Unloaded += (s, e) =>
@@ -23,7 +23,7 @@ public sealed partial class AdminTableAddPage : Page
             ViewModel.NavigateBack -= OnNavigateBack;
         };
     }
-    
+
     private async void AdminTableAddPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         await ViewModel.LoadZonesAsync();
@@ -33,7 +33,7 @@ public sealed partial class AdminTableAddPage : Page
     {
         Frame.GoBack();
     }
-    
+
     private void OnNavigateBack(object sender, EventArgs e)
     {
         Frame.GoBack();
@@ -42,5 +42,15 @@ public sealed partial class AdminTableAddPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
+    }
+
+    private void TableAddPage_SeatsCountNumberBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.SeatsCount));
+    }
+
+    private void TableAddPage_ZoneComboBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.ZoneId));
     }
 }

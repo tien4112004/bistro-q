@@ -41,6 +41,6 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
 
     public void OnNavigatedFrom()
     {
-        //
+        OrderCartViewModel.Dispose();
     }
 }

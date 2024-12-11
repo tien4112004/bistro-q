@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
 
-public partial class ZoneTableGridViewModel : ObservableObject, IRecipient<ZoneSelectedMessage>
+public partial class ZoneTableGridViewModel : ObservableObject, IRecipient<ZoneSelectedMessage>, IDisposable
 {
     [ObservableProperty]
     private ObservableCollection<TableViewModel> _tables;
@@ -85,5 +85,10 @@ public partial class ZoneTableGridViewModel : ObservableObject, IRecipient<ZoneS
         {
             OnZoneChangedAsync(message.ZoneId, message.Type);
         }
+    }
+
+    public void Dispose()
+    {
+        _messenger.UnregisterAll(this);
     }
 }

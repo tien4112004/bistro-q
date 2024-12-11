@@ -61,7 +61,8 @@ public partial class ProductListViewModel : ObservableRecipient
     public async Task LoadCategoriesAsync()
     {
         IsLoadingCategory = true;
-        var categoriesData = await _categoryService.GetAllCategoriesAsync();
+        var categoriesResponse = await _categoryService.GetCategoriesAsync();
+        var categoriesData = categoriesResponse.Data;
         var categories = _mapper.Map<IEnumerable<CategoryViewModel>>(categoriesData);
         var allCategory = new CategoryViewModel
         {
