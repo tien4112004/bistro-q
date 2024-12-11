@@ -24,9 +24,9 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         
-        <Image Source="https://imageplaceholder.net/320x160" 
+        <Image Source="{x:Bind Product.ImageUrl, Mode=OneWay}" 
                Grid.Row="0" 
-               Stretch="None" />
+               Stretch="Uniform" />
         
         <StackPanel Grid.Row="1" Margin="0,8">
             <TextBlock Margin="2,6,0,0"

@@ -28,10 +28,10 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
     public ICommand UpdateCommand { get; }
 
     public event EventHandler NavigateBack;
-    public AdminZoneEditPageViewModel(IZoneDataService zoneDataService)
+    public AdminZoneEditPageViewModel(IZoneDataService zoneDataService, IDialogService dialogService)
     {
         _zoneDataService = zoneDataService;
-        _zoneDataService = zoneDataService;
+        _dialogService = dialogService;
 
         UpdateCommand = new AsyncRelayCommand(UpdateZoneAsync);
     }

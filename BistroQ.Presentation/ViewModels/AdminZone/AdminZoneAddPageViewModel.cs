@@ -41,7 +41,7 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigatio
     public async Task AddZoneAsync()
     {
         Form.ValidateAll();
-        if (!CanAdd())
+        if (Form.HasErrors)
         {
             await _dialogService.ShowErrorDialog("Data is invalid. Please check again.", "Error");
             return;

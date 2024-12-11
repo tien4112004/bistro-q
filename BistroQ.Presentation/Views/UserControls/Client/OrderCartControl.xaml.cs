@@ -66,7 +66,6 @@ public sealed partial class OrderCartControl :
         }
         else if (OrderCartSelector.SelectedItem == SelectorBarItemOrder)
         {
-            ViewModel.LoadExistingOrderAsync();
             var orderControl = new OrderControl(ViewModel);
             PanelContentControl.Content = orderControl;
         }

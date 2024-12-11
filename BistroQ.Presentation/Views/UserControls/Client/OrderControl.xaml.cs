@@ -1,10 +1,10 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using System.ComponentModel;
-using System.Diagnostics;
-using BistroQ.Presentation.Messages;
+﻿using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Client;
 using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace BistroQ.Presentation.Views.UserControls.Client;
 
@@ -28,7 +28,7 @@ public sealed partial class OrderControl : UserControl, INotifyPropertyChanged
         App.GetService<IMessenger>().Send(new CheckoutRequestedMessage(ViewModel.Order.TableId));
         Debug.WriteLine("[Debug] Checkout clicked");
     }
-    
+
     private void VerticalScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
     {
         const double SCROLL_SPEED = 1.25;
@@ -38,5 +38,10 @@ public sealed partial class OrderControl : UserControl, INotifyPropertyChanged
             scrollViewer.VerticalOffset - e.Delta.Translation.Y * SCROLL_SPEED,
             null,
             true);
+    }
+
+    private void OrderControl_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        ViewModel.LoadExistingOrderAsync();
     }
 }

@@ -11,6 +11,7 @@
     xmlns:usercontrols="using:BistroQ.Presentation.Views.UserControls" 
     xmlns:orders="using:BistroQ.Presentation.Views.UserControls.Orders"
     mc:Ignorable="d"
+    Loaded="OrderControl_Loaded"
     Background="Transparent">
 
     <UserControl.Resources>
