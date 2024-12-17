@@ -34,7 +34,26 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
 
     public async void OnNavigatedTo(object parameter)
     {
-        await OrderCartViewModel.LoadExistingOrderAsync();
+        try
+        {
+            await OrderCartViewModel.LoadExistingOrderAsync();
+        }
+        catch (Exception e)
+        {
+            if (e.Message != "Order not found")
+            {
+                App.GetService<IDialogService>().ShowDialogAsync(new Microsoft.UI.Xaml.Controls.ContentDialog
+                {
+                    Title = "Error starting order",
+                    Content = e.Message,
+                    PrimaryButtonText = "OK",
+                });
+            }
+        }
+        finally
+        {
+            OrderCartViewModel.IsLoading = false;
+        }
         await ProductListViewModel.LoadCategoriesAsync();
         await ProductListViewModel.LoadProductAsync();
     }
