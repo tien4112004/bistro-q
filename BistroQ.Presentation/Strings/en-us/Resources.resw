@@ -336,4 +336,7 @@
   <data name="AdminProduct_DataGrid_Column_Calories/Header" xml:space="preserve">
     <value>Calories</value>
   </data>
+  <data name="ProductAddPage_CaloriesInput/Header" xml:space="preserve">
+    <value>Calories</value>
+  </data>
 </root>

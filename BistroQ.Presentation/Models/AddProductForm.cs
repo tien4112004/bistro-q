@@ -19,6 +19,7 @@ public class AddProductForm : ValidatorBase
     public string Unit { get; set; }
     public decimal? DiscountPrice { get; set; }
     public string? ImageUrl { get; set; }
+    public double Calories { get; set; }
 
     public FileWrapper? ImageFile { get; set; }
 
@@ -75,11 +76,23 @@ public class AddProductForm : ValidatorBase
         });
     }
 
+    public void AddProductCaloriesValidator()
+    {
+        AddValidator(nameof(Calories), (value) =>
+        {
+            return value.Validate(
+                v => ValidationRules.DecimalRules.NotEmpty(v, "Price"),
+                v => ValidationRules.DecimalRules.Min(v, 0, "Price")
+            ).Where(r => !r.IsValid).ToList();
+        });
+    }
+
     public override void ValidateAll()
     {
         ValidateProperty(nameof(Name), Name);
         ValidateProperty(nameof(Unit), Unit);
         ValidateProperty(nameof(Price), Price);
         ValidateProperty(nameof(CategoryId), CategoryId);
+        ValidateProperty(nameof(Calories), Calories);
     }
 }

@@ -92,4 +92,9 @@ public sealed partial class AdminProductAddPage : Page
     {
         ViewModel.Form.ResetError(nameof(ViewModel.Form.Unit));
     }
+
+    private void ProductAddPage_CaloriesNumberBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Calories));
+    }
 }

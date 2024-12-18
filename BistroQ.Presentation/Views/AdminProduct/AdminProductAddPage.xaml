@@ -31,12 +31,11 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid Margin="24" Background="Transparent">
+        <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
             <StackPanel Grid.Column="0" Margin="0,0,12,0">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                     <ComboBox x:Name="ProductAddPage_CategoryComboBox"
@@ -80,6 +79,27 @@
                                Mode=OneWay, 
                                Converter={StaticResource FirstError},
                                ConverterParameter=Unit}"
+                         Margin="0,8,0,16"
+                         Foreground="Red"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                    <NumberBox x:Name="ProductAddPage_CaloriesNumberBox"
+                          x:Uid="ProductAddPage_CaloriesInput"
+                          GettingFocus="ProductAddPage_CaloriesNumberBox_GettingFocus"
+                          Value="{x:Bind ViewModel.Form.Calories, Mode=TwoWay}"
+                          SpinButtonPlacementMode="Inline"
+                          Minimum="0"
+                          SmallChange="10"
+                          PlaceholderText="0"
+                          LargeChange="100"
+                          ValidationMode="InvalidInputOverwritten"
+                          Width="300"
+                          NumberFormatter="{StaticResource DecimalFormatter}" />
+                    <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                               Mode=OneWay, 
+                               Converter={StaticResource FirstError},
+                               ConverterParameter=Price}"
                          Margin="0,8,0,16"
                          Foreground="Red"/>
                 </StackPanel>
@@ -180,12 +200,5 @@
                 Width="80" 
                 Click="AdminProductAddPage_CancelButton_Click"/>
         </StackPanel>
-
-        <TextBlock Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
-               Visibility="{x:Bind ViewModel.ErrorMessage, Mode=OneWay, 
-                         Converter={StaticResource StringToVisibility}}"
-               Foreground="Red"
-               TextWrapping="Wrap"
-               Margin="24,0"/>
     </Grid>
 </Page>
