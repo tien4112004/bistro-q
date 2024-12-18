@@ -47,8 +47,8 @@
                        Margin="0,0,16,2" />
             <ScrollViewer 
                     x:Name="ScrollViewer" 
-                    HorizontalScrollMode="Enabled"
-                    HorizontalScrollBarVisibility="Hidden"
+                    HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollMode="Disabled"
                     ManipulationMode="System,TranslateX"
                     ManipulationDelta="HorizontalScrollViewer_ManipulationDelta">
                 <ListView
@@ -113,7 +113,6 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </ScrollViewer>
-
         </StackPanel>
 
 

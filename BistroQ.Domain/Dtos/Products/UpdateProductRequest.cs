@@ -7,4 +7,5 @@ public class UpdateProductRequest
     public decimal? DiscountPrice { get; set; }
     public string Unit { get; set; }
     public int? CategoryId { get; set; }
+    public NutritionFactDto? NutritionFact { get; set; }
 }

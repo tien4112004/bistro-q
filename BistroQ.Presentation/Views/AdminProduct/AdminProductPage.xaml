@@ -106,6 +106,10 @@
                                            x:Uid="AdminProduct_DataGrid_Column_Unit" 
                                            IsReadOnly="True"
                                            Tag="Unit" />
+                <controls:DataGridTextColumn Binding="{Binding}" 
+                                           x:Uid="AdminProduct_DataGrid_Column_Calories" 
+                                           IsReadOnly="True"
+                                           Tag="Calories" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
         <local:PaginationControl Grid.Row="2" Margin="0,0,0,24" />

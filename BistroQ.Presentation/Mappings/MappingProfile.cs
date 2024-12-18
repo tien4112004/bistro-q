@@ -34,7 +34,8 @@ public class MappingProfile : Profile
         CreateMap<Product, ProductViewModel>().ReverseMap();
         CreateMap<Category, CategoryViewModel>();
         CreateMap<Category, CategoryViewModel>().ReverseMap();
-
+        CreateMap<NutritionFact, NutritionFactViewModel>();
+        CreateMap<NutritionFact, NutritionFactViewModel>().ReverseMap();
         /**
          * 
          * Dto to Domain
