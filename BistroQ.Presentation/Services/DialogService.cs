@@ -8,8 +8,6 @@ public class DialogService : IDialogService
 {
     private readonly XamlRoot _xamlRoot;
     private static readonly SemaphoreSlim _semaphore = new(1);
-
-
     public DialogService()
     {
         _xamlRoot = App.MainWindow.Content.XamlRoot;
