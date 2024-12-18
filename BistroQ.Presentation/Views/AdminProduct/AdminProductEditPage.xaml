@@ -96,6 +96,27 @@
                          Margin="0,8,0,16"
                          Foreground="Red"/>
                 </StackPanel>
+
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                    <NumberBox x:Name="ProductAddPage_CaloriesNumberBox"
+                          x:Uid="ProductAddPage_CaloriesInput"
+                          GettingFocus="ProductEditPage_CaloriesNumberBox_GettingFocus"
+                          Value="{x:Bind ViewModel.Form.Calories, Mode=TwoWay}"
+                          SpinButtonPlacementMode="Inline"
+                          Minimum="0"
+                          SmallChange="10"
+                          PlaceholderText="0"
+                          LargeChange="100"
+                          ValidationMode="InvalidInputOverwritten"
+                          Width="300"
+                          NumberFormatter="{StaticResource DecimalFormatter}" />
+                    <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                               Mode=OneWay, 
+                               Converter={StaticResource FirstError},
+                               ConverterParameter=Price}"
+                         Margin="0,8,0,16"
+                         Foreground="Red"/>
+                </StackPanel>
             </StackPanel>
 
             <StackPanel Grid.Column="1" Margin="12,0,0,0">

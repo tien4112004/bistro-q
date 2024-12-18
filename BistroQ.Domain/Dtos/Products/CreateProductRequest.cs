@@ -7,5 +7,5 @@ public class CreateProductRequest
     public decimal? DiscountPrice { get; set; }
     public string Unit { get; set; }
     public int? CategoryId { get; set; }
-    public double Calories { get; set; }
+    public double? Calories { get; set; }
 }

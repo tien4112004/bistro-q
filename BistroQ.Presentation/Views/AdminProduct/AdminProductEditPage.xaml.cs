@@ -72,6 +72,11 @@ public sealed partial class AdminProductEditPage : Page
         ViewModel.Form.ResetError(nameof(ViewModel.Form.DiscountPrice));
     }
 
+    private void ProductEditPage_CaloriesNumberBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Price));
+    }
+
     private async void ProductEditPage_SelectImageButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         FileOpenPicker fileOpenPicker = new()

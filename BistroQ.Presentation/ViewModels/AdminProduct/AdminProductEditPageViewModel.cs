@@ -68,7 +68,8 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
                 Price = Form.Price,
                 Unit = Form.Unit,
                 DiscountPrice = Form.DiscountPrice,
-                CategoryId = Form.CategoryId
+                CategoryId = Form.CategoryId,
+                Calories = Form.Calories
             };
 
             if (Form.ImageFile != null)
@@ -121,6 +122,7 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
             Form.DiscountPrice = selectedProduct?.DiscountPrice ?? 0;
             Form.ImageUrl = selectedProduct?.ImageUrl;
             Form.CategoryId = selectedProduct?.Category?.CategoryId ?? 0;
+            Form.Calories = double.TryParse(selectedProduct?.NutritionFact?.Calories, out var calories) ? calories : 0.0;
         }
     }
 

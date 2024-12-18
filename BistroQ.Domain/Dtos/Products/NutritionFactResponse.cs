@@ -2,5 +2,5 @@
 
 public class NutritionFactResponse
 {
-    public double Calories { get; set; }
+    public double? Calories { get; set; }
 }
