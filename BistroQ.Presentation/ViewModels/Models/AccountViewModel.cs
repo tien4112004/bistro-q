@@ -17,9 +17,6 @@ public partial class AccountViewModel : ObservableObject
     private int? _tableId;
 
     [ObservableProperty]
-    private string? _tableName;
-
-    [ObservableProperty]
     private string? _zoneName;
 
     [ObservableProperty]

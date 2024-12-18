@@ -20,6 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Styles\Color.xaml" />
+    <None Remove="Views\AdminAccount\AdminAccountAddPage.xaml" />
+    <None Remove="Views\AdminAccount\AdminAccountEditPage.xaml" />
+    <None Remove="Views\AdminAccount\AdminAccountPage.xaml" />
     <None Remove="Views\AdminCategory\AdminCategoryAddPage.xaml" />
     <None Remove="Views\AdminCategory\AdminCategoryEditPage.xaml" />
     <None Remove="Views\AdminCategory\AdminCategoryPage.xaml" />
@@ -69,6 +72,15 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\AdminAccount\AdminAccountPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\AdminAccount\AdminAccountAddPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\AdminAccount\AdminAccountEditPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\AdminProduct\AdminProductPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

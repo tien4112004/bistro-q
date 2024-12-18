@@ -1,4 +1,6 @@
-﻿namespace BistroQ.Presentation.Models;
+﻿using BistroQ.Presentation.Validation;
+
+namespace BistroQ.Presentation.Models;
 
 public class AddAccountForm : ValidatorBase
 {
@@ -6,6 +8,7 @@ public class AddAccountForm : ValidatorBase
     private string _password;
     private string _role;
     private int? _tableId;
+    private int? _zoneId;
 
     public AddAccountForm()
     {
@@ -66,6 +69,19 @@ public class AddAccountForm : ValidatorBase
         }
     }
 
+    public int? ZoneId
+    {
+        get => _zoneId;
+        set
+        {
+            if (_zoneId != value)
+            {
+                _zoneId = value;
+                ValidateProperty(nameof(ZoneId), value);
+            }
+        }
+    }
+
     private void AddUsernameValidator()
     {
         AddValidator(nameof(Username), (value) =>
@@ -85,11 +101,7 @@ public class AddAccountForm : ValidatorBase
         {
             return value.Validate(
                 v => ValidationRules.StringRules.NotEmpty(v, "Password"),
-                v => ValidationRules.StringRules.MinLength(v, 6, "Password"),
-                v => ValidationRules.PasswordRules.RequireUppercase(v),
-                v => ValidationRules.PasswordRules.RequireLowercase(v),
-                v => ValidationRules.PasswordRules.RequireDigit(v),
-                v => ValidationRules.PasswordRules.RequireSpecialChar(v)
+                v => ValidationRules.StringRules.MinLength(v, 6, "Password")
             ).Where(r => !r.IsValid).ToList();
         });
     }
@@ -99,8 +111,7 @@ public class AddAccountForm : ValidatorBase
         AddValidator(nameof(Role), (value) =>
         {
             return value.Validate(
-                v => ValidationRules.StringRules.NotEmpty(v, "Role"),
-                v => ValidationRules.EnumRules.IsValidRole(v)
+                v => ValidationRules.StringRules.NotEmpty(v, "Role")
             ).Where(r => !r.IsValid).ToList();
         });
     }
@@ -110,59 +121,5 @@ public class AddAccountForm : ValidatorBase
         ValidateProperty(nameof(Username), Username);
         ValidateProperty(nameof(Password), Password);
         ValidateProperty(nameof(Role), Role);
-        // TableId is optional, so no validation needed
-    }
-}
-
-// Add these rules to your ValidationRules class if not already present
-public static class PasswordRules
-{
-    public static ValidationResult RequireUppercase(string value)
-    {
-        return new ValidationResult
-        {
-            IsValid = value?.Any(char.IsUpper) ?? false,
-            Message = "Password must contain at least one uppercase letter"
-        };
-    }
-
-    public static ValidationResult RequireLowercase(string value)
-    {
-        return new ValidationResult
-        {
-            IsValid = value?.Any(char.IsLower) ?? false,
-            Message = "Password must contain at least one lowercase letter"
-        };
-    }
-
-    public static ValidationResult RequireDigit(string value)
-    {
-        return new ValidationResult
-        {
-            IsValid = value?.Any(char.IsDigit) ?? false,
-            Message = "Password must contain at least one digit"
-        };
-    }
-
-    public static ValidationResult RequireSpecialChar(string value)
-    {
-        return new ValidationResult
-        {
-            IsValid = value?.Any(c => !char.IsLetterOrDigit(c)) ?? false,
-            Message = "Password must contain at least one special character"
-        };
-    }
-}
-
-public static class EnumRules
-{
-    public static ValidationResult IsValidRole(string value)
-    {
-        var validRoles = new[] { "Admin", "Staff", "Customer" };
-        return new ValidationResult
-        {
-            IsValid = validRoles.Contains(value),
-            Message = "Invalid role selected"
-        };
     }
 }

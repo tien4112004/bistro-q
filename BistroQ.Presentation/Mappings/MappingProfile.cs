@@ -83,13 +83,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products));
 
         CreateMap<AccountResponse, Account>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.Table, opt => opt.MapFrom(src => new Table
-            {
-                TableId = src.TableId,
-                ZoneId = src.ZoneId,
-                ZoneName = src.ZoneName,
-                Number = src.TableNumber
-            }));
+            .ForMember(dest => dest.Table, opt => opt.MapFrom(src => src.Table))
+            .ForMember(dest => dest.TableId, opt => opt.MapFrom(src => src.Table.TableId));
     }
 }

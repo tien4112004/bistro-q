@@ -1,4 +1,6 @@
-﻿namespace BistroQ.Domain.Dtos.Account;
+﻿using BistroQ.Domain.Dtos.Tables;
+
+namespace BistroQ.Domain.Dtos.Account;
 
 public class AccountResponse
 {
@@ -8,11 +10,5 @@ public class AccountResponse
 
     public string Role { get; set; }
 
-    public int? ZoneId { get; set; }
-
-    public int? TableId { get; set; }
-
-    public int? TableNumber { get; set; }
-
-    public string? ZoneName { get; set; }
+    public TableResponse? Table { get; set; }
 }

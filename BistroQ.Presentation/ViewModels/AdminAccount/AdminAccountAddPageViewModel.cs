@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
+using BistroQ.Domain.Dtos.Account;
+using BistroQ.Domain.Dtos.Zones;
 using BistroQ.Presentation.Contracts.Services;
+using BistroQ.Presentation.Models;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;

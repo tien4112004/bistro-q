@@ -10,5 +10,5 @@ public class Account
 
     public int? TableId { get; set; }
 
-    public Table Table { get; set; }
+    public Table? Table { get; set; }
 }

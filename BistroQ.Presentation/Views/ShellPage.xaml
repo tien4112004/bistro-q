@@ -71,6 +71,12 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
+                <NavigationViewItem x:Uid="Shell_AdminAccount" Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.AdminAccountViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7FB;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
                 <NavigationViewItem x:Uid="Shell_ClientHomePage" Tag="Client" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.Client.HomePageViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED56;"/>
