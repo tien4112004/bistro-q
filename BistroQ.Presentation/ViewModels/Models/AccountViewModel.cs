@@ -17,13 +17,16 @@ public partial class AccountViewModel : ObservableObject
     private int? _tableId;
 
     [ObservableProperty]
+    private int? _tableNumber;
+
+    [ObservableProperty]
     private string? _zoneName;
 
     [ObservableProperty]
     private int? _zoneId;
 
     public string TableDisplay => TableId.HasValue
-        ? $"{ZoneName} - Table {TableId}"
+        ? $"{ZoneName} - Table {TableNumber}"
         : "No Table Assigned";
 
     public bool IsSystemAdmin => Role?.ToLower() == "admin" &&

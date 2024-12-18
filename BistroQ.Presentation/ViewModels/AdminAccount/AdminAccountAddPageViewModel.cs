@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos.Account;
+using BistroQ.Domain.Dtos.Tables;
 using BistroQ.Domain.Dtos.Zones;
 using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Models;
@@ -8,7 +9,6 @@ using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminAccount;
 
@@ -19,6 +19,11 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient
 
     [ObservableProperty]
     private AddAccountForm _form = new();
+
+    partial void OnFormChanged(AddAccountForm value)
+    {
+        AddCommand.NotifyCanExecuteChanged();
+    }
 
     [ObservableProperty]
     private bool _isTableSelectionEnabled = false;
@@ -38,7 +43,7 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient
     private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
 
-    public ICommand AddCommand { get; }
+    public IRelayCommand AddCommand { get; }
 
     public AdminAccountAddPageViewModel(
         IAccountDataService accountDataService,
@@ -55,9 +60,9 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient
 
         Zones = new ObservableCollection<ZoneViewModel>();
         Tables = new ObservableCollection<TableViewModel>();
-        Roles = new ObservableCollection<string> { "Admin", "Staff", "Customer" };
+        Roles = new ObservableCollection<string> { "Admin", "Kitchen", "Cashier", "Client" };
 
-        AddCommand = new AsyncRelayCommand(AddAccountAsync, CanAddAccount);
+        AddCommand = new AsyncRelayCommand(AddAccountAsync);
 
         this.PropertyChanged += (s, e) =>
         {
@@ -68,22 +73,18 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient
         };
     }
 
-    private bool CanAddAccount()
-    {
-        return !IsProcessing;
-    }
-
     public async Task AddAccountAsync()
     {
+        Form.ValidateAll();
+        if (Form.HasErrors)
+        {
+            await _dialogService.ShowErrorDialog("Data is invalid. Please check again.", "Error");
+            return;
+        }
+
         try
         {
             IsProcessing = true;
-            Form.ValidateAll();
-
-            if (Form.HasErrors)
-            {
-                throw new InvalidDataException("Please fix all validation errors before proceeding.");
-            }
 
             var request = new CreateAccountRequest
             {
@@ -134,9 +135,14 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient
     {
         try
         {
-            var tables = await _tableDataService.GetTablesByCashierAsync(zoneId, "All");
+            var tables = await _tableDataService.GetGridDataAsync(new TableCollectionQueryParams
+            {
+                ZoneId = zoneId,
+                Size = 1000
+            });
             Tables.Clear();
-            var tableViewModels = _mapper.Map<IEnumerable<TableViewModel>>(tables);
+
+            var tableViewModels = _mapper.Map<IEnumerable<TableViewModel>>(tables.Data);
             foreach (var table in tableViewModels)
             {
                 Tables.Add(table);

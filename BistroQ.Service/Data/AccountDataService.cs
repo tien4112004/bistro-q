@@ -54,7 +54,7 @@ public class AccountDataService : IAccountDataService
 
     public async Task<Account> UpdateAccountAsync(string userId, UpdateAccountRequest request)
     {
-        var response = await _apiClient.PutAsync<AccountResponse>($"api/admin/account/{userId}", request);
+        var response = await _apiClient.PatchAsync<AccountResponse>($"api/admin/account/{userId}", request);
         if (response.Success)
         {
             return _mapper.Map<Account>(response.Data);

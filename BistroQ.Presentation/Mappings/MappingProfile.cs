@@ -38,13 +38,9 @@ public class MappingProfile : Profile
 
         CreateMap<Account, AccountViewModel>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.TableDisplay,
-                opt => opt.MapFrom(src =>
-                    src.TableId.HasValue
-                        ? $"{src.Table.ZoneName} - Table {src.Table.Number}"
-                        : "No Table Assigned"))
             .ForMember(dest => dest.ZoneName, opt => opt.MapFrom(src => src.Table != null ? src.Table.ZoneName : null))
-            .ForMember(dest => dest.ZoneId, opt => opt.MapFrom(src => src.Table != null ? src.Table.ZoneId : null));
+            .ForMember(dest => dest.ZoneId, opt => opt.MapFrom(src => src.Table != null ? src.Table.ZoneId : null))
+            .ForMember(dest => dest.TableNumber, opt => opt.MapFrom(src => src.Table != null ? src.Table.Number : null));
 
         CreateMap<AccountViewModel, Account>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.UserId));

@@ -7,12 +7,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converter="using:BistroQ.Presentation.Converters"
+    xmlns:control="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     mc:Ignorable="d"
     Background="Transparent">
 
     <Page.Resources>
         <converter:ReverseBooleanConverter x:Key="ReverseBool"/>
         <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <converter:StringToVisibilityConverter x:Key="StringToVisibility"/>
+        <converter:FirstValidationErrorConverter x:Key="FirstError"/>
     </Page.Resources>
 
     <Grid Background="Transparent">
@@ -21,67 +24,119 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Background="Transparent" HorizontalAlignment="Left">
+        <StackPanel Orientation="Vertical" Background="Transparent" HorizontalAlignment="Left" Margin="24">
+            <!-- User ID (Read-only) -->
             <TextBox x:Name="UserIdTextBox"
-                     x:Uid="UserIdTextBox"
-                     Text="{x:Bind ViewModel.Account.UserId, Mode=OneTime}"
-                     IsReadOnly="True"
-                     IsEnabled="False"
-                     Width="300"
-                     Margin="0,0,0,16" />
+                    x:Uid="UserIdTextBox"
+                    Text="{x:Bind ViewModel.Account.UserId, Mode=OneTime}"
+                    IsReadOnly="True"
+                    IsEnabled="False"
+                    Width="300"
+                    Margin="0,0,0,16" />
 
-            <TextBox x:Name="AccountEditPage_UsernameTextBox"
-                     x:Uid="AccountEditPage_UsernameTextBox"
-                     Text="{x:Bind ViewModel.Request.Username, Mode=TwoWay}"
-                     Width="300"
-                     Margin="0,0,0,16" />
+            <!-- Username -->
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                <TextBox x:Name="AccountEditPage_UsernameTextBox"
+                        x:Uid="AccountEditPage_UsernameTextBox"
+                        GettingFocus="AccountEditPage_UsernameTextBox_GettingFocus"
+                        Text="{x:Bind ViewModel.Form.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Width="300" />
+                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                Mode=OneWay, 
+                                Converter={StaticResource FirstError},
+                                ConverterParameter=Username}"
+                         Margin="0,8,0,16"
+                         Foreground="Red"/>
+            </StackPanel>
 
-            <Grid Width="300" Margin="0,0,0,16">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <!-- Password -->
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                <Grid Width="300">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <PasswordBox x:Name="AccountEditPage_PasswordBox"
-                            x:Uid="AccountEditPage_PasswordBox"
-                            Password="{x:Bind ViewModel.Request.Password, Mode=TwoWay}"
-                            IsEnabled="{x:Bind ViewModel.IsPasswordEditEnabled, Mode=OneWay}"
-                            Width="240"/>
+                    <PasswordBox x:Name="AccountEditPage_PasswordBox"
+                               x:Uid="AccountEditPage_PasswordBox"
+                               GettingFocus="AccountEditPage_PasswordBox_GettingFocus"
+                               Password="{x:Bind ViewModel.Form.Password, Mode=TwoWay}"
+                               IsEnabled="{x:Bind ViewModel.IsPasswordEditEnabled, Mode=OneWay}"
+                               Width="240"/>
 
-                <Button Grid.Column="1"
-                        x:Name="EnablePasswordEditButton"
-                        Content="Edit"
-                        Command="{x:Bind ViewModel.EnablePasswordEditCommand}"
-                        Margin="8,0,0,0"/>
-            </Grid>
+                    <Button Grid.Column="1"
+                            x:Name="EnablePasswordEditButton"
+                            x:Uid="AccountEditPage_EnablePasswordEdit"
+                            Command="{x:Bind ViewModel.EnablePasswordEditCommand}"
+                            Margin="8,27,0,0"/>
+                </Grid>
+                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                Mode=OneWay, 
+                                Converter={StaticResource FirstError},
+                                ConverterParameter=Password}"
+                         Margin="0,8,0,16"
+                         Foreground="Red"/>
+            </StackPanel>
 
-            <ComboBox x:Name="AccountEditPage_RoleComboBox"
-                      x:Uid="AccountEditPage_RoleComboBox"
-                      ItemsSource="{x:Bind ViewModel.Roles}"
-                      SelectedValue="{x:Bind ViewModel.Request.Role, Mode=TwoWay}"
-                      Width="300"
-                      Margin="0,0,0,16" />
+            <!-- Role -->
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                <ComboBox x:Name="AccountEditPage_RoleComboBox"
+                         x:Uid="AccountEditPage_RoleComboBox"
+                         GettingFocus="AccountEditPage_RoleComboBox_GettingFocus"
+                         ItemsSource="{x:Bind ViewModel.Roles}"
+                         SelectedValue="{x:Bind ViewModel.Form.Role, Mode=TwoWay}"
+                         Width="300" />
+                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                Mode=OneWay, 
+                                Converter={StaticResource FirstError},
+                                ConverterParameter=Role}"
+                         Margin="0,8,0,16"
+                         Foreground="Red"/>
+            </StackPanel>
 
-            <ComboBox x:Name="AccountEditPage_ZoneComboBox"
-                      x:Uid="AccountEditPage_ZoneComboBox"
-                      ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
-                      DisplayMemberPath="Name"
-                      SelectedValuePath="ZoneId"
-                      SelectedValue="{x:Bind ViewModel.SelectedZoneId, Mode=TwoWay}"
-                      Width="300"
-                      Margin="0,0,0,16" />
+            <!-- Zone -->
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                <ComboBox x:Name="AccountEditPage_ZoneComboBox"
+                         x:Uid="AccountEditPage_ZoneComboBox"
+                         GettingFocus="AccountEditPage_ZoneComboBox_GettingFocus"
+                         ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
+                         DisplayMemberPath="Name"
+                         SelectedValuePath="ZoneId"
+                         SelectedValue="{x:Bind ViewModel.Form.ZoneId, Mode=TwoWay}"
+                         Width="300" />
+                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                Mode=OneWay, 
+                                Converter={StaticResource FirstError},
+                                ConverterParameter=ZoneId}"
+                         Margin="0,8,0,16"
+                         Foreground="Red"/>
+            </StackPanel>
 
-            <ComboBox x:Name="AccountEditPage_TableComboBox"
-                      x:Uid="AccountEditPage_TableComboBox"
-                      ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}"
-                      DisplayMemberPath="Number"
-                      SelectedValuePath="TableId"
-                      SelectedValue="{x:Bind ViewModel.Request.TableId, Mode=TwoWay}"
-                      IsEnabled="{x:Bind ViewModel.IsTableSelectionEnabled, Mode=OneWay}"
-                      Width="300" />
+            <!-- Table -->
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                <ComboBox x:Name="AccountEditPage_TableComboBox"
+                         x:Uid="AccountEditPage_TableComboBox"
+                         GettingFocus="AccountEditPage_TableComboBox_GettingFocus"
+                         ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}"
+                         DisplayMemberPath="Number"
+                         SelectedValuePath="TableId"
+                         SelectedValue="{x:Bind ViewModel.Form.TableId, Mode=TwoWay}"
+                         IsEnabled="{x:Bind ViewModel.IsTableSelectionEnabled, Mode=OneWay}"
+                         Width="300" />
+                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                Mode=OneWay, 
+                                Converter={StaticResource FirstError},
+                                ConverterParameter=TableId}"
+                         Margin="0,8,0,16"
+                         Foreground="Red"/>
+            </StackPanel>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+        <!-- Buttons -->
+        <StackPanel Grid.Row="1" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right"
+                    Margin="24">
             <Button x:Name="AdminAccountEditPage_EditButton"
                     x:Uid="AdminAccountEditPage_EditButton" 
                     Style="{StaticResource AccentButtonStyle}" 

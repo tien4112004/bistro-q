@@ -15,22 +15,12 @@ public sealed partial class AdminAccountEditPage : Page
         ViewModel = App.GetService<AdminAccountEditPageViewModel>();
         this.DataContext = ViewModel;
 
-        this.Loaded += AdminAccountEditPage_Loaded;
         ViewModel.NavigateBack += OnNavigateBack;
 
         this.Unloaded += (s, e) =>
         {
             ViewModel.NavigateBack -= OnNavigateBack;
         };
-    }
-
-    private async void AdminAccountEditPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        await ViewModel.LoadZonesAsync();
-        if (ViewModel.SelectedZoneId.HasValue)
-        {
-            await ViewModel.LoadTablesAsync(ViewModel.SelectedZoneId.Value);
-        }
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -52,5 +42,30 @@ public sealed partial class AdminAccountEditPage : Page
     private void OnNavigateBack(object sender, EventArgs e)
     {
         Frame.GoBack();
+    }
+
+    private void AccountEditPage_UsernameTextBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Username));
+    }
+
+    private void AccountEditPage_PasswordBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Password));
+    }
+
+    private void AccountEditPage_RoleComboBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Role));
+    }
+
+    private void AccountEditPage_ZoneComboBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.ZoneId));
+    }
+
+    private void AccountEditPage_TableComboBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.TableId));
     }
 }

@@ -1,25 +1,30 @@
 ﻿using AutoMapper;
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos.Account;
+using BistroQ.Domain.Dtos.Tables;
 using BistroQ.Domain.Dtos.Zones;
 using BistroQ.Presentation.Contracts.Services;
+using BistroQ.Presentation.Contracts.ViewModels;
+using BistroQ.Presentation.Models;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminAccount;
 
-public partial class AdminAccountEditPageViewModel : ObservableRecipient
+public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavigationAware
 {
     public ObservableCollection<ZoneViewModel> Zones;
     public ObservableCollection<TableViewModel> Tables;
     public ObservableCollection<string> Roles;
+
     public AccountViewModel Account { get; set; }
 
     [ObservableProperty]
-    private UpdateAccountRequest _request;
+    private AddAccountForm _form = new();
 
     [ObservableProperty]
     private bool _isProcessing = false;
@@ -29,9 +34,6 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient
 
     [ObservableProperty]
     private bool _isTableSelectionEnabled = false;
-
-    [ObservableProperty]
-    private int? _selectedZoneId;
 
     private readonly IAccountDataService _accountDataService;
     private readonly IZoneDataService _zoneDataService;
@@ -57,19 +59,18 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient
         _dialogService = dialogService;
         _mapper = mapper;
 
-        Request = new UpdateAccountRequest();
         Zones = new ObservableCollection<ZoneViewModel>();
         Tables = new ObservableCollection<TableViewModel>();
-        Roles = new ObservableCollection<string> { "Admin", "Staff", "Customer" };
+        Roles = new ObservableCollection<string> { "Admin", "Kitchen", "Cashier", "Client" };
 
         EditCommand = new AsyncRelayCommand(UpdateAccountAsync, CanEditAccount);
         EnablePasswordEditCommand = new RelayCommand(EnablePasswordEdit);
 
         this.PropertyChanged += (s, e) =>
         {
-            if (e.PropertyName == nameof(SelectedZoneId) && SelectedZoneId.HasValue)
+            if (e.PropertyName == nameof(Form.ZoneId) && Form.ZoneId.HasValue)
             {
-                _ = LoadTablesAsync(SelectedZoneId.Value);
+                _ = LoadTablesAsync(Form.ZoneId.Value);
             }
         };
     }
@@ -81,37 +82,54 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient
 
     private bool CanEditAccount()
     {
-        return !IsProcessing;
+        return !IsProcessing && !Form.HasErrors;
+    }
+
+    private void ValidateForm()
+    {
+        if (Form.Password != null)
+        {
+            Form.ValidateProperty(nameof(Form.Password), Form.Password);
+        }
+
+        Form.ValidateProperty(nameof(Form.Username), Form.Username);
+        Form.ValidateProperty(nameof(Form.Role), Form.Role);
+
+        if (Form.TableId != null)
+        {
+            Form.ValidateProperty(nameof(Form.TableId), Form.TableId);
+        }
     }
 
     public async Task UpdateAccountAsync()
     {
+        ValidateForm();
+        if (!CanEditAccount())
+        {
+            await _dialogService.ShowErrorDialog("Data is invalid. Please check again.", "Error");
+            return;
+        }
+
         try
         {
             IsProcessing = true;
 
-            if (string.IsNullOrWhiteSpace(Request.Username))
+            var request = new UpdateAccountRequest
             {
-                throw new InvalidDataException("Username cannot be empty.");
-            }
+                Username = Form.Username,
+                Role = Form.Role,
+                Password = Form.Password,
+                TableId = Form.TableId
+            };
 
-            if (IsPasswordEditEnabled && string.IsNullOrWhiteSpace(Request.Password))
-            {
-                throw new InvalidDataException("Password cannot be empty when editing.");
-            }
-
-            if (string.IsNullOrWhiteSpace(Request.Role))
-            {
-                throw new InvalidDataException("Role must be selected.");
-            }
-
-            await _accountDataService.UpdateAccountAsync(Account.UserId, Request);
+            await _accountDataService.UpdateAccountAsync(Account.UserId, request);
 
             await _dialogService.ShowSuccessDialog("Account updated successfully.", "Success");
             NavigateBack?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
         {
+            Debug.WriteLine(ex.StackTrace);
             await _dialogService.ShowErrorDialog(ex.Message, "Error");
         }
         finally
@@ -146,9 +164,14 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient
     {
         try
         {
-            var tables = await _tableDataService.GetTablesByCashierAsync(zoneId, "All");
+            var tables = await _tableDataService.GetGridDataAsync(new TableCollectionQueryParams
+            {
+                ZoneId = zoneId,
+                Size = 1000
+            });
             Tables.Clear();
-            var tableViewModels = _mapper.Map<IEnumerable<TableViewModel>>(tables);
+
+            var tableViewModels = _mapper.Map<IEnumerable<TableViewModel>>(tables.Data);
             foreach (var table in tableViewModels)
             {
                 Tables.Add(table);
@@ -162,15 +185,39 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient
         }
     }
 
-    public void OnNavigatedTo(AccountViewModel account)
+    public async void OnNavigatedTo(object parameter)
     {
-        if (account != null)
+        if (parameter is AccountViewModel account)
         {
             Account = account;
-            Request.Username = Account.Username;
-            Request.Role = Account.Role;
-            Request.TableId = Account.TableId;
-            SelectedZoneId = Account.TableId != null ? Tables.FirstOrDefault(t => t.TableId == Account.TableId)?.ZoneId : null;
+            await LoadZonesAsync();
+
+            if (Account.TableId != null)
+            {
+                await LoadTablesAsync(account.ZoneId ?? 0);
+                Form = new AddAccountForm
+                {
+                    Username = account.Username,
+                    Role = account.Role,
+                    TableId = account.TableId,
+                    Password = null,
+                    ZoneId = account.ZoneId
+                };
+                IsTableSelectionEnabled = true;
+            }
+            else
+            {
+                Form = new AddAccountForm
+                {
+                    Username = account.Username,
+                    Role = account.Role,
+                };
+                IsTableSelectionEnabled = false;
+            }
         }
+    }
+
+    public void OnNavigatedFrom()
+    {
     }
 }

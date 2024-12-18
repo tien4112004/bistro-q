@@ -14,6 +14,7 @@
     <Page.Resources>
         <converter:ReverseBooleanConverter x:Key="ReverseBool"/>
         <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <converter:FirstValidationErrorConverter x:Key="FirstError"/>
     </Page.Resources>
 
     <Grid Background="Transparent">
@@ -22,57 +23,92 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Background="Transparent" HorizontalAlignment="Left">
-            <TextBox x:Name="AccountAddPage_UsernameTextBox"
-                     x:Uid="AccountAddPage_UsernameTextBox"
-                     GettingFocus="AccountAddPage_UsernameTextBox_GettingFocus"
-                     Text="{x:Bind ViewModel.Form.Username, Mode=TwoWay}"
-                     PlaceholderText="Enter username"
-                     Width="300"
-                     Margin="0,0,0,16" />
+        <StackPanel Orientation="Vertical" Background="Transparent" HorizontalAlignment="Left" Margin="24">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                <TextBox x:Name="AccountAddPage_UsernameTextBox"
+                        x:Uid="AccountAddPage_UsernameTextBox"
+                        GettingFocus="AccountAddPage_UsernameTextBox_GettingFocus"
+                        Text="{x:Bind ViewModel.Form.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Width="300" />
+                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                Mode=OneWay, 
+                                Converter={StaticResource FirstError},
+                                ConverterParameter=Username}"
+                         Margin="0,8,0,16"
+                         Foreground="Red"/>
+            </StackPanel>
 
-            <PasswordBox x:Name="AccountAddPage_PasswordBox"
-                        x:Uid="AccountAddPage_PasswordBox"
-                        GettingFocus="AccountAddPage_PasswordBox_GettingFocus"
-                        Password="{x:Bind ViewModel.Form.Password, Mode=TwoWay}"
-                        PlaceholderText="Enter password"
-                        Width="300"
-                        Margin="0,0,0,16" />
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                <PasswordBox x:Name="AccountAddPage_PasswordBox"
+                           x:Uid="AccountAddPage_PasswordBox"
+                           GettingFocus="AccountAddPage_PasswordBox_GettingFocus"
+                           Password="{x:Bind ViewModel.Form.Password, Mode=TwoWay}"
+                           Width="300" />
+                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                Mode=OneWay, 
+                                Converter={StaticResource FirstError},
+                                ConverterParameter=Password}"
+                         Margin="0,8,0,16"
+                         Foreground="Red"/>
+            </StackPanel>
 
-            <ComboBox x:Name="AccountAddPage_RoleComboBox"
-                      x:Uid="AccountAddPage_RoleComboBox"
-                      GettingFocus="AccountAddPage_RoleComboBox_GettingFocus"
-                      ItemsSource="{x:Bind ViewModel.Roles}"
-                      SelectedValue="{x:Bind ViewModel.Form.Role, Mode=TwoWay}"
-                      PlaceholderText="Select role"
-                      Width="300"
-                      Margin="0,0,0,16" />
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                <ComboBox x:Name="AccountAddPage_RoleComboBox"
+                         x:Uid="AccountAddPage_RoleComboBox"
+                         GettingFocus="AccountAddPage_RoleComboBox_GettingFocus"
+                         ItemsSource="{x:Bind ViewModel.Roles}"
+                         SelectedValue="{x:Bind ViewModel.Form.Role, Mode=TwoWay}"
+                         Width="300" />
+                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                Mode=OneWay, 
+                                Converter={StaticResource FirstError},
+                                ConverterParameter=Role}"
+                         Margin="0,8,0,16"
+                         Foreground="Red"/>
+            </StackPanel>
 
-            <ComboBox x:Name="AccountAddPage_ZoneComboBox"
-                      x:Uid="AccountAddPage_ZoneComboBox"
-                      GettingFocus="AccountAddPage_ZoneComboBox_GettingFocus"
-                      ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
-                      DisplayMemberPath="Name"
-                      SelectedValuePath="ZoneId"
-                      SelectedValue="{x:Bind ViewModel.SelectedZoneId, Mode=TwoWay}"
-                      PlaceholderText="Select zone"
-                      Width="300"
-                      Margin="0,0,0,16" />
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                <ComboBox x:Name="AccountAddPage_ZoneComboBox"
+                         x:Uid="AccountAddPage_ZoneComboBox"
+                         GettingFocus="AccountAddPage_ZoneComboBox_GettingFocus"
+                         ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
+                         DisplayMemberPath="Name"
+                         SelectedValuePath="ZoneId"
+                         SelectedValue="{x:Bind ViewModel.SelectedZoneId, Mode=TwoWay}"
+                         Width="300" />
+                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                Mode=OneWay, 
+                                Converter={StaticResource FirstError},
+                                ConverterParameter=ZoneId}"
+                         Margin="0,8,0,16"
+                         Foreground="Red"/>
+            </StackPanel>
 
-            <ComboBox x:Name="AccountAddPage_TableComboBox"
-                      x:Uid="AccountAddPage_TableComboBox"
-                      GettingFocus="AccountAddPage_TableComboBox_GettingFocus"
-                      ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}"
-                      DisplayMemberPath="Number"
-                      SelectedValuePath="TableId"
-                      SelectedValue="{x:Bind ViewModel.Form.TableId, Mode=TwoWay}"
-                      IsEnabled="{x:Bind ViewModel.IsTableSelectionEnabled, Mode=OneWay}"
-                      PlaceholderText="Select table"
-                      Width="300" />
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                <ComboBox x:Name="AccountAddPage_TableComboBox"
+                         x:Uid="AccountAddPage_TableComboBox"
+                         GettingFocus="AccountAddPage_TableComboBox_GettingFocus"
+                         ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}"
+                         DisplayMemberPath="Number"
+                         SelectedValuePath="TableId"
+                         SelectedValue="{x:Bind ViewModel.Form.TableId, Mode=TwoWay}"
+                         IsEnabled="{x:Bind ViewModel.IsTableSelectionEnabled, Mode=OneWay}"
+                         Width="300" />
+                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                Mode=OneWay, 
+                                Converter={StaticResource FirstError},
+                                ConverterParameter=TableId}"
+                         Margin="0,8,0,16"
+                         Foreground="Red"/>
+            </StackPanel>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Style="{StaticResource AccentButtonStyle}" Width="80"
+        <StackPanel Grid.Row="1" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right"
+                    Margin="24">
+            <Button Style="{StaticResource AccentButtonStyle}" 
+                    Width="80"
                     Command="{x:Bind ViewModel.AddCommand}"
                     IsEnabled="{x:Bind ViewModel.IsProcessing, Mode=OneWay, Converter={StaticResource ReverseBool}}"
                     Margin="0,0,16,0">
@@ -85,12 +121,12 @@
 
                     <TextBlock 
                         x:Uid="AdminAccountAddPage_AddButtonText"
-                        Text="Add" 
                         Visibility="{x:Bind ViewModel.IsProcessing, Mode=OneWay, 
                                     Converter={StaticResource BoolToVisibility}, 
                                     ConverterParameter=invert}"/>
                 </Grid>
             </Button>
+
             <Button x:Name="AdminAccountAddPage_CancelButton"
                     x:Uid="CancelButton" 
                     Width="80" 
