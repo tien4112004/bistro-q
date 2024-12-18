@@ -1,6 +1,6 @@
 ﻿namespace BistroQ.Domain.Dtos.Products;
 
-public class NutritionFactDto
+public class NutritionFactResponse
 {
     public double Calories { get; set; }
 }

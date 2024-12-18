@@ -56,6 +56,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product))
             .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
             .ForPath(dest => dest.Order.Table, opt => opt.MapFrom(src => src.Table));
+        CreateMap<NutritionFactResponse, NutritionFact>();
 
         CreateMap<ProductResponse, Product>()
             .ForMember(dest => dest.Category, opt => opt.MapFrom(
