@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BistroQ.Domain.Dtos.Account;
 using BistroQ.Domain.Dtos.Category;
 using BistroQ.Domain.Dtos.Order;
 using BistroQ.Domain.Dtos.Orders;
@@ -35,6 +36,19 @@ public class MappingProfile : Profile
         CreateMap<Category, CategoryViewModel>();
         CreateMap<Category, CategoryViewModel>().ReverseMap();
 
+        CreateMap<Account, AccountViewModel>()
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.TableDisplay,
+                opt => opt.MapFrom(src =>
+                    src.TableId.HasValue
+                        ? $"{src.Table.ZoneName} - Table {src.Table.Number}"
+                        : "No Table Assigned"))
+            .ForMember(dest => dest.ZoneName, opt => opt.MapFrom(src => src.Table != null ? src.Table.ZoneName : null))
+            .ForMember(dest => dest.ZoneId, opt => opt.MapFrom(src => src.Table != null ? src.Table.ZoneId : null));
+
+        CreateMap<AccountViewModel, Account>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.UserId));
+
         /**
          * 
          * Dto to Domain
@@ -67,5 +81,15 @@ public class MappingProfile : Profile
 
         CreateMap<CategoryResponse, Category>()
             .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products));
+
+        CreateMap<AccountResponse, Account>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Table, opt => opt.MapFrom(src => new Table
+            {
+                TableId = src.TableId,
+                ZoneId = src.ZoneId,
+                ZoneName = src.ZoneName,
+                Number = src.TableNumber
+            }));
     }
 }
