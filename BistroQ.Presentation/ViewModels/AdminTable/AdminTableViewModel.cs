@@ -193,6 +193,7 @@ public partial class AdminTableViewModel :
     public async void Receive(PageSizeChangedMessage message)
     {
         State.Query.Size = message.NewPageSize;
+        State.ReturnToFirstPage();
         await LoadDataAsync();
     }
 

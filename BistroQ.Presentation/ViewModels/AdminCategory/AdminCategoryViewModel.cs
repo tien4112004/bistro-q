@@ -61,6 +61,7 @@ public partial class AdminCategoryViewModel :
         _messenger.Register<PageSizeChangedMessage>(this, async (r, m) =>
         {
             State.Query.Size = m.NewPageSize;
+            State.ReturnToFirstPage();
             await LoadDataAsync();
         });
 

@@ -4,82 +4,17 @@ namespace BistroQ.Presentation.Models;
 
 public class AddAccountForm : ValidatorBase
 {
-    private string _username;
-    private string _password;
-    private string _role;
-    private int? _tableId;
-    private int? _zoneId;
+    public string? Username { get; set; }
+    public string? Password { get; set; }
+    public string? Role { get; set; }
+    public int? TableId { get; set; }
+    public int? ZoneId { get; set; }
 
     public AddAccountForm()
     {
         AddUsernameValidator();
         AddPasswordValidator();
         AddRoleValidator();
-    }
-
-    public string Username
-    {
-        get => _username;
-        set
-        {
-            if (_username != value)
-            {
-                _username = value;
-                ValidateProperty(nameof(Username), value);
-            }
-        }
-    }
-
-    public string Password
-    {
-        get => _password;
-        set
-        {
-            if (_password != value)
-            {
-                _password = value;
-                ValidateProperty(nameof(Password), value);
-            }
-        }
-    }
-
-    public string Role
-    {
-        get => _role;
-        set
-        {
-            if (_role != value)
-            {
-                _role = value;
-                ValidateProperty(nameof(Role), value);
-            }
-        }
-    }
-
-    public int? TableId
-    {
-        get => _tableId;
-        set
-        {
-            if (_tableId != value)
-            {
-                _tableId = value;
-                ValidateProperty(nameof(TableId), value);
-            }
-        }
-    }
-
-    public int? ZoneId
-    {
-        get => _zoneId;
-        set
-        {
-            if (_zoneId != value)
-            {
-                _zoneId = value;
-                ValidateProperty(nameof(ZoneId), value);
-            }
-        }
     }
 
     private void AddUsernameValidator()
