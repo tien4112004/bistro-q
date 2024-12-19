@@ -121,7 +121,7 @@
                       VerticalScrollBarVisibility="Hidden"
                       ManipulationMode="System,TranslateY"
                       ManipulationDelta="VerticalScrollViewer_ManipulationDelta">
-            <Grid>
+            <StackPanel>
                 <ProgressRing IsActive="{x:Bind ViewModel.IsLoadingProduct, Mode=OneWay}"
                                 VerticalAlignment="Center" HorizontalAlignment="Center"
                                 Width="80" Height="80"
@@ -175,7 +175,17 @@
                         </Style>
                     </GridView.ItemContainerStyle>
                 </GridView>
-            </Grid>
+                <Button Command="{x:Bind ViewModel.LoadMoreProductsCommand}" 
+                        IsEnabled="{x:Bind ViewModel.CanLoadMore, Mode=OneWay}"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource AccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xE72C;" Margin="0,0,8,0" />
+                        <!-- Refresh icon -->
+                        <TextBlock Text="Load More" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
         </ScrollViewer>
     </Grid>
 </UserControl>
