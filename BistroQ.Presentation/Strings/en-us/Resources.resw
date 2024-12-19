@@ -309,6 +309,101 @@
   <data name="ProductEditPage_PreviewImage/AutomationProperties.Name" xml:space="preserve">
     <value>Product image preview</value>
   </data>
+
+  <data name="AdminAccount_DataGrid_Column_UserId/Header" xml:space="preserve">
+    <value>User ID</value>
+  </data>
+  <data name="AdminAccount_DataGrid_Column_Username/Header" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="AdminAccount_DataGrid_Column_Role/Header" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="AdminAccount_DataGrid_Column_TableId/Header" xml:space="preserve">
+    <value>Table</value>
+  </data>
+  <data name="AdminAccount_DataGrid_Column_ZoneName/Header" xml:space="preserve">
+    <value>Zone</value>
+  </data>
+
+  <data name="Shell_AdminAccount.Content" xml:space="preserve">
+    <value>Manage Accounts</value>
+  </data>
+  <data name="AdminAccount_DataGrid_AddNewButtonText/Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AccountAddPage_UsernameTextBox/Header" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="AccountAddPage_UsernameTextBox/PlaceholderText" xml:space="preserve">
+    <value>Enter username</value>
+  </data>
+  <data name="AccountAddPage_PasswordBox/Header" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="AccountAddPage_PasswordBox/PlaceholderText" xml:space="preserve">
+    <value>Enter password</value>
+  </data>
+  <data name="AccountAddPage_RoleComboBox/Header" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="AccountAddPage_RoleComboBox/PlaceholderText" xml:space="preserve">
+    <value>Select a role</value>
+  </data>
+  <data name="AccountAddPage_ZoneComboBox/Header" xml:space="preserve">
+    <value>Zone</value>
+  </data>
+  <data name="AccountAddPage_ZoneComboBox/PlaceholderText" xml:space="preserve">
+    <value>Select a zone</value>
+  </data>
+  <data name="AccountAddPage_TableComboBox/Header" xml:space="preserve">
+    <value>Table</value>
+  </data>
+  <data name="AccountAddPage_TableComboBox/PlaceholderText" xml:space="preserve">
+    <value>Select a table</value>
+  </data>
+  <data name="AdminAccountAddPage_AddButtonText/Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+
+  <data name="UserIdTextBox/Header" xml:space="preserve">
+    <value>User ID</value>
+  </data>
+  <data name="AccountEditPage_UsernameTextBox/Header" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="AccountEditPage_PasswordBox/Header" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="AccountEditPage_RoleComboBox/Header" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="AccountEditPage_RoleComboBox/PlaceholderText" xml:space="preserve">
+    <value>Select a role</value>
+  </data>
+  <data name="AccountEditPage_ZoneComboBox/Header" xml:space="preserve">
+    <value>Zone</value>
+  </data>
+  <data name="AccountEditPage_ZoneComboBox/PlaceholderText" xml:space="preserve">
+    <value>Select a zone</value>
+  </data>
+  <data name="AccountEditPage_TableComboBox/Header" xml:space="preserve">
+    <value>Table</value>
+  </data>
+  <data name="AccountEditPage_TableComboBox/PlaceholderText" xml:space="preserve">
+    <value>Select a table</value>
+  </data>
+  <data name="AdminAccountEditPage_EditButton/Content" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="AccountEditPage_EnablePasswordEdit/Content" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+
+  <data name="CancelButton/Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+
   <data name="Shell_CashierTablePage.Content" xml:space="preserve">
     <value>Table</value>
   </data>
