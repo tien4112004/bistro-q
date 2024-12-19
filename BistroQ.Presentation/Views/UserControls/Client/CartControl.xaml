@@ -48,7 +48,7 @@
                                            <ColorAnimation
                                                Storyboard.TargetName="RootGrid"
                                                Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
-                                               To="{StaticResource SystemFillColorCritical}"
+                                               To="{ThemeResource SystemFillColorCritical}"
                                                Duration="0:0:0.1"/>
                                        </Storyboard>
                                    </VisualState>
@@ -115,7 +115,7 @@
                                TextWrapping="Wrap"/>
                            <TextBlock
                                Style="{ThemeResource BodyTextBlockStyle}"
-                               Foreground="{StaticResource TextFillColorSecondary}"
+                               Foreground="{ThemeResource TextFillColorSecondary}"
                                TextWrapping="Wrap"
                                TextTrimming="CharacterEllipsis"
                                MaxLines="2">
@@ -197,7 +197,7 @@
                <!-- Empty State -->
                <TextBlock
                    Text="Your cart is currently empty."
-                   Foreground="{StaticResource TextFillColorPrimary}"
+                   Foreground="{ThemeResource TextFillColorPrimary}"
                    Visibility="{x:Bind CartIsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                    Margin="8"/>
            </StackPanel>

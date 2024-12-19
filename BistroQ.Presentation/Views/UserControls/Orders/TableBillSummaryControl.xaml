@@ -27,14 +27,14 @@
                 Text="Total Amount:"
                 VerticalAlignment="Center"
                 FontSize="16"
-                Foreground="{StaticResource TextFillColorPrimary}"/>
+                Foreground="{ThemeResource TextFillColorPrimary}"/>
 
             <TextBlock
                 Text="{x:Bind Total, Mode=OneWay, Converter={StaticResource NumberToCurreny}}"
                 VerticalAlignment="Center"
                 FontWeight="Bold"
                 FontSize="16"
-                Foreground="{StaticResource TextFillColorPrimary}"/>
+                Foreground="{ThemeResource TextFillColorPrimary}"/>
         </StackPanel>
 
         <!-- Action Button -->
@@ -46,6 +46,7 @@
             PointerExited="Button_PointerExited"
             Height="40"
             Padding="20,0"
-            Background="{StaticResource AccentFillColorSelectedTextBackgroundBrush}"/>
+            Foreground="{ThemeResource TextOnAccentFillColorDefault}"
+            Background="{ThemeResource CyanBaseColor}"/>
     </Grid>
 </UserControl>

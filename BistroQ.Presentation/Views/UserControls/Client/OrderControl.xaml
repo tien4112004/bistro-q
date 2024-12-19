@@ -63,7 +63,7 @@
                            
                            <TextBlock
                                Style="{ThemeResource BodyTextBlockStyle}"
-                               Foreground="{StaticResource TextFillColorSecondary}"
+                               Foreground="{ThemeResource TextFillColorSecondary}"
                                TextWrapping="Wrap"
                                TextTrimming="CharacterEllipsis"
                                MaxLines="2">
@@ -110,7 +110,6 @@
                    x:Uid="ClientHomePage_IsProcessingProductTitle"
                    IsExpanded="True"
                    ExpandDirection="Down"
-                   Background="{StaticResource SystemFillColorCautionBackground}"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Stretch"
                    HorizontalContentAlignment="Stretch"
@@ -118,11 +117,15 @@
                    PointerExited="Button_PointerExited"
                    Padding="4"
                    Margin="0">
+                    <Expander.Resources>
+                        <StaticResource x:Key="ExpanderHeaderBackground" ResourceKey="WarningBaseColor" />
+                    </Expander.Resources>
+                   
                    <StackPanel PointerEntered="Button_PointerExited">
                        <!-- Empty State -->
                        <TextBlock
                            Text="You have no processing order."
-                           Foreground="{StaticResource TextFillColorPrimaryBrush}"
+                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
                            Visibility="{x:Bind ViewModel.IsProcessingItemsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                            Margin="12,0,0,0"/>
 
@@ -140,7 +143,6 @@
                    x:Uid="ClientHomePage_CompletedProductTitle"
                    IsExpanded="False"
                    ExpandDirection="Down"
-                   Background="{StaticResource SystemFillColorSuccessBackground}"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Stretch"
                    HorizontalContentAlignment="Stretch"
@@ -148,11 +150,15 @@
                    PointerExited="Button_PointerExited"
                    Padding="4"
                    Margin="0,8">
-                   <StackPanel PointerEntered="Button_PointerExited">
+                    <Expander.Resources>
+                        <StaticResource x:Key="ExpanderHeaderBackground" ResourceKey="SuccessBaseColor" />
+                    </Expander.Resources>
+
+                    <StackPanel PointerEntered="Button_PointerExited">
                        <!-- Empty State -->
                        <TextBlock
                            Text="You have no completed order."
-                           Foreground="{StaticResource TextFillColorPrimaryBrush}"
+                           Foreground="{ThemeResource TextFillColorPrimaryBrush}"
                            Visibility="{x:Bind ViewModel.IsCompletedItemsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                            Margin="12,0,0,0"/>
 
