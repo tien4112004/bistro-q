@@ -5,9 +5,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" 
+    xmlns:skeleton="using:BistroQ.Presentation.Controls.Skeleton"
+    xmlns:converter="using:BistroQ.Presentation.Converters"
     xmlns:local="using:BistroQ.Presentation.Views.UserControls"
     mc:Ignorable="d">
+    
+    
+    <!-- Page Resources -->
+    <Page.Resources>
+        <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </Page.Resources>
 
+    <!-- Main Content Area Grid -->
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -100,12 +109,54 @@
             </StackPanel>
         </Grid>
 
+        <!-- Loading Overlay -->
+        <Grid 
+            x:Name="LoadingOverlay"
+            Grid.Row="1"
+            Visibility="{x:Bind ViewModel.State.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+            <ListView 
+                IsHitTestVisible="False"
+                SelectionMode="None">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Margin" Value="8"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Grid 
+                                        Height="52" 
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        CornerRadius="8"
+                                        Padding="12,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <skeleton:RectangleSkeleton Width="40" Height="16"/>
+                                        <skeleton:RectangleSkeleton Grid.Column="1" Width="200" Height="16"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListViewItem/>
+                <ListViewItem/>
+                <ListViewItem/>
+                <ListViewItem/>
+                <ListViewItem/>
+            </ListView>
+        </Grid>
+
         <!-- Data Grid -->
         <controls:DataGrid
             x:Name="AdminCategoryDataGrid"
             Grid.Row="1"
             AutoGenerateColumns="False"
             GridLinesVisibility="Horizontal"
+            Visibility="{x:Bind ViewModel.State.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
             ItemsSource="{x:Bind ViewModel.State.Source, Mode=OneWay}"
             SelectedItem="{x:Bind ViewModel.State.SelectedCategory, Mode=TwoWay}"
             Sorting="ViewModel_AdminCategoryDataGrid_Sorting">

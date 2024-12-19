@@ -44,8 +44,8 @@
             <SolidColorBrush x:Key="WarningHoverBrush" Color="{StaticResource WarningHoverColor}" />
 
             <!-- Error States -->
-            <Color x:Key="ErrorBaseColor">#FF6B6B</Color>
-            <Color x:Key="ErrorHoverColor">#FF5252</Color>
+            <Color x:Key="ErrorBaseColor">#FF5B5B</Color>
+            <Color x:Key="ErrorHoverColor">#FF4242</Color>
             <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorBaseColor}" />
             <SolidColorBrush x:Key="ErrorHoverBrush" Color="{StaticResource ErrorHoverColor}" />
 
