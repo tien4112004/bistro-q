@@ -94,6 +94,8 @@
                                             ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
                                             HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                             VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            PointerEntered="Button_PointerEntered"
+                                            PointerExited="Button_PointerExited"   
                                             CornerRadius="4,4,4,4"
                                             ContentMargin="{TemplateBinding Padding}"
                                             CheckMode="Inline"/>
@@ -168,6 +170,8 @@
                                             VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                             PointerOverBackgroundMargin="1"
                                             ContentMargin="0"
+                                            PointerEntered="Button_PointerEntered"
+                                            PointerExited="Button_PointerExited"
                                             CornerRadius="10"
                                        />
                                     </ControlTemplate>

@@ -51,6 +51,8 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Style="{StaticResource AccentButtonStyle}" Width="80"
                     Command="{x:Bind ViewModel.AddCommand}"
+                                            PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
                     IsEnabled="{x:Bind ViewModel.IsProcessing, 
                                 Mode=OneWay,
                                 Converter={StaticResource ReverseBool}}"
@@ -72,7 +74,9 @@
                 </Grid>
             </Button>
                 <Button x:Name="AdminZoneAddPage_CancelButton"
-                    x:Uid="CancelButton" Width="80" 
+                    x:Uid="CancelButton" Width="80"
+                                                PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
                     Click="AdminZoneAddPage_CancelButton_Click"
                     />
         </StackPanel>

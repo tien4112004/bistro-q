@@ -64,6 +64,8 @@
                     Style="{StaticResource AccentButtonStyle}"
                     Padding="2,4"
                     Width="26"
+                                                        PointerEntered="Button_PointerEntered"
+                                    PointerExited="Button_PointerExited"   
                     HorizontalAlignment="Left"
                     Command="{x:Bind DecreaseQuantityCommand}"
                     Grid.Column="0">
@@ -81,6 +83,8 @@
             <Button x:Name="IncreaseButton" 
                     Padding="2,4"
                     Width="26"
+                                                        PointerEntered="Button_PointerEntered"
+                                    PointerExited="Button_PointerExited"   
                     Style="{StaticResource AccentButtonStyle}"
                     Command="{x:Bind IncreaseQuantityCommand}"
                     Grid.Column="2">

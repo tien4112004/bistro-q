@@ -20,12 +20,18 @@
 
         <SelectorBar x:Name="OrderCartSelector" 
                      SelectionChanged="OrderCartSelector_SelectionChanged">
-            <SelectorBarItem x:Name="SelectorBarItemCart" Text="Cart">
+            <SelectorBarItem x:Name="SelectorBarItemCart" 
+                             PointerEntered="Button_PointerEntered"
+                             PointerExited="Button_PointerExited"   
+                             Text="Cart">
                 <SelectorBarItem.Icon>
                     <FontIcon Glyph="&#xE7BF;" />
                 </SelectorBarItem.Icon>
             </SelectorBarItem>
-            <SelectorBarItem x:Name="SelectorBarItemOrder" Text="Order">
+            <SelectorBarItem x:Name="SelectorBarItemOrder" 
+                             PointerEntered="Button_PointerEntered"
+                             PointerExited="Button_PointerExited"
+                             Text="Order">
                 <SelectorBarItem.Icon>
                     <FontIcon Glyph="&#xE81C;" />
                 </SelectorBarItem.Icon>

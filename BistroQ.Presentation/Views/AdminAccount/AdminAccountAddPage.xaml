@@ -55,6 +55,8 @@
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                 <ComboBox x:Name="AccountAddPage_RoleComboBox"
                          x:Uid="AccountAddPage_RoleComboBox"
+                         PointerEntered="Button_PointerEntered"
+                         PointerExited="Button_PointerExited"
                          GettingFocus="AccountAddPage_RoleComboBox_GettingFocus"
                          ItemsSource="{x:Bind ViewModel.Roles}"
                          SelectedValue="{x:Bind ViewModel.Form.Role, Mode=TwoWay}"
@@ -70,6 +72,8 @@
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                 <ComboBox x:Name="AccountAddPage_ZoneComboBox"
                          x:Uid="AccountAddPage_ZoneComboBox"
+                         PointerEntered="Button_PointerEntered"
+                         PointerExited="Button_PointerExited"
                          GettingFocus="AccountAddPage_ZoneComboBox_GettingFocus"
                          ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
                          DisplayMemberPath="Name"
@@ -87,6 +91,8 @@
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                 <ComboBox x:Name="AccountAddPage_TableComboBox"
                          x:Uid="AccountAddPage_TableComboBox"
+                         PointerEntered="Button_PointerEntered"
+                         PointerExited="Button_PointerExited"
                          GettingFocus="AccountAddPage_TableComboBox_GettingFocus"
                          ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}"
                          DisplayMemberPath="Number"
@@ -109,6 +115,8 @@
                     Margin="24">
             <Button Style="{StaticResource AccentButtonStyle}" 
                     Width="80"
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
                     Command="{x:Bind ViewModel.AddCommand}"
                     IsEnabled="{x:Bind ViewModel.IsProcessing, Mode=OneWay, Converter={StaticResource ReverseBool}}"
                     Margin="0,0,16,0">
@@ -129,6 +137,8 @@
 
             <Button x:Name="AdminAccountAddPage_CancelButton"
                     x:Uid="CancelButton" 
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
                     Width="80" 
                     Click="AdminAccountAddPage_CancelButton_Click"/>
         </StackPanel>

@@ -43,61 +43,91 @@
                 TODO: Update item icons by updating FontIcon.Glyph properties.
                 https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list
                 -->
-                <NavigationViewItem x:Uid="Shell_Main" Tag="User" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.MainViewModel">
+                <NavigationViewItem x:Uid="Shell_Main" 
+                                                                                PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
+                                    Tag="User" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.MainViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 
-                <NavigationViewItem x:Uid="Shell_AdminZone" Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.AdminZoneViewModel">
+                <NavigationViewItem x:Uid="Shell_AdminZone" 
+                                                                                PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
+                                    Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.AdminZoneViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE71D;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem x:Uid="Shell_AdminTable" Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.AdminTableViewModel">
+                <NavigationViewItem x:Uid="Shell_AdminTable" 
+                                                                                PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
+                                    Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.AdminTableViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE977;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem x:Uid="Shell_AdminCategory" Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.AdminCategoryViewModel">
+                <NavigationViewItem x:Uid="Shell_AdminCategory" 
+                                                                                PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
+                                    Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.AdminCategoryViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8FD;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem x:Uid="Shell_AdminProduct" Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.AdminProductViewModel">
+                <NavigationViewItem x:Uid="Shell_AdminProduct" 
+                                                                                PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
+                                    Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.AdminProductViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE719;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem x:Uid="Shell_AdminAccount" Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.AdminAccountViewModel">
+                <NavigationViewItem x:Uid="Shell_AdminAccount" 
+                                                                                PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
+                                    Tag="Admin" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.AdminAccountViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem x:Uid="Shell_ClientHomePage" Tag="Client" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.Client.HomePageViewModel">
+                <NavigationViewItem x:Uid="Shell_ClientHomePage" 
+                                                                                PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
+                                    Tag="Client" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.Client.HomePageViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED56;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem x:Uid="Shell_CashierTablePage" Tag="Cashier" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.CashierTable.CashierTableViewModel">
+                <NavigationViewItem x:Uid="Shell_CashierTablePage" 
+                                                                                PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
+                                    Tag="Cashier" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.CashierTable.CashierTableViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED56;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem x:Uid="Shell_KitchenOrderPage" Tag="Kitchen" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.KitchenOrder.KitchenOrderViewModel">
+                <NavigationViewItem x:Uid="Shell_KitchenOrderPage" 
+                                                                                PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
+                                    Tag="Kitchen" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.KitchenOrder.KitchenOrderViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED56;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem x:Uid="Shell_KitchenHistoryPage" Tag="Kitchen" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.KitchenHistory.KitchenHistoryViewModel">
+                <NavigationViewItem x:Uid="Shell_KitchenHistoryPage" 
+                                                                                PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
+                                    Tag="Kitchen" helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.KitchenHistory.KitchenHistoryViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED56;"/>
                     </NavigationViewItem.Icon>
@@ -114,7 +144,10 @@
             </NavigationView.HeaderTemplate>
 
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem x:Name="SettingsItem" Tapped="SettingsItem_Tapped">
+                <NavigationViewItem x:Name="SettingsItem" 
+                                                                                                    PointerEntered="Button_PointerEntered"
+PointerExited="Button_PointerExited"
+                                    Tapped="SettingsItem_Tapped">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE713;"/>
                     </NavigationViewItem.Icon>
@@ -125,7 +158,10 @@
 
                     <NavigationViewItem.ContextFlyout>
                         <MenuFlyout Placement="TopEdgeAlignedLeft">
-                            <MenuFlyoutItem Text="Logout" Click="LogOut_Click"/>
+                            <MenuFlyoutItem Text="Logout" 
+                                                                                        PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
+                                            Click="LogOut_Click"/>
                         </MenuFlyout>
                     </NavigationViewItem.ContextFlyout>
                 </NavigationViewItem>

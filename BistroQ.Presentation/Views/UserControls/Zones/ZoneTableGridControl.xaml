@@ -123,6 +123,8 @@
                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                     PointerOverBackgroundMargin="1"
+                                    PointerEntered="Button_PointerEntered"
+                                    PointerExited="Button_PointerExited"   
                                     ContentMargin="4"
                                     CornerRadius="10"
                                />
@@ -137,14 +139,14 @@
                             <Grid>
                                 <StackPanel Spacing="4" VerticalAlignment="Center">
                                     <StackPanel
-                                Orientation="Horizontal"
-                                Spacing="5">
+                                        Orientation="Horizontal"
+                                        Spacing="5">
                                         <FontIcon 
-                                    Glyph="&#xE73E;"
-                                    Foreground="{StaticResource SystemFillColorSuccessBrush}"
-                                    Visibility="{x:Bind IsOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"/>
+                                            Glyph="&#xE73E;"
+                                            Foreground="{StaticResource SystemFillColorSuccessBrush}"
+                                            Visibility="{x:Bind IsOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+                                            FontSize="16"
+                                            HorizontalAlignment="Center"/>
                                         <TextBlock FontSize="12" 
                                            Visibility="{x:Bind IsOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                                            Foreground="{StaticResource SystemFillColorSuccessBrush}">

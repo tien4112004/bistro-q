@@ -1,5 +1,8 @@
-﻿using BistroQ.Presentation.ViewModels.AdminTable;
+﻿using BistroQ.Presentation.Helpers;
+using BistroQ.Presentation.ViewModels.AdminTable;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 
 namespace BistroQ.Presentation.Views.AdminTable;
@@ -52,5 +55,15 @@ public sealed partial class AdminTableAddPage : Page
     private void TableAddPage_ZoneComboBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
     {
         ViewModel.Form.ResetError(nameof(ViewModel.Form.ZoneId));
+    }
+
+    private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Hand);
+    }
+
+    private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
     }
 }

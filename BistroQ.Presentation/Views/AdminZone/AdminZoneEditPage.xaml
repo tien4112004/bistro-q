@@ -47,6 +47,8 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Style="{StaticResource AccentButtonStyle}" Width="80"
+                                            PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
                     Command="{x:Bind ViewModel.UpdateCommand}"
                     IsEnabled="{x:Bind ViewModel.IsProcessing, 
                                 Mode=OneWay,
@@ -70,6 +72,8 @@
             </Button>
             <Button x:Name="AdminZoneEditPage_CancelButton"
                     x:Uid="CancelButton" Width="80" 
+                                            PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
                     Click="AdminZoneEditPage_CancelButton_Click"
                     />
         </StackPanel>

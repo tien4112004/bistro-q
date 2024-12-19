@@ -40,6 +40,8 @@
             Grid.Column="1"
             Click="Button_Click"
             Content="{x:Bind ButtonText, Mode=OneWay}"
+                                                        PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
             Height="40"
             Padding="20,0"
             Background="{StaticResource AccentFillColorSelectedTextBackgroundBrush}"

@@ -85,6 +85,8 @@
                 <!-- Login Button -->
                 <Button 
                      Style="{StaticResource AccentButtonStyle}"
+                                            PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
                      Width="60"
                      Command="{x:Bind ViewModel.LoginCommand}"
                      IsEnabled="{x:Bind ViewModel.IsProcessing, 

@@ -16,6 +16,8 @@
             <ComboBox x:Name="RowsPerPageSelection" 
                   SelectionChanged="RowsPerPageSelection_SelectionChanged" 
                   Width="72" 
+                                                          PointerEntered="Button_PointerEntered"
+                                    PointerExited="Button_PointerExited"   
                   SelectedIndex="0"
                   VerticalAlignment="Center"
                   SelectedItem="{x:Bind Pagination.PageSize, Mode=OneWay}">
@@ -31,10 +33,22 @@
         <Run Text=" / " />
         <Run Text="{x:Bind Pagination.TotalPages, Mode=OneWay}" />
         </TextBlock>
-        <Button Content="&lt;&lt;" Command="{x:Bind FirstPageCommand}" Margin="24,0,0,0" VerticalAlignment="Center"/>
-        <Button Content="&lt;" Command="{x:Bind PreviousPageCommand}" Margin="8,0,8,0" VerticalAlignment="Center"/>
+        <Button Content="&lt;&lt;" 
+                                    PointerEntered="Button_PointerEntered"
+                                    PointerExited="Button_PointerExited"   
+                Command="{x:Bind FirstPageCommand}" Margin="24,0,0,0" VerticalAlignment="Center"/>
+        <Button Content="&lt;" 
+                                                    PointerEntered="Button_PointerEntered"
+                                    PointerExited="Button_PointerExited"   
+                Command="{x:Bind PreviousPageCommand}" Margin="8,0,8,0" VerticalAlignment="Center"/>
         <NumberBox Width="44" Value="{x:Bind Pagination.CurrentPage, Mode=TwoWay}" VerticalAlignment="Center" ValidationMode="InvalidInputOverwritten" />
-        <Button Content=">" Command="{x:Bind NextPageCommand}" Margin="8,0,8,0" VerticalAlignment="Center"/>
-        <Button Content=">>" Command="{x:Bind LastPageCommand}" Margin="0,0,0,0" VerticalAlignment="Center"/>
+        <Button 
+                                                PointerEntered="Button_PointerEntered"
+                                    PointerExited="Button_PointerExited"   
+            Content=">" Command="{x:Bind NextPageCommand}" Margin="8,0,8,0" VerticalAlignment="Center"/>
+        <Button 
+                                                PointerEntered="Button_PointerEntered"
+                                    PointerExited="Button_PointerExited"   
+            Content=">>" Command="{x:Bind LastPageCommand}" Margin="0,0,0,0" VerticalAlignment="Center"/>
     </StackPanel>
 </UserControl>

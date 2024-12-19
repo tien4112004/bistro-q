@@ -93,11 +93,15 @@
                      ExpandDirection="Down"
                      Background="{StaticResource SystemFillColorCautionBackground}"
                      VerticalAlignment="Top"
+                                                             PointerEntered="Button_PointerEntered"
+                                    PointerExited="Button_PointerExited"   
                      Padding="4"
                      Margin="0"
                      HorizontalAlignment="Stretch"
                      HorizontalContentAlignment="Stretch">
-                    <StackPanel>
+                    <StackPanel 
+                                                             PointerEntered="Button_PointerExited"
+                        >
                         <TextBlock Foreground="{StaticResource TextFillColorPrimaryBrush}" 
                                    Visibility="{x:Bind ViewModel.IsProcessingItemsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                                    Margin="12,0,0,0"
@@ -116,12 +120,16 @@
                           IsExpanded="False"
                           ExpandDirection="Down"
                           Background="{StaticResource SystemFillColorSuccessBackground}"
+                        PointerEntered="Button_PointerEntered"
+                                    PointerExited="Button_PointerExited"   
                           VerticalAlignment="Top"
                           Padding="4"
                           Margin="0,8"
                           HorizontalAlignment="Stretch"
                           HorizontalContentAlignment="Stretch">
-                    <StackPanel>
+                    <StackPanel
+                        PointerEntered="Button_PointerExited"
+                        >
                         <TextBlock Foreground="{StaticResource TextFillColorPrimaryBrush}" 
                                    Visibility="{x:Bind ViewModel.IsCompletedItemsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                                    Margin="12,0,0,0"

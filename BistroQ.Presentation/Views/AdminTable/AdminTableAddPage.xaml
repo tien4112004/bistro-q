@@ -26,6 +26,8 @@
         <StackPanel Orientation="Vertical" Background="Transparent" HorizontalAlignment="Left">
             <ComboBox x:Name="TableAddPage_ZoneComboBox"
                       x:Uid="TableAddPage_ZoneComboBox"
+                        PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
                       GettingFocus="TableAddPage_ZoneComboBox_GettingFocus"
                       ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
                       DisplayMemberPath="Name"
@@ -35,6 +37,8 @@
 
             <NumberBox x:Name="TableAddPage_SeatsCountNumberBox"
                        x:Uid="TableAddPage_SeatsCountNumberBox"
+                                               PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
                        GettingFocus="TableAddPage_SeatsCountNumberBox_GettingFocus"
                        Text="{x:Bind ViewModel.Form.SeatsCount, Mode=TwoWay}"
                        SpinButtonPlacementMode="Inline"
@@ -45,6 +49,8 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Style="{StaticResource AccentButtonStyle}" Width="80"
                     Command="{x:Bind ViewModel.AddCommand}"
+                                            PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
                     IsEnabled="{x:Bind ViewModel.IsProcessing, 
                                 Mode=OneWay,
                                 Converter={StaticResource ReverseBool}}"
@@ -67,6 +73,8 @@
             </Button>
             <Button x:Name="AdminTableAddPage_CancelButton"
                     x:Uid="CancelButton" Width="80" 
+                                            PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
                     Click="AdminTableAddPage_CancelButton_Click"
                     />
         </StackPanel>    

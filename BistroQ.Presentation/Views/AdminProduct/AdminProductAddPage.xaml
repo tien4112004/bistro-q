@@ -41,6 +41,8 @@
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                     <ComboBox x:Name="ProductAddPage_CategoryComboBox"
                          x:Uid="ProductAddPage_CategoryComboBox"
+                         PointerEntered="Button_PointerEntered"
+                         PointerExited="Button_PointerExited"
                          ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
                          DisplayMemberPath="Name"
                          SelectedValuePath="CategoryId"
@@ -90,6 +92,8 @@
                     <NumberBox x:Name="ProductAddPage_PriceNumberBox"
                           x:Uid="ProductAddPage_PriceTextBox"
                           GettingFocus="ProductAddPage_PriceNumberBox_GettingFocus"
+                          PointerEntered="Button_PointerEntered"
+                          PointerExited="Button_PointerExited"
                           Value="{x:Bind ViewModel.Form.Price, Mode=TwoWay, Converter={StaticResource DecimalToDouble}}"
                           SpinButtonPlacementMode="Inline"
                           Minimum="0"
@@ -111,6 +115,8 @@
                     <NumberBox x:Name="ProductAddPage_DiscountPriceNumberBox"
                           x:Uid="ProductAddPage_DiscountPriceTextBox"
                           GettingFocus="ProductAddPage_DiscountPriceNumberBox_GettingFocus"
+                          PointerEntered="Button_PointerEntered"
+                          PointerExited="Button_PointerExited"
                           Value="{x:Bind ViewModel.Form.DiscountPrice, Mode=TwoWay, Converter={StaticResource DecimalToDouble}}"
                           SpinButtonPlacementMode="Inline"
                           Minimum="0"
@@ -132,6 +138,8 @@
                     <Button x:Name="ProductAddPage_SelectImageButton"
                         x:Uid="ProductAddPage_SelectImageButton"
                         Content="Select Image"
+                        PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
                         Click="ProductAddPage_SelectImageButton_Click"
                         Margin="0,0,0,8"/>
 
@@ -160,6 +168,8 @@
                 Margin="24">
             <Button Style="{StaticResource AccentButtonStyle}" 
                 Width="80"
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
                 Command="{x:Bind ViewModel.AddCommand}"
                 IsEnabled="{x:Bind ViewModel.IsProcessing, Mode=OneWay, Converter={StaticResource ReverseBool}}"
                 Margin="0,0,16,0">
@@ -176,7 +186,9 @@
             </Button>
 
             <Button x:Name="AdminProductAddPage_CancelButton"
-                x:Uid="CancelButton" 
+                x:Uid="CancelButton"
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
                 Width="80" 
                 Click="AdminProductAddPage_CancelButton_Click"/>
         </StackPanel>

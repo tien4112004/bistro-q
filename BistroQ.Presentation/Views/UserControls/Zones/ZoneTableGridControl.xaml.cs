@@ -1,4 +1,5 @@
-﻿using BistroQ.Presentation.ViewModels.CashierTable;
+﻿using BistroQ.Presentation.Helpers;
+using BistroQ.Presentation.ViewModels.CashierTable;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -20,7 +21,7 @@ public sealed partial class ZoneTableGridControl : UserControl
                 typeof(ZoneTableGridViewModel),
                 typeof(ZoneTableGridControl),
                 new PropertyMetadata(null));
-    
+
     private void VerticalScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
     {
         const double SCROLL_SPEED = 1.25;
@@ -30,5 +31,15 @@ public sealed partial class ZoneTableGridControl : UserControl
             scrollViewer.VerticalOffset - e.Delta.Translation.Y * SCROLL_SPEED,
             null,
             true);
+    }
+
+    private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Hand);
+    }
+
+    private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
     }
 }

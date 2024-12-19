@@ -26,6 +26,8 @@
                      Margin="0,0,0,16" />
             <ComboBox x:Name="TableEditPage_ZoneComboBox"
                       x:Uid="TableEditPage_ZoneComboBox"
+                                              PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
                       ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="ZoneId"
@@ -33,6 +35,7 @@
                       Width="300" />
             <NumberBox x:Name="TableEditPage_SeatsCountNumberBox"
                        x:Uid="TableEditPage_SeatsCountTextBox"
+                       
                        Text="{x:Bind ViewModel.Request.SeatsCount, 
                                       Mode=TwoWay}"
                        SpinButtonPlacementMode="Inline"
@@ -44,10 +47,14 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <Button x:Name="AdminTableEditPage_EditButton"
                     x:Uid="AdminTableEditPage_EditButton" 
+                                            PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
                     Style="{StaticResource AccentButtonStyle}" Width="80"
                     Command="{x:Bind ViewModel.EditCommand}" 
                     Margin="0,0,16,0"/>
             <Button x:Name="AdminTableEditPage_CancelButton"
+                                            PointerEntered="Button_PointerEntered"
+                        PointerExited="Button_PointerExited"
                     x:Uid="CancelButton" Width="80" 
                     Click="AdminTableEditPage_CancelButton_Click"
                     />

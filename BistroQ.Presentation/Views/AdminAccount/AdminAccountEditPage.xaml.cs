@@ -1,6 +1,9 @@
-﻿using BistroQ.Presentation.ViewModels.AdminAccount;
+﻿using BistroQ.Presentation.Helpers;
+using BistroQ.Presentation.ViewModels.AdminAccount;
 using BistroQ.Presentation.ViewModels.Models;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 
 namespace BistroQ.Presentation.Views.AdminAccount;
@@ -67,5 +70,15 @@ public sealed partial class AdminAccountEditPage : Page
     private void AccountEditPage_TableComboBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
     {
         ViewModel.Form.ResetError(nameof(ViewModel.Form.TableId));
+    }
+
+    private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Hand);
+    }
+
+    private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
     }
 }

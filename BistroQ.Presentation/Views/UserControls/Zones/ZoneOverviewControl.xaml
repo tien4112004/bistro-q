@@ -84,6 +84,8 @@
                                       VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                       CornerRadius="10,10,0,0"
                                       ContentMargin="{TemplateBinding Padding}"
+                                      PointerEntered="Button_PointerEntered"
+                                      PointerExited="Button_PointerExited"   
                                       CheckMode="Inline"/>
                                 </ControlTemplate>
                             </Setter.Value>
@@ -112,8 +114,12 @@
                             SelectedIndex="0"
                             SelectionChanged="Segmented_SelectionChanged"
                             SelectionMode="Single">
-                <controls:SegmentedItem Content="All State"/>
-                <controls:SegmentedItem Content="Occupied"/>
+                <controls:SegmentedItem Content="All State"
+                                        PointerEntered="Button_PointerEntered"
+                                        PointerExited="Button_PointerExited"   />
+                <controls:SegmentedItem Content="Occupied"
+                                        PointerEntered="Button_PointerEntered"
+                                        PointerExited="Button_PointerExited"   />
             </controls:Segmented>
         </StackPanel>
     </Grid>

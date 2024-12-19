@@ -106,4 +106,14 @@ public sealed partial class ShellPage : Page
         await Task.Delay(1000);
         App.MainWindow.Close();
     }
+
+    private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Hand);
+    }
+
+    private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
+    }
 }

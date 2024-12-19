@@ -38,8 +38,8 @@
             <SolidColorBrush x:Key="SuccessHoverBrush" Color="{StaticResource SuccessHoverColor}" />
 
             <!-- Warning States -->
-            <Color x:Key="WarningBaseColor">#FFD700</Color>
-            <Color x:Key="WarningHoverColor">#FFA500</Color>
+            <Color x:Key="WarningBaseColor">#EEB740</Color>
+            <Color x:Key="WarningHoverColor">#FF8500</Color>
             <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningBaseColor}" />
             <SolidColorBrush x:Key="WarningHoverBrush" Color="{StaticResource WarningHoverColor}" />
 

@@ -54,6 +54,8 @@
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                     <ComboBox x:Name="ProductEditPage_CategoryComboBox"
                          x:Uid="ProductEditPage_CategoryComboBox"
+                                                                                      PointerEntered="Button_PointerEntered"
+                                    PointerExited="Button_PointerExited"   
                          GettingFocus="ProductEditPage_CategoryComboBox_GettingFocus"
                          ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
                          DisplayMemberPath="Name"
@@ -145,6 +147,8 @@
                     <Button x:Name="ProductEditPage_SelectImageButton"
                         x:Uid="ProductEditPage_SelectImageButton"
                         Content="Select Image"
+                          PointerEntered="Button_PointerEntered"
+                          PointerExited="Button_PointerExited"
                         Click="ProductEditPage_SelectImageButton_Click"
                         Margin="0,0,0,8"/>
 
@@ -172,6 +176,8 @@
                 HorizontalAlignment="Right"
                 Margin="24">
             <Button Style="{StaticResource AccentButtonStyle}" Width="80"
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
                 Command="{x:Bind ViewModel.UpdateCommand}"
                 IsEnabled="{x:Bind ViewModel.IsProcessing, Mode=OneWay, Converter={StaticResource ReverseBool}}"
                 Margin="0,0,16,0">
@@ -188,6 +194,8 @@
             </Button>
 
             <Button x:Name="AdminProductEditPage_CancelButton"
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
                 x:Uid="CancelButton" 
                 Width="80" 
                 Click="AdminProductEditPage_CancelButton_Click"/>

@@ -1,5 +1,7 @@
-﻿using Microsoft.UI.Xaml;
+﻿using BistroQ.Presentation.Helpers;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 
 namespace BistroQ.Presentation.Views.UserControls.Orders;
 
@@ -21,7 +23,7 @@ public sealed partial class TableBillSummaryControl : UserControl
         get => (string?)GetValue(ButtonTextProperty);
         set => SetValue(ButtonTextProperty, value);
     }
-    
+
     public static readonly DependencyProperty TotalProperty =
         DependencyProperty.Register(
             nameof(Total),
@@ -35,11 +37,21 @@ public sealed partial class TableBillSummaryControl : UserControl
             typeof(string),
             typeof(TableBillSummaryControl),
             new PropertyMetadata(null));
-    
+
     public event EventHandler CheckoutRequested;
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         CheckoutRequested?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Hand);
+    }
+
+    private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
     }
 }

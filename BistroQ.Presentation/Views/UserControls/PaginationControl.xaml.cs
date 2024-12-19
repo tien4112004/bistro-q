@@ -1,9 +1,11 @@
-﻿using BistroQ.Presentation.Messages;
+﻿using BistroQ.Presentation.Helpers;
+using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Commons;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using System.Diagnostics;
 
 namespace BistroQ.Presentation.Views.UserControls;
@@ -117,5 +119,14 @@ public partial class PaginationControl : UserControl, IDisposable, IRecipient<Pa
     {
         _isDisposed = true;
         _messenger.UnregisterAll(this);
+    }
+    private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Hand);
+    }
+
+    private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
     }
 }

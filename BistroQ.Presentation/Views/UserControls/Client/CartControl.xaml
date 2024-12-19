@@ -112,6 +112,8 @@
                                 Width="32" Padding="4,4" Margin="0,2"
                                 BorderThickness="1"
                                 BorderBrush="White"
+                                PointerEntered="Button_PointerEntered"
+                                PointerExited="Button_PointerExited"
                                 Command="{Binding ElementName=ThisPage, Path=RemoveProductFromCartCommand}"
                                 CommandParameter="{x:Bind}"
                                 Style="{StaticResource DeleteButtonStyle}"

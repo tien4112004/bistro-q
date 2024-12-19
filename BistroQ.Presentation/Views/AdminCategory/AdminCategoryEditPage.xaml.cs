@@ -1,6 +1,9 @@
-﻿using BistroQ.Presentation.ViewModels.AdminCategory;
+﻿using BistroQ.Presentation.Helpers;
+using BistroQ.Presentation.ViewModels.AdminCategory;
 using BistroQ.Presentation.ViewModels.Models;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 
 namespace BistroQ.Presentation.Views.AdminCategory;
@@ -47,5 +50,15 @@ public sealed partial class AdminCategoryEditPage : Page
     private void Name_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
     {
         ViewModel.Form.ResetError(nameof(ViewModel.Form.Name));
+    }
+
+    private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Hand);
+    }
+
+    private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
     }
 }
