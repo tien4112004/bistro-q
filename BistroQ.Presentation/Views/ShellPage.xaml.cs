@@ -24,11 +24,6 @@ public sealed partial class ShellPage : Page
 
         ViewModel.NavigationService.Frame = NavigationFrame;
 
-        // TODO: This is considered an anti-pattern when calling async code in the constructor.
-        ViewModel.NavigationViewService.Initialize(NavigationViewControl,
-            Task.Run(async () => await App.GetService<IAuthService>().GetRoleAsync()).GetAwaiter().GetResult()
-        );
-
         // TODO: Set the title bar icon by updating /Assets/WindowIcon.ico.
         // A custom title bar is required for full window theme and Mica support.
         // https://docs.microsoft.com/windows/apps/develop/title-bar?tabs=winui3#full-customization
@@ -38,9 +33,15 @@ public sealed partial class ShellPage : Page
         AppTitleBarText.Text = "AppDisplayName".GetLocalized();
     }
 
-    private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private async void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         TitleBarHelper.UpdateTitleBar(RequestedTheme);
+
+        ViewModel.NavigationViewService.Initialize(NavigationViewControl,
+            await App.GetService<IAuthService>().GetRoleAsync()
+        );
+
+        ViewModel.NavigationViewService.NavigateToEntryPoint();
 
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Left, VirtualKeyModifiers.Menu));
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack));
@@ -49,7 +50,6 @@ public sealed partial class ShellPage : Page
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
     {
         App.AppTitlebar = AppTitleBarText as UIElement;
-        ViewModel.NavigationViewService.NavigateToEntryPoint();
     }
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
