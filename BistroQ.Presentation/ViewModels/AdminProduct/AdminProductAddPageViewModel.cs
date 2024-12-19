@@ -72,19 +72,15 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
                 CategoryId = Form.CategoryId,
                 Price = Form.Price,
                 Unit = Form.Unit,
-                DiscountPrice = Form.DiscountPrice
+                DiscountPrice = Form.DiscountPrice,
+                Calories = Form.Calories,
+                Fat = Form.Fat,
+                Fiber = Form.Fiber,
+                Protein = Form.Protein
             };
 
-            if (Form.ImageFile == null)
-            {
-                await _productDataService.CreateProductAsync(request);
-            }
-            else
-            {
-                await _productDataService.CreateProductAsync(request,
-                    Form.ImageFile.Stream, Form.ImageFile.FileName, Form.ImageFile.ContentType);
-            }
-
+            await _productDataService.CreateProductAsync(request,
+                Form.ImageFile?.Stream, Form.ImageFile?.FileName, Form.ImageFile?.ContentType);
 
             await _dialogService.ShowSuccessDialog("Successfully added product: " + request.Name, "Success");
             NavigateBack?.Invoke(this, EventArgs.Empty);

@@ -27,4 +27,7 @@ public partial class ProductViewModel : ObservableObject
 
     [ObservableProperty]
     private CategoryViewModel? _category;
+
+    [ObservableProperty]
+    private NutritionFactViewModel _nutritionFact;
 }

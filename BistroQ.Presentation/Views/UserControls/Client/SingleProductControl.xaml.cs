@@ -8,6 +8,8 @@ namespace BistroQ.Presentation.Views.UserControls.Client;
 
 public sealed partial class SingleProductControl : UserControl
 {
+    public bool HasDiscountPrice => Product?.DiscountPrice != 0;
+
     public static readonly DependencyProperty ProductProperty =
         DependencyProperty.Register(
             nameof(Product),
@@ -24,6 +26,7 @@ public sealed partial class SingleProductControl : UserControl
     public SingleProductControl()
     {
         this.InitializeComponent();
+        if (!HasDiscountPrice) ProductDescriptionTextBlock.Text = "";
     }
 
     // public event EventHandler<ProductViewModel> AddProductToCart;

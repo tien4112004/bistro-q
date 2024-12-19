@@ -16,5 +16,7 @@ public class ProductResponse
 
     public decimal? DiscountPrice { get; set; }
 
+    public NutritionFactResponse? NutritionFact { get; set; }
+
     public string? ImageUrl { get; set; }
 }

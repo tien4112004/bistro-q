@@ -35,10 +35,15 @@ public partial class ProductListViewModel : ObservableRecipient
     private bool _isEmptyList = false;
 
     [ObservableProperty]
+    private bool _canLoadMore = true;
+
+    private int _page = 1;
+
+    [ObservableProperty]
     private ObservableCollection<ProductViewModel> _products = new ObservableCollection<ProductViewModel>();
 
     public ICommand ChangeCategoryCommand { get; set; }
-    public ICommand AddProductToCartCommand { get; set; }
+    public ICommand LoadMoreProductsCommand { get; set; }
 
     public ProductListViewModel(
         ICategoryDataService categoryService,
@@ -49,6 +54,7 @@ public partial class ProductListViewModel : ObservableRecipient
         _productService = productService;
         _mapper = mapper;
         ChangeCategoryCommand = new AsyncRelayCommand<CategoryViewModel>(ChangeCategory);
+        LoadMoreProductsCommand = new AsyncRelayCommand(LoadMoreProductAsync);
     }
 
     private async Task ChangeCategory(CategoryViewModel category)
@@ -77,17 +83,52 @@ public partial class ProductListViewModel : ObservableRecipient
     {
         try
         {
+            _page = 1;
             Products.Clear();
             IsLoadingProduct = true;
             var query = new ProductCollectionQueryParams
             {
-                CategoryId = SelectedCategory?.CategoryId ?? null
+                CategoryId = SelectedCategory?.CategoryId ?? null,
+                Size = 12,
             };
 
             var response = await _productService.GetProductsAsync(query);
             var products = _mapper.Map<IEnumerable<ProductViewModel>>(response.Data);
             Products = new ObservableCollection<ProductViewModel>(products);
+            CanLoadMore = products.Count() == 12;
             IsEmptyList = !(Products.Any());
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
+        finally
+        {
+            IsLoadingProduct = false;
+        }
+    }
+
+    public async Task LoadMoreProductAsync()
+    {
+        try
+        {
+            _page++;
+            IsLoadingProduct = true;
+            var query = new ProductCollectionQueryParams
+            {
+                CategoryId = SelectedCategory?.CategoryId ?? null,
+                Size = 12,
+                Page = _page
+            };
+
+            var response = await _productService.GetProductsAsync(query);
+            var products = _mapper.Map<IEnumerable<ProductViewModel>>(response.Data);
+            foreach (var product in products)
+            {
+                Products.Add(product);
+            }
+            CanLoadMore = products.Count() == 12;
+            OnPropertyChanged(nameof(Products));
         }
         catch (Exception ex)
         {

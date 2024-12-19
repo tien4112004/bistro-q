@@ -36,6 +36,9 @@ public class MappingProfile : Profile
         CreateMap<Category, CategoryViewModel>();
         CreateMap<Category, CategoryViewModel>().ReverseMap();
 
+        CreateMap<NutritionFact, NutritionFactViewModel>();
+        CreateMap<NutritionFact, NutritionFactViewModel>().ReverseMap();
+
         CreateMap<Account, AccountViewModel>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.ZoneName, opt => opt.MapFrom(src => src.Table != null ? src.Table.ZoneName : null))
@@ -65,6 +68,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product))
             .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
             .ForPath(dest => dest.Order.Table, opt => opt.MapFrom(src => src.Table));
+        CreateMap<NutritionFactResponse, NutritionFact>();
 
         CreateMap<ProductResponse, Product>()
             .ForMember(dest => dest.Category, opt => opt.MapFrom(

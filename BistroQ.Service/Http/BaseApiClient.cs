@@ -24,6 +24,7 @@ public class BaseApiClient : IBaseApiClient
         );
 
         var response = await _httpClient.PostAsync(url, request);
+
         return await HandleResponse<T>(response);
     }
 
