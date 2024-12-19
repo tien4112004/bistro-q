@@ -66,6 +66,7 @@ public partial class AdminProductViewModel :
         _messenger.Register<PageSizeChangedMessage>(this, async (r, m) =>
         {
             State.Query.Size = m.NewPageSize;
+            State.ReturnToFirstPage();
             await LoadDataAsync();
         });
 

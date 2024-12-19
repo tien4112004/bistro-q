@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using BistroQ.Domain.Contracts.Services.Data;
 using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Messages;
-using BistroQ.Presentation.ViewModels.AdminCategory;
+using BistroQ.Presentation.ViewModels.AdminAccount;
 using BistroQ.Presentation.ViewModels.Models;
 using BistroQ.Presentation.ViewModels.States;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -17,19 +16,21 @@ using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels;
 
-public partial class AdminCategoryViewModel :
+public partial class AdminAccountViewModel :
     ObservableRecipient,
     INavigationAware,
-    IDisposable
+    IDisposable,
+    IRecipient<PageSizeChangedMessage>,
+    IRecipient<CurrentPageChangedMessage>
 {
     private readonly IDialogService _dialogService;
-    private readonly INavigationService _navigationService;
-    private readonly ICategoryDataService _categoryDataService;
     private readonly IMapper _mapper;
+    private readonly IAccountDataService _accountDataService;
+    private readonly INavigationService _navigationService;
     private readonly IMessenger _messenger;
 
     [ObservableProperty]
-    private AdminCategoryState state = new();
+    private AdminAccountState state = new();
 
     public IRelayCommand AddCommand { get; }
     public IRelayCommand EditCommand { get; }
@@ -37,44 +38,33 @@ public partial class AdminCategoryViewModel :
     public ICommand SortCommand { get; }
     public ICommand SearchCommand { get; }
 
-    public AdminCategoryViewModel(
+    public AdminAccountViewModel(
         INavigationService navigationService,
-        ICategoryDataService categoryDataService,
+        IAccountDataService accountDataService,
         IDialogService dialogService,
         IMapper mapper,
         IMessenger messenger)
     {
         _navigationService = navigationService;
-        _categoryDataService = categoryDataService;
+        _accountDataService = accountDataService;
         _mapper = mapper;
-        _dialogService = dialogService;
         _messenger = messenger;
+        _dialogService = dialogService;
 
         State.PropertyChanged += StatePropertyChanged;
 
         AddCommand = new RelayCommand(NavigateToAddPage);
         EditCommand = new RelayCommand(NavigateToEditPage, () => State.CanEdit);
-        DeleteCommand = new AsyncRelayCommand(DeleteSelectedCategoryAsync, () => State.CanDelete);
+        DeleteCommand = new AsyncRelayCommand(DeleteSelectedAccountAsync, () => State.CanDelete);
         SortCommand = new RelayCommand<(string column, string direction)>(ExecuteSortCommand);
         SearchCommand = new RelayCommand(ExecuteSearchCommand);
 
-        _messenger.Register<PageSizeChangedMessage>(this, async (r, m) =>
-        {
-            State.Query.Size = m.NewPageSize;
-            State.ReturnToFirstPage();
-            await LoadDataAsync();
-        });
-
-        _messenger.Register<CurrentPageChangedMessage>(this, async (r, m) =>
-        {
-            State.Query.Page = m.NewCurrentPage;
-            await LoadDataAsync();
-        });
+        _messenger.RegisterAll(this);
     }
 
     private void StatePropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(State.SelectedCategory))
+        if (e.PropertyName == nameof(State.SelectedAccount))
         {
             EditCommand.NotifyCanExecuteChanged();
             DeleteCommand.NotifyCanExecuteChanged();
@@ -88,7 +78,7 @@ public partial class AdminCategoryViewModel :
 
     public void OnNavigatedFrom()
     {
-        State.SelectedCategory = null;
+        State.SelectedAccount = null;
     }
 
     private async Task LoadDataAsync()
@@ -96,15 +86,16 @@ public partial class AdminCategoryViewModel :
         try
         {
             State.IsLoading = true;
-            var result = await _categoryDataService.GetCategoriesAsync(State.Query);
 
-            var categories = _mapper.Map<IEnumerable<CategoryViewModel>>(result.Data);
-            State.Source = new ObservableCollection<CategoryViewModel>(categories);
+            var result = await _accountDataService.GetGridDataAsync(State.Query);
+
+            var accounts = _mapper.Map<IEnumerable<AccountViewModel>>(result.Data);
+            State.Source = new ObservableCollection<AccountViewModel>(accounts);
             _messenger.Send(new PaginationChangedMessage(
                 result.TotalItems,
                 result.CurrentPage,
                 result.TotalPages
-            ));
+             ));
         }
         catch (Exception ex)
         {
@@ -117,36 +108,36 @@ public partial class AdminCategoryViewModel :
     }
 
     private void NavigateToAddPage() =>
-        _navigationService.NavigateTo(typeof(AdminCategoryAddPageViewModel).FullName);
+        _navigationService.NavigateTo(typeof(AdminAccountAddPageViewModel).FullName);
 
     private void NavigateToEditPage()
     {
-        if (State.SelectedCategory?.CategoryId != null)
+        if (State.SelectedAccount?.UserId != null)
         {
-            _navigationService.NavigateTo(typeof(AdminCategoryEditPageViewModel).FullName, State.SelectedCategory);
+            _navigationService.NavigateTo(typeof(AdminAccountEditPageViewModel).FullName, State.SelectedAccount);
         }
     }
 
-    private async Task DeleteSelectedCategoryAsync()
+    private async Task DeleteSelectedAccountAsync()
     {
-        if (State.SelectedCategory?.CategoryId == null) return;
+        if (State.SelectedAccount?.UserId == null) return;
 
         try
         {
             var result = await _dialogService.ShowConfirmDeleteDialog();
             if (result != ContentDialogResult.Primary) return;
 
-            var success = await _categoryDataService.DeleteCategoryAsync(State.SelectedCategory.CategoryId.Value);
+            var success = await _accountDataService.DeleteAccountAsync(State.SelectedAccount.UserId);
             if (success)
             {
-                await _dialogService.ShowSuccessDialog("Category deleted successfully.", "Success");
-                State.Source.Remove(State.SelectedCategory);
-                State.SelectedCategory = null;
+                await _dialogService.ShowSuccessDialog("Account deleted successfully.", "Success");
+                State.Source.Remove(State.SelectedAccount);
+                State.SelectedAccount = null;
                 await LoadDataAsync();
             }
             else
             {
-                await _dialogService.ShowErrorDialog("Failed to delete category.", "Error");
+                await _dialogService.ShowErrorDialog("Failed to delete account.", "Error");
             }
         }
         catch (Exception ex)
@@ -164,12 +155,21 @@ public partial class AdminCategoryViewModel :
         _ = LoadDataAsync();
     }
 
-    public void AdminCategoryDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
+    public void AdminAccountDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
     {
+        var dataGrid = sender as DataGrid;
         var column = e.Column;
         var sortDirection = column.SortDirection == null || column.SortDirection == DataGridSortDirection.Descending
             ? "asc"
             : "des";
+
+        foreach (var col in dataGrid.Columns)
+        {
+            if (col != column)
+            {
+                col.SortDirection = null;
+            }
+        }
 
         column.SortDirection = sortDirection == "asc"
             ? DataGridSortDirection.Ascending
@@ -183,6 +183,19 @@ public partial class AdminCategoryViewModel :
     {
         State.ReturnToFirstPage();
         _ = LoadDataAsync();
+    }
+
+    public async void Receive(CurrentPageChangedMessage message)
+    {
+        State.Query.Page = message.NewCurrentPage;
+        await LoadDataAsync();
+    }
+
+    public async void Receive(PageSizeChangedMessage message)
+    {
+        State.Query.Size = message.NewPageSize;
+        State.ReturnToFirstPage();
+        await LoadDataAsync();
     }
 
     public void Dispose()

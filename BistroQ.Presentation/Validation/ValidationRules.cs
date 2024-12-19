@@ -38,6 +38,22 @@ public static class ValidationRules
                 ? (true, string.Empty)
                 : (false, $"{fieldName} must contain only digits");
         }
+
+        public static (bool IsValid, string Message) MaxLength(object? value, int maxLength, string fieldName)
+        {
+            var strValue = value as string ?? string.Empty;
+            return strValue.Length > maxLength
+                ? (false, $"{fieldName} must be at most {maxLength} characters long")
+                : (true, string.Empty);
+        }
+
+        public static (bool IsValid, string Message) NoWhitespace(object? value, string fieldName)
+        {
+            var strValue = value as string ?? string.Empty;
+            return strValue.Contains(' ')
+                ? (false, $"{fieldName} must not contain whitespace")
+                : (true, string.Empty);
+        }
     }
 
     public static class DecimalRules
