@@ -48,7 +48,7 @@
             <!-- Zone Table Grid -->
             <Border 
                 Grid.Row="1" 
-                Background="{StaticResource SolidBackgroundFillColorTertiaryBrush}" 
+                Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}" 
                 Margin="4,-3,5,5" 
                 CornerRadius="10">
                 <zoneControls:ZoneTableGridControl 
@@ -66,7 +66,7 @@
         <!-- Right Panel: Order Details -->
         <Border 
             Grid.Column="2" 
-            Background="{StaticResource CardBackgroundFillColorDefaultBrush}" 
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
             CornerRadius="10" 
             BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
             BorderThickness="4">

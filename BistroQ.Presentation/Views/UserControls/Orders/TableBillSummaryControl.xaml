@@ -46,7 +46,7 @@
             PointerExited="Button_PointerExited"
             Height="40"
             Padding="20,0"
-            Foreground="{ThemeResource TextOnAccentFillColorDefault}"
-            Background="{ThemeResource CyanBaseColor}"/>
+            Style="{StaticResource AccentButtonStyle}"
+            FontWeight="SemiBold"/>
     </Grid>
 </UserControl>

@@ -47,7 +47,7 @@
                            Converter={StaticResource FirstError},
                            ConverterParameter=Name}"
                     Margin="0,8,0,0"
-                    Foreground="Red"/>
+                    Foreground="{ThemeResource ErrorBaseColor}"/>
 
                 <!-- General error message -->
                 <TextBlock
@@ -55,18 +55,18 @@
                     Visibility="{x:Bind ViewModel.ErrorMessage, 
                                Mode=OneWay, 
                                Converter={StaticResource StringToVisibility}}"
-                    Foreground="Red"
+                    Foreground="{ThemeResource ErrorBaseColor}"
                     TextWrapping="Wrap"/>
             </StackPanel>
         </StackPanel>
-        
+
         <!-- Action buttons -->
         <StackPanel 
             Orientation="Horizontal" 
             HorizontalAlignment="Right">
             <!-- Add button -->
             <Button 
-                Style="{StaticResource AccentButtonStyle}" 
+                Style="{ThemeResource AccentButtonStyle}" 
                 Width="80"
                 Command="{x:Bind ViewModel.AddCommand}"
                 PointerEntered="Button_PointerEntered"
@@ -78,7 +78,6 @@
                 <Grid>
                     <control:ProgressRing
                         IsActive="{x:Bind ViewModel.IsProcessing, Mode=OneWay}"
-                        Foreground="White"
                         Width="20"
                         Height="20"/>
                     <TextBlock 

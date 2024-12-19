@@ -40,7 +40,7 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="GridViewItem">
                                     <Grid 
-                                        Background="{StaticResource CardBackgroundFillColorDefaultBrush}"
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                                         CornerRadius="10"
                                         Padding="8">
                                         <StackPanel 
@@ -93,7 +93,7 @@
                 <TextBlock 
                     FontSize="14"
                     Text="There are no tables in this zone."
-                    Foreground="{StaticResource SystemFillColorCriticalBrush}"
+                    Foreground="{ThemeResource WarningBaseColor}"
                     Visibility="{x:Bind ViewModel.HasTables, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"/>
 
                 <!-- Tables GridView -->
@@ -115,7 +115,7 @@
                             <Setter Property="Margin" Value="8"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="Width" Value="120"/>
-                            <Setter Property="Background" Value="{StaticResource CardBackgroundFillColorDefaultBrush}" />
+                            <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
                             <Setter Property="Height" Value="120"/>
                             <Setter Property="Template">
                                 <Setter.Value>
@@ -165,14 +165,14 @@
                                         Spacing="5">
                                         <FontIcon 
                                             Glyph="&#xE73E;"
-                                            Foreground="{StaticResource SystemFillColorSuccessBrush}"
+                                            Foreground="{ThemeResource SuccessBaseColor}"
                                             Visibility="{x:Bind IsOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                                             FontSize="16"
                                             HorizontalAlignment="Center"/>
                                         <TextBlock 
                                             FontSize="12" 
                                             Visibility="{x:Bind IsOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
-                                            Foreground="{StaticResource SystemFillColorSuccessBrush}">
+                                            Foreground="{ThemeResource SuccessBaseColor}">
                                             Occupied!
                                         </TextBlock>
                                     </StackPanel>

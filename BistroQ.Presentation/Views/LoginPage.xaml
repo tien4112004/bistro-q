@@ -64,7 +64,7 @@
                     <TextBlock
                         Text="{x:Bind ViewModel.Form.Errors, Mode=OneWay, Converter={StaticResource FirstError}, ConverterParameter=Username}"
                         Margin="0,5,0,0"
-                        Foreground="Red"/>
+                        Foreground="{ThemeResource ErrorBaseColor}"/>
                 </StackPanel>
 
                 <!-- Password Input -->
@@ -80,12 +80,12 @@
                     <TextBlock
                         Text="{x:Bind ViewModel.Form.Errors, Mode=OneWay, Converter={StaticResource FirstError}, ConverterParameter=Password}"
                         Margin="0,5,0,0"
-                        Foreground="Red"/>
+                        Foreground="{ThemeResource ErrorBaseColor}"/>
                 </StackPanel>
 
                 <!-- Login Button -->
                 <Button 
-                    Style="{StaticResource AccentButtonStyle}"
+                    Style="{ThemeResource AccentButtonStyle}"
                     PointerEntered="Button_PointerEntered"
                     PointerExited="Button_PointerExited"
                     Width="60"
@@ -95,14 +95,12 @@
                     <Grid>
                         <control:ProgressRing
                             IsActive="{x:Bind ViewModel.IsProcessing, Mode=OneWay}"
-                            Foreground="White"
                             Width="20"
                             Height="20"/>
 
                         <TextBlock
                             Text="Login"
                             Visibility="{x:Bind ViewModel.IsProcessing, Mode=OneWay, Converter ={StaticResource BoolToVisibility}, ConverterParameter=invert}"
-                            Foreground="White"
                             FontWeight="Bold"/>
                     </Grid>
                 </Button>
@@ -111,7 +109,7 @@
                 <TextBlock
                     Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
                     Visibility="{x:Bind ViewModel.ErrorMessage, Mode=OneWay, Converter={StaticResource StringToVisibility}}"
-                    Foreground="Red"
+                    Foreground="{ThemeResource ErrorBaseColor}"
                     TextWrapping="Wrap"/>
             </StackPanel>
 

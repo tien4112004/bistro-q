@@ -206,7 +206,7 @@
                             <Grid>
                                 <TextBlock
                                     Text="{Binding}"
-                                    Style="{ThemeResource TitleTextBlockStyle}" />
+                                    Style="{ThemeResource SubtitleTextBlockStyle}" />
                             </Grid>
                         </DataTemplate>
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>

@@ -62,7 +62,7 @@
             <Button 
                 x:Name="AdminTableEditPage_EditButton"
                 x:Uid="AdminTableEditPage_EditButton" 
-                Style="{StaticResource AccentButtonStyle}" 
+                Style="{ThemeResource AccentButtonStyle}" 
                 PointerEntered="Button_PointerEntered"
                 PointerExited="Button_PointerExited"
                 Command="{x:Bind ViewModel.EditCommand}" 

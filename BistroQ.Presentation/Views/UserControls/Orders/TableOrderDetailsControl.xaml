@@ -1,140 +1,140 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <UserControl
-   x:Class="BistroQ.Presentation.Views.UserControls.Orders.TableOrderDetailsControl"
-   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-   xmlns:local="using:BistroQ.Presentation.Views.UserControls.Orders"
-   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-   xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
-   xmlns:xamlControl="using:Microsoft.UI.Xaml.Controls"
-   xmlns:converters="using:BistroQ.Presentation.Converters"
-   xmlns:orderControls="using:BistroQ.Presentation.Views.UserControls.Orders"
-   mc:Ignorable="d">
+    x:Class="BistroQ.Presentation.Views.UserControls.Orders.TableOrderDetailsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BistroQ.Presentation.Views.UserControls.Orders"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:xamlControl="using:Microsoft.UI.Xaml.Controls"
+    xmlns:converters="using:BistroQ.Presentation.Converters"
+    xmlns:orderControls="using:BistroQ.Presentation.Views.UserControls.Orders"
+    mc:Ignorable="d">
 
-   <UserControl.Resources>
-       <converters:NumberToCurrencyConverter x:Key="NumberToCurreny"/>
-       <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-   </UserControl.Resources>
+    <UserControl.Resources>
+        <converters:NumberToCurrencyConverter x:Key="NumberToCurreny"/>
+        <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </UserControl.Resources>
 
-   <Grid
-       Padding="10,10">
-       <Grid.RowDefinitions>
-           <RowDefinition Height="Auto"/>
-           <RowDefinition Height="*"/>
-           <RowDefinition Height="Auto"/>
-       </Grid.RowDefinitions>
+    <Grid
+        Padding="10,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-       <!-- Header -->
-       <Grid
-           Grid.Row="0"
-           Padding="10,5,10,20">
-           <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="*"/>
-               <ColumnDefinition Width="Auto"/>
-           </Grid.ColumnDefinitions>
-           
-           <TextBlock
-               Grid.Column="0"
-               Text="Order Detail"
-               FontSize="16"
-               FontWeight="Bold"/>
+        <!-- Header -->
+        <Grid
+            Grid.Row="0"
+            Padding="10,5,10,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-           <!-- Timer Display -->
-           <StackPanel
-               Grid.Column="1"
-               Orientation="Horizontal"
-               Spacing="10">
-               <FontIcon
-                   Glyph="&#xE823;"
-                   FontFamily="Segoe Fluent Icons"
-                   FontWeight="Bold"
-                   FontSize="14"/>
-               <TextBlock
-                   Text="{x:Bind ViewModel.Timer.FormattedTime, Mode=OneWay}"
-                   FontSize="13"/>
-           </StackPanel>
-       </Grid>
+            <TextBlock
+                Grid.Column="0"
+                Text="Order Detail"
+                FontSize="16"
+                FontWeight="Bold"/>
 
-       <!-- Loading Indicator -->
-       <xamlControl:ProgressRing
-           Grid.Row="1"    
-           IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
-           Foreground="{StaticResource AccentFillColorDefaultBrush}"
-           Width="40"
-           Height="40"/>
+            <!-- Timer Display -->
+            <StackPanel
+                Grid.Column="1"
+                Orientation="Horizontal"
+                Spacing="10">
+                <FontIcon
+                    Glyph="&#xE823;"
+                    FontFamily="Segoe Fluent Icons"
+                    FontWeight="Bold"
+                    FontSize="14"/>
+                <TextBlock
+                    Text="{x:Bind ViewModel.Timer.FormattedTime, Mode=OneWay}"
+                    FontSize="13"/>
+            </StackPanel>
+        </Grid>
 
-       <!-- Content Area -->
-       <Grid
-           Grid.Row="1"
-           Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}">
-           <Grid.RowDefinitions>
-               <RowDefinition Height="*"/>
-               <RowDefinition Height="Auto"/>
-           </Grid.RowDefinitions>
+        <!-- Loading Indicator -->
+        <xamlControl:ProgressRing
+            Grid.Row="1"    
+            IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+            Foreground="{ThemeResource AccentFillColorDefaultBrush}"
+            Width="40"
+            Height="40"/>
 
-           <ScrollViewer
-               Grid.Row="0"
-               VerticalAlignment="Stretch"
-               VerticalScrollMode="Enabled"
-               VerticalScrollBarVisibility="Hidden"
-               ManipulationMode="System,TranslateY"
-               ManipulationDelta="VerticalScrollViewer_ManipulationDelta">
+        <!-- Content Area -->
+        <Grid
+            Grid.Row="1"
+            Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-               <StackPanel VerticalAlignment="Stretch">
-                   <!-- Status Messages -->
-                   <TextBlock
-                       Text="This table is currently available!"
-                       Foreground="{StaticResource SystemFillColorSuccessBrush}"
-                       Visibility="{x:Bind ViewModel.DoesNotHaveOrder, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
-                   
-                   <TextBlock
-                       Text="This table haven't ordered any product!"
-                       Foreground="{StaticResource SystemFillColorCriticalBrush}"
-                       Visibility="{x:Bind ViewModel.DoesNotHaveOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
+            <ScrollViewer
+                Grid.Row="0"
+                VerticalAlignment="Stretch"
+                VerticalScrollMode="Enabled"
+                VerticalScrollBarVisibility="Hidden"
+                ManipulationMode="System,TranslateY"
+                ManipulationDelta="VerticalScrollViewer_ManipulationDelta">
 
-                   <!-- Order Items Grid -->
-                   <controls:DataGrid
-                       x:Name="OrderItemsGrid"
-                       AutoGenerateColumns="False"
-                       GridLinesVisibility="All"
-                       IsTapEnabled="False"
-                       IsDoubleTapEnabled="False"
-                       IsReadOnly="True"
-                       ItemsSource="{x:Bind ViewModel.Order.OrderItems, Mode=OneWay}"
-                       Visibility="{x:Bind ViewModel.HasOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
-                       <controls:DataGrid.Resources>
-                           <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent"/>
-                       </controls:DataGrid.Resources>
-                       
-                       <controls:DataGrid.Columns>
-                           <controls:DataGridTextColumn
-                               Header="Product Name"
-                               Binding="{Binding Product.Name}"
-                               Width="*"/>
-                           <controls:DataGridTextColumn
-                               Header="Price"
-                               Binding="{Binding Product.Price, Converter={StaticResource NumberToCurreny}}"
-                               Width="Auto"/>
-                           <controls:DataGridTextColumn
-                               Header="Quantity"
-                               Binding="{Binding Quantity}"
-                               Width="Auto"/>
-                           <controls:DataGridTextColumn
-                               Header="Total"
-                               Binding="{Binding Total, Converter={StaticResource NumberToCurreny}}"
-                               Width="Auto"/>
-                       </controls:DataGrid.Columns>
-                   </controls:DataGrid>
-               </StackPanel>
-           </ScrollViewer>
+                <StackPanel VerticalAlignment="Stretch">
+                    <!-- Status Messages -->
+                    <TextBlock
+                        Text="This table is currently available!"
+                        Foreground="{ThemeResource SuccessBaseColor}"
+                        Visibility="{x:Bind ViewModel.DoesNotHaveOrder, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
 
-           <!-- Bill Summary -->
-           <orderControls:TableBillSummaryControl
-               Grid.Row="1"
-               ButtonText="Checkout"
-               Total="{x:Bind ViewModel.Order.TotalAmount, Mode=OneWay}"
-               CheckoutRequested="{x:Bind ViewModel.CheckoutRequestedCommand, Mode=OneWay}"/>
-       </Grid>
-   </Grid>
+                    <TextBlock
+                        Text="This table haven't ordered any product!"
+                        Foreground="{ThemeResource ErrorBaseColor}"
+                        Visibility="{x:Bind ViewModel.DoesNotHaveOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
+
+                    <!-- Order Items Grid -->
+                    <controls:DataGrid
+                        x:Name="OrderItemsGrid"
+                        AutoGenerateColumns="False"
+                        GridLinesVisibility="All"
+                        IsTapEnabled="False"
+                        IsDoubleTapEnabled="False"
+                        IsReadOnly="True"
+                        ItemsSource="{x:Bind ViewModel.Order.OrderItems, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.HasOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                        <controls:DataGrid.Resources>
+                            <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent"/>
+                        </controls:DataGrid.Resources>
+
+                        <controls:DataGrid.Columns>
+                            <controls:DataGridTextColumn
+                                Header="Product Name"
+                                Binding="{Binding Product.Name}"
+                                Width="*"/>
+                            <controls:DataGridTextColumn
+                                Header="Price"
+                                Binding="{Binding Product.Price, Converter={StaticResource NumberToCurreny}}"
+                                Width="Auto"/>
+                            <controls:DataGridTextColumn
+                                Header="Quantity"
+                                Binding="{Binding Quantity}"
+                                Width="Auto"/>
+                            <controls:DataGridTextColumn
+                                Header="Total"
+                                Binding="{Binding Total, Converter={StaticResource NumberToCurreny}}"
+                                Width="Auto"/>
+                        </controls:DataGrid.Columns>
+                    </controls:DataGrid>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Bill Summary -->
+            <orderControls:TableBillSummaryControl
+                Grid.Row="1"
+                ButtonText="Checkout"
+                Total="{x:Bind ViewModel.Order.TotalAmount, Mode=OneWay}"
+                CheckoutRequested="{x:Bind ViewModel.CheckoutRequestedCommand, Mode=OneWay}"/>
+        </Grid>
+    </Grid>
 </UserControl>

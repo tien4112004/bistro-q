@@ -37,7 +37,7 @@
         Padding="4,0"
         HorizontalAlignment="Stretch"
         Orientation="Horizontal">
-        
+
         <!-- Visual States -->
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="QuantityStates">
@@ -60,7 +60,7 @@
         <Button
             x:Name="AddButton"
             x:Uid="AddItemButton"
-            Style="{StaticResource AccentButtonStyle}" />
+            Style="{ThemeResource AccentButtonStyle}" />
 
         <!-- Quantity Control Panel -->
         <Grid
@@ -78,7 +78,7 @@
             <Button
                 x:Name="DecreaseButton"
                 Grid.Column="0"
-                Style="{StaticResource AccentButtonStyle}"
+                Style="{ThemeResource AccentButtonStyle}"
                 Command="{x:Bind DecreaseQuantityCommand}"
                 PointerEntered="Button_PointerEntered"
                 PointerExited="Button_PointerExited"
@@ -104,7 +104,7 @@
             <Button
                 x:Name="IncreaseButton"
                 Grid.Column="2"
-                Style="{StaticResource AccentButtonStyle}"
+                Style="{ThemeResource AccentButtonStyle}"
                 Command="{x:Bind IncreaseQuantityCommand}"
                 PointerEntered="Button_PointerEntered"
                 PointerExited="Button_PointerExited"

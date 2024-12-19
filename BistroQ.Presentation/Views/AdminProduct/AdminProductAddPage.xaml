@@ -68,7 +68,7 @@
                                Converter={StaticResource FirstError},
                                ConverterParameter=CategoryId}"
                         Margin="0,0,0,16"
-                        Foreground="Red"/>
+                        Foreground="{ThemeResource ErrorBaseColor}"/>
                 </StackPanel>
 
                 <!-- Product Name Input -->
@@ -88,7 +88,7 @@
                                Converter={StaticResource FirstError},
                                ConverterParameter=Name}"
                         Margin="0,8,0,16"
-                        Foreground="Red"/>
+                        Foreground="{ThemeResource ErrorBaseColor}"/>
                 </StackPanel>
 
                 <!-- Unit Input -->
@@ -108,7 +108,7 @@
                                Converter={StaticResource FirstError},
                                ConverterParameter=Unit}"
                         Margin="0,8,0,16"
-                        Foreground="Red"/>
+                        Foreground="{ThemeResource ErrorBaseColor}"/>
                 </StackPanel>
             </StackPanel>
 
@@ -142,7 +142,7 @@
                                Converter={StaticResource FirstError},
                                ConverterParameter=Price}"
                         Margin="0,8,0,16"
-                        Foreground="Red"/>
+                        Foreground="{ThemeResource ErrorBaseColor}"/>
                 </StackPanel>
 
                 <!-- Discount Price Input -->
@@ -171,7 +171,7 @@
                                Converter={StaticResource FirstError},
                                ConverterParameter=DiscountPrice}"
                         Margin="0,8,0,16"
-                        Foreground="Red"/>
+                        Foreground="{ThemeResource ErrorBaseColor}"/>
                 </StackPanel>
 
                 <!-- Image Selection -->
@@ -203,7 +203,7 @@
                                Converter={StaticResource FirstError},
                                ConverterParameter=ImageUrl}"
                         Margin="0,0,0,16"
-                        Foreground="Red"/>
+                        Foreground="{ThemeResource ErrorBaseColor}"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
@@ -216,7 +216,7 @@
             Margin="24">
             <!-- Add Button -->
             <Button 
-                Style="{StaticResource AccentButtonStyle}" 
+                Style="{ThemeResource AccentButtonStyle}" 
                 Width="80"
                 PointerEntered="Button_PointerEntered"
                 PointerExited="Button_PointerExited"
@@ -227,7 +227,6 @@
                 <Grid>
                     <control:ProgressRing 
                         IsActive="{x:Bind ViewModel.IsProcessing, Mode=OneWay}"
-                        Foreground="White"
                         Width="20"
                         Height="20"/>
                     <TextBlock 
@@ -253,7 +252,7 @@
             Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
             Visibility="{x:Bind ViewModel.ErrorMessage, Mode=OneWay, 
                        Converter={StaticResource StringToVisibility}}"
-            Foreground="Red"
+            Foreground="{ThemeResource ErrorBaseColor}"
             TextWrapping="Wrap"
             Margin="24,0"/>
     </Grid>
