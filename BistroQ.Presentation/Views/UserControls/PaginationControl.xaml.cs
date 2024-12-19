@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using System.Data;
+using System.Diagnostics;
 
 namespace BistroQ.Presentation.Views.UserControls;
 
@@ -52,7 +52,6 @@ public partial class PaginationControl : UserControl, IDisposable, IRecipient<Pa
         if (d is PaginationControl control)
         {
             control.UpdateCommandStates();
-            control.UpdatePagination((PaginationViewModel)e.NewValue);
         }
     }
 
@@ -64,17 +63,6 @@ public partial class PaginationControl : UserControl, IDisposable, IRecipient<Pa
         LastPageCommand.NotifyCanExecuteChanged();
     }
 
-    private void UpdatePagination(PaginationViewModel pagination)
-    {
-        var item = RowsPerPageSelection.Items
-            .Cast<ComboBoxItem>()
-            .FirstOrDefault(x => x.Content.ToString() == pagination.PageSize.ToString());
-        if (item != null)
-        {
-            RowsPerPageSelection.SelectedItem = item;
-        }
-    }
-
     private void RowsPerPageSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (sender is ComboBox comboBox && comboBox.SelectedItem is ComboBoxItem item)
@@ -82,7 +70,7 @@ public partial class PaginationControl : UserControl, IDisposable, IRecipient<Pa
             if (int.TryParse(item.Content.ToString(), out int pageSize))
             {
                 _messenger.Send(new PageSizeChangedMessage(pageSize));
-                _messenger.Send(new CurrentPageChangedMessage(1));
+                Debug.WriteLine("ABC");
                 Pagination.CurrentPage = 1;
             }
         }
@@ -123,7 +111,6 @@ public partial class PaginationControl : UserControl, IDisposable, IRecipient<Pa
             CurrentPage = message.CurrentPage,
             TotalPages = message.TotalPages
         };
-        UpdateCommandStates();
     }
 
     public void Dispose()

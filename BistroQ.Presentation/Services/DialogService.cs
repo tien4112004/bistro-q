@@ -8,7 +8,7 @@ public class DialogService : IDialogService
 {
     private readonly XamlRoot _xamlRoot;
     private static readonly SemaphoreSlim _semaphore = new(1);
-
+    private CancellationTokenSource? _currentDialogCts;
 
     public DialogService()
     {
@@ -27,15 +27,7 @@ public class DialogService : IDialogService
             SecondaryButtonStyle = Application.Current.Resources["AccentButtonStyle"] as Style
         };
 
-        await _semaphore.WaitAsync();
-        try
-        {
-            return await dialog.ShowAsync();
-        }
-        finally
-        {
-            _semaphore.Release();
-        }
+        return await ShowDialogCoreAsync(dialog);
     }
 
     public async Task ShowSuccessDialog(string message, string title = "Success")
@@ -47,44 +39,50 @@ public class DialogService : IDialogService
             Content = message,
             CloseButtonText = "OK"
         };
-        await _semaphore.WaitAsync();
-        try
-        {
-            await dialog.ShowAsync();
-        }
-        finally
-        {
-            _semaphore.Release();
-        }
+
+        await ShowDialogCoreAsync(dialog);
     }
 
     public async Task ShowErrorDialog(string message, string title = "Error")
     {
         var dialog = new ContentDialog
         {
-            XamlRoot = _xamlRoot,
             Title = title,
             Content = message,
             CloseButtonText = "OK"
         };
-        await _semaphore.WaitAsync();
-        try
-        {
-            await dialog.ShowAsync();
-        }
-        finally
-        {
-            _semaphore.Release();
-        }
+
+        await ShowDialogCoreAsync(dialog);
     }
 
     public async Task ShowDialogAsync(ContentDialog dialog)
     {
         dialog.XamlRoot = _xamlRoot;
+
+        await ShowDialogCoreAsync(dialog);
+    }
+
+    private async Task<ContentDialogResult> ShowDialogCoreAsync(ContentDialog dialog)
+    {
+        if (_currentDialogCts != null)
+        {
+            _currentDialogCts.Cancel();
+            _currentDialogCts.Dispose();
+        }
+
+        _currentDialogCts = new CancellationTokenSource();
+
+        dialog.XamlRoot = _xamlRoot;
+
         await _semaphore.WaitAsync();
         try
         {
-            await dialog.ShowAsync();
+            _currentDialogCts.Token.ThrowIfCancellationRequested();
+            return await dialog.ShowAsync();
+        }
+        catch (OperationCanceledException)
+        {
+            return ContentDialogResult.None;
         }
         finally
         {
