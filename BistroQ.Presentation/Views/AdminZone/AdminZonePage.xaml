@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:local="using:BistroQ.Presentation.Views.UserControls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" 
+    xmlns:local="using:BistroQ.Presentation.Views.UserControls"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
@@ -13,82 +14,123 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" HorizontalAlignment="Stretch">
+
+        <!-- Search and Action buttons section -->
+        <Grid 
+            Grid.Row="0" 
+            HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <AutoSuggestBox PlaceholderText="Search for a zone"
+
+            <!-- Search box -->
+            <AutoSuggestBox 
+                PlaceholderText="Search for a zone"
                 Text="{x:Bind ViewModel.State.SearchText, Mode=TwoWay}"
                 QueryIcon="Find"
                 QuerySubmitted="Control2_QuerySubmitted"
                 SuggestionChosen="Control2_SuggestionChosen"
                 Width="300"
                 HorizontalAlignment="Left"/>
-            <StackPanel x:Name="AdminZonePage_Buttons" Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
-                <Button Style="{StaticResource AccentButtonStyle}" 
-                                                PointerEntered="Button_PointerEntered"
-                        PointerExited="Button_PointerExited"
-                        Command="{x:Bind ViewModel.AddCommand}" Width="120" Margin="0,0,8,0">
+
+            <!-- Action buttons -->
+            <StackPanel 
+                x:Name="AdminZonePage_Buttons" 
+                Orientation="Horizontal" 
+                Grid.Column="1" 
+                HorizontalAlignment="Right">
+                <!-- Add button -->
+                <Button 
+                    Style="{StaticResource AccentButtonStyle}" 
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    Command="{x:Bind ViewModel.AddCommand}" 
+                    Width="120" 
+                    Margin="0,0,8,0">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE710;" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock x:Uid="AdminZone_DataGrid_AddNewButtonText" Margin="8,0,0,0" />
+                            <FontIcon 
+                                Glyph="&#xE710;" 
+                                FontFamily="Segoe MDL2 Assets" />
+                            <TextBlock 
+                                x:Uid="AdminZone_DataGrid_AddNewButtonText" 
+                                Margin="8,0,0,0" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Button Command="{x:Bind ViewModel.EditCommand}"
-                                                PointerEntered="Button_PointerEntered"
-                        PointerExited="Button_PointerExited"
-                        Width="120" Margin="0,0,8,0">
+
+                <!-- Edit button -->
+                <Button 
+                    Command="{x:Bind ViewModel.EditCommand}"
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    Width="120" 
+                    Margin="0,0,8,0">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE70F;" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock Text="Edit" Margin="8,0,0,0" />
+                            <FontIcon 
+                                Glyph="&#xE70F;" 
+                                FontFamily="Segoe MDL2 Assets" />
+                            <TextBlock 
+                                Text="Edit" 
+                                Margin="8,0,0,0" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Button Command="{x:Bind ViewModel.DeleteCommand}" 
-                                                PointerEntered="Button_PointerEntered"
-                        PointerExited="Button_PointerExited"
-                        Width="120" Margin="0,0,8,0">
+
+                <!-- Delete button -->
+                <Button 
+                    Command="{x:Bind ViewModel.DeleteCommand}" 
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    Width="120" 
+                    Margin="0,0,8,0">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE74D;" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock Text="Delete" Margin="8,0,0,0" />
+                            <FontIcon 
+                                Glyph="&#xE74D;" 
+                                FontFamily="Segoe MDL2 Assets" />
+                            <TextBlock 
+                                Text="Delete" 
+                                Margin="8,0,0,0" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
             </StackPanel>
         </Grid>
+
+        <!-- Data Grid -->
         <controls:DataGrid
             x:Name="AdminZoneDataGrid"
+            Grid.Row="1"
             AutoGenerateColumns="False"
             GridLinesVisibility="Horizontal"
             ItemsSource="{x:Bind ViewModel.State.Source, Mode=OneWay}"
             SelectedItem="{x:Bind ViewModel.State.SelectedZone, Mode=TwoWay}"
-            Grid.Row="1"
             Sorting="ViewModel_AdminZoneDataGrid_Sorting">
             <controls:DataGrid.Resources>
                 <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
             </controls:DataGrid.Resources>
             <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Binding="{Binding ZoneId}" 
-                                             x:Uid="AdminZone_DataGrid_Column_Id" 
-                                             CanUserResize="False" 
-                                             IsReadOnly="True"
-                                             Tag="ZoneId" />
-                <controls:DataGridTextColumn Binding="{Binding Name}" 
-                                             x:Uid="AdminZone_DataGrid_Column_Name" 
-                                             IsReadOnly="True" Width="300"
-                                             Tag="Name" />
-                <!--<controls:DataGridTextColumn Binding="{Binding TableCount}" 
-                                             x:Uid="AdminZone_DataGrid_Column_TableCount" 
-                                             IsReadOnly="True"
-                                             Tag="TableCount" />
-                <controls:DataGridTextColumn Header="Status" IsReadOnly="True" />-->
+                <controls:DataGridTextColumn 
+                    x:Uid="AdminZone_DataGrid_Column_Id" 
+                    Binding="{Binding ZoneId}" 
+                    CanUserResize="False" 
+                    IsReadOnly="True"
+                    Tag="ZoneId" />
+                <controls:DataGridTextColumn 
+                    x:Uid="AdminZone_DataGrid_Column_Name" 
+                    Binding="{Binding Name}" 
+                    IsReadOnly="True" 
+                    Width="300"
+                    Tag="Name" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
-        <local:PaginationControl Grid.Row="2" Margin="0,0,0,24" />
+
+        <!-- Pagination -->
+        <local:PaginationControl 
+            Grid.Row="2" 
+            Margin="0,0,0,24" />
     </Grid>
 </Page>

@@ -1,128 +1,151 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <UserControl
-    x:Class="BistroQ.Presentation.Views.UserControls.Orders.KitchenOrderGridControl"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:BistroQ.Presentation.Views.UserControls.Orders"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:converters="using:BistroQ.Presentation.Converters"
-    xmlns:skeleton="using:BistroQ.Presentation.Controls.Skeleton"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" 
-    xmlns:models="using:BistroQ.Presentation.ViewModels.Models" 
-    mc:Ignorable="d">
+   x:Class="BistroQ.Presentation.Views.UserControls.Orders.KitchenOrderGridControl"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   xmlns:local="using:BistroQ.Presentation.Views.UserControls.Orders"
+   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+   xmlns:converters="using:BistroQ.Presentation.Converters"
+   xmlns:skeleton="using:BistroQ.Presentation.Controls.Skeleton"
+   xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+   xmlns:models="using:BistroQ.Presentation.ViewModels.Models"
+   mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <converters:DateTimeToTimeOnlyConverter x:Key="DateTimeToTimeOnly"/>
-        <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-    </UserControl.Resources>
+   <UserControl.Resources>
+       <converters:DateTimeToTimeOnlyConverter x:Key="DateTimeToTimeOnly"/>
+       <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+   </UserControl.Resources>
 
-    <Grid>
-        <controls:DataGrid
-            Visibility="{x:Bind ViewModel.State.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
-            GridLinesVisibility="Horizontal"
-            ItemsSource="{x:Bind ViewModel.State.Items, Mode=OneWay}"
-            AutoGenerateColumns="False"
-            >
-            <controls:DataGrid.Resources>
-                <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="{StaticResource CardBackgroundFillColorSecondary}" />
-            </controls:DataGrid.Resources>
-            <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Binding="{Binding OrderItemId}" 
-                                             IsReadOnly="True"
-                                             Header="Id"
-                                             Tag="OrderItemId" />
-                <controls:DataGridTextColumn Binding="{Binding Product.Name}" 
-                                             IsReadOnly="True"
-                                             Header="Name"
-                                             Tag="Name" />
-                <controls:DataGridTextColumn Binding="{Binding Quantity}" 
-                                             IsReadOnly="True"
-                                             Header="Quantity"
-                                             Tag="Quantity" />
-                <controls:DataGridTextColumn Binding="{Binding Table.Number}" 
-                                             IsReadOnly="True"
-                                             Header="Table Number"
-                                             Tag="TableNumber" />
-                <controls:DataGridTextColumn Binding="{Binding Table.ZoneName}" 
-                                             IsReadOnly="True" 
-                                             Header="Zone Name"
-                                             Tag="ZoneName" />
-                <controls:DataGridTextColumn Binding="{Binding CreatedAt, Converter={StaticResource DateTimeToTimeOnly}, ConverterParameter=HH:mm}" 
-                                             IsReadOnly="True"
-                                             Header="Ordered At"
-                                             Tag="OrderedAt" />
-                <controls:DataGridTextColumn Binding="{Binding UpdatedAt, Converter={StaticResource DateTimeToTimeOnly}, ConverterParameter=HH:mm}" 
-                                             IsReadOnly="True"
-                                             Header="Action At"
-                                             Tag="ActionAt" />
-                <controls:DataGridTextColumn Binding="{Binding Order.Status}" 
-                                             IsReadOnly="True"
-                                             Header="Order Status"
-                                             Tag="OrderStatus" />
-            </controls:DataGrid.Columns>
-        </controls:DataGrid>
+   <Grid>
+       <!-- Main Data Grid -->
+       <controls:DataGrid
+           AutoGenerateColumns="False"
+           GridLinesVisibility="Horizontal"
+           ItemsSource="{x:Bind ViewModel.State.Items, Mode=OneWay}"
+           Visibility="{x:Bind ViewModel.State.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}">
+           <controls:DataGrid.Resources>
+               <SolidColorBrush
+                   x:Key="DataGridColumnHeaderBackgroundColor"
+                   Color="{StaticResource CardBackgroundFillColorSecondary}"/>
+           </controls:DataGrid.Resources>
 
-        <Grid x:Name="SkeletonGrid" Visibility="{x:Bind ViewModel.State.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
-            <!-- Header Row -->
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+           <controls:DataGrid.Columns>
+               <controls:DataGridTextColumn
+                   Header="Id"
+                   Tag="OrderItemId"
+                   Binding="{Binding OrderItemId}"
+                   IsReadOnly="True"/>
 
-            <!-- Column Headers -->
-            <Grid Grid.Row="0" Background="{ThemeResource CardBackgroundFillColorSecondary}" Height="32">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1.5*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1.5*"/>
-                </Grid.ColumnDefinitions>
+               <controls:DataGridTextColumn
+                   Header="Name"
+                   Tag="Name"
+                   Binding="{Binding Product.Name}"
+                   IsReadOnly="True"/>
 
-                <skeleton:RectangleSkeleton Grid.Column="0" Margin="12,8" Height="16"/>
-                <skeleton:RectangleSkeleton Grid.Column="1" Margin="12,8" Height="16"/>
-                <skeleton:RectangleSkeleton Grid.Column="2" Margin="12,8" Height="16"/>
-                <skeleton:RectangleSkeleton Grid.Column="3" Margin="12,8" Height="16"/>
-                <skeleton:RectangleSkeleton Grid.Column="4" Margin="12,8" Height="16"/>
-                <skeleton:RectangleSkeleton Grid.Column="5" Margin="12,8" Height="16"/>
-                <skeleton:RectangleSkeleton Grid.Column="6" Margin="12,8" Height="16"/>
-            </Grid>
+               <controls:DataGridTextColumn
+                   Header="Quantity"
+                   Tag="Quantity"
+                   Binding="{Binding Quantity}"
+                   IsReadOnly="True"/>
 
-            <!-- Rows -->
-            <ItemsControl Grid.Row="1">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Height="40">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1.5*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1.5*"/>
-                            </Grid.ColumnDefinitions>
+               <controls:DataGridTextColumn
+                   Header="Table Number"
+                   Tag="TableNumber"
+                   Binding="{Binding Table.Number}"
+                   IsReadOnly="True"/>
 
-                            <skeleton:RectangleSkeleton Grid.Column="0" Margin="12,12" Height="16"/>
-                            <skeleton:RectangleSkeleton Grid.Column="1" Margin="12,12" Height="16"/>
-                            <skeleton:RectangleSkeleton Grid.Column="2" Margin="12,12" Height="16"/>
-                            <skeleton:RectangleSkeleton Grid.Column="3" Margin="12,12" Height="16"/>
-                            <skeleton:RectangleSkeleton Grid.Column="4" Margin="12,12" Height="16"/>
-                            <skeleton:RectangleSkeleton Grid.Column="5" Margin="12,12" Height="16"/>
-                            <skeleton:RectangleSkeleton Grid.Column="6" Margin="12,12" Height="16"/>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
+               <controls:DataGridTextColumn
+                   Header="Zone Name"
+                   Tag="ZoneName"
+                   Binding="{Binding Table.ZoneName}"
+                   IsReadOnly="True"/>
 
-                <x:Int32>1</x:Int32>
-                <x:Int32>2</x:Int32>
-                <x:Int32>3</x:Int32>
-                <x:Int32>4</x:Int32>
-                <x:Int32>5</x:Int32>
-            </ItemsControl>
-        </Grid>
-    </Grid>
+               <controls:DataGridTextColumn
+                   Header="Ordered At"
+                   Tag="OrderedAt"
+                   Binding="{Binding CreatedAt, Converter={StaticResource DateTimeToTimeOnly}, ConverterParameter=HH:mm}"
+                   IsReadOnly="True"/>
+
+               <controls:DataGridTextColumn
+                   Header="Action At"
+                   Tag="ActionAt"
+                   Binding="{Binding UpdatedAt, Converter={StaticResource DateTimeToTimeOnly}, ConverterParameter=HH:mm}"
+                   IsReadOnly="True"/>
+
+               <controls:DataGridTextColumn
+                   Header="Order Status"
+                   Tag="OrderStatus"
+                   Binding="{Binding Order.Status}"
+                   IsReadOnly="True"/>
+           </controls:DataGrid.Columns>
+       </controls:DataGrid>
+
+       <!-- Loading Skeleton -->
+       <Grid
+           x:Name="SkeletonGrid"
+           Visibility="{x:Bind ViewModel.State.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+           <Grid.RowDefinitions>
+               <RowDefinition Height="Auto"/>
+               <RowDefinition Height="*"/>
+           </Grid.RowDefinitions>
+
+           <!-- Skeleton Header -->
+           <Grid
+               Grid.Row="0"
+               Height="32"
+               Background="{ThemeResource CardBackgroundFillColorSecondary}">
+               <Grid.ColumnDefinitions>
+                   <ColumnDefinition Width="2*"/>
+                   <ColumnDefinition Width="1*"/>
+                   <ColumnDefinition Width="1*"/>
+                   <ColumnDefinition Width="1.5*"/>
+                   <ColumnDefinition Width="1*"/>
+                   <ColumnDefinition Width="1*"/>
+                   <ColumnDefinition Width="1.5*"/>
+               </Grid.ColumnDefinitions>
+
+               <skeleton:RectangleSkeleton Grid.Column="0" Height="16" Margin="12,8"/>
+               <skeleton:RectangleSkeleton Grid.Column="1" Height="16" Margin="12,8"/>
+               <skeleton:RectangleSkeleton Grid.Column="2" Height="16" Margin="12,8"/>
+               <skeleton:RectangleSkeleton Grid.Column="3" Height="16" Margin="12,8"/>
+               <skeleton:RectangleSkeleton Grid.Column="4" Height="16" Margin="12,8"/>
+               <skeleton:RectangleSkeleton Grid.Column="5" Height="16" Margin="12,8"/>
+               <skeleton:RectangleSkeleton Grid.Column="6" Height="16" Margin="12,8"/>
+           </Grid>
+
+           <!-- Skeleton Rows -->
+           <ItemsControl Grid.Row="1">
+               <ItemsControl.ItemTemplate>
+                   <DataTemplate>
+                       <Grid Height="40">
+                           <Grid.ColumnDefinitions>
+                               <ColumnDefinition Width="2*"/>
+                               <ColumnDefinition Width="1*"/>
+                               <ColumnDefinition Width="1*"/>
+                               <ColumnDefinition Width="1.5*"/>
+                               <ColumnDefinition Width="1*"/>
+                               <ColumnDefinition Width="1*"/>
+                               <ColumnDefinition Width="1.5*"/>
+                           </Grid.ColumnDefinitions>
+
+                           <skeleton:RectangleSkeleton Grid.Column="0" Height="16" Margin="12,12"/>
+                           <skeleton:RectangleSkeleton Grid.Column="1" Height="16" Margin="12,12"/>
+                           <skeleton:RectangleSkeleton Grid.Column="2" Height="16" Margin="12,12"/>
+                           <skeleton:RectangleSkeleton Grid.Column="3" Height="16" Margin="12,12"/>
+                           <skeleton:RectangleSkeleton Grid.Column="4" Height="16" Margin="12,12"/>
+                           <skeleton:RectangleSkeleton Grid.Column="5" Height="16" Margin="12,12"/>
+                           <skeleton:RectangleSkeleton Grid.Column="6" Height="16" Margin="12,12"/>
+                       </Grid>
+                   </DataTemplate>
+               </ItemsControl.ItemTemplate>
+
+               <x:Int32>1</x:Int32>
+               <x:Int32>2</x:Int32>
+               <x:Int32>3</x:Int32>
+               <x:Int32>4</x:Int32>
+               <x:Int32>5</x:Int32>
+           </ItemsControl>
+       </Grid>
+   </Grid>
 </UserControl>

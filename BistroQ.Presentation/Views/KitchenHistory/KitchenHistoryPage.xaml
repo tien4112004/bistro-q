@@ -12,18 +12,22 @@
     mc:Ignorable="d"
     Background="Transparent">
 
-
-    <Grid RowSpacing="10">
+    <!-- Main layout grid with filter, content and pagination -->
+    <Grid 
+        RowSpacing="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" x:Name="ButtonContainer" 
-                    Orientation="Horizontal"
-                    Padding="10,0"
-                    Background="Transparent">
+        <!-- Filter section -->
+        <StackPanel 
+            x:Name="ButtonContainer"
+            Grid.Row="0"
+            Orientation="Horizontal"
+            Padding="10,0"
+            Background="Transparent">
             <controls:Segmented 
                 x:Name="Segmented"
                 HorizontalAlignment="Center"
@@ -33,8 +37,14 @@
             </controls:Segmented>
         </StackPanel>
 
-        <userControls:KitchenOrderGridControl Grid.Row="1" ViewModel="{x:Bind ViewModel.OrderItemGridViewModel, Mode=OneWay}"/>
+        <!-- Order grid content -->
+        <userControls:KitchenOrderGridControl 
+            Grid.Row="1" 
+            ViewModel="{x:Bind ViewModel.OrderItemGridViewModel, Mode=OneWay}"/>
 
-        <pagin:PaginationControl Grid.Row="2" Margin="0,0,0,24"/>
+        <!-- Pagination control -->
+        <pagin:PaginationControl 
+            Grid.Row="2" 
+            Margin="0,0,0,24"/>
     </Grid>
 </Page>

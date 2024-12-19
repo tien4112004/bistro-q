@@ -14,40 +14,65 @@
     mc:Ignorable="d"
     Background="Transparent">
 
-    <Grid Background="Transparent" Margin="0,0,0,20">
+    <!-- Main Grid Layout -->
+    <Grid 
+        Background="Transparent" 
+        Margin="0,0,0,20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7*" />
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="4*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Background="{ThemeResource DividerStrokeColorDefaultBrush}" Grid.Column="0" CornerRadius="10" Padding="2">
+        <!-- Left Panel: Zone Information -->
+        <Grid 
+            Background="{ThemeResource DividerStrokeColorDefaultBrush}" 
+            Grid.Column="0" 
+            CornerRadius="10" 
+            Padding="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Background="Transparent" Padding="20,0,0,0" >
-                <zoneControls:ZoneOverviewControl x:Name="ZoneControl" 
-                                                  ViewModel="{x:Bind ViewModel.ZoneOverviewVM, Mode=OneWay}"/>
+            <!-- Zone Overview -->
+            <Grid 
+                Grid.Row="0" 
+                Background="Transparent" 
+                Padding="20,0,0,0">
+                <zoneControls:ZoneOverviewControl 
+                    x:Name="ZoneControl" 
+                    ViewModel="{x:Bind ViewModel.ZoneOverviewVM, Mode=OneWay}"/>
             </Grid>
 
-            <Border Grid.Row="1" Background="{StaticResource SolidBackgroundFillColorTertiaryBrush}" Margin="4,-3,5,5" CornerRadius="10">
-                <zoneControls:ZoneTableGridControl x:Name="GridControl"
-                                                   ViewModel="{x:Bind ViewModel.ZoneTableGridVM, Mode=OneWay}"/>
+            <!-- Zone Table Grid -->
+            <Border 
+                Grid.Row="1" 
+                Background="{StaticResource SolidBackgroundFillColorTertiaryBrush}" 
+                Margin="4,-3,5,5" 
+                CornerRadius="10">
+                <zoneControls:ZoneTableGridControl 
+                    x:Name="GridControl"
+                    ViewModel="{x:Bind ViewModel.ZoneTableGridVM, Mode=OneWay}"/>
             </Border>
         </Grid>
 
-        <Rectangle Grid.Column="1"
-               Width="0"
-               Margin="6,0"
-               />
+        <!-- Separator -->
+        <Rectangle 
+            Grid.Column="1"
+            Width="0"
+            Margin="6,0"/>
 
-        <Border Grid.Column="2" Background="{StaticResource CardBackgroundFillColorDefaultBrush}" CornerRadius="10" 
-                    BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="4">
-
-
-                <orderControls:TableOrderDetailsControl Grid.Row="1" ViewModel="{x:Bind ViewModel.TableOrderDetailVM, Mode=OneWay}"/>
+        <!-- Right Panel: Order Details -->
+        <Border 
+            Grid.Column="2" 
+            Background="{StaticResource CardBackgroundFillColorDefaultBrush}" 
+            CornerRadius="10" 
+            BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
+            BorderThickness="4">
+            <orderControls:TableOrderDetailsControl 
+                Grid.Row="1" 
+                ViewModel="{x:Bind ViewModel.TableOrderDetailVM, Mode=OneWay}"/>
         </Border>
     </Grid>
 </Page>

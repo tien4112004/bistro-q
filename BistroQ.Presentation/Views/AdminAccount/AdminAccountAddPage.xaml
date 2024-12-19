@@ -23,105 +23,128 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Background="Transparent" HorizontalAlignment="Left" Margin="24">
+        <!-- Main Input Fields -->
+        <StackPanel 
+            Orientation="Vertical" 
+            Background="Transparent" 
+            HorizontalAlignment="Left" 
+            Margin="24">
+            <!-- Username -->
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                <TextBox x:Name="AccountAddPage_UsernameTextBox"
-                        x:Uid="AccountAddPage_UsernameTextBox"
-                        GettingFocus="AccountAddPage_UsernameTextBox_GettingFocus"
-                        Text="{x:Bind ViewModel.Form.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Width="300" />
-                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
-                                Mode=OneWay, 
-                                Converter={StaticResource FirstError},
-                                ConverterParameter=Username}"
-                         Margin="0,8,0,16"
-                         Foreground="Red"/>
+                <TextBox 
+                    x:Name="AccountAddPage_UsernameTextBox"
+                    x:Uid="AccountAddPage_UsernameTextBox"
+                    GettingFocus="AccountAddPage_UsernameTextBox_GettingFocus"
+                    Text="{x:Bind ViewModel.Form.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Width="300" />
+                <TextBlock 
+                    Text="{x:Bind ViewModel.Form.Errors, 
+                        Mode=OneWay, 
+                        Converter={StaticResource FirstError},
+                        ConverterParameter=Username}"
+                    Margin="0,8,0,16"
+                    Foreground="Red"/>
             </StackPanel>
 
+            <!-- Password -->
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                <PasswordBox x:Name="AccountAddPage_PasswordBox"
-                           x:Uid="AccountAddPage_PasswordBox"
-                           GettingFocus="AccountAddPage_PasswordBox_GettingFocus"
-                           Password="{x:Bind ViewModel.Form.Password, Mode=TwoWay}"
-                           Width="300" />
-                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
-                                Mode=OneWay, 
-                                Converter={StaticResource FirstError},
-                                ConverterParameter=Password}"
-                         Margin="0,8,0,16"
-                         Foreground="Red"/>
+                <PasswordBox 
+                    x:Name="AccountAddPage_PasswordBox"
+                    x:Uid="AccountAddPage_PasswordBox"
+                    GettingFocus="AccountAddPage_PasswordBox_GettingFocus"
+                    Password="{x:Bind ViewModel.Form.Password, Mode=TwoWay}"
+                    Width="300" />
+                <TextBlock 
+                    Text="{x:Bind ViewModel.Form.Errors, 
+                        Mode=OneWay, 
+                        Converter={StaticResource FirstError},
+                        ConverterParameter=Password}"
+                    Margin="0,8,0,16"
+                    Foreground="Red"/>
             </StackPanel>
 
+            <!-- Role -->
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                <ComboBox x:Name="AccountAddPage_RoleComboBox"
-                         x:Uid="AccountAddPage_RoleComboBox"
-                         PointerEntered="Button_PointerEntered"
-                         PointerExited="Button_PointerExited"
-                         GettingFocus="AccountAddPage_RoleComboBox_GettingFocus"
-                         ItemsSource="{x:Bind ViewModel.Roles}"
-                         SelectedValue="{x:Bind ViewModel.Form.Role, Mode=TwoWay}"
-                         Width="300" />
-                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
-                                Mode=OneWay, 
-                                Converter={StaticResource FirstError},
-                                ConverterParameter=Role}"
-                         Margin="0,8,0,16"
-                         Foreground="Red"/>
+                <ComboBox 
+                    x:Name="AccountAddPage_RoleComboBox"
+                    x:Uid="AccountAddPage_RoleComboBox"
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    GettingFocus="AccountAddPage_RoleComboBox_GettingFocus"
+                    ItemsSource="{x:Bind ViewModel.Roles}"
+                    SelectedValue="{x:Bind ViewModel.Form.Role, Mode=TwoWay}"
+                    Width="300" />
+                <TextBlock 
+                    Text="{x:Bind ViewModel.Form.Errors, 
+                        Mode=OneWay, 
+                        Converter={StaticResource FirstError},
+                        ConverterParameter=Role}"
+                    Margin="0,8,0,16"
+                    Foreground="Red"/>
             </StackPanel>
 
+            <!-- Zone -->
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                <ComboBox x:Name="AccountAddPage_ZoneComboBox"
-                         x:Uid="AccountAddPage_ZoneComboBox"
-                         PointerEntered="Button_PointerEntered"
-                         PointerExited="Button_PointerExited"
-                         GettingFocus="AccountAddPage_ZoneComboBox_GettingFocus"
-                         ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
-                         DisplayMemberPath="Name"
-                         SelectedValuePath="ZoneId"
-                         SelectedValue="{x:Bind ViewModel.SelectedZoneId, Mode=TwoWay}"
-                         Width="300" />
-                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
-                                Mode=OneWay, 
-                                Converter={StaticResource FirstError},
-                                ConverterParameter=ZoneId}"
-                         Margin="0,8,0,16"
-                         Foreground="Red"/>
+                <ComboBox 
+                    x:Name="AccountAddPage_ZoneComboBox"
+                    x:Uid="AccountAddPage_ZoneComboBox"
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    GettingFocus="AccountAddPage_ZoneComboBox_GettingFocus"
+                    ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
+                    DisplayMemberPath="Name"
+                    SelectedValuePath="ZoneId"
+                    SelectedValue="{x:Bind ViewModel.SelectedZoneId, Mode=TwoWay}"
+                    Width="300" />
+                <TextBlock 
+                    Text="{x:Bind ViewModel.Form.Errors, 
+                        Mode=OneWay, 
+                        Converter={StaticResource FirstError},
+                        ConverterParameter=ZoneId}"
+                    Margin="0,8,0,16"
+                    Foreground="Red"/>
             </StackPanel>
 
+            <!-- Table -->
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                <ComboBox x:Name="AccountAddPage_TableComboBox"
-                         x:Uid="AccountAddPage_TableComboBox"
-                         PointerEntered="Button_PointerEntered"
-                         PointerExited="Button_PointerExited"
-                         GettingFocus="AccountAddPage_TableComboBox_GettingFocus"
-                         ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}"
-                         DisplayMemberPath="Number"
-                         SelectedValuePath="TableId"
-                         SelectedValue="{x:Bind ViewModel.Form.TableId, Mode=TwoWay}"
-                         IsEnabled="{x:Bind ViewModel.IsTableSelectionEnabled, Mode=OneWay}"
-                         Width="300" />
-                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
-                                Mode=OneWay, 
-                                Converter={StaticResource FirstError},
-                                ConverterParameter=TableId}"
-                         Margin="0,8,0,16"
-                         Foreground="Red"/>
+                <ComboBox 
+                    x:Name="AccountAddPage_TableComboBox"
+                    x:Uid="AccountAddPage_TableComboBox"
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    GettingFocus="AccountAddPage_TableComboBox_GettingFocus"
+                    ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}"
+                    DisplayMemberPath="Number"
+                    SelectedValuePath="TableId"
+                    SelectedValue="{x:Bind ViewModel.Form.TableId, Mode=TwoWay}"
+                    IsEnabled="{x:Bind ViewModel.IsTableSelectionEnabled, Mode=OneWay}"
+                    Width="300" />
+                <TextBlock 
+                    Text="{x:Bind ViewModel.Form.Errors, 
+                        Mode=OneWay, 
+                        Converter={StaticResource FirstError},
+                        ConverterParameter=TableId}"
+                    Margin="0,8,0,16"
+                    Foreground="Red"/>
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Right"
-                    Margin="24">
-            <Button Style="{StaticResource AccentButtonStyle}" 
-                    Width="80"
-                    PointerEntered="Button_PointerEntered"
-                    PointerExited="Button_PointerExited"
-                    Command="{x:Bind ViewModel.AddCommand}"
-                    IsEnabled="{x:Bind ViewModel.IsProcessing, Mode=OneWay, Converter={StaticResource ReverseBool}}"
-                    Margin="0,0,16,0">
+        <!-- Action Buttons -->
+        <StackPanel 
+            Grid.Row="1" 
+            Orientation="Horizontal" 
+            HorizontalAlignment="Right"
+            Margin="24">
+            <Button 
+                Style="{StaticResource AccentButtonStyle}" 
+                Width="80"
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
+                Command="{x:Bind ViewModel.AddCommand}"
+                IsEnabled="{x:Bind ViewModel.IsProcessing, Mode=OneWay, Converter={StaticResource ReverseBool}}"
+                Margin="0,0,16,0">
                 <Grid>
-                    <control:ProgressRing
+                    <control:ProgressRing 
                         IsActive="{x:Bind ViewModel.IsProcessing, Mode=OneWay}"
                         Foreground="White"
                         Width="20"
@@ -130,17 +153,18 @@
                     <TextBlock 
                         x:Uid="AdminAccountAddPage_AddButtonText"
                         Visibility="{x:Bind ViewModel.IsProcessing, Mode=OneWay, 
-                                    Converter={StaticResource BoolToVisibility}, 
-                                    ConverterParameter=invert}"/>
+                            Converter={StaticResource BoolToVisibility}, 
+                            ConverterParameter=invert}"/>
                 </Grid>
             </Button>
 
-            <Button x:Name="AdminAccountAddPage_CancelButton"
-                    x:Uid="CancelButton" 
-                    PointerEntered="Button_PointerEntered"
-                    PointerExited="Button_PointerExited"
-                    Width="80" 
-                    Click="AdminAccountAddPage_CancelButton_Click"/>
+            <Button 
+                x:Name="AdminAccountAddPage_CancelButton"
+                x:Uid="CancelButton" 
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
+                Width="80" 
+                Click="AdminAccountAddPage_CancelButton_Click"/>
         </StackPanel>
     </Grid>
 </Page>

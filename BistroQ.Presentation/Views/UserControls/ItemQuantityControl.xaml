@@ -8,14 +8,20 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <!-- Custom Button Style -->
     <UserControl.Resources>
-        <Style x:Key="AccentCircularButtonStyle" TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
+        <Style
+            x:Key="AccentCircularButtonStyle"
+            TargetType="Button"
+            BasedOn="{StaticResource AccentButtonStyle}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Grid>
                             <Ellipse Fill="{TemplateBinding Background}" />
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -25,10 +31,14 @@
         </Style>
     </UserControl.Resources>
 
-    <StackPanel x:Name="RootPanel" 
-                Padding="4,0"
-                HorizontalAlignment="Stretch"
-                Orientation="Horizontal">
+    <!-- Root Container -->
+    <StackPanel
+        x:Name="RootPanel" 
+        Padding="4,0"
+        HorizontalAlignment="Stretch"
+        Orientation="Horizontal">
+        
+        <!-- Visual States -->
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="QuantityStates">
                 <VisualState x:Name="NotInCart">
@@ -46,13 +56,17 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <Button x:Name="AddButton"
-                x:Uid="AddItemButton"
-                Style="{StaticResource AccentButtonStyle}" />
+        <!-- Add Button -->
+        <Button
+            x:Name="AddButton"
+            x:Uid="AddItemButton"
+            Style="{StaticResource AccentButtonStyle}" />
 
-        <Grid x:Name="QuantityPanel"
-              Margin="0,4,0,0"
-              HorizontalAlignment="Stretch">
+        <!-- Quantity Control Panel -->
+        <Grid
+            x:Name="QuantityPanel"
+            Margin="0,4,0,0"
+            HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -60,35 +74,45 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="DecreaseButton"             
-                    Style="{StaticResource AccentButtonStyle}"
-                    Padding="2,4"
-                    Width="26"
-                                                        PointerEntered="Button_PointerEntered"
-                                    PointerExited="Button_PointerExited"   
-                    HorizontalAlignment="Left"
-                    Command="{x:Bind DecreaseQuantityCommand}"
-                    Grid.Column="0">
-                <FontIcon Glyph="&#xE949;" FontSize="12" />
+            <!-- Decrease Button -->
+            <Button
+                x:Name="DecreaseButton"
+                Grid.Column="0"
+                Style="{StaticResource AccentButtonStyle}"
+                Command="{x:Bind DecreaseQuantityCommand}"
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
+                Padding="2,4"
+                Width="26"
+                HorizontalAlignment="Left">
+                <FontIcon
+                    Glyph="&#xE949;"
+                    FontSize="12" />
             </Button>
 
-            <TextBlock x:Name="QuantityText" 
-                      Width="36" 
-                      FontSize="18"
-                      Text="{x:Bind Item.Quantity, Mode=OneWay}"
-                      HorizontalTextAlignment="Center" 
-                      VerticalAlignment="Center"
-                      Grid.Column="1" />
+            <!-- Quantity Display -->
+            <TextBlock
+                x:Name="QuantityText"
+                Grid.Column="1"
+                Text="{x:Bind Item.Quantity, Mode=OneWay}"
+                Width="36"
+                FontSize="18"
+                HorizontalTextAlignment="Center"
+                VerticalAlignment="Center" />
 
-            <Button x:Name="IncreaseButton" 
-                    Padding="2,4"
-                    Width="26"
-                                                        PointerEntered="Button_PointerEntered"
-                                    PointerExited="Button_PointerExited"   
-                    Style="{StaticResource AccentButtonStyle}"
-                    Command="{x:Bind IncreaseQuantityCommand}"
-                    Grid.Column="2">
-                <FontIcon Glyph="&#xE948;" FontSize="12" />
+            <!-- Increase Button -->
+            <Button
+                x:Name="IncreaseButton"
+                Grid.Column="2"
+                Style="{StaticResource AccentButtonStyle}"
+                Command="{x:Bind IncreaseQuantityCommand}"
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
+                Padding="2,4"
+                Width="26">
+                <FontIcon
+                    Glyph="&#xE948;"
+                    FontSize="12" />
             </Button>
         </Grid>
     </StackPanel>

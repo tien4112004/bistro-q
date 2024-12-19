@@ -18,33 +18,34 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        
-        <StackPanel Grid.Column="0"  VerticalAlignment="Center">
+       
+        <!-- Amount Display -->
+        <StackPanel
+            Grid.Column="0"
+            VerticalAlignment="Center">
             <TextBlock 
-                VerticalAlignment="Center"
                 Text="Total Amount:"
+                VerticalAlignment="Center"
                 FontSize="16"
-                Foreground="{StaticResource TextFillColorPrimary}"
-            />
+                Foreground="{StaticResource TextFillColorPrimary}"/>
 
             <TextBlock
+                Text="{x:Bind Total, Mode=OneWay, Converter={StaticResource NumberToCurreny}}"
                 VerticalAlignment="Center"
                 FontWeight="Bold"
                 FontSize="16"
-                Text="{x:Bind Total, Mode=OneWay, Converter={StaticResource NumberToCurreny}}"
-                Foreground="{StaticResource TextFillColorPrimary}"
-            />
+                Foreground="{StaticResource TextFillColorPrimary}"/>
         </StackPanel>
 
+        <!-- Action Button -->
         <Button
             Grid.Column="1"
-            Click="Button_Click"
             Content="{x:Bind ButtonText, Mode=OneWay}"
-                                                        PointerEntered="Button_PointerEntered"
-                        PointerExited="Button_PointerExited"
+            Click="Button_Click"
+            PointerEntered="Button_PointerEntered"
+            PointerExited="Button_PointerExited"
             Height="40"
             Padding="20,0"
-            Background="{StaticResource AccentFillColorSelectedTextBackgroundBrush}"
-            />
+            Background="{StaticResource AccentFillColorSelectedTextBackgroundBrush}"/>
     </Grid>
 </UserControl>

@@ -6,7 +6,6 @@
     xmlns:local="using:BistroQ.Presentation.Views.AdminTable"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    
     mc:Ignorable="d"
     Background="Transparent">
 
@@ -16,48 +15,68 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Background="Transparent" HorizontalAlignment="Left">
-            <TextBox x:Name="TableIdTextBox"
-                     x:Uid="TableIdTextBox"
-                     Text="{x:Bind ViewModel.Table.TableId, Mode=OneTime}"
-                     IsReadOnly="True"
-                     IsEnabled="False"
-                     Width="300"
-                     Margin="0,0,0,16" />
-            <ComboBox x:Name="TableEditPage_ZoneComboBox"
-                      x:Uid="TableEditPage_ZoneComboBox"
-                                              PointerEntered="Button_PointerEntered"
-                        PointerExited="Button_PointerExited"
-                      ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
-                      DisplayMemberPath="Name"
-                      SelectedValuePath="ZoneId"
-                      SelectedValue="{x:Bind ViewModel.Table.ZoneId, Mode=TwoWay}"
-                      Width="300" />
-            <NumberBox x:Name="TableEditPage_SeatsCountNumberBox"
-                       x:Uid="TableEditPage_SeatsCountTextBox"
-                       
-                       Text="{x:Bind ViewModel.Request.SeatsCount, 
-                                      Mode=TwoWay}"
-                       SpinButtonPlacementMode="Inline"
-                       Minimum="1"
-                       ValidationMode="InvalidInputOverwritten"
-                       Width="300"
-                       Margin="0,16,0,0"/>
+        <!-- Form Fields -->
+        <StackPanel 
+            Orientation="Vertical" 
+            Background="Transparent" 
+            HorizontalAlignment="Left">
+            <!-- Table ID Field -->
+            <TextBox 
+                x:Name="TableIdTextBox"
+                x:Uid="TableIdTextBox"
+                Text="{x:Bind ViewModel.Table.TableId, Mode=OneTime}"
+                IsReadOnly="True"
+                IsEnabled="False"
+                Width="300"
+                Margin="0,0,0,16" />
+
+            <!-- Zone Selection -->
+            <ComboBox 
+                x:Name="TableEditPage_ZoneComboBox"
+                x:Uid="TableEditPage_ZoneComboBox"
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
+                ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
+                DisplayMemberPath="Name"
+                SelectedValuePath="ZoneId"
+                SelectedValue="{x:Bind ViewModel.Table.ZoneId, Mode=TwoWay}"
+                Width="300" />
+
+            <!-- Seats Count Input -->
+            <NumberBox 
+                x:Name="TableEditPage_SeatsCountNumberBox"
+                x:Uid="TableEditPage_SeatsCountTextBox"
+                Text="{x:Bind ViewModel.Request.SeatsCount, Mode=TwoWay}"
+                SpinButtonPlacementMode="Inline"
+                Minimum="1"
+                ValidationMode="InvalidInputOverwritten"
+                Width="300"
+                Margin="0,16,0,0"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button x:Name="AdminTableEditPage_EditButton"
-                    x:Uid="AdminTableEditPage_EditButton" 
-                                            PointerEntered="Button_PointerEntered"
-                        PointerExited="Button_PointerExited"
-                    Style="{StaticResource AccentButtonStyle}" Width="80"
-                    Command="{x:Bind ViewModel.EditCommand}" 
-                    Margin="0,0,16,0"/>
-            <Button x:Name="AdminTableEditPage_CancelButton"
-                                            PointerEntered="Button_PointerEntered"
-                        PointerExited="Button_PointerExited"
-                    x:Uid="CancelButton" Width="80" 
-                    Click="AdminTableEditPage_CancelButton_Click"
-                    />
+
+        <!-- Action Buttons -->
+        <StackPanel 
+            Orientation="Horizontal" 
+            HorizontalAlignment="Right">
+            <!-- Edit Button -->
+            <Button 
+                x:Name="AdminTableEditPage_EditButton"
+                x:Uid="AdminTableEditPage_EditButton" 
+                Style="{StaticResource AccentButtonStyle}" 
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
+                Command="{x:Bind ViewModel.EditCommand}" 
+                Width="80"
+                Margin="0,0,16,0"/>
+
+            <!-- Cancel Button -->
+            <Button 
+                x:Name="AdminTableEditPage_CancelButton"
+                x:Uid="CancelButton" 
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
+                Click="AdminTableEditPage_CancelButton_Click"
+                Width="80"/>
         </StackPanel>
     </Grid>
 </Page>

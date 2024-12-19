@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:local="using:BistroQ.Presentation.Views.UserControls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" 
+    xmlns:local="using:BistroQ.Presentation.Views.UserControls"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
@@ -13,91 +14,140 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" HorizontalAlignment="Stretch">
+
+        <!-- Search and Action Buttons Section -->
+        <Grid 
+            Grid.Row="0" 
+            HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <AutoSuggestBox PlaceholderText="Search for a zone"
+
+            <!-- Search Box -->
+            <AutoSuggestBox 
+                PlaceholderText="Search for a zone"
                 Text="{x:Bind ViewModel.State.SearchText, Mode=TwoWay}"
                 QueryIcon="Find"
                 QuerySubmitted="Control2_QuerySubmitted"
                 SuggestionChosen="Control2_SuggestionChosen"
                 Width="300"
                 HorizontalAlignment="Left"/>
-            <StackPanel x:Name="AdminTablePage_Buttons" Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
-                <Button Style="{StaticResource AccentButtonStyle}" 
-                                                PointerEntered="Button_PointerEntered"
-                        PointerExited="Button_PointerExited"
-                        Command="{x:Bind ViewModel.AddCommand}" Width="120" Margin="0,0,8,0">
+
+            <!-- Action Buttons -->
+            <StackPanel 
+                x:Name="AdminTablePage_Buttons" 
+                Orientation="Horizontal" 
+                Grid.Column="1" 
+                HorizontalAlignment="Right">
+                <!-- Add Button -->
+                <Button 
+                    Style="{StaticResource AccentButtonStyle}" 
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    Command="{x:Bind ViewModel.AddCommand}" 
+                    Width="120" 
+                    Margin="0,0,8,0">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE710;" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock x:Uid="AdminTable_DataGrid_AddNewButtonText" Margin="8,0,0,0" />
+                            <FontIcon 
+                                Glyph="&#xE710;" 
+                                FontFamily="Segoe MDL2 Assets" />
+                            <TextBlock 
+                                x:Uid="AdminTable_DataGrid_AddNewButtonText" 
+                                Margin="8,0,0,0" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Button Command="{x:Bind ViewModel.EditCommand}" 
-                                                PointerEntered="Button_PointerEntered"
-                        PointerExited="Button_PointerExited"
-                        Width="120" Margin="0,0,8,0">
+
+                <!-- Edit Button -->
+                <Button 
+                    Command="{x:Bind ViewModel.EditCommand}" 
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    Width="120" 
+                    Margin="0,0,8,0">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE70F;" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock Text="Edit" Margin="8,0,0,0" />
+                            <FontIcon 
+                                Glyph="&#xE70F;" 
+                                FontFamily="Segoe MDL2 Assets" />
+                            <TextBlock 
+                                Text="Edit" 
+                                Margin="8,0,0,0" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Button Command="{x:Bind ViewModel.DeleteCommand}" 
-                                                PointerEntered="Button_PointerEntered"
-                        PointerExited="Button_PointerExited"
-                        Width="120" Margin="0,0,8,0">
+
+                <!-- Delete Button -->
+                <Button 
+                    Command="{x:Bind ViewModel.DeleteCommand}" 
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    Width="120" 
+                    Margin="0,0,8,0">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE74D;" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock Text="Delete" Margin="8,0,0,0" />
+                            <FontIcon 
+                                Glyph="&#xE74D;" 
+                                FontFamily="Segoe MDL2 Assets" />
+                            <TextBlock 
+                                Text="Delete" 
+                                Margin="8,0,0,0" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
             </StackPanel>
         </Grid>
+
+        <!-- Data Grid -->
         <controls:DataGrid
             x:Name="AdminTableDataGrid"
+            Grid.Row="1"
             AutoGenerateColumns="False"
             GridLinesVisibility="Horizontal"
             ItemsSource="{x:Bind ViewModel.State.Source, Mode=OneWay}"
             SelectedItem="{x:Bind ViewModel.State.SelectedTable, Mode=TwoWay}"
-            Grid.Row="1"
-            Sorting="ViewModel_AdminTableDataGrid_Sorting"
-            >
+            Sorting="ViewModel_AdminTableDataGrid_Sorting">
             <controls:DataGrid.Resources>
-                <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                <SolidColorBrush 
+                    x:Key="DataGridColumnHeaderBackgroundColor" 
+                    Color="Transparent" />
             </controls:DataGrid.Resources>
             <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Binding="{Binding TableId}" 
-                                             x:Uid="AdminTable_DataGrid_Column_TableId" 
-                                             CanUserResize="False" 
-                                             IsReadOnly="True"
-                                             Tag="TableId" />
-                <controls:DataGridTextColumn Binding="{Binding Number}" 
-                                             x:Uid="AdminTable_DataGrid_Column_TableNumber" 
-                                             IsReadOnly="True"
-                                             Tag="Number" />
-                <controls:DataGridTextColumn Binding="{Binding ZoneId}" 
-                                             x:Uid="AdminTable_DataGrid_Column_ZoneId" 
-                                             IsReadOnly="True"
-                                             Tag="ZoneId" />
-                <controls:DataGridTextColumn Binding="{Binding ZoneName}" 
-                                             x:Uid="AdminTable_DataGrid_Column_ZoneName" 
-                                             IsReadOnly="True" Width="300"
-                                             Tag="Zone.Name" />
-                <controls:DataGridTextColumn Binding="{Binding SeatsCount}" 
-                                             x:Uid="AdminTable_DataGrid_Column_SeatsCount" 
-                                             IsReadOnly="True"
-                                             Tag="SeatsCount" />
-                <!-- <controls:DataGridTextColumn Header="Status" IsReadOnly="True" />-->
+                <controls:DataGridTextColumn 
+                    x:Uid="AdminTable_DataGrid_Column_TableId" 
+                    Binding="{Binding TableId}" 
+                    CanUserResize="False" 
+                    IsReadOnly="True"
+                    Tag="TableId" />
+                <controls:DataGridTextColumn 
+                    x:Uid="AdminTable_DataGrid_Column_TableNumber" 
+                    Binding="{Binding Number}" 
+                    IsReadOnly="True"
+                    Tag="Number" />
+                <controls:DataGridTextColumn 
+                    x:Uid="AdminTable_DataGrid_Column_ZoneId" 
+                    Binding="{Binding ZoneId}" 
+                    IsReadOnly="True"
+                    Tag="ZoneId" />
+                <controls:DataGridTextColumn 
+                    x:Uid="AdminTable_DataGrid_Column_ZoneName" 
+                    Binding="{Binding ZoneName}" 
+                    IsReadOnly="True" 
+                    Width="300"
+                    Tag="Zone.Name" />
+                <controls:DataGridTextColumn 
+                    x:Uid="AdminTable_DataGrid_Column_SeatsCount" 
+                    Binding="{Binding SeatsCount}" 
+                    IsReadOnly="True"
+                    Tag="SeatsCount" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
-        <local:PaginationControl Grid.Row="2" Margin="0,0,0,24" />
+
+        <!-- Pagination -->
+        <local:PaginationControl 
+            Grid.Row="2" 
+            Margin="0,0,0,24" />
     </Grid>
 </Page>

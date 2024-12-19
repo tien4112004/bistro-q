@@ -17,11 +17,14 @@
         <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     </UserControl.Resources>
 
+    <!-- Main Scrollable Container -->
     <ScrollViewer Grid.Row="2" Padding="15">
         <Grid>
-            <GridView x:Name="SkeletonGridView" 
-              IsHitTestVisible="False"
-              Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
+            <!-- Skeleton Loading Grid -->
+            <GridView 
+                x:Name="SkeletonGridView" 
+                IsHitTestVisible="False"
+                Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid Orientation="Horizontal"/>
@@ -36,15 +39,27 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="GridViewItem">
-                                    <Grid Background="{StaticResource CardBackgroundFillColorDefaultBrush}"
-                                  CornerRadius="10"
-                                  Padding="8">
-                                        <StackPanel Spacing="4" VerticalAlignment="Center">
-                                            <skeleton:RectangleSkeleton Width="80" Height="16" Margin="0,0,0,4"/>
+                                    <Grid 
+                                        Background="{StaticResource CardBackgroundFillColorDefaultBrush}"
+                                        CornerRadius="10"
+                                        Padding="8">
+                                        <StackPanel 
+                                            Spacing="4" 
+                                            VerticalAlignment="Center">
+                                            <skeleton:RectangleSkeleton 
+                                                Width="80" 
+                                                Height="16" 
+                                                Margin="0,0,0,4"/>
 
-                                            <skeleton:RectangleSkeleton Width="40" Height="24" Margin="0,4"/>
+                                            <skeleton:RectangleSkeleton 
+                                                Width="40" 
+                                                Height="24" 
+                                                Margin="0,4"/>
 
-                                            <skeleton:RectangleSkeleton Width="60" Height="14" Margin="0,4,0,0"/>
+                                            <skeleton:RectangleSkeleton 
+                                                Width="60" 
+                                                Height="14" 
+                                                Margin="0,4,0,0"/>
                                         </StackPanel>
                                     </Grid>
                                 </ControlTemplate>
@@ -53,6 +68,7 @@
                     </Style>
                 </GridView.ItemContainerStyle>
 
+                <!-- Skeleton Items -->
                 <GridViewItem/>
                 <GridViewItem/>
                 <GridViewItem/>
@@ -69,22 +85,25 @@
                 <GridViewItem/>
             </GridView>
 
+            <!-- Main Content StackPanel -->
             <StackPanel
-                Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
-                >
+                Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}">
 
-                <TextBlock FontSize="14"
-                   Text="There are no tables in this zone."
-                   Foreground="{StaticResource SystemFillColorCriticalBrush}"
-                   Visibility="{x:Bind ViewModel.HasTables, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
-                   />
+                <!-- No Tables Notification -->
+                <TextBlock 
+                    FontSize="14"
+                    Text="There are no tables in this zone."
+                    Foreground="{StaticResource SystemFillColorCriticalBrush}"
+                    Visibility="{x:Bind ViewModel.HasTables, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"/>
 
-                <GridView ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}" 
-                  SelectedItem="{x:Bind ViewModel.SelectedTable, Mode=TwoWay}"
-                  IsItemClickEnabled="True"
-                  SelectionMode="Single"
-                  Visibility="{x:Bind ViewModel.HasTables, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
-                  SelectedIndex="0">
+                <!-- Tables GridView -->
+                <GridView 
+                    ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}" 
+                    SelectedItem="{x:Bind ViewModel.SelectedTable, Mode=TwoWay}"
+                    IsItemClickEnabled="True"
+                    SelectionMode="Single"
+                    Visibility="{x:Bind ViewModel.HasTables, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+                    SelectedIndex="0">
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <ItemsWrapGrid Orientation="Horizontal"/>
@@ -102,42 +121,45 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="GridViewItem">
                                         <GridViewItemPresenter
-                                    ContentTransitions="{TemplateBinding ContentTransitions}"
-                                    Padding="{TemplateBinding Padding}"
-                                    SelectionCheckMarkVisualEnabled="True"
-                                    CheckHintBrush="{ThemeResource ListViewItemCheckHintThemeBrush}"
-                                    CheckSelectingBrush="{ThemeResource ListViewItemCheckSelectingThemeBrush}"
-                                    CheckBrush="{ThemeResource ListViewItemCheckThemeBrush}"
-                                    DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
-                                    DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
-                                    FocusBorderBrush="{ThemeResource ListViewItemFocusBorderThemeBrush}"
-                                    PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
-                                    PointerOverBackground="{ThemeResource ListViewItemPointerOverBackgroundThemeBrush}"
-                                    SelectedBorderThickness="{ThemeResource GridViewItemCompactSelectedBorderThemeThickness}"
-                                    SelectedBackground="{ThemeResource AccentAcrylicBackgroundFillColorDefaultBrush}"
-                                    SelectedForeground="{ThemeResource ListViewItemSelectedForegroundThemeBrush}"
-                                    SelectedPointerOverBackground="{ThemeResource AccentAcrylicBackgroundFillColorBaseBrush}"
-                                    DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
-                                    DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
-                                    ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
-                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                    PointerOverBackgroundMargin="1"
-                                    PointerEntered="Button_PointerEntered"
-                                    PointerExited="Button_PointerExited"   
-                                    ContentMargin="4"
-                                    CornerRadius="10"
-                               />
+                                            ContentTransitions="{TemplateBinding Transitions}"
+                                            Padding="{TemplateBinding Padding}"
+                                            SelectionCheckMarkVisualEnabled="True"
+                                            CheckHintBrush="{ThemeResource ListViewItemCheckHintThemeBrush}"
+                                            CheckSelectingBrush="{ThemeResource ListViewItemCheckSelectingThemeBrush}"
+                                            CheckBrush="{ThemeResource ListViewItemCheckThemeBrush}"
+                                            DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+                                            DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
+                                            FocusBorderBrush="{ThemeResource ListViewItemFocusBorderThemeBrush}"
+                                            PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
+                                            PointerOverBackground="{ThemeResource ListViewItemPointerOverBackgroundThemeBrush}"
+                                            SelectedBorderThickness="{ThemeResource GridViewItemCompactSelectedBorderThemeThickness}"
+                                            SelectedBackground="{ThemeResource AccentAcrylicBackgroundFillColorDefaultBrush}"
+                                            SelectedForeground="{ThemeResource ListViewItemSelectedForegroundThemeBrush}"
+                                            SelectedPointerOverBackground="{ThemeResource AccentAcrylicBackgroundFillColorBaseBrush}"
+                                            DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                            DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                            ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            PointerOverBackgroundMargin="1"
+                                            PointerEntered="Button_PointerEntered"
+                                            PointerExited="Button_PointerExited"   
+                                            ContentMargin="4"
+                                            CornerRadius="10"/>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
                         </Style>
                     </GridView.ItemContainerStyle>
 
+                    <!-- Table Item Template -->
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="models:TableViewModel">
                             <Grid>
-                                <StackPanel Spacing="4" VerticalAlignment="Center">
+                                <StackPanel 
+                                    Spacing="4" 
+                                    VerticalAlignment="Center">
+                                    <!-- Occupied Status -->
                                     <StackPanel
                                         Orientation="Horizontal"
                                         Spacing="5">
@@ -147,13 +169,13 @@
                                             Visibility="{x:Bind IsOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                                             FontSize="16"
                                             HorizontalAlignment="Center"/>
-                                        <TextBlock FontSize="12" 
-                                           Visibility="{x:Bind IsOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
-                                           Foreground="{StaticResource SystemFillColorSuccessBrush}">
-                                    Occupied!
+                                        <TextBlock 
+                                            FontSize="12" 
+                                            Visibility="{x:Bind IsOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+                                            Foreground="{StaticResource SystemFillColorSuccessBrush}">
+                                            Occupied!
                                         </TextBlock>
                                     </StackPanel>
-
 
                                     <!-- Table Number -->
                                     <TextBlock 
@@ -163,13 +185,16 @@
                                         HorizontalAlignment="Center"/>
 
                                     <!-- Capacity -->
-                                    <StackPanel Orientation="Horizontal" 
-                                          HorizontalAlignment="Center" 
-                                          Spacing="4">
-                                        <FontIcon Glyph="&#xE716;" FontSize="14"/>
+                                    <StackPanel 
+                                        Orientation="Horizontal" 
+                                        HorizontalAlignment="Center" 
+                                        Spacing="4">
+                                        <FontIcon 
+                                            Glyph="&#xE716;" 
+                                            FontSize="14"/>
                                         <TextBlock 
-                                Text="{x:Bind SeatsCount, Mode=OneWay}" 
-                                FontSize="14"/>
+                                            Text="{x:Bind SeatsCount, Mode=OneWay}" 
+                                            FontSize="14"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>

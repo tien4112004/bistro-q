@@ -8,6 +8,7 @@
     xmlns:local="using:BistroQ.Presentation.Views.UserControls"
     mc:Ignorable="d">
 
+    <!-- Main Content Area Grid -->
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -15,13 +16,16 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <!-- Top Navigation and Search Grid -->
         <Grid Grid.Row="0" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <AutoSuggestBox PlaceholderText="Search accounts by username"
+            <!-- Search Box -->
+            <AutoSuggestBox 
+                PlaceholderText="Search accounts by username"
                 Text="{x:Bind ViewModel.State.SearchText, Mode=TwoWay}"
                 QueryIcon="Find"
                 QuerySubmitted="Control2_QuerySubmitted"
@@ -29,84 +33,130 @@
                 Width="300"
                 HorizontalAlignment="Left"/>
 
-            <StackPanel x:Name="AdminAccountPage_Buttons" Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
-                <Button Style="{StaticResource AccentButtonStyle}" 
-                        PointerEntered="Button_PointerEntered"
-                        PointerExited="Button_PointerExited"
-                        Command="{x:Bind ViewModel.AddCommand}" Width="120" Margin="0,0,8,0">
+            <!-- Admin Account Action Buttons -->
+            <StackPanel 
+                x:Name="AdminAccountPage_Buttons"
+                Orientation="Horizontal"
+                Grid.Column="1"
+                HorizontalAlignment="Right">
+                <!-- Add New Button -->
+                <Button 
+                    Style="{StaticResource AccentButtonStyle}"
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    Command="{x:Bind ViewModel.AddCommand}"
+                    Width="120"
+                    Margin="0,0,8,0">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE710;" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock x:Uid="AdminAccount_DataGrid_AddNewButtonText" Text="Add New" Margin="8,0,0,0" />
+                            <FontIcon 
+                                Glyph="&#xE710;"
+                                FontFamily="Segoe MDL2 Assets" />
+                            <TextBlock 
+                                x:Uid="AdminAccount_DataGrid_AddNewButtonText"
+                                Text="Add New"
+                                Margin="8,0,0,0" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Button Command="{x:Bind ViewModel.EditCommand}" 
-                        PointerEntered="Button_PointerEntered"
-                        PointerExited="Button_PointerExited"
-                        Width="120" Margin="0,0,8,0">
+
+                <!-- Edit Button -->
+                <Button 
+                    Command="{x:Bind ViewModel.EditCommand}"
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    Width="120"
+                    Margin="0,0,8,0">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE70F;" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock Text="Edit" Margin="8,0,0,0" />
+                            <FontIcon 
+                                Glyph="&#xE70F;"
+                                FontFamily="Segoe MDL2 Assets" />
+                            <TextBlock 
+                                Text="Edit"
+                                Margin="8,0,0,0" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Button Command="{x:Bind ViewModel.DeleteCommand}" 
-                        PointerEntered="Button_PointerEntered"
-                        PointerExited="Button_PointerExited"
-                        Width="120" Margin="0,0,8,0">
+
+                <!-- Delete Button -->
+                <Button 
+                    Command="{x:Bind ViewModel.DeleteCommand}"
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    Width="120"
+                    Margin="0,0,8,0">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE74D;" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock Text="Delete" Margin="8,0,0,0" />
+                            <FontIcon 
+                                Glyph="&#xE74D;"
+                                FontFamily="Segoe MDL2 Assets" />
+                            <TextBlock 
+                                Text="Delete"
+                                Margin="8,0,0,0" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
             </StackPanel>
         </Grid>
 
+        <!-- Data Grid for Admin Accounts -->
         <controls:DataGrid
             x:Name="AdminAccountDataGrid"
+            Grid.Row="1"
             AutoGenerateColumns="False"
             GridLinesVisibility="Horizontal"
             ItemsSource="{x:Bind ViewModel.State.Source, Mode=OneWay}"
             SelectedItem="{x:Bind ViewModel.State.SelectedAccount, Mode=TwoWay}"
-            Grid.Row="1"
             Sorting="ViewModel_AdminAccountDataGrid_Sorting">
             <controls:DataGrid.Resources>
-                <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                <SolidColorBrush 
+                    x:Key="DataGridColumnHeaderBackgroundColor"
+                    Color="Transparent" />
             </controls:DataGrid.Resources>
+
             <controls:DataGrid.Columns>
+                <!-- User ID Column -->
                 <controls:DataGridTextColumn 
-                    Binding="{Binding UserId}" 
+                    Binding="{Binding UserId}"
                     Header="User ID"
                     IsReadOnly="True"
                     Tag="UserId" />
+
+                <!-- Username Column -->
                 <controls:DataGridTextColumn 
-                    Binding="{Binding Username}" 
+                    Binding="{Binding Username}"
                     Header="Username"
                     IsReadOnly="True"
                     Tag="Username" />
+
+                <!-- Role Column -->
                 <controls:DataGridTextColumn 
-                    Binding="{Binding Role}" 
+                    Binding="{Binding Role}"
                     Header="Role"
                     IsReadOnly="True"
                     Tag="Role" />
+
+                <!-- Table Column -->
                 <controls:DataGridTextColumn 
-                    Binding="{Binding TableDisplay}" 
+                    Binding="{Binding TableDisplay}"
                     Header="Table"
                     IsReadOnly="True"
                     MinWidth="220"
                     Tag="TableId" />
+
+                <!-- Zone Column -->
                 <controls:DataGridTextColumn 
-                    Binding="{Binding ZoneName}" 
+                    Binding="{Binding ZoneName}"
                     Header="Zone"
                     IsReadOnly="True"
                     Tag="ZoneName" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
 
-        <local:PaginationControl Grid.Row="2" Margin="0,0,0,24" />
+        <!-- Pagination Control -->
+        <local:PaginationControl 
+            Grid.Row="2"
+            Margin="0,0,0,24" />
     </Grid>
 </Page>
