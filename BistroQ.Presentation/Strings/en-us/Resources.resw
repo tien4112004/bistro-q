@@ -339,4 +339,34 @@
   <data name="ProductAddPage_CaloriesInput/Header" xml:space="preserve">
     <value>Calories</value>
   </data>
+  <data name="AdminProduct_DataGrid_Column_Fat/Header" xml:space="preserve">
+    <value>Fat</value>
+  </data>
+  <data name="AdminProduct_DataGrid_Column_Fiber/Header" xml:space="preserve">
+    <value>Fiber</value>
+  </data>
+  <data name="AdminProduct_DataGrid_Column_Protein/Header" xml:space="preserve">
+    <value>Protein</value>
+  </data>
+  <data name="ProductAddPage_FatInput/Header" xml:space="preserve">
+    <value>Fat</value>
+  </data>
+  <data name="ProductAddPage_FiberInput/Header" xml:space="preserve">
+    <value>Fiber</value>
+  </data>
+  <data name="ProductAddPage_ProteinInput/Header" xml:space="preserve">
+    <value>Protein</value>
+  </data>
+  <data name="ProductEditPage_CaloriesInput/Header" xml:space="preserve">
+    <value>Calories</value>
+  </data>
+  <data name="ProductEditPage_ProteinInput/Header" xml:space="preserve">
+    <value>Protein</value>
+  </data>
+  <data name="ProductEditPage_FiberInput/Header" xml:space="preserve">
+    <value>Fiber</value>
+  </data>
+  <data name="ProductEditPage_FatInput/Header" xml:space="preserve">
+    <value>Fat</value>
+  </data>
 </root>

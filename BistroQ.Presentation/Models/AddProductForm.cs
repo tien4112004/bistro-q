@@ -20,6 +20,9 @@ public class AddProductForm : ValidatorBase
     public decimal? DiscountPrice { get; set; }
     public string? ImageUrl { get; set; }
     public double Calories { get; set; }
+    public double Fat { get; set; }
+    public double Fiber { get; set; }
+    public double Protein { get; set; }
 
     public FileWrapper? ImageFile { get; set; }
 
@@ -81,8 +84,41 @@ public class AddProductForm : ValidatorBase
         AddValidator(nameof(Calories), (value) =>
         {
             return value.Validate(
-                v => ValidationRules.DecimalRules.NotEmpty(v, "Price"),
-                v => ValidationRules.DecimalRules.Min(v, 0, "Price")
+                v => ValidationRules.DecimalRules.NotEmpty(v, "Calories"),
+                v => ValidationRules.DecimalRules.Min(v, 0, "Calories")
+            ).Where(r => !r.IsValid).ToList();
+        });
+    }
+
+    public void AddProductFatValidator()
+    {
+        AddValidator(nameof(Fat), (value) =>
+        {
+            return value.Validate(
+                v => ValidationRules.DecimalRules.NotEmpty(v, "Fat"),
+                v => ValidationRules.DecimalRules.Min(v, 0, "Fat")
+            ).Where(r => !r.IsValid).ToList();
+        });
+    }
+
+    public void AddProductFiberValidator()
+    {
+        AddValidator(nameof(Fiber), (value) =>
+        {
+            return value.Validate(
+                v => ValidationRules.DecimalRules.NotEmpty(v, "Fiber"),
+                v => ValidationRules.DecimalRules.Min(v, 0, "Fiber")
+            ).Where(r => !r.IsValid).ToList();
+        });
+    }
+
+    public void AddProductProteinValidator()
+    {
+        AddValidator(nameof(Protein), (value) =>
+        {
+            return value.Validate(
+                v => ValidationRules.DecimalRules.NotEmpty(v, "Protein"),
+                v => ValidationRules.DecimalRules.Min(v, 0, "Protein")
             ).Where(r => !r.IsValid).ToList();
         });
     }
@@ -94,5 +130,8 @@ public class AddProductForm : ValidatorBase
         ValidateProperty(nameof(Price), Price);
         ValidateProperty(nameof(CategoryId), CategoryId);
         ValidateProperty(nameof(Calories), Calories);
+        ValidateProperty(nameof(Fat), Fat);
+        ValidateProperty(nameof(Fiber), Fiber);
+        ValidateProperty(nameof(Protein), Protein);
     }
 }

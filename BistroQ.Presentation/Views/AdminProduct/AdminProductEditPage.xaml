@@ -28,31 +28,34 @@
             SignificantDigits="3"/>
     </Page.Resources>
 
+    
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid Margin="24" Background="Transparent">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <ScrollViewer>
+            <StackPanel Orientation="Vertical">
+                <Grid Margin="24" Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0" Margin="0,0,12,0">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                    <TextBox x:Name="ProductIdTextBox"
+                    <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                            <TextBox x:Name="ProductIdTextBox"
                         x:Uid="ProductIdTextBox"
                         Text="{x:Bind ViewModel.Form.ProductId, Mode=OneTime}"
                         IsReadOnly="True"
                         IsEnabled="False"
                         Width="300"
                         Margin="0,0,0,16" />
-                </StackPanel>
+                        </StackPanel>
 
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                    <ComboBox x:Name="ProductEditPage_CategoryComboBox"
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                            <ComboBox x:Name="ProductEditPage_CategoryComboBox"
                          x:Uid="ProductEditPage_CategoryComboBox"
                          GettingFocus="ProductEditPage_CategoryComboBox_GettingFocus"
                          ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
@@ -61,67 +64,46 @@
                          SelectedValue="{x:Bind ViewModel.Form.CategoryId, Mode=TwoWay}"
                          Width="300"
                          Margin="0,0,0,8" />
-                    <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                            <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
                                Mode=OneWay, 
                                Converter={StaticResource FirstError},
                                ConverterParameter=CategoryId}"
                          Margin="0,0,0,16"
                          Foreground="Red"/>
-                </StackPanel>
+                        </StackPanel>
 
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                    <TextBox x:Name="Name"
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                            <TextBox x:Name="Name"
                         x:Uid="ProductNameTextBox"
                         GettingFocus="Name_GettingFocus"
                         Text="{x:Bind ViewModel.Form.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Width="300" />
-                    <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                            <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
                                Mode=OneWay, 
                                Converter={StaticResource FirstError},
                                ConverterParameter=Name}"
                          Margin="0,8,0,16"
                          Foreground="Red"/>
-                </StackPanel>
+                        </StackPanel>
 
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                    <TextBox x:Name="Unit"
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                            <TextBox x:Name="Unit"
                         x:Uid="ProductUnitTextBox"
                         GettingFocus="Unit_GettingFocus"
                         Text="{x:Bind ViewModel.Form.Unit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Width="300" />
-                    <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                            <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
                                Mode=OneWay, 
                                Converter={StaticResource FirstError},
                                ConverterParameter=Unit}"
                          Margin="0,8,0,16"
                          Foreground="Red"/>
-                </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
 
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                    <NumberBox x:Name="ProductAddPage_CaloriesNumberBox"
-                          x:Uid="ProductAddPage_CaloriesInput"
-                          GettingFocus="ProductEditPage_CaloriesNumberBox_GettingFocus"
-                          Value="{x:Bind ViewModel.Form.Calories, Mode=TwoWay}"
-                          SpinButtonPlacementMode="Inline"
-                          Minimum="0"
-                          SmallChange="10"
-                          PlaceholderText="0"
-                          LargeChange="100"
-                          ValidationMode="InvalidInputOverwritten"
-                          Width="300"
-                          NumberFormatter="{StaticResource DecimalFormatter}" />
-                    <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
-                               Mode=OneWay, 
-                               Converter={StaticResource FirstError},
-                               ConverterParameter=Price}"
-                         Margin="0,8,0,16"
-                         Foreground="Red"/>
-                </StackPanel>
-            </StackPanel>
-
-            <StackPanel Grid.Column="1" Margin="12,0,0,0">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                    <NumberBox x:Name="ProductEditPage_PriceNumberBox"
+                    <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                            <NumberBox x:Name="ProductEditPage_PriceNumberBox"
                           x:Uid="ProductEditPage_PriceTextBox"
                           GettingFocus="ProductEditPage_PriceNumberBox_GettingFocus"
                           Value="{x:Bind ViewModel.Form.Price, Mode=TwoWay, Converter={StaticResource DecimalToDouble}}"
@@ -133,43 +115,43 @@
                           ValidationMode="InvalidInputOverwritten"
                           Width="300"
                           NumberFormatter="{StaticResource DecimalFormatter}" />
-                    <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
-                               Mode=OneWay, 
-                               Converter={StaticResource FirstError},
-                               ConverterParameter=Price}"
-                         Margin="0,8,0,16"
-                         Foreground="Red"/>
-                </StackPanel>
+                            <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                           Mode=OneWay, 
+                                           Converter={StaticResource FirstError},
+                                           ConverterParameter=Price}"
+                                     Margin="0,8,0,16"
+                                     Foreground="Red"/>
+                        </StackPanel>
 
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                    <NumberBox x:Name="ProductEditPage_DiscountPriceNumberBox"
-                          x:Uid="ProductEditPage_DiscountPriceTextBox"
-                          GettingFocus="ProductEditPage_DiscountPriceNumberBox_GettingFocus"
-                          Value="{x:Bind ViewModel.Form.DiscountPrice, Mode=TwoWay, Converter={StaticResource DecimalToDouble}}"
-                          SpinButtonPlacementMode="Inline"
-                          Minimum="0"
-                          SmallChange="1000"
-                          PlaceholderText="0"
-                          LargeChange="10000"
-                          ValidationMode="InvalidInputOverwritten" 
-                          NumberFormatter="{StaticResource DecimalFormatter}"
-                          Width="300"/>
-                    <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
-                               Mode=OneWay, 
-                               Converter={StaticResource FirstError},
-                               ConverterParameter=DiscountPrice}"
-                         Margin="0,8,0,16"
-                         Foreground="Red"/>
-                </StackPanel>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                            <NumberBox x:Name="ProductEditPage_DiscountPriceNumberBox"
+                                      x:Uid="ProductEditPage_DiscountPriceTextBox"
+                                      GettingFocus="ProductEditPage_DiscountPriceNumberBox_GettingFocus"
+                                      Value="{x:Bind ViewModel.Form.DiscountPrice, Mode=TwoWay, Converter={StaticResource DecimalToDouble}}"
+                                      SpinButtonPlacementMode="Inline"
+                                      Minimum="0"
+                                      SmallChange="1000"
+                                      PlaceholderText="0"
+                                      LargeChange="10000"
+                                      ValidationMode="InvalidInputOverwritten" 
+                                      NumberFormatter="{StaticResource DecimalFormatter}"
+                                      Width="300"/>
+                            <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                        Mode=OneWay, 
+                                        Converter={StaticResource FirstError},
+                                        ConverterParameter=DiscountPrice}"
+                                    Margin="0,8,0,16"
+                                    Foreground="Red"/>
+                        </StackPanel>
 
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                    <Button x:Name="ProductEditPage_SelectImageButton"
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                            <Button x:Name="ProductEditPage_SelectImageButton"
                         x:Uid="ProductEditPage_SelectImageButton"
                         Content="Select Image"
                         Click="ProductEditPage_SelectImageButton_Click"
                         Margin="0,0,0,8"/>
 
-                    <Image x:Name="ProductEditPage_PreviewImage"
+                            <Image x:Name="ProductEditPage_PreviewImage"
                        x:Uid="ProductEditPage_PreviewImage"
                        Source="{x:Bind ViewModel.Form.ImageUrl, Mode=OneWay, Converter={StaticResource StringToImageSource}}"
                        Width="200"
@@ -178,15 +160,111 @@
                        Margin="0,0,0,8"
                        Visibility="{x:Bind ViewModel.Form.ImageUrl, Mode=OneWay, Converter={StaticResource StringToVisibility}}"/>
 
-                    <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
-                               Mode=OneWay, 
-                               Converter={StaticResource FirstError},
-                               ConverterParameter=ImageUrl}"
-                         Margin="0,0,0,16"
-                         Foreground="Red"/>
-                </StackPanel>
+                            <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                            Mode=OneWay, 
+                                            Converter={StaticResource FirstError},
+                                            ConverterParameter=ImageUrl}"
+                                        Margin="0,0,0,16"
+                                        Foreground="Red"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Nutrition Fact" Margin="0,0,0,12" />
+                <Grid Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                            <NumberBox x:Name="ProductEditPage_CaloriesNumberBox"
+                                      x:Uid="ProductEditPage_CaloriesInput"
+                                      GettingFocus="ProductEditPage_CaloriesNumberBox_GettingFocus"
+                                      Value="{x:Bind ViewModel.Form.Calories, Mode=TwoWay}"
+                                      SpinButtonPlacementMode="Inline"
+                                      Minimum="0"
+                                      SmallChange="10"
+                                      PlaceholderText="0"
+                                      LargeChange="100"
+                                      ValidationMode="InvalidInputOverwritten"
+                                      Width="300"
+                                      NumberFormatter="{StaticResource DecimalFormatter}" />
+                            <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                               Mode=OneWay, 
+                                               Converter={StaticResource FirstError},
+                                               ConverterParameter=Price}"
+                                     Margin="0,8,0,16"
+                                     Foreground="Red"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                            <NumberBox x:Name="ProductEditPage_ProteinNumberBox"
+                                      x:Uid="ProductEditPage_ProteinInput"
+                                      GettingFocus="ProductEditPage_ProteinNumberBox_GettingFocus"
+                                      Value="{x:Bind ViewModel.Form.Protein, Mode=TwoWay}"
+                                      SpinButtonPlacementMode="Inline"
+                                      Minimum="0"
+                                      SmallChange="10"
+                                      PlaceholderText="0"
+                                      LargeChange="100"
+                                      ValidationMode="InvalidInputOverwritten"
+                                      Width="300"
+                                      NumberFormatter="{StaticResource DecimalFormatter}" />
+                            <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                               Mode=OneWay, 
+                                               Converter={StaticResource FirstError},
+                                               ConverterParameter=Price}"
+                                     Margin="0,8,0,16"
+                                     Foreground="Red"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="0,0,12,0">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                            <NumberBox x:Name="ProductEditPage_FiberNumberBox"
+                                    x:Uid="ProductEditPage_FiberInput"
+                                    GettingFocus="ProductEditPage_FiberNumberBox_GettingFocus"
+                                    Value="{x:Bind ViewModel.Form.Fiber, Mode=TwoWay}"
+                                    SpinButtonPlacementMode="Inline"
+                                    Minimum="0"
+                                    SmallChange="10"
+                                    PlaceholderText="0"
+                                    LargeChange="100"
+                                    ValidationMode="InvalidInputOverwritten"
+                                    Width="300"
+                                    NumberFormatter="{StaticResource DecimalFormatter}" />
+                            <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                            Mode=OneWay, 
+                            Converter={StaticResource FirstError},
+                            ConverterParameter=Price}"
+                    Margin="0,8,0,16"
+                    Foreground="Red"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                            <NumberBox x:Name="ProductEditPage_FatNumberBox"
+                                    x:Uid="ProductEditPage_FatInput"
+                                    GettingFocus="ProductEditPage_FatNumberBox_GettingFocus"
+                                    Value="{x:Bind ViewModel.Form.Fat, Mode=TwoWay}"
+                                    SpinButtonPlacementMode="Inline"
+                                    Minimum="0"
+                                    SmallChange="10"
+                                    PlaceholderText="0"
+                                    LargeChange="100"
+                                    ValidationMode="InvalidInputOverwritten"
+                                    Width="300"
+                                    NumberFormatter="{StaticResource DecimalFormatter}" />
+                            <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+                                            Mode=OneWay, 
+                                            Converter={StaticResource FirstError},
+                                            ConverterParameter=Price}"
+                                    Margin="0,8,0,16"
+                                    Foreground="Red"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
             </StackPanel>
-        </Grid>
+        </ScrollViewer>
 
         <StackPanel Grid.Row="1" 
                 Orientation="Horizontal" 
@@ -213,12 +291,5 @@
                 Width="80" 
                 Click="AdminProductEditPage_CancelButton_Click"/>
         </StackPanel>
-
-        <TextBlock Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
-              Visibility="{x:Bind ViewModel.ErrorMessage, Mode=OneWay, 
-                        Converter={StaticResource StringToVisibility}}"
-              Foreground="Red"
-              TextWrapping="Wrap"
-              Margin="24,0"/>
     </Grid>
 </Page>

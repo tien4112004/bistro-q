@@ -74,7 +74,22 @@ public sealed partial class AdminProductEditPage : Page
 
     private void ProductEditPage_CaloriesNumberBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
     {
-        ViewModel.Form.ResetError(nameof(ViewModel.Form.Price));
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Calories));
+    }
+
+    private void ProductEditPage_FatNumberBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Fat));
+    }
+
+    private void ProductEditPage_FiberNumberBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Fiber));
+    }
+
+    private void ProductEditPage_ProteinNumberBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Protein));
     }
 
     private async void ProductEditPage_SelectImageButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
