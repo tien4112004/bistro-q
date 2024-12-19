@@ -100,9 +100,12 @@ public sealed partial class ShellPage : Page
         App.MainWindow.Hide();
 
         await App.GetService<IAuthService>().LogoutAsync();
+        var size = App.MainWindow.AppWindow.Size;
+        var position = App.MainWindow.AppWindow.Position;
 
         var loginWindow = new LoginWindow();
         loginWindow.Activate();
+        loginWindow.MoveAndResize(position.X, position.Y, size.Width, size.Height);
 
         await Task.Delay(1000);
         App.MainWindow.Close();
