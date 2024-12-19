@@ -1,12 +1,8 @@
-using System.Data;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-
-using BistroQ.Presentation.Contracts.Services;
+﻿using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Helpers;
-using BistroQ.Presentation.ViewModels;
-
 using Microsoft.UI.Xaml.Controls;
+using System.Data;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BistroQ.Presentation.Services;
 
@@ -22,7 +18,7 @@ public class NavigationViewService : INavigationViewService
 
     public IList<object>? MenuItems
     {
-        get => MenuItems; 
+        get => MenuItems;
     }
 
     public object? SettingsItem => _navigationView?.SettingsItem;
@@ -52,6 +48,14 @@ public class NavigationViewService : INavigationViewService
         }
         _navigationView.BackRequested += OnBackRequested;
         _navigationView.ItemInvoked += OnItemInvoked;
+    }
+
+    public void NavigateToEntryPoint()
+    {
+        if (_navigationView.MenuItems.FirstOrDefault() is NavigationViewItem firstItem)
+        {
+            _navigationService.NavigateTo(NavigationHelper.GetNavigateTo(firstItem));
+        }
     }
 
     public void UnregisterEvents()

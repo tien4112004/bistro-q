@@ -44,16 +44,7 @@
             
             <NavigationView.MenuItems>
                 <!-- User Section -->
-                <NavigationViewItem
-                    x:Uid="Shell_Main"
-                    Tag="User"
-                    PointerEntered="Button_PointerEntered"
-                    PointerExited="Button_PointerExited"
-                    helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.MainViewModel">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
+
                 
                 <!-- Admin Section -->
                 <NavigationViewItem

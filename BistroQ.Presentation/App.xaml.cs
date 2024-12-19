@@ -108,7 +108,6 @@ public partial class App : Application
             .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
 
             // Core Services
-            services.AddSingleton<ISampleDataService, SampleDataService>();
             services.AddSingleton<IFileService, FileService>();
             services.AddHttpClient();
             services.AddSingleton<IAuthService, AuthService>();

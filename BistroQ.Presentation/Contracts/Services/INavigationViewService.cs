@@ -1,4 +1,4 @@
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 
 namespace BistroQ.Presentation.Contracts.Services;
 
@@ -15,6 +15,8 @@ public interface INavigationViewService
     }
 
     void Initialize(NavigationView navigationView, string role);
+
+    void NavigateToEntryPoint();
 
     void UnregisterEvents();
 
