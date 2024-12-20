@@ -51,7 +51,7 @@ public class OrderDataService : IOrderDataService
 
     public async Task<Order> GetOrderByCashierAsync(int tableId)
     {
-        var response = await _apiClient.GetAsync<DetailOrderResponse>($"api/CashierOrder/{tableId}", null);
+        var response = await _apiClient.GetAsync<DetailOrderResponse>($"api/Cashier/Order/{tableId}", null);
         if (response.Success)
         {
             var order = _mapper.Map<Order>(response.Data);
@@ -63,7 +63,7 @@ public class OrderDataService : IOrderDataService
 
     public async Task<IEnumerable<Order>> GetCurrentOrdersByCashierAsync()
     {
-        var response = await _apiClient.GetAsync<IEnumerable<DetailOrderResponse>>($"api/CashierOrder", null);
+        var response = await _apiClient.GetAsync<IEnumerable<DetailOrderResponse>>($"api/Cashier/Order", null);
         if (response.Success)
         {
             var orders = _mapper.Map<IEnumerable<Order>>(response.Data);

@@ -83,11 +83,15 @@ public class ProductDataService : IProductDataService
 
     public async Task<Product> CreateProductAsync(CreateProductRequest request, Stream stream, string fileName, string contentType)
     {
-        var response = await _multipartApiClient.PostMultipartAsync<ProductResponse>("/api/admin/product",
-            request, "Product", new Dictionary<string, (Stream Stream, string FileName, string ContentType)>
+        var files = new Dictionary<string, (Stream Stream, string FileName, string ContentType)>();
+
+        if (stream != null && !string.IsNullOrEmpty(fileName))
         {
-            { "Image", (stream, fileName, contentType) }
-        });
+            files.Add("Image", (stream, fileName, contentType));
+        }
+
+        var response = await _multipartApiClient.PostMultipartAsync<ProductResponse>("/api/admin/product",
+            request, "Product", files);
 
         if (response.Success)
         {

@@ -5,9 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" 
-    xmlns:local="using:BistroQ.Presentation.Views.UserControls"
+    xmlns:local="using:BistroQ.Presentation.Views.UserControls" 
+    xmlns:converters="using:BistroQ.Presentation.Converters"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <converters:NumberToCurrencyConverter x:Key="NumberToCurreny"/>
+    </Page.Resources>
+    
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -94,11 +99,11 @@
                                            x:Uid="AdminProduct_DataGrid_Column_CategoryName" 
                                            IsReadOnly="True" Width="200"
                                            Tag="CategoryName" />
-                <controls:DataGridTextColumn Binding="{Binding Price}" 
+                <controls:DataGridTextColumn Binding="{Binding Price, Mode=OneWay, Converter={StaticResource NumberToCurreny}}" 
                                            x:Uid="AdminProduct_DataGrid_Column_Price" 
                                            IsReadOnly="True"
                                            Tag="Price" />
-                <controls:DataGridTextColumn Binding="{Binding DiscountPrice}" 
+                <controls:DataGridTextColumn Binding="{Binding DiscountPrice, Converter={StaticResource NumberToCurreny}}" 
                                            x:Uid="AdminProduct_DataGrid_Column_DiscountPrice" 
                                            IsReadOnly="True"
                                            Tag="DiscountPrice" />
@@ -106,6 +111,26 @@
                                            x:Uid="AdminProduct_DataGrid_Column_Unit" 
                                            IsReadOnly="True"
                                            Tag="Unit" />
+                <controls:DataGridTextColumn Binding="{Binding NutritionFact.Calories}" 
+                                             x:Uid="AdminProduct_DataGrid_Column_Calories" 
+                                             IsReadOnly="True"
+                                             CanUserSort="False"
+                                             Tag="Calories" />
+                <controls:DataGridTextColumn Binding="{Binding NutritionFact.Fat}" 
+                                             x:Uid="AdminProduct_DataGrid_Column_Fat" 
+                                             IsReadOnly="True"
+                                             CanUserSort="False"
+                                             Tag="Fat" />
+                <controls:DataGridTextColumn Binding="{Binding NutritionFact.Fiber}" 
+                                             x:Uid="AdminProduct_DataGrid_Column_Fiber" 
+                                             IsReadOnly="True"
+                                             CanUserSort="False"
+                                             Tag="Fiber" />
+                <controls:DataGridTextColumn Binding="{Binding NutritionFact.Protein}" 
+                                             x:Uid="AdminProduct_DataGrid_Column_Protein" 
+                                             IsReadOnly="True"
+                                             CanUserSort="False"
+                                             Tag="Protein" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
         <local:PaginationControl Grid.Row="2" Margin="0,0,0,24" />
