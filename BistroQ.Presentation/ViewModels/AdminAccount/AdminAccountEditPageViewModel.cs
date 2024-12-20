@@ -185,16 +185,19 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         }
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
     {
         if (parameter is AccountViewModel account)
         {
             Account = account;
-            await LoadZonesAsync();
+            Task.Run(LoadZonesAsync);
 
             if (Account.TableId != null)
             {
-                await LoadTablesAsync(account.ZoneId ?? 0);
+                Task.Run(async () =>
+                {
+                    await LoadTablesAsync(account.ZoneId ?? 0);
+                });
                 Form = new AddAccountForm
                 {
                     Username = account.Username,

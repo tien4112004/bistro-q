@@ -71,9 +71,10 @@ public partial class AdminAccountViewModel :
         }
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
     {
-        await LoadDataAsync();
+        State.Reset();
+        _ = LoadDataAsync();
     }
 
     public void OnNavigatedFrom()
@@ -185,17 +186,17 @@ public partial class AdminAccountViewModel :
         _ = LoadDataAsync();
     }
 
-    public async void Receive(CurrentPageChangedMessage message)
+    public void Receive(CurrentPageChangedMessage message)
     {
         State.Query.Page = message.NewCurrentPage;
-        await LoadDataAsync();
+        _ = LoadDataAsync();
     }
 
-    public async void Receive(PageSizeChangedMessage message)
+    public void Receive(PageSizeChangedMessage message)
     {
         State.Query.Size = message.NewPageSize;
         State.ReturnToFirstPage();
-        await LoadDataAsync();
+        _ = LoadDataAsync();
     }
 
     public void Dispose()

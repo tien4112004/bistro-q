@@ -40,7 +40,7 @@ public partial class OrderItemGridViewModel :
         _messenger.RegisterAll(this);
     }
 
-    public async void LoadItemsAsync()
+    public async Task LoadItemsAsync()
     {
         try
         {
@@ -80,7 +80,7 @@ public partial class OrderItemGridViewModel :
     public void Receive(CurrentPageChangedMessage message)
     {
         State.Query.Page = message.NewCurrentPage;
-        LoadItemsAsync();
+        _ = LoadItemsAsync();
     }
 
     public void Receive(OrderGridStatusChangedMessage message)
@@ -88,14 +88,14 @@ public partial class OrderItemGridViewModel :
         State.Reset();
         State.Query.Status = message.Status.ToString();
         State.ReturnToFirstPage();
-        LoadItemsAsync();
+        _ = LoadItemsAsync();
     }
 
     public void Receive(PageSizeChangedMessage message)
     {
         State.Query.Size = message.NewPageSize;
         State.ReturnToFirstPage();
-        LoadItemsAsync();
+        _ = LoadItemsAsync();
     }
 
     public void Dispose()

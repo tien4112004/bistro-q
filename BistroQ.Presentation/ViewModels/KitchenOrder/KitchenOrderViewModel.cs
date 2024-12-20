@@ -62,14 +62,20 @@ public partial class KitchenOrderViewModel :
         KitchenOrderButtonsVM.Dispose();
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
     {
         PendingColumnVM.ColumnType = KitchenColumnType.Pending;
-        await PendingColumnVM.LoadItems(OrderItemStatus.Pending);
+        Task.Run(async () =>
+        {
+            await PendingColumnVM.LoadItems(OrderItemStatus.Pending);
+        });
         State.PendingItems = PendingColumnVM.Items;
 
         ProgressColumnVM.ColumnType = KitchenColumnType.InProgress;
-        await ProgressColumnVM.LoadItems(OrderItemStatus.InProgress);
+        Task.Run(async () =>
+        {
+            await ProgressColumnVM.LoadItems(OrderItemStatus.InProgress);
+        });
         State.ProgressItems = ProgressColumnVM.Items;
     }
 
@@ -87,16 +93,19 @@ public partial class KitchenOrderViewModel :
         KitchenOrderButtonsVM.UpdateStates(State.SelectedItems);
     }
 
-    public async void Receive(KitchenActionMessage message)
+    public void Receive(KitchenActionMessage message)
     {
         try
         {
             var strategy = _strategyFactory.GetStrategy(message.Action, State);
-            await TaskHelper.WithMinimumDelay(strategy.ExecuteAsync(State.SelectedItems), 200);
+            Task.Run(async () =>
+            {
+                await TaskHelper.WithMinimumDelay(strategy.ExecuteAsync(State.SelectedItems), 200);
+            });
         }
         catch (Exception ex)
         {
-            await _dialogService.ShowErrorDialog(ex.Message, "Error");
+            _ = _dialogService.ShowErrorDialog(ex.Message, "Error");
             Debug.WriteLine(ex.Message);
         }
         finally

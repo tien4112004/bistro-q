@@ -13,6 +13,7 @@ using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels;
@@ -20,7 +21,9 @@ namespace BistroQ.Presentation.ViewModels;
 public partial class AdminProductViewModel :
     ObservableRecipient,
     INavigationAware,
-    IDisposable
+    IDisposable,
+    IRecipient<PageSizeChangedMessage>,
+    IRecipient<CurrentPageChangedMessage>
 {
     private readonly IDialogService _dialogService;
     private readonly INavigationService _navigationService;
@@ -58,23 +61,7 @@ public partial class AdminProductViewModel :
         SortCommand = new RelayCommand<(string column, string direction)>(ExecuteSortCommand);
         SearchCommand = new RelayCommand(ExecuteSearchCommand);
 
-        RegisterMessengers();
-    }
-
-    private void RegisterMessengers()
-    {
-        _messenger.Register<PageSizeChangedMessage>(this, async (r, m) =>
-        {
-            State.Query.Size = m.NewPageSize;
-            State.ReturnToFirstPage();
-            await LoadDataAsync();
-        });
-
-        _messenger.Register<CurrentPageChangedMessage>(this, async (r, m) =>
-        {
-            State.Query.Page = m.NewCurrentPage;
-            await LoadDataAsync();
-        });
+        _messenger.RegisterAll(this);
     }
 
     private void StatePropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -86,16 +73,15 @@ public partial class AdminProductViewModel :
         }
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
     {
         State.Reset();
-        await LoadDataAsync();
+        _ = LoadDataAsync();
     }
 
     public void OnNavigatedFrom()
     {
         State.SelectedProduct = null;
-        State.Reset();
     }
 
     private async Task LoadDataAsync()
@@ -115,6 +101,7 @@ public partial class AdminProductViewModel :
         }
         catch (Exception ex)
         {
+            Debug.WriteLine(ex.StackTrace);
             await _dialogService.ShowErrorDialog(ex.Message, "Error");
         }
         finally
@@ -202,5 +189,18 @@ public partial class AdminProductViewModel :
         }
 
         _messenger.UnregisterAll(this);
+    }
+
+    public void Receive(PageSizeChangedMessage message)
+    {
+        State.Query.Size = message.NewPageSize;
+        State.ReturnToFirstPage();
+        _ = LoadDataAsync();
+    }
+
+    public void Receive(CurrentPageChangedMessage message)
+    {
+        State.Query.Page = message.NewCurrentPage;
+        _ = LoadDataAsync();
     }
 }

@@ -27,9 +27,9 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware,
         _messenger.RegisterAll(this);
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
     {
-        await ZoneOverviewVM.InitializeAsync();
+        _ = ZoneOverviewVM.InitializeAsync();
     }
 
     public void OnNavigatedFrom()

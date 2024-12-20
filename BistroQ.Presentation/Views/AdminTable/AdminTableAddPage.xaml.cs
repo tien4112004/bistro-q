@@ -27,9 +27,9 @@ public sealed partial class AdminTableAddPage : Page
         };
     }
 
-    private async void AdminTableAddPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void AdminTableAddPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        await ViewModel.LoadZonesAsync();
+        _ = ViewModel.LoadZonesAsync();
     }
 
     private void AdminTableAddPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

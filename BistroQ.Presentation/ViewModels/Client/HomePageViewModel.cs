@@ -32,11 +32,11 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
     {
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
     {
         try
         {
-            await OrderCartViewModel.LoadExistingOrderAsync();
+            Task.Run(OrderCartViewModel.LoadExistingOrderAsync);
         }
         catch (Exception e)
         {
@@ -54,8 +54,8 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
         {
             OrderCartViewModel.IsLoading = false;
         }
-        await ProductListViewModel.LoadCategoriesAsync();
-        await ProductListViewModel.LoadProductAsync();
+        _ = ProductListViewModel.LoadCategoriesAsync();
+        _ = ProductListViewModel.LoadProductAsync();
     }
 
     public void OnNavigatedFrom()

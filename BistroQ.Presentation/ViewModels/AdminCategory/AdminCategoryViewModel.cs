@@ -20,7 +20,9 @@ namespace BistroQ.Presentation.ViewModels;
 public partial class AdminCategoryViewModel :
     ObservableRecipient,
     INavigationAware,
-    IDisposable
+    IDisposable,
+    IRecipient<PageSizeChangedMessage>,
+    IRecipient<CurrentPageChangedMessage>
 {
     private readonly IDialogService _dialogService;
     private readonly INavigationService _navigationService;
@@ -58,18 +60,7 @@ public partial class AdminCategoryViewModel :
         SortCommand = new RelayCommand<(string column, string direction)>(ExecuteSortCommand);
         SearchCommand = new RelayCommand(ExecuteSearchCommand);
 
-        _messenger.Register<PageSizeChangedMessage>(this, async (r, m) =>
-        {
-            State.Query.Size = m.NewPageSize;
-            State.ReturnToFirstPage();
-            await LoadDataAsync();
-        });
-
-        _messenger.Register<CurrentPageChangedMessage>(this, async (r, m) =>
-        {
-            State.Query.Page = m.NewCurrentPage;
-            await LoadDataAsync();
-        });
+        _messenger.RegisterAll(this);
     }
 
     private void StatePropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -81,9 +72,10 @@ public partial class AdminCategoryViewModel :
         }
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
     {
-        await LoadDataAsync();
+        State.Reset();
+        _ = LoadDataAsync();
     }
 
     public void OnNavigatedFrom()
@@ -193,5 +185,18 @@ public partial class AdminCategoryViewModel :
         }
 
         _messenger.UnregisterAll(this);
+    }
+
+    public void Receive(PageSizeChangedMessage message)
+    {
+        State.Query.Size = message.NewPageSize;
+        State.ReturnToFirstPage();
+        _ = LoadDataAsync();
+    }
+
+    public void Receive(CurrentPageChangedMessage message)
+    {
+        State.Query.Page = message.NewCurrentPage;
+        _ = LoadDataAsync();
     }
 }

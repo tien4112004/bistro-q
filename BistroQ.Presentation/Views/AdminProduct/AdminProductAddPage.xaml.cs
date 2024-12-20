@@ -29,9 +29,9 @@ public sealed partial class AdminProductAddPage : Page
         };
     }
 
-    private async void AdminProductAddPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void AdminProductAddPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        await ViewModel.LoadCategoriesAsync();
+        _ = ViewModel.LoadCategoriesAsync();
     }
 
     private void AdminProductAddPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -115,7 +115,7 @@ public sealed partial class AdminProductAddPage : Page
     {
         ViewModel.Form.ResetError(nameof(ViewModel.Form.Calories));
     }
-    
+
     private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
     {
         (sender as UIElement)?.ChangeCursor(CursorType.Hand);
