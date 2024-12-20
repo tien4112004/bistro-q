@@ -18,6 +18,7 @@
         <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
         <converters:ReverseBooleanConverter x:Key="ReverseBool"/>
         <converters:NumberToCurrencyConverter x:Key="NumberToCurreny"/>
+        <converters:DateTimeToTimeOnlyConverter x:Key="DateTimeToTime"/>
 
         <!-- Order Item Template -->
         <DataTemplate
@@ -86,6 +87,13 @@
                             Text="{x:Bind Total, Mode=OneWay, Converter={StaticResource NumberToCurreny}}"
                             Padding="0,6,0,0"
                             VerticalAlignment="Center"/>
+                        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Orientation="Horizontal">
+                            <FontIcon Margin="0,2,0,0" Glyph="&#xE823;" FontSize="12" />
+                            <TextBlock Margin="4,0,0,0" 
+                                       Text="{x:Bind CreatedAt, Mode=OneWay, Converter={StaticResource DateTimeToTime}, 
+                                       ConverterParameter=HH:mm}" 
+                                       FontSize="12" />
+                        </StackPanel>
                     </Grid>
                 </StackPanel>
             </Grid>

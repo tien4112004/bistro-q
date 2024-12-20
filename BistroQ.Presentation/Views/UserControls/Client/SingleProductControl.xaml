@@ -11,6 +11,7 @@
 
     <UserControl.Resources>
         <converters:NumberToCurrencyConverter x:Key="NumberToCurreny"/>
+        <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     </UserControl.Resources>
 
     <!-- Product Card -->
@@ -58,14 +59,14 @@
                    FontSize="12"
                    Foreground="{ThemeResource TextFillColorTertiary}"/>
             </TextBlock>
-
-            <!-- Description -->
-            <TextBlock
-               x:Name="ProductDescriptionTextBlock"
-               Text="Product description"
-               Style="{StaticResource BodyTextBlockStyle}"
-               Foreground="{ThemeResource TextFillColorSecondary}"
-               Margin="0,4,0,4"/>
+            <TextBlock 
+                x:Name="ProductDescriptionTextBlock"
+                Text="{x:Bind Product.Price, Mode=OneWay, Converter={StaticResource NumberToCurreny}}"
+                Style="{StaticResource BodyTextBlockStyle}"
+                Visibility="{x:Bind HasDiscountPrice, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+                Foreground="{ThemeResource TextFillColorSecondary}"
+                Margin="0,4,0,4"
+                TextDecorations="Strikethrough" />
         </StackPanel>
 
         <!-- Add to Cart Button -->

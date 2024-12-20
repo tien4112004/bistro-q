@@ -61,7 +61,8 @@
             <ScrollViewer
                 x:Name="ScrollViewer"
                 HorizontalScrollMode="Enabled"
-                HorizontalScrollBarVisibility="Hidden"
+                HorizontalScrollBarVisibility="Auto"
+                VerticalScrollMode="Disabled"
                 ManipulationMode="System,TranslateX"
                 ManipulationDelta="HorizontalScrollViewer_ManipulationDelta">
                 <ListView
@@ -202,7 +203,17 @@
                         </Style>
                     </GridView.ItemContainerStyle>
                 </GridView>
-            </Grid>
+                <Button Command="{x:Bind ViewModel.LoadMoreProductsCommand}" 
+                        IsEnabled="{x:Bind ViewModel.CanLoadMore, Mode=OneWay}"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource AccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xE72C;" Margin="0,0,8,0" />
+                        <!-- Refresh icon -->
+                        <TextBlock Text="Load More" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
         </ScrollViewer>
     </Grid>
 </UserControl>

@@ -17,4 +17,6 @@ public class Product
     public decimal? DiscountPrice { get; set; }
 
     public string? ImageUrl { get; set; }
+
+    public NutritionFact? NutritionFact { get; set; }
 }

@@ -68,7 +68,11 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
                 Price = Form.Price,
                 Unit = Form.Unit,
                 DiscountPrice = Form.DiscountPrice,
-                CategoryId = Form.CategoryId
+                CategoryId = Form.CategoryId,
+                Calories = Form.Calories,
+                Fat = Form.Fat,
+                Fiber = Form.Fiber,
+                Protein = Form.Protein
             };
 
             if (Form.ImageFile != null)
@@ -121,6 +125,10 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
             Form.DiscountPrice = selectedProduct?.DiscountPrice ?? 0;
             Form.ImageUrl = selectedProduct?.ImageUrl;
             Form.CategoryId = selectedProduct?.Category?.CategoryId ?? 0;
+            Form.Calories = double.TryParse(selectedProduct?.NutritionFact?.Calories, out var calories) ? calories : 0.0;
+            Form.Fat = double.TryParse(selectedProduct?.NutritionFact?.Fat, out var fat) ? fat : 0.0;
+            Form.Fiber = double.TryParse(selectedProduct?.NutritionFact?.Fiber, out var fiber) ? fiber : 0.0;
+            Form.Protein = double.TryParse(selectedProduct?.NutritionFact?.Protein, out var protein) ? protein : 0.0;
         }
     }
 

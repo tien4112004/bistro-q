@@ -5,17 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" 
-    xmlns:skeleton="using:BistroQ.Presentation.Controls.Skeleton"
-    xmlns:converter="using:BistroQ.Presentation.Converters"
     xmlns:local="using:BistroQ.Presentation.Views.UserControls"
     mc:Ignorable="d">
 
-    <!-- Page Resources -->
-    <Page.Resources>
-        <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-    </Page.Resources>
-
-    <!-- Main Content Area Grid -->
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -191,51 +183,35 @@
                     </controls:DataGridTemplateColumn.CellTemplate>
                 </controls:DataGridTemplateColumn>
 
-                <!-- Product Details Columns -->
-                <controls:DataGridTextColumn 
-                    x:Uid="AdminProduct_DataGrid_Column_Id" 
-                    Binding="{Binding ProductId}" 
-                    CanUserResize="False" 
-                    IsReadOnly="True"
-                    Tag="ProductId" />
-                   
-                <controls:DataGridTextColumn 
-                    x:Uid="AdminProduct_DataGrid_Column_Name" 
-                    Binding="{Binding Name}" 
-                    IsReadOnly="True" 
-                    Width="200"
-                    Tag="Name" />
-                   
-                <controls:DataGridTextColumn 
-                    x:Uid="AdminProduct_DataGrid_Column_CategoryId" 
-                    Binding="{Binding Category.CategoryId}" 
-                    IsReadOnly="True"
-                    Tag="CategoryId" />
-                   
-                <controls:DataGridTextColumn 
-                    x:Uid="AdminProduct_DataGrid_Column_CategoryName" 
-                    Binding="{Binding Category.Name}" 
-                    IsReadOnly="True" 
-                    Width="200"
-                    Tag="CategoryName" />
-                   
-                <controls:DataGridTextColumn 
-                    x:Uid="AdminProduct_DataGrid_Column_Price" 
-                    Binding="{Binding Price}" 
-                    IsReadOnly="True"
-                    Tag="Price" />
-                   
-                <controls:DataGridTextColumn 
-                    x:Uid="AdminProduct_DataGrid_Column_DiscountPrice" 
-                    Binding="{Binding DiscountPrice}" 
-                    IsReadOnly="True"
-                    Tag="DiscountPrice" />
-                   
-                <controls:DataGridTextColumn 
-                    x:Uid="AdminProduct_DataGrid_Column_Unit" 
-                    Binding="{Binding Unit}" 
-                    IsReadOnly="True"
-                    Tag="Unit" />
+                <controls:DataGridTextColumn Binding="{Binding ProductId}" 
+                                           x:Uid="AdminProduct_DataGrid_Column_Id" 
+                                           CanUserResize="False" 
+                                           IsReadOnly="True"
+                                           Tag="ProductId" />
+                <controls:DataGridTextColumn Binding="{Binding Name}" 
+                                           x:Uid="AdminProduct_DataGrid_Column_Name" 
+                                           IsReadOnly="True" Width="200"
+                                           Tag="Name" />
+                <controls:DataGridTextColumn Binding="{Binding Category.CategoryId}" 
+                                           x:Uid="AdminProduct_DataGrid_Column_CategoryId" 
+                                           IsReadOnly="True"
+                                           Tag="CategoryId" />
+                <controls:DataGridTextColumn Binding="{Binding Category.Name}" 
+                                           x:Uid="AdminProduct_DataGrid_Column_CategoryName" 
+                                           IsReadOnly="True" Width="200"
+                                           Tag="CategoryName" />
+                <controls:DataGridTextColumn Binding="{Binding Price}" 
+                                           x:Uid="AdminProduct_DataGrid_Column_Price" 
+                                           IsReadOnly="True"
+                                           Tag="Price" />
+                <controls:DataGridTextColumn Binding="{Binding DiscountPrice}" 
+                                           x:Uid="AdminProduct_DataGrid_Column_DiscountPrice" 
+                                           IsReadOnly="True"
+                                           Tag="DiscountPrice" />
+                <controls:DataGridTextColumn Binding="{Binding Unit}" 
+                                           x:Uid="AdminProduct_DataGrid_Column_Unit" 
+                                           IsReadOnly="True"
+                                           Tag="Unit" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
 
