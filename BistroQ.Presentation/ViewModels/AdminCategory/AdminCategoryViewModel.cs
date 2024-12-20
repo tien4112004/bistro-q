@@ -29,6 +29,7 @@ public partial class AdminCategoryViewModel :
     private readonly ICategoryDataService _categoryDataService;
     private readonly IMapper _mapper;
     private readonly IMessenger _messenger;
+    private bool _isDisposed = false;
 
     [ObservableProperty]
     private AdminCategoryState state = new();
@@ -74,17 +75,18 @@ public partial class AdminCategoryViewModel :
 
     public void OnNavigatedTo(object parameter)
     {
-        State.Reset();
         _ = LoadDataAsync();
     }
 
     public void OnNavigatedFrom()
     {
-        State.SelectedCategory = null;
+        Dispose();
     }
 
     private async Task LoadDataAsync()
     {
+        if (State.IsLoading || _isDisposed) return;
+
         try
         {
             State.IsLoading = true;
@@ -179,6 +181,8 @@ public partial class AdminCategoryViewModel :
 
     public void Dispose()
     {
+        if (_isDisposed) return;
+        _isDisposed = true;
         if (State != null)
         {
             State.PropertyChanged -= StatePropertyChanged;

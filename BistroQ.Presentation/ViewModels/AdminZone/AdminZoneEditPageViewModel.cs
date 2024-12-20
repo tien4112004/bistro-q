@@ -27,13 +27,17 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
 
     public ICommand UpdateCommand { get; }
 
-    public event EventHandler NavigateBack;
     public AdminZoneEditPageViewModel(IZoneDataService zoneDataService, IDialogService dialogService)
     {
         _zoneDataService = zoneDataService;
         _dialogService = dialogService;
 
         UpdateCommand = new AsyncRelayCommand(UpdateZoneAsync);
+    }
+
+    public void NavigateBack()
+    {
+        App.GetService<INavigationService>().GoBack();
     }
 
     public async Task UpdateZoneAsync()
@@ -58,7 +62,7 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
             await _zoneDataService.UpdateZoneAsync(Zone.ZoneId.Value, request);
 
             await _dialogService.ShowSuccessDialog($"Successfully updated zone: {request.Name}", "Success");
-            NavigateBack?.Invoke(this, EventArgs.Empty);
+            NavigateBack();
         }
         catch (Exception ex)
         {

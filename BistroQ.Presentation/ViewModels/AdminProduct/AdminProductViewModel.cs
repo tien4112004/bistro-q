@@ -33,6 +33,7 @@ public partial class AdminProductViewModel :
 
     [ObservableProperty]
     private AdminProductState _state = new();
+    private bool _isDisposed = false;
 
     public IRelayCommand AddCommand { get; }
     public IRelayCommand EditCommand { get; }
@@ -75,17 +76,17 @@ public partial class AdminProductViewModel :
 
     public void OnNavigatedTo(object parameter)
     {
-        State.Reset();
         _ = LoadDataAsync();
     }
 
     public void OnNavigatedFrom()
     {
-        State.SelectedProduct = null;
+        Dispose();
     }
 
     private async Task LoadDataAsync()
     {
+        if (State.IsLoading || _isDisposed) return;
         try
         {
             State.IsLoading = true;
@@ -181,8 +182,12 @@ public partial class AdminProductViewModel :
         _ = LoadDataAsync();
     }
 
+
     public void Dispose()
     {
+        if (_isDisposed) return;
+        _isDisposed = true;
+
         if (State != null)
         {
             State.PropertyChanged -= StatePropertyChanged;

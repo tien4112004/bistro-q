@@ -3,7 +3,6 @@ using BistroQ.Presentation.ViewModels.AdminTable;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Navigation;
 
 namespace BistroQ.Presentation.Views.AdminTable;
 
@@ -18,13 +17,6 @@ public sealed partial class AdminTableAddPage : Page
         this.DataContext = ViewModel;
 
         this.Loaded += AdminTableAddPage_Loaded;
-
-        ViewModel.NavigateBack += OnNavigateBack;
-
-        Unloaded += (s, e) =>
-        {
-            ViewModel.NavigateBack -= OnNavigateBack;
-        };
     }
 
     private void AdminTableAddPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -34,17 +26,12 @@ public sealed partial class AdminTableAddPage : Page
 
     private void AdminTableAddPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        Frame.GoBack();
+        ViewModel.NavigateBack();
     }
 
     private void OnNavigateBack(object sender, EventArgs e)
     {
-        Frame.GoBack();
-    }
-
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        base.OnNavigatedTo(e);
+        ViewModel.NavigateBack();
     }
 
     private void TableAddPage_SeatsCountNumberBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)

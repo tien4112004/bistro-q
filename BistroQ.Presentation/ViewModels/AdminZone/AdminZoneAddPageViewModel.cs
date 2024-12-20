@@ -23,8 +23,6 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigatio
 
     public ICommand AddCommand { get; }
 
-    public event EventHandler NavigateBack;
-
     public AdminZoneAddPageViewModel(IZoneDataService zoneDataService, IDialogService dialogService)
     {
         _zoneDataService = zoneDataService;
@@ -36,6 +34,11 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigatio
     public bool CanAdd()
     {
         return !Form.HasErrors && !IsProcessing;
+    }
+
+    public void NavigateBack()
+    {
+        App.GetService<INavigationService>().GoBack();
     }
 
     public async Task AddZoneAsync()
@@ -60,7 +63,7 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigatio
             await _zoneDataService.CreateZoneAsync(request);
 
             await _dialogService.ShowErrorDialog("Successfully added zone: " + request.Name, "Success");
-            NavigateBack?.Invoke(this, EventArgs.Empty);
+            NavigateBack();
         }
         catch (Exception ex)
         {
@@ -75,7 +78,6 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigatio
 
     public void OnNavigatedTo(object parameter)
     {
-        Form.ClearErrors();
     }
 
     public void OnNavigatedFrom()

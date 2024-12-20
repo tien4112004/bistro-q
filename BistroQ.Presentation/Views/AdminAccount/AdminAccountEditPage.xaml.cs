@@ -15,23 +15,16 @@ public sealed partial class AdminAccountEditPage : Page
         InitializeComponent();
         ViewModel = App.GetService<AdminAccountEditPageViewModel>();
         this.DataContext = ViewModel;
-
-        ViewModel.NavigateBack += OnNavigateBack;
-
-        this.Unloaded += (s, e) =>
-        {
-            ViewModel.NavigateBack -= OnNavigateBack;
-        };
     }
 
     private void AdminAccountEditPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        Frame.GoBack();
+        ViewModel.NavigateBack();
     }
 
     private void OnNavigateBack(object sender, EventArgs e)
     {
-        Frame.GoBack();
+        ViewModel.NavigateBack();
     }
 
     private void AccountEditPage_UsernameTextBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)

@@ -10,13 +10,17 @@ using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.AdminAccount;
 
-public partial class AdminAccountAddPageViewModel : ObservableRecipient, INavigationAware
+public partial class AdminAccountAddPageViewModel : ObservableRecipient, INavigationAware, IDisposable
 {
     [ObservableProperty]
     private bool _isProcessing = false;
+
+    private bool _isDisposed = false;
 
     [ObservableProperty]
     private AddAccountForm _form = new();
@@ -35,8 +39,6 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient, INaviga
     public ObservableCollection<ZoneViewModel> Zones;
     public ObservableCollection<TableViewModel> Tables;
     public ObservableCollection<string> Roles;
-
-    public event EventHandler NavigateBack;
 
     private readonly IAccountDataService _accountDataService;
     private readonly IZoneDataService _zoneDataService;
@@ -65,13 +67,27 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient, INaviga
 
         AddCommand = new AsyncRelayCommand(AddAccountAsync);
 
-        this.PropertyChanged += (s, e) =>
+        this.PropertyChanged += OnPropertyChanged;
+    }
+
+    private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(SelectedZoneId) && SelectedZoneId.HasValue)
         {
-            if (e.PropertyName == nameof(SelectedZoneId) && SelectedZoneId.HasValue)
+            try
             {
-                _ = LoadTablesAsync(SelectedZoneId.Value);
+                await LoadTablesAsync(SelectedZoneId.Value);
             }
-        };
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.StackTrace);
+            }
+        }
+    }
+
+    public void NavigateBack()
+    {
+        App.GetService<INavigationService>().GoBack();
     }
 
     public async Task AddAccountAsync()
@@ -98,7 +114,7 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient, INaviga
             await _accountDataService.CreateAccountAsync(request);
 
             await _dialogService.ShowSuccessDialog("Account added successfully.", "Success");
-            NavigateBack?.Invoke(this, EventArgs.Empty);
+            NavigateBack();
         }
         catch (Exception ex)
         {
@@ -159,16 +175,19 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient, INaviga
 
     public void OnNavigatedTo(object parameter)
     {
+        _ = LoadZonesAsync();
     }
 
     public void OnNavigatedFrom()
     {
-        this.PropertyChanged -= (s, e) =>
-        {
-            if (e.PropertyName == nameof(SelectedZoneId) && SelectedZoneId.HasValue)
-            {
-                _ = LoadTablesAsync(SelectedZoneId.Value);
-            }
-        };
+        Dispose();
+    }
+
+    public void Dispose()
+    {
+        if (_isDisposed) return;
+        _isDisposed = true;
+
+        this.PropertyChanged -= OnPropertyChanged;
     }
 }

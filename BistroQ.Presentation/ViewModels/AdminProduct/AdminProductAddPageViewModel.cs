@@ -35,8 +35,6 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
 
     public IRelayCommand AddCommand { get; }
 
-    public event EventHandler NavigateBack;
-
     public AdminProductAddPageViewModel(
         IProductDataService productDataService,
         ICategoryDataService categoryDataService,
@@ -50,6 +48,11 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
         Categories = new ObservableCollection<CategoryViewModel>();
 
         AddCommand = new AsyncRelayCommand(AddProductAsync);
+    }
+
+    public void NavigateBack()
+    {
+        App.GetService<INavigationService>().GoBack();
     }
 
     public async Task AddProductAsync()
@@ -83,7 +86,7 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
                 Form.ImageFile?.Stream, Form.ImageFile?.FileName, Form.ImageFile?.ContentType);
 
             await _dialogService.ShowSuccessDialog("Successfully added product: " + request.Name, "Success");
-            NavigateBack?.Invoke(this, EventArgs.Empty);
+            NavigateBack();
         }
         catch (Exception ex)
         {

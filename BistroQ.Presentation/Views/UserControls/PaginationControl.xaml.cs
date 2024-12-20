@@ -6,13 +6,12 @@ using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using System.Diagnostics;
 
 namespace BistroQ.Presentation.Views.UserControls;
 
 public partial class PaginationControl : UserControl, IDisposable, IRecipient<PaginationChangedMessage>
 {
-    private bool _isDisposed;
+    private bool _isDisposed = false;
     private readonly IMessenger _messenger = App.GetService<IMessenger>();
 
     public static readonly DependencyProperty PaginationProperty = DependencyProperty.Register(
@@ -48,6 +47,8 @@ public partial class PaginationControl : UserControl, IDisposable, IRecipient<Pa
         LastPageCommand = new RelayCommand(LastPage, CanLastPage);
 
         _messenger.RegisterAll(this);
+
+        this.Unloaded += PaginationControl_Unloaded;
     }
     private static void OnPaginationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -67,12 +68,13 @@ public partial class PaginationControl : UserControl, IDisposable, IRecipient<Pa
 
     private void RowsPerPageSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        if (_isDisposed) return;
+
         if (sender is ComboBox comboBox && comboBox.SelectedItem is ComboBoxItem item)
         {
-            if (int.TryParse(item.Content.ToString(), out int pageSize))
+            if (int.TryParse(item.Content.ToString(), out int pageSize) && pageSize != Pagination.PageSize)
             {
                 _messenger.Send(new PageSizeChangedMessage(pageSize));
-                Debug.WriteLine("ABC");
                 Pagination.CurrentPage = 1;
             }
         }
@@ -100,7 +102,7 @@ public partial class PaginationControl : UserControl, IDisposable, IRecipient<Pa
 
     private void PaginationControl_Unloaded(object sender, RoutedEventArgs e)
     {
-        _messenger.UnregisterAll(this);
+        Dispose();
     }
 
     public void Receive(PaginationChangedMessage message)
@@ -117,9 +119,13 @@ public partial class PaginationControl : UserControl, IDisposable, IRecipient<Pa
 
     public void Dispose()
     {
+        if (_isDisposed) return;
         _isDisposed = true;
+
+        this.Unloaded -= PaginationControl_Unloaded;
         _messenger.UnregisterAll(this);
     }
+
     private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
     {
         (sender as UIElement)?.ChangeCursor(CursorType.Hand);

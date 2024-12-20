@@ -29,6 +29,7 @@ public partial class AdminZoneViewModel :
     private readonly IZoneDataService _zoneDataService;
     private readonly IMapper _mapper;
     private readonly IMessenger _messenger;
+    private bool _isDisposed = false;
 
     [ObservableProperty]
     private AdminZoneState state = new();
@@ -79,11 +80,12 @@ public partial class AdminZoneViewModel :
 
     public void OnNavigatedFrom()
     {
-        State.SelectedZone = null;
+        Dispose();
     }
 
     private async Task LoadDataAsync()
     {
+        if (State.IsLoading || _isDisposed) return;
         try
         {
             State.IsLoading = true;
@@ -187,6 +189,8 @@ public partial class AdminZoneViewModel :
 
     public void Dispose()
     {
+        if (_isDisposed) return;
+        _isDisposed = true;
         if (State != null)
         {
             State.PropertyChanged -= StatePropertyChanged;

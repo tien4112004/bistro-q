@@ -16,28 +16,17 @@ public sealed partial class AdminAccountAddPage : Page
         ViewModel = App.GetService<AdminAccountAddPageViewModel>();
         this.DataContext = ViewModel;
 
-        this.Loaded += AdminAccountAddPage_Loaded;
-        ViewModel.NavigateBack += OnNavigateBack;
-
-        Unloaded += (s, e) =>
-        {
-            ViewModel.NavigateBack -= OnNavigateBack;
-        };
-    }
-
-    private void AdminAccountAddPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        _ = ViewModel.LoadZonesAsync();
+        this.Unloaded += (s, e) => ViewModel.Dispose();
     }
 
     private void AdminAccountAddPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        Frame.GoBack();
+        ViewModel.NavigateBack();
     }
 
     private void OnNavigateBack(object sender, EventArgs e)
     {
-        Frame.GoBack();
+        ViewModel.NavigateBack();
     }
 
     private void AccountAddPage_UsernameTextBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)

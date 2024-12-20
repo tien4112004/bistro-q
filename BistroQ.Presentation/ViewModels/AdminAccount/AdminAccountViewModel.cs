@@ -28,6 +28,7 @@ public partial class AdminAccountViewModel :
     private readonly IAccountDataService _accountDataService;
     private readonly INavigationService _navigationService;
     private readonly IMessenger _messenger;
+    private bool _isDisposed = false;
 
     [ObservableProperty]
     private AdminAccountState state = new();
@@ -73,17 +74,17 @@ public partial class AdminAccountViewModel :
 
     public void OnNavigatedTo(object parameter)
     {
-        State.Reset();
         _ = LoadDataAsync();
     }
 
     public void OnNavigatedFrom()
     {
-        State.SelectedAccount = null;
+        Dispose();
     }
 
     private async Task LoadDataAsync()
     {
+        if (State.IsLoading || _isDisposed) return;
         try
         {
             State.IsLoading = true;
@@ -201,6 +202,8 @@ public partial class AdminAccountViewModel :
 
     public void Dispose()
     {
+        if (_isDisposed) return;
+        _isDisposed = true;
         if (State != null)
         {
             State.PropertyChanged -= StatePropertyChanged;

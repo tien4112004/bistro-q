@@ -29,6 +29,7 @@ public partial class AdminTableViewModel :
     private readonly ITableDataService _tableDataService;
     private readonly INavigationService _navigationService;
     private readonly IMessenger _messenger;
+    private bool _isDisposed = false;
 
     [ObservableProperty]
     private AdminTableState state = new();
@@ -78,11 +79,13 @@ public partial class AdminTableViewModel :
 
     public void OnNavigatedFrom()
     {
-        State.SelectedTable = null;
+        Dispose();
     }
 
     private async Task LoadDataAsync()
     {
+        if (State.IsLoading || _isDisposed) return;
+
         try
         {
             State.IsLoading = true;
@@ -198,6 +201,8 @@ public partial class AdminTableViewModel :
 
     public void Dispose()
     {
+        if (_isDisposed) return;
+        _isDisposed = true;
         if (State != null)
         {
             State.PropertyChanged -= StatePropertyChanged;

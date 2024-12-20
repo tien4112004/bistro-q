@@ -15,23 +15,16 @@ public sealed partial class AdminZoneAddPage : Page
         ViewModel = App.GetService<AdminZoneAddPageViewModel>();
         this.DataContext = ViewModel;
         this.InitializeComponent();
-
-        ViewModel.NavigateBack += OnNavigateBack;
-
-        Unloaded += (s, e) =>
-        {
-            ViewModel.NavigateBack -= OnNavigateBack;
-        };
     }
 
     private void AdminZoneAddPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        Frame.GoBack();
+        ViewModel.NavigateBack();
     }
 
     private void OnNavigateBack(object sender, EventArgs e)
     {
-        Frame.GoBack();
+        ViewModel.NavigateBack();
     }
 
     private void Name_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)

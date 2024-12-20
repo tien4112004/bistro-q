@@ -20,12 +20,6 @@ public sealed partial class AdminProductEditPage : Page
         this.DataContext = ViewModel;
 
         this.Loaded += AdminProductEditPage_Loaded;
-        ViewModel.NavigateBack += OnNavigateBack;
-
-        this.Unloaded += (s, e) =>
-        {
-            ViewModel.NavigateBack -= OnNavigateBack;
-        };
     }
 
     private async void AdminProductEditPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -36,12 +30,12 @@ public sealed partial class AdminProductEditPage : Page
 
     private void OnNavigateBack(object sender, EventArgs e)
     {
-        Frame.GoBack();
+        ViewModel.NavigateBack();
     }
 
     private void AdminProductEditPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        Frame.GoBack();
+        ViewModel.NavigateBack();
     }
 
     private void ProductEditPage_CategoryComboBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)

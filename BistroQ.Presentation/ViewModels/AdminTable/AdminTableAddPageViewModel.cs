@@ -21,8 +21,6 @@ public partial class AdminTableAddPageViewModel : ObservableRecipient
 
     public ObservableCollection<ZoneViewModel> Zones;
 
-    public event EventHandler NavigateBack;
-
     private readonly ITableDataService _tableDataService;
     private readonly IZoneDataService _zoneDataService;
     private readonly IDialogService _dialogService;
@@ -49,6 +47,11 @@ public partial class AdminTableAddPageViewModel : ObservableRecipient
         return !IsProcessing;
     }
 
+    public void NavigateBack()
+    {
+        App.GetService<INavigationService>().GoBack();
+    }
+
     public async Task AddTableAsync()
     {
         try
@@ -73,7 +76,7 @@ public partial class AdminTableAddPageViewModel : ObservableRecipient
             await _tableDataService.CreateTableAsync(request);
 
             await _dialogService.ShowSuccessDialog("Table added successfully.", "Success");
-            NavigateBack?.Invoke(this, EventArgs.Empty);
+            NavigateBack();
         }
         catch (Exception ex)
         {
