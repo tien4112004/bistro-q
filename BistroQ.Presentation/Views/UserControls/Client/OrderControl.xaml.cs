@@ -44,7 +44,7 @@ public sealed partial class OrderControl : UserControl, INotifyPropertyChanged
 
     private void OrderControl_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        ViewModel.LoadExistingOrderAsync();
+        _ = ViewModel.LoadExistingOrderAsync();
     }
 
     private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)

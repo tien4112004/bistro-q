@@ -23,6 +23,7 @@ public partial class OrderItemGridViewModel :
     private readonly IMapper _mapper;
     private readonly IOrderItemDataService _dataService;
     private readonly IDialogService _dialogService;
+    private bool _isDisposed;
 
     [ObservableProperty]
     private OrderItemGridState _state = new();
@@ -42,6 +43,7 @@ public partial class OrderItemGridViewModel :
 
     public async Task LoadItemsAsync()
     {
+        if (State.IsLoading || _isDisposed) return;
         try
         {
             State.IsLoading = true;
@@ -100,6 +102,9 @@ public partial class OrderItemGridViewModel :
 
     public void Dispose()
     {
+        if (_isDisposed) return;
+        _isDisposed = true;
+
         _messenger.UnregisterAll(this);
     }
 }

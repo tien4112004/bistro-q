@@ -38,6 +38,15 @@ public sealed partial class CartControl : UserControl, INotifyPropertyChanged
         }
 
         RemoveProductFromCartCommand = new RelayCommand<OrderItemViewModel>(RemoveProductFromCart);
+
+        this.Unloaded += (s, e) =>
+        {
+            ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+            if (ViewModel.CartItems != null)
+            {
+                ViewModel.CartItems.CollectionChanged -= CartItems_CollectionChanged;
+            }
+        };
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

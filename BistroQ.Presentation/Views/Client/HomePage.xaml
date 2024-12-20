@@ -56,7 +56,7 @@
             <TextBlock 
                 x:Name="EntryErrorTextBlock" 
                 Text="{x:Bind ViewModel.OrderCartViewModel.ErrorMessage, Mode=OneWay}"
-                Foreground="Red"
+                Foreground="{ThemeResource ErrorBaseColor}"
                 Margin="0,10,0,0"/>
         </StackPanel>
 
@@ -70,7 +70,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="7*" />
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="3*" MaxWidth="360" />
+                <ColumnDefinition Width="4*" MaxWidth="400" />
             </Grid.ColumnDefinitions>
 
             <!-- Product list section -->

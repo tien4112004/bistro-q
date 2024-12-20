@@ -14,7 +14,7 @@ public partial class KitchenHistoryViewModel : ObservableObject, INavigationAwar
 
     public void OnNavigatedTo(object parameter)
     {
-        OrderItemGridViewModel.LoadItemsAsync();
+        _ = OrderItemGridViewModel.LoadItemsAsync();
     }
 
     public void OnNavigatedFrom()

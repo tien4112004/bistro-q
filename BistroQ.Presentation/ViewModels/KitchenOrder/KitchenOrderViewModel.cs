@@ -56,26 +56,17 @@ public partial class KitchenOrderViewModel :
 
     public void OnNavigatedFrom()
     {
-        _messenger.UnregisterAll(this);
-        PendingColumnVM.Dispose();
-        ProgressColumnVM.Dispose();
-        KitchenOrderButtonsVM.Dispose();
+        Dispose();
     }
 
-    public void OnNavigatedTo(object parameter)
+    public async void OnNavigatedTo(object parameter)
     {
         PendingColumnVM.ColumnType = KitchenColumnType.Pending;
-        Task.Run(async () =>
-        {
-            await PendingColumnVM.LoadItems(OrderItemStatus.Pending);
-        });
+        await PendingColumnVM.LoadItems(OrderItemStatus.Pending);
         State.PendingItems = PendingColumnVM.Items;
 
         ProgressColumnVM.ColumnType = KitchenColumnType.InProgress;
-        Task.Run(async () =>
-        {
-            await ProgressColumnVM.LoadItems(OrderItemStatus.InProgress);
-        });
+        await ProgressColumnVM.LoadItems(OrderItemStatus.InProgress);
         State.ProgressItems = ProgressColumnVM.Items;
     }
 
@@ -93,15 +84,12 @@ public partial class KitchenOrderViewModel :
         KitchenOrderButtonsVM.UpdateStates(State.SelectedItems);
     }
 
-    public void Receive(KitchenActionMessage message)
+    public async void Receive(KitchenActionMessage message)
     {
         try
         {
             var strategy = _strategyFactory.GetStrategy(message.Action, State);
-            Task.Run(async () =>
-            {
-                await TaskHelper.WithMinimumDelay(strategy.ExecuteAsync(State.SelectedItems), 200);
-            });
+            await TaskHelper.WithMinimumDelay(strategy.ExecuteAsync(State.SelectedItems), 200);
         }
         catch (Exception ex)
         {

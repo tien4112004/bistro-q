@@ -213,6 +213,7 @@ public partial class OrderCartViewModel :
 
     public void Dispose()
     {
+        CartItems.CollectionChanged -= CartItems_CollectionChanged;
         _messenger.UnregisterAll(this);
     }
 }

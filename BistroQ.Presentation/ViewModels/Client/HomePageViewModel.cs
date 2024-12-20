@@ -1,6 +1,4 @@
-﻿using BistroQ.Domain.Contracts.Services;
-using BistroQ.Domain.Contracts.Services.Data;
-using BistroQ.Presentation.Contracts.Services;
+﻿using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -16,11 +14,7 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
 
     public ICommand AddProductToCartCommand { get; private set; }
 
-    public HomePageViewModel(
-        IDialogService dialogService,
-        IOrderDataService orderDataService,
-        ICategoryDataService categoryService,
-        IProductDataService productService)
+    public HomePageViewModel()
     {
         ProductListViewModel = App.GetService<ProductListViewModel>();
         OrderCartViewModel = App.GetService<OrderCartViewModel>();
@@ -32,17 +26,17 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
     {
     }
 
-    public void OnNavigatedTo(object parameter)
+    public async void OnNavigatedTo(object parameter)
     {
         try
         {
-            Task.Run(OrderCartViewModel.LoadExistingOrderAsync);
+            await OrderCartViewModel.LoadExistingOrderAsync();
         }
         catch (Exception e)
         {
             if (e.Message != "Order not found")
             {
-                App.GetService<IDialogService>().ShowDialogAsync(new Microsoft.UI.Xaml.Controls.ContentDialog
+                await App.GetService<IDialogService>().ShowDialogAsync(new Microsoft.UI.Xaml.Controls.ContentDialog
                 {
                     Title = "Error starting order",
                     Content = e.Message,
