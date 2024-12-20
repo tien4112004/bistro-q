@@ -89,10 +89,11 @@
                             VerticalAlignment="Center"/>
                         <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Orientation="Horizontal">
                             <FontIcon Margin="0,2,0,0" Glyph="&#xE823;" FontSize="12" />
-                            <TextBlock Margin="4,0,0,0" 
-                                       Text="{x:Bind CreatedAt, Mode=OneWay, Converter={StaticResource DateTimeToTime}, 
-                                       ConverterParameter=HH:mm}" 
-                                       FontSize="12" />
+                            <TextBlock 
+                                Margin="4,0,0,0" 
+                                Text="{x:Bind CreatedAt, Mode=OneWay, Converter={StaticResource DateTimeToTime}, 
+                                    ConverterParameter=HH:mm}" 
+                                FontSize="12" />
                         </StackPanel>
                     </Grid>
                 </StackPanel>
