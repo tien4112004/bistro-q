@@ -4,7 +4,6 @@ using BistroQ.Presentation.ViewModels.AdminProduct;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Navigation;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
 
@@ -20,18 +19,12 @@ public sealed partial class AdminProductAddPage : Page
         this.DataContext = ViewModel;
         this.InitializeComponent();
 
-        this.Loaded += AdminProductAddPage_Loaded;
         ViewModel.NavigateBack += OnNavigateBack;
 
         Unloaded += (s, e) =>
         {
             ViewModel.NavigateBack -= OnNavigateBack;
         };
-    }
-
-    private void AdminProductAddPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        _ = ViewModel.LoadCategoriesAsync();
     }
 
     private void AdminProductAddPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -42,11 +35,6 @@ public sealed partial class AdminProductAddPage : Page
     private void OnNavigateBack(object sender, EventArgs e)
     {
         Frame.GoBack();
-    }
-
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        base.OnNavigatedTo(e);
     }
 
     private async void ProductAddPage_SelectImageButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

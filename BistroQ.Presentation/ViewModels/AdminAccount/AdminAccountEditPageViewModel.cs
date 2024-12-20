@@ -185,19 +185,18 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         }
     }
 
-    public void OnNavigatedTo(object parameter)
+    public async void OnNavigatedTo(object parameter)
     {
         if (parameter is AccountViewModel account)
         {
             Account = account;
-            Task.Run(LoadZonesAsync);
+            Debug.WriteLine("Befor loading zones...");
+            await LoadZonesAsync();
+            Debug.WriteLine("After loading zones...");
 
             if (Account.TableId != null)
             {
-                Task.Run(async () =>
-                {
-                    await LoadTablesAsync(account.ZoneId ?? 0);
-                });
+                await LoadTablesAsync(account.ZoneId ?? 0);
                 Form = new AddAccountForm
                 {
                     Username = account.Username,
@@ -222,5 +221,12 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
 
     public void OnNavigatedFrom()
     {
+        this.PropertyChanged -= (s, e) =>
+        {
+            if (e.PropertyName == nameof(Form.ZoneId) && Form.ZoneId.HasValue)
+            {
+                _ = LoadTablesAsync(Form.ZoneId.Value);
+            }
+        };
     }
 }

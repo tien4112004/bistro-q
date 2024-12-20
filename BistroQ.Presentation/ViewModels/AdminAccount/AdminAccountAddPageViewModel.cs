@@ -4,6 +4,7 @@ using BistroQ.Domain.Dtos.Account;
 using BistroQ.Domain.Dtos.Tables;
 using BistroQ.Domain.Dtos.Zones;
 using BistroQ.Presentation.Contracts.Services;
+using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Models;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -12,7 +13,7 @@ using System.Collections.ObjectModel;
 
 namespace BistroQ.Presentation.ViewModels.AdminAccount;
 
-public partial class AdminAccountAddPageViewModel : ObservableRecipient
+public partial class AdminAccountAddPageViewModel : ObservableRecipient, INavigationAware
 {
     [ObservableProperty]
     private bool _isProcessing = false;
@@ -154,5 +155,20 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient
             await _dialogService.ShowErrorDialog(ex.Message, "Error");
             IsTableSelectionEnabled = false;
         }
+    }
+
+    public void OnNavigatedTo(object parameter)
+    {
+    }
+
+    public void OnNavigatedFrom()
+    {
+        this.PropertyChanged -= (s, e) =>
+        {
+            if (e.PropertyName == nameof(SelectedZoneId) && SelectedZoneId.HasValue)
+            {
+                _ = LoadTablesAsync(SelectedZoneId.Value);
+            }
+        };
     }
 }

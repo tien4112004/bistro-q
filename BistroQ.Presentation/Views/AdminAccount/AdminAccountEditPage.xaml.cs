@@ -1,10 +1,8 @@
 ﻿using BistroQ.Presentation.Helpers;
 using BistroQ.Presentation.ViewModels.AdminAccount;
-using BistroQ.Presentation.ViewModels.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Navigation;
 
 namespace BistroQ.Presentation.Views.AdminAccount;
 
@@ -24,17 +22,6 @@ public sealed partial class AdminAccountEditPage : Page
         {
             ViewModel.NavigateBack -= OnNavigateBack;
         };
-    }
-
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        var accountDto = e.Parameter as AccountViewModel;
-        if (accountDto != null)
-        {
-            ViewModel.Account = accountDto;
-        }
-
-        base.OnNavigatedTo(e);
     }
 
     private void AdminAccountEditPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
