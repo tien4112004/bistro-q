@@ -5,20 +5,87 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BistroQ.Presentation.Views.UserControls.Client"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:converters="using:BistroQ.Presentation.Converters"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI"
     mc:Ignorable="d">
 
-    <Grid>
-        <StackPanel>
-            <TextBlock Text="{Binding Name}" FontSize="24" FontWeight="Bold"/>
-            <TextBlock Text="{Binding Price}" FontSize="18"/>
-            <TextBlock Text="{Binding Unit}" FontSize="18"/>
-            <Image Source="{Binding ImageUrl}" Height="200"/>
-            <TextBlock Text="Nutrition Facts:" FontSize="18" FontWeight="Bold"/>
-            <TextBlock Text="{Binding NutritionFact.Calories}" FontSize="16"/>
-            <TextBlock Text="{Binding NutritionFact.Fat}" FontSize="16"/>
-            <TextBlock Text="{Binding NutritionFact.Fiber}" FontSize="16"/>
-            <TextBlock Text="{Binding NutritionFact.Protein}" FontSize="16"/>
+    <UserControl.Resources>
+        <converters:NumberToCurrencyConverter x:Key="NumberToCurreny"/>
+        <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </UserControl.Resources>
+
+    <ScrollView Width="480">
+        <StackPanel Padding="8" Margin="0,0,0,16">
+            <Image Source="{x:Bind ViewModel.ImageUrl}" Height="250" Margin="0,0,0,20" />
+            <TextBlock Text="{x:Bind ViewModel.Name}" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,4" />
+            <TextBlock Margin="0,4,0,20">
+               <Run
+                   Text="{x:Bind ViewModel.Price, Mode=OneWay, Converter={StaticResource NumberToCurreny}}"
+                   FontSize="20"
+                   FontWeight="SemiBold"/>
+               <Run
+                   Text=" / "
+                   FontSize="16"
+                   Foreground="{ThemeResource TextFillColorTertiary}"/>
+               <Run
+                   Text="{x:Bind ViewModel.Unit, Mode=OneWay}"
+                   FontSize="16"
+                   Foreground="{ThemeResource TextFillColorTertiary}"/>
+            </TextBlock>
+            <TextBlock Text="Nutrition Facts" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,8"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="60"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="0" Grid.Column="0">
+                        <TextBlock Text="Calories" FontSize="16" FontWeight="Bold"          
+                                   Margin="4,0,0,0" Padding="4" />
+                    </Border>
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="0" Grid.Column="1">
+                        <TextBlock Text="{x:Bind ViewModel.NutritionFact.Calories}" FontSize="16" 
+                                   Margin="4,0,0,0" Padding="4" />
+                    </Border>
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="1" Grid.Column="0">
+                        <TextBlock Text="Fat" FontSize="16" FontWeight="Bold" 
+                                   Margin="4,0,0,0" Padding="4" />
+                    </Border>
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="1" Grid.Column="1">
+                        <TextBlock Text="{x:Bind ViewModel.NutritionFact.Fat}" FontSize="16" 
+                                   Margin="4,0,0,0" Padding="4" />
+                    </Border>
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="2" Grid.Column="0">
+                        <TextBlock Text="Fiber" FontSize="16" FontWeight="Bold" 
+                                   Margin="4,0,0,0" Padding="4" />
+                    </Border>
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="2" Grid.Column="1">
+                        <TextBlock Text="{x:Bind ViewModel.NutritionFact.Fiber}" FontSize="16" 
+                                   Margin="4,0,0,0" Padding="4" />
+                    </Border>
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="3" Grid.Column="0">
+                        <TextBlock Text="Protein" FontSize="16" FontWeight="Bold" 
+                                   Margin="4,0,0,0" Padding="4" />
+                    </Border>
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="3" Grid.Column="1">
+                        <TextBlock Text="{x:Bind ViewModel.NutritionFact.Protein}" FontSize="16" 
+                                   Margin="4,0,0,0" Padding="4" />
+                    </Border>
+                </Grid>
+                <lvc:PieChart Series="{x:Bind ChartViewModel.Series, Mode=OneWay}" Grid.Column="1" Width="200" Height="200">
+                </lvc:PieChart>
+            </Grid>
         </StackPanel>
-    </Grid>
+    </ScrollView>
 </UserControl>

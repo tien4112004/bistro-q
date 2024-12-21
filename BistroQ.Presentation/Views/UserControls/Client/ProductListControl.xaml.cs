@@ -96,6 +96,7 @@ public sealed partial class ProductListControl : UserControl
                 Title = e.Name,
                 CloseButtonText = "Close",
                 PrimaryButtonText = "Add to cart",
+                DefaultButton = ContentDialogButton.Primary
             };
             await _dialogService.ShowDialogAsync(productDetailDialog);
             //if (dialogResult == DialogResult.OK)
