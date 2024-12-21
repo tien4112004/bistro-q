@@ -1,7 +1,6 @@
 ﻿using BistroQ.Domain.Contracts.Services.Data;
 using BistroQ.Domain.Dtos.Category;
 using BistroQ.Presentation.Contracts.Services;
-using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -9,7 +8,7 @@ using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminCategory;
 
-public partial class AdminCategoryAddPageViewModel : ObservableRecipient, INavigationAware
+public partial class AdminCategoryAddPageViewModel : ObservableRecipient
 {
     [ObservableProperty]
     private bool _isProcessing = false;
@@ -23,8 +22,6 @@ public partial class AdminCategoryAddPageViewModel : ObservableRecipient, INavig
 
     public ICommand AddCommand { get; }
 
-    public event EventHandler NavigateBack;
-
     public AdminCategoryAddPageViewModel(ICategoryDataService categoryDataService, IDialogService dialogService)
     {
         _categoryDataService = categoryDataService;
@@ -33,6 +30,10 @@ public partial class AdminCategoryAddPageViewModel : ObservableRecipient, INavig
         AddCommand = new AsyncRelayCommand(AddCategoryAsync);
     }
 
+    public void NavigateBack()
+    {
+        App.GetService<INavigationService>().GoBack();
+    }
 
     public async Task AddCategoryAsync()
     {
@@ -55,7 +56,7 @@ public partial class AdminCategoryAddPageViewModel : ObservableRecipient, INavig
             await _categoryDataService.CreateCategoryAsync(request);
 
             await _dialogService.ShowErrorDialog("Successfully added category: " + request.Name, "Success");
-            NavigateBack?.Invoke(this, EventArgs.Empty);
+            NavigateBack();
         }
         catch (Exception ex)
         {
@@ -66,14 +67,5 @@ public partial class AdminCategoryAddPageViewModel : ObservableRecipient, INavig
         {
             IsProcessing = false;
         }
-    }
-
-    public void OnNavigatedTo(object parameter)
-    {
-        Form.ClearErrors();
-    }
-
-    public void OnNavigatedFrom()
-    {
     }
 }

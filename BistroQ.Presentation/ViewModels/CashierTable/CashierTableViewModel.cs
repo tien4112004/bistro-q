@@ -27,13 +27,14 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware,
         _messenger.RegisterAll(this);
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public async Task OnNavigatedTo(object parameter)
     {
         await ZoneOverviewVM.InitializeAsync();
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
+        return Task.CompletedTask;
     }
 
     public void Receive(CheckoutRequestedMessage message)

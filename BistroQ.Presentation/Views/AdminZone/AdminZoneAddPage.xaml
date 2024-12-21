@@ -11,7 +11,7 @@
     mc:Ignorable="d"
     Background="Transparent">
 
-<Page.Resources>
+    <Page.Resources>
         <converter:ReverseBooleanConverter x:Key="ReverseBool"/>
         <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
         <converter:StringToVisibilityConverter x:Key="StringToVisibility"/>
@@ -25,57 +25,78 @@
         </Grid.RowDefinitions>
 
         <!-- Add zone form -->
-        <StackPanel Orientation="Vertical" Background="Transparent">
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                <TextBox x:Name="Name"
-                         x:Uid="ZoneNameTextBox"
-                         GettingFocus="Name_GettingFocus"
-                         Text="{x:Bind ViewModel.Form.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Width="300" />
-                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+        <StackPanel 
+            Orientation="Vertical" 
+            Background="Transparent">
+            <StackPanel 
+                Orientation="Vertical" 
+                HorizontalAlignment="Left">
+                <!-- Zone name input -->
+                <TextBox 
+                    x:Name="Name"
+                    x:Uid="ZoneNameTextBox"
+                    GettingFocus="Name_GettingFocus"
+                    Text="{x:Bind ViewModel.Form.Name, Mode=TwoWay, 
+                           UpdateSourceTrigger=PropertyChanged}"
+                    Width="300" />
+
+                <!-- Validation error message -->
+                <TextBlock 
+                    Text="{x:Bind ViewModel.Form.Errors, 
                            Mode=OneWay, 
                            Converter={StaticResource FirstError},
                            ConverterParameter=Name}"
-                           Margin="0,8,0,0"
-                           Foreground="Red"/>
+                    Margin="0,8,0,0"
+                    Foreground="{ThemeResource ErrorBaseColor}"/>
+
+                <!-- General error message -->
                 <TextBlock
-                        Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ErrorMessage, 
-                                    Mode=OneWay, 
-                                    Converter={StaticResource StringToVisibility}}"
-                        Foreground="Red"
-                        TextWrapping="Wrap"/>
+                    Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.ErrorMessage, 
+                               Mode=OneWay, 
+                               Converter={StaticResource StringToVisibility}}"
+                    Foreground="{ThemeResource ErrorBaseColor}"
+                    TextWrapping="Wrap"/>
             </StackPanel>
         </StackPanel>
-        
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Style="{StaticResource AccentButtonStyle}" Width="80"
-                    Command="{x:Bind ViewModel.AddCommand}"
-                    IsEnabled="{x:Bind ViewModel.IsProcessing, 
-                                Mode=OneWay,
-                                Converter={StaticResource ReverseBool}}"
-                    Margin="0,0,16,0">
+
+        <!-- Action buttons -->
+        <StackPanel 
+            Orientation="Horizontal" 
+            HorizontalAlignment="Right">
+            <!-- Add button -->
+            <Button 
+                Style="{ThemeResource AccentButtonStyle}" 
+                Width="80"
+                Command="{x:Bind ViewModel.AddCommand}"
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
+                IsEnabled="{x:Bind ViewModel.IsProcessing, 
+                           Mode=OneWay,
+                           Converter={StaticResource ReverseBool}}"
+                Margin="0,0,16,0">
                 <Grid>
                     <control:ProgressRing
-                             IsActive="{x:Bind ViewModel.IsProcessing, Mode=OneWay}"
-                             Foreground="White"
-                             Width="20"
-                             Height="20"/>
-
+                        IsActive="{x:Bind ViewModel.IsProcessing, Mode=OneWay}"
+                        Width="20"
+                        Height="20"/>
                     <TextBlock 
-                            x:Uid="AdminZoneAddPage_AddButtonText" 
-                            Visibility="{x:Bind ViewModel.IsProcessing, 
-                                        Mode=OneWay, 
-                                        Converter ={StaticResource BoolToVisibility}, 
-                                        ConverterParameter=invert}"
-                            />
+                        x:Uid="AdminZoneAddPage_AddButtonText" 
+                        Visibility="{x:Bind ViewModel.IsProcessing, 
+                                   Mode=OneWay, 
+                                   Converter={StaticResource BoolToVisibility}, 
+                                   ConverterParameter=invert}"/>
                 </Grid>
             </Button>
-                <Button x:Name="AdminZoneAddPage_CancelButton"
-                    x:Uid="CancelButton" Width="80" 
-                    Click="AdminZoneAddPage_CancelButton_Click"
-                    />
-        </StackPanel>
 
+            <!-- Cancel button -->
+            <Button 
+                x:Name="AdminZoneAddPage_CancelButton"
+                x:Uid="CancelButton" 
+                Width="80"
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
+                Click="AdminZoneAddPage_CancelButton_Click"/>
+        </StackPanel>
     </Grid>
 </Page>

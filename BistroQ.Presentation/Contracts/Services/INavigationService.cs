@@ -1,4 +1,4 @@
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
 namespace BistroQ.Presentation.Contracts.Services;
@@ -17,7 +17,7 @@ public interface INavigationService
         get; set;
     }
 
-    bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false);
+    Task<bool> NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false);
 
-    bool GoBack();
+    Task<bool> GoBack();
 }

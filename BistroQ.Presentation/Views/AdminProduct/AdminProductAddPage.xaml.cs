@@ -1,7 +1,9 @@
-﻿using BistroQ.Presentation.Models;
+﻿using BistroQ.Presentation.Helpers;
+using BistroQ.Presentation.Models;
 using BistroQ.Presentation.ViewModels.AdminProduct;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml.Input;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
 
@@ -16,34 +18,16 @@ public sealed partial class AdminProductAddPage : Page
         ViewModel = App.GetService<AdminProductAddPageViewModel>();
         this.DataContext = ViewModel;
         this.InitializeComponent();
-
-        this.Loaded += AdminProductAddPage_Loaded;
-        ViewModel.NavigateBack += OnNavigateBack;
-
-        Unloaded += (s, e) =>
-        {
-            ViewModel.NavigateBack -= OnNavigateBack;
-        };
-    }
-
-    private async void AdminProductAddPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        await ViewModel.LoadCategoriesAsync();
     }
 
     private void AdminProductAddPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        Frame.GoBack();
+        ViewModel.NavigateBack();
     }
 
     private void OnNavigateBack(object sender, EventArgs e)
     {
-        Frame.GoBack();
-    }
-
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        base.OnNavigatedTo(e);
+        ViewModel.NavigateBack();
     }
 
     private async void ProductAddPage_SelectImageButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -111,5 +95,15 @@ public sealed partial class AdminProductAddPage : Page
     private void ProductAddPage_ProteinNumberBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
     {
         ViewModel.Form.ResetError(nameof(ViewModel.Form.Calories));
+    }
+
+    private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Hand);
+    }
+
+    private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
     }
 }

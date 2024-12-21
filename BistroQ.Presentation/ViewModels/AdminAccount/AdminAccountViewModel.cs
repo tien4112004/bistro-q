@@ -28,6 +28,7 @@ public partial class AdminAccountViewModel :
     private readonly IAccountDataService _accountDataService;
     private readonly INavigationService _navigationService;
     private readonly IMessenger _messenger;
+    private bool _isDisposed = false;
 
     [ObservableProperty]
     private AdminAccountState state = new();
@@ -71,18 +72,20 @@ public partial class AdminAccountViewModel :
         }
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public async Task OnNavigatedTo(object parameter)
     {
         await LoadDataAsync();
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
-        State.SelectedAccount = null;
+        Dispose();
+        return Task.CompletedTask;
     }
 
     private async Task LoadDataAsync()
     {
+        if (State.IsLoading || _isDisposed) return;
         try
         {
             State.IsLoading = true;
@@ -115,6 +118,7 @@ public partial class AdminAccountViewModel :
         if (State.SelectedAccount?.UserId != null)
         {
             _navigationService.NavigateTo(typeof(AdminAccountEditPageViewModel).FullName, State.SelectedAccount);
+            Dispose();
         }
     }
 
@@ -185,21 +189,23 @@ public partial class AdminAccountViewModel :
         _ = LoadDataAsync();
     }
 
-    public async void Receive(CurrentPageChangedMessage message)
+    public void Receive(CurrentPageChangedMessage message)
     {
         State.Query.Page = message.NewCurrentPage;
-        await LoadDataAsync();
+        _ = LoadDataAsync();
     }
 
-    public async void Receive(PageSizeChangedMessage message)
+    public void Receive(PageSizeChangedMessage message)
     {
         State.Query.Size = message.NewPageSize;
         State.ReturnToFirstPage();
-        await LoadDataAsync();
+        _ = LoadDataAsync();
     }
 
     public void Dispose()
     {
+        if (_isDisposed) return;
+        _isDisposed = true;
         if (State != null)
         {
             State.PropertyChanged -= StatePropertyChanged;

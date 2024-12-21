@@ -4,18 +4,23 @@ using BistroQ.Domain.Dtos.Account;
 using BistroQ.Domain.Dtos.Tables;
 using BistroQ.Domain.Dtos.Zones;
 using BistroQ.Presentation.Contracts.Services;
+using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Models;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.AdminAccount;
 
-public partial class AdminAccountAddPageViewModel : ObservableRecipient
+public partial class AdminAccountAddPageViewModel : ObservableRecipient, INavigationAware, IDisposable
 {
     [ObservableProperty]
     private bool _isProcessing = false;
+
+    private bool _isDisposed = false;
 
     [ObservableProperty]
     private AddAccountForm _form = new();
@@ -34,8 +39,6 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient
     public ObservableCollection<ZoneViewModel> Zones;
     public ObservableCollection<TableViewModel> Tables;
     public ObservableCollection<string> Roles;
-
-    public event EventHandler NavigateBack;
 
     private readonly IAccountDataService _accountDataService;
     private readonly IZoneDataService _zoneDataService;
@@ -64,13 +67,27 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient
 
         AddCommand = new AsyncRelayCommand(AddAccountAsync);
 
-        this.PropertyChanged += (s, e) =>
+        this.PropertyChanged += OnPropertyChanged;
+    }
+
+    private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(SelectedZoneId) && SelectedZoneId.HasValue)
         {
-            if (e.PropertyName == nameof(SelectedZoneId) && SelectedZoneId.HasValue)
+            try
             {
-                _ = LoadTablesAsync(SelectedZoneId.Value);
+                await LoadTablesAsync(SelectedZoneId.Value);
             }
-        };
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.StackTrace);
+            }
+        }
+    }
+
+    public void NavigateBack()
+    {
+        App.GetService<INavigationService>().GoBack();
     }
 
     public async Task AddAccountAsync()
@@ -97,7 +114,7 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient
             await _accountDataService.CreateAccountAsync(request);
 
             await _dialogService.ShowSuccessDialog("Account added successfully.", "Success");
-            NavigateBack?.Invoke(this, EventArgs.Empty);
+            NavigateBack();
         }
         catch (Exception ex)
         {
@@ -154,5 +171,24 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient
             await _dialogService.ShowErrorDialog(ex.Message, "Error");
             IsTableSelectionEnabled = false;
         }
+    }
+
+    public async Task OnNavigatedTo(object parameter)
+    {
+        await LoadZonesAsync();
+    }
+
+    public Task OnNavigatedFrom()
+    {
+        Dispose();
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        if (_isDisposed) return;
+        _isDisposed = true;
+
+        this.PropertyChanged -= OnPropertyChanged;
     }
 }

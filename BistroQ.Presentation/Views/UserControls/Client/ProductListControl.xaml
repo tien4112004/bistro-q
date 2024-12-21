@@ -6,51 +6,65 @@
     xmlns:local="using:BistroQ.Presentation.Views.UserControls.Client"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:converters="using:BistroQ.Presentation.Converters" 
+    xmlns:converters="using:BistroQ.Presentation.Converters"
     xmlns:entities="using:BistroQ.Presentation.ViewModels.Models"
     mc:Ignorable="d">
 
     <UserControl.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-        <converters:ReverseBooleanConverter x:Key="ReverseBool" />
+        <converters:ReverseBooleanConverter x:Key="ReverseBool"/>
         <converters:NumberToCurrencyConverter x:Key="NumberToCurreny"/>
 
-        <DataTemplate x:Key="CategoryItem" x:DataType="entities:CategoryViewModel">
-            <TextBlock Text="{x:Bind Name}" 
-                       TextWrapping="WrapWholeWords" 
-                       TextTrimming="CharacterEllipsis"
-                       MaxLines="2"
-                       Style="{StaticResource BodyStrongTextBlockStyle}"
-                       FontSize="16"
-                       Height="68"
-                       VerticalAlignment="Center"
-                       Padding="12"/>
+        <!-- Category Template -->
+        <DataTemplate
+            x:Key="CategoryItem"
+            x:DataType="entities:CategoryViewModel">
+            <TextBlock
+                Text="{x:Bind Name}"
+                Style="{StaticResource BodyStrongTextBlockStyle}"
+                TextWrapping="WrapWholeWords"
+                TextTrimming="CharacterEllipsis"
+                MaxLines="2"
+                FontSize="16"
+                Height="68"
+                VerticalAlignment="Center"
+                Padding="12"/>
         </DataTemplate>
 
-        <DataTemplate x:Key="SingleProductDataTemplate"
-                      x:DataType="entities:ProductViewModel">
+        <!-- Product Template -->
+        <DataTemplate
+            x:Key="SingleProductDataTemplate"
+            x:DataType="entities:ProductViewModel">
             <local:SingleProductControl Product="{x:Bind Mode=OneWay}"/>
         </DataTemplate>
     </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <TextBlock x:Uid="ClientHomePage_ProductListTitle" 
-                       Style="{StaticResource SubtitleTextBlockStyle}" 
-                       VerticalAlignment="Center" 
-                       Margin="0,0,16,2" />
-            <ScrollViewer 
-                    x:Name="ScrollViewer" 
-                    HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollMode="Disabled"
-                    ManipulationMode="System,TranslateX"
-                    ManipulationDelta="HorizontalScrollViewer_ManipulationDelta">
+        <!-- Header Section -->
+        <StackPanel
+            Grid.Row="0"
+            Margin="0,0,0,10"
+            Orientation="Horizontal">
+            <TextBlock
+                x:Uid="ClientHomePage_ProductListTitle"
+                Style="{StaticResource SubtitleTextBlockStyle}"
+                VerticalAlignment="Center"
+                Margin="0,0,16,2"/>
+
+            <!-- Category List -->
+            <ScrollViewer
+                x:Name="ScrollViewer"
+                HorizontalScrollMode="Enabled"
+                HorizontalScrollBarVisibility="Auto"
+                VerticalScrollMode="Disabled"
+                ManipulationMode="System,TranslateX"
+                ManipulationDelta="HorizontalScrollViewer_ManipulationDelta">
                 <ListView
                     ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
                     SelectedItem="{x:Bind ViewModel.SelectedCategory, Mode=TwoWay}"
@@ -64,6 +78,7 @@
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
 
+                    <!-- Category Item Style -->
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Padding" Value="16,2"/>
@@ -73,30 +88,32 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListViewItem">
                                         <ListViewItemPresenter
-                                            ContentTransitions="{TemplateBinding ContentTransitions}"
-                                            SelectionCheckMarkVisualEnabled="True"
-                                            CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
-                                            CheckBoxBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
-                                            DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
-                                            DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
-                                            FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}"
-                                            FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}"
-                                            PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
-                                            PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
-                                            PointerOverForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
-                                            SelectedBackground="{ThemeResource AccentAcrylicBackgroundFillColorDefaultBrush}"
-                                            SelectedForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
-                                            SelectedPointerOverBackground="{ThemeResource AccentFillColorTertiaryBrush}"
-                                            PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
-                                            SelectedPressedBackground="{ThemeResource AccentFillColorTertiaryBrush}"
-                                            DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
-                                            DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
-                                            ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
-                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            CornerRadius="4,4,4,4"
-                                            ContentMargin="{TemplateBinding Padding}"
-                                            CheckMode="Inline"/>
+                                             ContentTransitions="{TemplateBinding ContentTransitions}"
+                                             SelectionCheckMarkVisualEnabled="True"
+                                             CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+                                             CheckBoxBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+                                             DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+                                             DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
+                                             FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}"
+                                             FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                                             PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
+                                             PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
+                                             PointerOverForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
+                                             SelectedBackground="{ThemeResource SystemAccentColorLight2}"
+                                             SelectedForeground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                                             SelectedPointerOverBackground="{ThemeResource AccentFillColorTertiaryBrush}"
+                                             PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
+                                             SelectedPressedBackground="{ThemeResource AccentFillColorTertiaryBrush}"
+                                             DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                             DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                             ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                             HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                             VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                             PointerEntered="Button_PointerEntered"
+                                             PointerExited="Button_PointerExited"   
+                                             CornerRadius="4,4,4,4"
+                                             ContentMargin="{TemplateBinding Padding}"
+                                             CheckMode="Inline"/>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
@@ -105,80 +122,95 @@
 
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="entities:CategoryViewModel">
-                            <TextBlock 
-                                Text="{x:Bind Name}" 
-                                Style="{ThemeResource BodyStrongTextBlockStyle}"
-                                Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+                            <TextBlock
+                                Text="{x:Bind Name}"
+                                Style="{ThemeResource BodyStrongTextBlockStyle}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </ScrollViewer>
         </StackPanel>
 
-
-        <ScrollViewer Grid.Row="2"
-                      VerticalScrollMode="Enabled"
-                      VerticalScrollBarVisibility="Hidden"
-                      ManipulationMode="System,TranslateY"
-                      ManipulationDelta="VerticalScrollViewer_ManipulationDelta">
+        <!-- Product Grid Section -->
+        <ScrollViewer
+            Grid.Row="2"
+            VerticalScrollMode="Enabled"
+            VerticalScrollBarVisibility="Hidden"
+            ManipulationMode="System,TranslateY"
+            ManipulationDelta="VerticalScrollViewer_ManipulationDelta">
             <StackPanel>
-                <ProgressRing IsActive="{x:Bind ViewModel.IsLoadingProduct, Mode=OneWay}"
-                                VerticalAlignment="Center" HorizontalAlignment="Center"
-                                Width="80" Height="80"
-                                Margin="0,0,0,16"
-                                Visibility="{x:Bind ViewModel.IsLoadingProduct, 
-                                                Mode=OneWay,
-                                                Converter={StaticResource BoolToVisibility}}" />
-                <TextBlock Text="There is no product available." 
-                           Margin="0,16,0,0" 
-                           Visibility="{x:Bind ViewModel.IsEmptyList, Mode=OneWay, Converter={StaticResource BoolToVisibility}}" />
-                <GridView x:Name="ProductList"
-                          ItemsSource="{x:Bind ViewModel.Products, Mode=OneWay}"
-                          ItemTemplate="{StaticResource SingleProductDataTemplate}"
-                          SelectedItem="{x:Bind ViewModel.SelectedProduct, Mode=OneWay}"
-                          HorizontalAlignment="Center"
-                          HorizontalContentAlignment="Center">
+                <!-- Loading Indicator -->
+                <ProgressRing
+                    IsActive="{x:Bind ViewModel.IsLoadingProduct, Mode=OneWay}"
+                    Width="80"
+                    Height="80"
+                    Margin="0,0,0,16"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Visibility="{x:Bind ViewModel.IsLoadingProduct, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
+
+                <!-- Empty State Message -->
+                <TextBlock
+                    Text="There is no product available."
+                    Margin="0,16,0,0"
+                    Visibility="{x:Bind ViewModel.IsEmptyList, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
+
+                <!-- Product Grid -->
+                <GridView
+                    x:Name="ProductList"
+                    ItemsSource="{x:Bind ViewModel.Products, Mode=OneWay}"
+                    SelectedItem="{x:Bind ViewModel.SelectedProduct, Mode=OneWay}"
+                    ItemTemplate="{StaticResource SingleProductDataTemplate}"
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center">
                     <GridView.ItemContainerStyle>
-                        <Style TargetType="GridViewItem" BasedOn="{StaticResource DefaultGridViewItemStyle}">
+                        <Style
+                            TargetType="GridViewItem"
+                            BasedOn="{StaticResource DefaultGridViewItemStyle}">
                             <Setter Property="Margin" Value="6"/>
-                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="Padding" Value="0"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="GridViewItem">
                                         <GridViewItemPresenter
-                                            SelectionCheckMarkVisualEnabled="True"
-                                            CheckHintBrush="{ThemeResource ListViewItemCheckHintThemeBrush}"
-                                            CheckSelectingBrush="{ThemeResource ListViewItemCheckSelectingThemeBrush}"
-                                            CheckBrush="{ThemeResource ListViewItemCheckThemeBrush}"
-                                            DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
-                                            DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
-                                            FocusBorderBrush="{ThemeResource ListViewItemFocusBorderThemeBrush}"
-                                            PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
-                                            PointerOverBackground="{ThemeResource ListViewItemPointerOverBackgroundThemeBrush}"
-                                            SelectedBorderThickness="{ThemeResource GridViewItemSelectedBorderThickness}"
-                                            SelectedBackground="{ThemeResource AccentAcrylicBackgroundFillColorDefaultBrush}"
-                                            SelectedForeground="{ThemeResource ListViewItemSelectedForegroundThemeBrush}"
-                                            SelectedPointerOverBackground="{ThemeResource AccentAcrylicBackgroundFillColorBaseBrush}"
-                                            DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
-                                            DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
-                                            ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
-                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            PointerOverBackgroundMargin="1"
-                                            ContentMargin="0"
-                                            CornerRadius="10"
-                                       />
+                                             SelectionCheckMarkVisualEnabled="True"
+                                             CheckHintBrush="{ThemeResource ListViewItemCheckHintThemeBrush}"
+                                             CheckSelectingBrush="{ThemeResource ListViewItemCheckSelectingThemeBrush}"
+                                             CheckBrush="{ThemeResource ListViewItemCheckThemeBrush}"
+                                             DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+                                             DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
+                                             FocusBorderBrush="{ThemeResource ListViewItemFocusBorderThemeBrush}"
+                                             PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
+                                             PointerOverBackground="{ThemeResource ListViewItemPointerOverBackgroundThemeBrush}"
+                                             SelectedBorderThickness="{ThemeResource GridViewItemSelectedBorderThickness}"
+                                             SelectedBackground="{ThemeResource AccentAcrylicBackgroundFillColorDefaultBrush}"
+                                             SelectedForeground="{ThemeResource ListViewItemSelectedForegroundThemeBrush}"
+                                             SelectedPointerOverBackground="{ThemeResource AccentAcrylicBackgroundFillColorBaseBrush}"
+                                             DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                             DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                             ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                             HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                             VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                             PointerOverBackgroundMargin="1"
+                                             ContentMargin="0"
+                                             PointerEntered="Button_PointerEntered"
+                                             PointerExited="Button_PointerExited"
+                                             CornerRadius="10"/>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
                         </Style>
                     </GridView.ItemContainerStyle>
                 </GridView>
-                <Button Command="{x:Bind ViewModel.LoadMoreProductsCommand}" 
-                        IsEnabled="{x:Bind ViewModel.CanLoadMore, Mode=OneWay}"
-                        HorizontalAlignment="Center"
-                        Style="{StaticResource AccentButtonStyle}">
+                <Button 
+                    Command="{x:Bind ViewModel.LoadMoreProductsCommand}" 
+                    IsEnabled="{x:Bind ViewModel.CanLoadMore, Mode=OneWay}"
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,16"
+                    Style="{ThemeResource AccentButtonStyle}">
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Glyph="&#xE72C;" Margin="0,0,8,0" />
                         <!-- Refresh icon -->

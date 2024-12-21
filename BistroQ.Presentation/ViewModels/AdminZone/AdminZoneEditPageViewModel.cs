@@ -27,13 +27,17 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
 
     public ICommand UpdateCommand { get; }
 
-    public event EventHandler NavigateBack;
     public AdminZoneEditPageViewModel(IZoneDataService zoneDataService, IDialogService dialogService)
     {
         _zoneDataService = zoneDataService;
         _dialogService = dialogService;
 
         UpdateCommand = new AsyncRelayCommand(UpdateZoneAsync);
+    }
+
+    public void NavigateBack()
+    {
+        App.GetService<INavigationService>().GoBack();
     }
 
     public async Task UpdateZoneAsync()
@@ -58,7 +62,7 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
             await _zoneDataService.UpdateZoneAsync(Zone.ZoneId.Value, request);
 
             await _dialogService.ShowSuccessDialog($"Successfully updated zone: {request.Name}", "Success");
-            NavigateBack?.Invoke(this, EventArgs.Empty);
+            NavigateBack();
         }
         catch (Exception ex)
         {
@@ -71,13 +75,14 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
         }
     }
 
-    public void OnNavigatedTo(object parameter)
+    public Task OnNavigatedTo(object parameter)
     {
         if (parameter is ZoneViewModel selectedZone)
         {
             Zone = selectedZone;
             Form.Name = Zone?.Name ?? string.Empty;
         }
+        return Task.CompletedTask;
     }
 
     public bool CanUpdate()
@@ -85,7 +90,8 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
         return !Form.HasErrors && !IsProcessing;
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
+        return Task.CompletedTask;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos.Zones;
 using BistroQ.Presentation.Contracts.Services;
-using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -9,7 +8,7 @@ using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminZone;
 
-public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigationAware
+public partial class AdminZoneAddPageViewModel : ObservableRecipient
 {
     [ObservableProperty]
     private bool _isProcessing = false;
@@ -23,8 +22,6 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigatio
 
     public ICommand AddCommand { get; }
 
-    public event EventHandler NavigateBack;
-
     public AdminZoneAddPageViewModel(IZoneDataService zoneDataService, IDialogService dialogService)
     {
         _zoneDataService = zoneDataService;
@@ -36,6 +33,11 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigatio
     public bool CanAdd()
     {
         return !Form.HasErrors && !IsProcessing;
+    }
+
+    public void NavigateBack()
+    {
+        App.GetService<INavigationService>().GoBack();
     }
 
     public async Task AddZoneAsync()
@@ -60,7 +62,7 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigatio
             await _zoneDataService.CreateZoneAsync(request);
 
             await _dialogService.ShowErrorDialog("Successfully added zone: " + request.Name, "Success");
-            NavigateBack?.Invoke(this, EventArgs.Empty);
+            NavigateBack();
         }
         catch (Exception ex)
         {
@@ -71,15 +73,5 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigatio
         {
             IsProcessing = false;
         }
-    }
-
-    public void OnNavigatedTo(object parameter)
-    {
-        Form.ClearErrors();
-    }
-
-    public void OnNavigatedFrom()
-    {
-        //
     }
 }

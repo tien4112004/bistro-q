@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Page
-    x:Class="BistroQ.Presentation.Views.AdminCategory.AdminCategoryAddPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:BistroQ.Presentation.Views.AdminCategory"
-    xmlns:converter="using:BistroQ.Presentation.Converters"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:control="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    mc:Ignorable="d"
-    Background="Transparent">
+   x:Class="BistroQ.Presentation.Views.AdminCategory.AdminCategoryAddPage"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   xmlns:local="using:BistroQ.Presentation.Views.AdminCategory"
+   xmlns:converter="using:BistroQ.Presentation.Converters"
+   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+   xmlns:control="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   mc:Ignorable="d"
+   Background="Transparent">
 
+    <!-- Resource Definitions -->
     <Page.Resources>
         <converter:ReverseBooleanConverter x:Key="ReverseBool"/>
         <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
@@ -24,56 +25,79 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Background="Transparent">
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-                <TextBox x:Name="Name"
-                         x:Uid="CategoryNameTextBox"
-                         GettingFocus="Name_GettingFocus"
-                         Text="{x:Bind ViewModel.Form.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Width="300" />
-                <TextBlock Text="{x:Bind ViewModel.Form.Errors, 
+        <!-- Form Fields -->
+        <StackPanel 
+           Orientation="Vertical" 
+           Background="Transparent">
+            <!-- Category Name Input with Validation -->
+            <StackPanel 
+                Orientation="Vertical" 
+                HorizontalAlignment="Left">
+                <TextBox 
+                    x:Name="Name"
+                    x:Uid="CategoryNameTextBox"
+                    GettingFocus="Name_GettingFocus"
+                    Text="{x:Bind ViewModel.Form.Name, Mode=TwoWay, 
+                          UpdateSourceTrigger=PropertyChanged}"
+                    Width="300" />
+
+                <!-- Validation Error Message -->
+                <TextBlock 
+                    Text="{x:Bind ViewModel.Form.Errors, 
                            Mode=OneWay, 
                            Converter={StaticResource FirstError},
                            ConverterParameter=Name}"
-                           Margin="0,8,0,0"
-                           Foreground="Red"/>
+                    Margin="0,8,0,0"
+                    Foreground="{ThemeResource ErrorBaseColor}"/>
+
+                <!-- General Error Message -->
                 <TextBlock
-                        Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
-                        Visibility="{x:Bind ViewModel.ErrorMessage, 
-                                    Mode=OneWay, 
-                                    Converter={StaticResource StringToVisibility}}"
-                        Foreground="Red"
-                        TextWrapping="Wrap"/>
+                    Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.ErrorMessage, 
+                               Mode=OneWay, 
+                               Converter={StaticResource StringToVisibility}}"
+                    Foreground="{ThemeResource ErrorBaseColor}"
+                    TextWrapping="Wrap"/>
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Style="{StaticResource AccentButtonStyle}" Width="80"
-                    Command="{x:Bind ViewModel.AddCommand}"
-                    IsEnabled="{x:Bind ViewModel.IsProcessing, 
-                                Mode=OneWay,
-                                Converter={StaticResource ReverseBool}}"
-                    Margin="0,0,16,0">
+        <!-- Action Buttons -->
+        <StackPanel 
+            Orientation="Horizontal" 
+            HorizontalAlignment="Right">
+            <!-- Add Button -->
+            <Button 
+                Style="{StaticResource AccentButtonStyle}" 
+                Width="80"
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
+                Command="{x:Bind ViewModel.AddCommand}"
+                IsEnabled="{x:Bind ViewModel.IsProcessing, 
+                           Mode=OneWay,
+                           Converter={StaticResource ReverseBool}}"
+                Margin="0,0,16,0">
                 <Grid>
                     <control:ProgressRing
-                             IsActive="{x:Bind ViewModel.IsProcessing, Mode=OneWay}"
-                             Foreground="White"
-                             Width="20"
-                             Height="20"/>
-
+                        IsActive="{x:Bind ViewModel.IsProcessing, Mode=OneWay}"
+                        Width="20"
+                        Height="20"/>
                     <TextBlock 
-                            x:Uid="AdminCategoryAddPage_AddButtonText" 
-                            Visibility="{x:Bind ViewModel.IsProcessing, 
-                                        Mode=OneWay, 
-                                        Converter ={StaticResource BoolToVisibility}, 
-                                        ConverterParameter=invert}"
-                            />
+                        x:Uid="AdminCategoryAddPage_AddButtonText" 
+                        Visibility="{x:Bind ViewModel.IsProcessing, 
+                                   Mode=OneWay, 
+                                   Converter={StaticResource BoolToVisibility}, 
+                                   ConverterParameter=invert}"/>
                 </Grid>
             </Button>
-            <Button x:Name="AdminCategoryAddPage_CancelButton"
-                    x:Uid="CancelButton" Width="80" 
-                    Click="AdminCategoryAddPage_CancelButton_Click"
-                    />
+
+            <!-- Cancel Button -->
+            <Button 
+                x:Name="AdminCategoryAddPage_CancelButton"
+                x:Uid="CancelButton" 
+                Width="80" 
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
+                Click="AdminCategoryAddPage_CancelButton_Click"/>
         </StackPanel>
     </Grid>
 </Page>

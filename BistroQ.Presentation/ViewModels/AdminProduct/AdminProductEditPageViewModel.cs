@@ -31,8 +31,6 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
 
     public ICommand UpdateCommand { get; }
 
-    public event EventHandler NavigateBack;
-
     public AdminProductEditPageViewModel(
         IProductDataService productDataService,
         ICategoryDataService categoryDataService,
@@ -46,6 +44,11 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
         Categories = new ObservableCollection<CategoryViewModel>();
 
         UpdateCommand = new AsyncRelayCommand(UpdateProductAsync, CanUpdate);
+    }
+
+    public void NavigateBack()
+    {
+        App.GetService<INavigationService>().GoBack();
     }
 
     public async Task UpdateProductAsync()
@@ -82,7 +85,7 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
             await _productDataService.UpdateProductAsync(Form.ProductId.Value, request);
 
             await _dialogService.ShowSuccessDialog($"Successfully updated product: {request.Name}", "Success");
-            NavigateBack?.Invoke(this, EventArgs.Empty);
+            NavigateBack();
         }
         catch (Exception ex)
         {
@@ -114,7 +117,7 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
         }
     }
 
-    public void OnNavigatedTo(object parameter)
+    public Task OnNavigatedTo(object parameter)
     {
         if (parameter is ProductViewModel selectedProduct)
         {
@@ -130,10 +133,12 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
             Form.Fiber = double.TryParse(selectedProduct?.NutritionFact?.Fiber, out var fiber) ? fiber : 0.0;
             Form.Protein = double.TryParse(selectedProduct?.NutritionFact?.Protein, out var protein) ? protein : 0.0;
         }
+
+        return Task.CompletedTask;
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
-
+        return Task.CompletedTask;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BistroQ.Presentation.Contracts.Services;
+using BistroQ.Presentation.Helpers;
 using BistroQ.Presentation.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -34,17 +35,6 @@ public sealed partial class LoginPage : Page
         }
     }
 
-    private void On_UnLoaded(object sender, RoutedEventArgs e)
-    {
-        ViewModel.NavigationRequested -= async (s, e) =>
-        {
-            await App.GetService<IActivationService>().ActivateAsync(EventArgs.Empty);
-            _window.Close();
-        };
-
-        ViewModel.CloseRequested -= (s, e) => _window.Close();
-    }
-
     private void Text_KeyDown(object sender, KeyRoutedEventArgs e)
     {
         if (e.Key == Windows.System.VirtualKey.Enter)
@@ -68,6 +58,16 @@ public sealed partial class LoginPage : Page
             default:
                 break;
         }
+    }
+
+    private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Hand);
+    }
+
+    private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
     }
 }
 

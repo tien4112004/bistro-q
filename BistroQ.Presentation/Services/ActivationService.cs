@@ -23,6 +23,12 @@ public class ActivationService : IActivationService
 
     public async Task ActivateAsync(object activationArgs)
     {
+        if (_shell != null)
+        {
+            // Cleanup shell
+            _shell = null;
+        }
+
         // Execute tasks before activation.
         await InitializeAsync();
 

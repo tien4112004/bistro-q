@@ -12,13 +12,14 @@ public partial class KitchenHistoryViewModel : ObservableObject, INavigationAwar
         OrderItemGridViewModel = orderItemGridViewModel;
     }
 
-    public void OnNavigatedTo(object parameter)
+    public async Task OnNavigatedTo(object parameter)
     {
-        OrderItemGridViewModel.LoadItemsAsync();
+        await OrderItemGridViewModel.LoadItemsAsync();
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
         OrderItemGridViewModel.Dispose();
+        return Task.CompletedTask;
     }
 }

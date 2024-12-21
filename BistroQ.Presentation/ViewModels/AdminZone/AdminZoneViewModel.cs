@@ -20,13 +20,16 @@ namespace BistroQ.Presentation.ViewModels;
 public partial class AdminZoneViewModel :
     ObservableRecipient,
     INavigationAware,
-    IDisposable
+    IDisposable,
+    IRecipient<PageSizeChangedMessage>,
+    IRecipient<CurrentPageChangedMessage>
 {
     private readonly IDialogService _dialogService;
     private readonly INavigationService _navigationService;
     private readonly IZoneDataService _zoneDataService;
     private readonly IMapper _mapper;
     private readonly IMessenger _messenger;
+    private bool _isDisposed = false;
 
     [ObservableProperty]
     private AdminZoneState state = new();
@@ -58,18 +61,7 @@ public partial class AdminZoneViewModel :
         SearchCommand = new RelayCommand(ExecuteSearchCommand);
 
         _messenger = messenger;
-        _messenger.Register<PageSizeChangedMessage>(this, async (r, m) =>
-        {
-            State.Query.Size = m.NewPageSize;
-            State.ReturnToFirstPage();
-            await LoadDataAsync();
-        });
-
-        _messenger.Register<CurrentPageChangedMessage>(this, async (r, m) =>
-        {
-            State.Query.Page = m.NewCurrentPage;
-            await LoadDataAsync();
-        });
+        _messenger.RegisterAll(this);
     }
 
     private void StatePropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -81,18 +73,20 @@ public partial class AdminZoneViewModel :
         }
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public async Task OnNavigatedTo(object parameter)
     {
         await LoadDataAsync();
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
-        State.SelectedZone = null;
+        Dispose();
+        return Task.CompletedTask;
     }
 
     private async Task LoadDataAsync()
     {
+        if (State.IsLoading || _isDisposed) return;
         try
         {
             State.IsLoading = true;
@@ -196,11 +190,26 @@ public partial class AdminZoneViewModel :
 
     public void Dispose()
     {
+        if (_isDisposed) return;
+        _isDisposed = true;
         if (State != null)
         {
             State.PropertyChanged -= StatePropertyChanged;
         }
 
         _messenger.UnregisterAll(this);
+    }
+
+    public void Receive(PageSizeChangedMessage message)
+    {
+        State.Query.Size = message.NewPageSize;
+        State.ReturnToFirstPage();
+        _ = LoadDataAsync();
+    }
+
+    public void Receive(CurrentPageChangedMessage message)
+    {
+        State.Query.Page = message.NewCurrentPage;
+        _ = LoadDataAsync();
     }
 }

@@ -1,6 +1,9 @@
-﻿using BistroQ.Presentation.ViewModels;
+﻿using BistroQ.Presentation.Helpers;
+using BistroQ.Presentation.ViewModels;
 using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 
 namespace BistroQ.Presentation.Views;
 
@@ -42,5 +45,15 @@ public sealed partial class AdminTablePage : Page
     private void ViewModel_AdminTableDataGrid_Sorting(object? sender, DataGridColumnEventArgs e)
     {
         ViewModel.AdminTableDataGrid_Sorting(sender, e);
+    }
+
+    private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Hand);
+    }
+
+    private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
     }
 }

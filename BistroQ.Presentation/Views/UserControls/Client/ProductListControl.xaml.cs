@@ -1,4 +1,5 @@
-﻿using BistroQ.Presentation.ViewModels.Client;
+﻿using BistroQ.Presentation.Helpers;
+using BistroQ.Presentation.ViewModels.Client;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
@@ -69,5 +70,15 @@ public sealed partial class ProductListControl : UserControl
             scrollViewer.VerticalOffset - e.Delta.Translation.Y * SCROLL_SPEED,
             null,
             true);
+    }
+
+    private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Hand);
+    }
+
+    private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
     }
 }

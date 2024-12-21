@@ -1,8 +1,8 @@
-namespace BistroQ.Presentation.Contracts.ViewModels;
+﻿namespace BistroQ.Presentation.Contracts.ViewModels;
 
 public interface INavigationAware
 {
-    void OnNavigatedTo(object parameter);
+    Task OnNavigatedTo(object parameter);
 
-    void OnNavigatedFrom();
+    Task OnNavigatedFrom();
 }

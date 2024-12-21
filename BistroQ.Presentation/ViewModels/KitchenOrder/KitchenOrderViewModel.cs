@@ -54,15 +54,13 @@ public partial class KitchenOrderViewModel :
         _messenger.RegisterAll(this);
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
-        _messenger.UnregisterAll(this);
-        PendingColumnVM.Dispose();
-        ProgressColumnVM.Dispose();
-        KitchenOrderButtonsVM.Dispose();
+        Dispose();
+        return Task.CompletedTask;
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public async Task OnNavigatedTo(object parameter)
     {
         PendingColumnVM.ColumnType = KitchenColumnType.Pending;
         await PendingColumnVM.LoadItems(OrderItemStatus.Pending);
@@ -96,7 +94,7 @@ public partial class KitchenOrderViewModel :
         }
         catch (Exception ex)
         {
-            await _dialogService.ShowErrorDialog(ex.Message, "Error");
+            _ = _dialogService.ShowErrorDialog(ex.Message, "Error");
             Debug.WriteLine(ex.Message);
         }
         finally

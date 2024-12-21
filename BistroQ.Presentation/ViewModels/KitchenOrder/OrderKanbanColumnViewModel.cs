@@ -78,7 +78,7 @@ public partial class OrderKanbanColumnViewModel :
     }
 
 
-    public async void Receive(RemoveOrderItemsMessage message)
+    public void Receive(RemoveOrderItemsMessage message)
     {
         if (message.Source != ColumnType) return;
 

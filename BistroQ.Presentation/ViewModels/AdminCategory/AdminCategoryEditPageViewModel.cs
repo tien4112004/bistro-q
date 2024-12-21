@@ -25,14 +25,17 @@ public partial class AdminCategoryEditPageViewModel : ObservableRecipient, INavi
 
     public ICommand UpdateCommand { get; }
 
-    public event EventHandler NavigateBack;
-
     public AdminCategoryEditPageViewModel(ICategoryDataService categoryDataService, IDialogService dialogService)
     {
         _categoryDataService = categoryDataService;
         _dialogService = dialogService;
 
         UpdateCommand = new AsyncRelayCommand(async () => await UpdateCategoryAsync(), CanUpdate);
+    }
+
+    public void NavigateBack()
+    {
+        App.GetService<INavigationService>().GoBack();
     }
 
     public async Task UpdateCategoryAsync()
@@ -57,7 +60,7 @@ public partial class AdminCategoryEditPageViewModel : ObservableRecipient, INavi
             await _categoryDataService.UpdateCategoryAsync(Category.CategoryId.Value, request);
 
             await _dialogService.ShowSuccessDialog($"Successfully updated category: {request.Name}", "Success");
-            NavigateBack?.Invoke(this, EventArgs.Empty);
+            NavigateBack();
         }
         catch (Exception ex)
         {
@@ -75,16 +78,18 @@ public partial class AdminCategoryEditPageViewModel : ObservableRecipient, INavi
         return !Form.HasErrors && !IsProcessing;
     }
 
-    public void OnNavigatedTo(object parameter)
+    public Task OnNavigatedTo(object parameter)
     {
         if (parameter is CategoryViewModel selectedCategory)
         {
             Category = selectedCategory;
             Form.Name = Category?.Name ?? string.Empty;
         }
+        return Task.CompletedTask;
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
+        return Task.CompletedTask;
     }
 }

@@ -24,11 +24,6 @@ public sealed partial class ShellPage : Page
 
         ViewModel.NavigationService.Frame = NavigationFrame;
 
-        // TODO: This is considered an anti-pattern when calling async code in the constructor.
-        ViewModel.NavigationViewService.Initialize(NavigationViewControl,
-            Task.Run(async () => await App.GetService<IAuthService>().GetRoleAsync()).GetAwaiter().GetResult()
-        );
-
         // TODO: Set the title bar icon by updating /Assets/WindowIcon.ico.
         // A custom title bar is required for full window theme and Mica support.
         // https://docs.microsoft.com/windows/apps/develop/title-bar?tabs=winui3#full-customization
@@ -38,9 +33,15 @@ public sealed partial class ShellPage : Page
         AppTitleBarText.Text = "AppDisplayName".GetLocalized();
     }
 
-    private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private async void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         TitleBarHelper.UpdateTitleBar(RequestedTheme);
+
+        ViewModel.NavigationViewService.Initialize(NavigationViewControl,
+            await App.GetService<IAuthService>().GetRoleAsync()
+        );
+
+        ViewModel.NavigationViewService.NavigateToEntryPoint();
 
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Left, VirtualKeyModifiers.Menu));
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack));
@@ -76,11 +77,11 @@ public sealed partial class ShellPage : Page
         return keyboardAccelerator;
     }
 
-    private static void OnKeyboardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+    private static async void OnKeyboardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
     {
         var navigationService = App.GetService<INavigationService>();
 
-        var result = navigationService.GoBack();
+        var result = await navigationService.GoBack();
 
         args.Handled = result;
     }
@@ -99,11 +100,24 @@ public sealed partial class ShellPage : Page
         App.MainWindow.Hide();
 
         await App.GetService<IAuthService>().LogoutAsync();
+        var size = App.MainWindow.AppWindow.Size;
+        var position = App.MainWindow.AppWindow.Position;
 
         var loginWindow = new LoginWindow();
         loginWindow.Activate();
+        loginWindow.MoveAndResize(position.X, position.Y, size.Width, size.Height);
 
         await Task.Delay(1000);
         App.MainWindow.Close();
+    }
+
+    private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Hand);
+    }
+
+    private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
     }
 }

@@ -14,22 +14,26 @@
         <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     </UserControl.Resources>
 
-    <Grid RowSpacing="10" MinWidth="100">
+    <Grid
+        RowSpacing="10"
+        MinWidth="100">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button 
-             VerticalAlignment="Stretch"
-             HorizontalAlignment="Stretch"
-             Background="{ThemeResource SuccessBaseColor}"
-             PointerEntered="Button_PointerEntered"
-             PointerExited="Button_PointerExited"
-             IsEnabled="{x:Bind ViewModel.CanComplete, Mode=OneWay}"
-             Command="{x:Bind ViewModel.CompleteCommand, Mode=OneWay}"
-             CornerRadius="8">
+        <!-- Complete Button -->
+        <Button
+            Grid.Row="0"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch"
+            Background="{ThemeResource SuccessBaseColor}"
+            CornerRadius="8"
+            IsEnabled="{x:Bind ViewModel.CanComplete, Mode=OneWay}"
+            Command="{x:Bind ViewModel.CompleteCommand, Mode=OneWay}"
+            PointerEntered="Button_PointerEntered"
+            PointerExited="Button_PointerExited">
             <Button.Resources>
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SuccessHoverColor}"/>
@@ -39,41 +43,44 @@
                     <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{ThemeResource TextFillColorPrimary}"/>
                 </ResourceDictionary>
             </Button.Resources>
-            <Grid>
-                <controls:ProgressRing
-                     IsActive="{x:Bind ViewModel.IsCompleteLoading, Mode=OneWay}"
-                     Width="30"
-                     Height="30"
-                     Margin="0,0,0,0"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Center"/>
 
+            <Grid>
+                <!-- Loading Indicator -->
+                <controls:ProgressRing
+                    IsActive="{x:Bind ViewModel.IsCompleteLoading, Mode=OneWay}"
+                    Width="30"
+                    Height="30"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+
+                <!-- Button Content -->
                 <StackPanel
-                     Visibility="{x:Bind ViewModel.IsCompleteLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
-                     HorizontalAlignment="Center"
-                     Spacing="5"
-                     VerticalAlignment="Center">
-                    <BitmapIcon 
-                         Width="30"
-                         UriSource="ms-appx:///Assets/Icons/square-check-big.png"/>
-                    <TextBlock 
-                         FontWeight="Bold"
-                         FontSize="18"
-                         >Complete</TextBlock>
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="5"
+                    Visibility="{x:Bind ViewModel.IsCompleteLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}">
+                    <BitmapIcon
+                        Width="30"
+                        UriSource="ms-appx:///Assets/Icons/square-check-big.png"/>
+                    <TextBlock
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Text="Complete"/>
                 </StackPanel>
             </Grid>
         </Button>
 
-        <Button 
-             VerticalAlignment="Stretch"
-             HorizontalAlignment="Stretch"
-             Background="{ThemeResource CyanBaseColor}"
-             PointerEntered="Button_PointerEntered"
-             PointerExited="Button_PointerExited"
-             IsEnabled="{x:Bind ViewModel.CanMove, Mode=OneWay}"
-             Command="{x:Bind ViewModel.MoveCommand, Mode=OneWay}"
-             Grid.Row="1" 
-             CornerRadius="8">
+        <!-- Move Button -->
+        <Button
+            Grid.Row="1"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch"
+            Background="{ThemeResource CyanBaseColor}"
+            CornerRadius="8"
+            IsEnabled="{x:Bind ViewModel.CanMove, Mode=OneWay}"
+            Command="{x:Bind ViewModel.MoveCommand, Mode=OneWay}"
+            PointerEntered="Button_PointerEntered"
+            PointerExited="Button_PointerExited">
             <Button.Resources>
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource CyanHoverColor}"/>
@@ -83,41 +90,44 @@
                     <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{ThemeResource TextFillColorPrimary}"/>
                 </ResourceDictionary>
             </Button.Resources>
-            <Grid>
-                <controls:ProgressRing
-                     IsActive="{x:Bind ViewModel.IsMoveLoading, Mode=OneWay}"
-                     Width="30"
-                     Height="30"
-                     Margin="0,0,0,0"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Center"/>
 
+            <Grid>
+                <!-- Loading Indicator -->
+                <controls:ProgressRing
+                    IsActive="{x:Bind ViewModel.IsMoveLoading, Mode=OneWay}"
+                    Width="30"
+                    Height="30"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+
+                <!-- Button Content -->
                 <StackPanel
-                     Visibility="{x:Bind ViewModel.IsMoveLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
-                     HorizontalAlignment="Center"
-                     Spacing="5"
-                     VerticalAlignment="Center">
-                    <BitmapIcon 
-                         Width="30"
-                         UriSource="ms-appx:///Assets/Icons/move-horizontal.png"/>
-                    <TextBlock 
-                         FontWeight="Bold"
-                         FontSize="18"
-                         >Move</TextBlock>
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="5"
+                    Visibility="{x:Bind ViewModel.IsMoveLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}">
+                    <BitmapIcon
+                        Width="30"
+                        UriSource="ms-appx:///Assets/Icons/move-horizontal.png"/>
+                    <TextBlock
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Text="Move"/>
                 </StackPanel>
             </Grid>
         </Button>
 
-        <Button 
-             VerticalAlignment="Stretch"
-             HorizontalAlignment="Stretch"
-             Grid.Row="2" 
-             PointerEntered="Button_PointerEntered"
-             PointerExited="Button_PointerExited"
-             Background="{ThemeResource ErrorBaseColor}"
-             IsEnabled="{x:Bind ViewModel.CanCancel, Mode=OneWay}"
-             Command="{x:Bind ViewModel.CancelCommand, Mode=OneWay}"
-             CornerRadius="8">
+        <!-- Cancel Button -->
+        <Button
+            Grid.Row="2"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch"
+            Background="{ThemeResource ErrorBaseColor}"
+            CornerRadius="8"
+            IsEnabled="{x:Bind ViewModel.CanCancel, Mode=OneWay}"
+            Command="{x:Bind ViewModel.CancelCommand, Mode=OneWay}"
+            PointerEntered="Button_PointerEntered"
+            PointerExited="Button_PointerExited">
             <Button.Resources>
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource ErrorHoverColor}"/>
@@ -127,27 +137,29 @@
                     <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{ThemeResource TextFillColorPrimary}"/>
                 </ResourceDictionary>
             </Button.Resources>
-            <Grid>
-                <controls:ProgressRing
-                     IsActive="{x:Bind ViewModel.IsCancelLoading, Mode=OneWay}"
-                     Width="30"
-                     Height="30"
-                     Margin="0,0,0,0"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Center"/>
 
+            <Grid>
+                <!-- Loading Indicator -->
+                <controls:ProgressRing
+                    IsActive="{x:Bind ViewModel.IsCancelLoading, Mode=OneWay}"
+                    Width="30"
+                    Height="30"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+
+                <!-- Button Content -->
                 <StackPanel
-                     Visibility="{x:Bind ViewModel.IsCancelLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
-                     HorizontalAlignment="Center"
-                     Spacing="5"
-                     VerticalAlignment="Center">
-                    <BitmapIcon 
-                         Width="30"
-                         UriSource="ms-appx:///Assets/Icons/circle-x.png"/>
-                    <TextBlock 
-                         FontWeight="Bold"
-                         FontSize="18"
-                         >Cancel</TextBlock>
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="5"
+                    Visibility="{x:Bind ViewModel.IsCancelLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}">
+                    <BitmapIcon
+                        Width="30"
+                        UriSource="ms-appx:///Assets/Icons/circle-x.png"/>
+                    <TextBlock
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Text="Cancel"/>
                 </StackPanel>
             </Grid>
         </Button>

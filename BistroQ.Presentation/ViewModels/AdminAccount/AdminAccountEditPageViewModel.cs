@@ -10,12 +10,13 @@ using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminAccount;
 
-public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavigationAware
+public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavigationAware, IDisposable
 {
     public ObservableCollection<ZoneViewModel> Zones;
     public ObservableCollection<TableViewModel> Tables;
@@ -35,6 +36,8 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
     [ObservableProperty]
     private bool _isTableSelectionEnabled = false;
 
+    private bool _isDisposed = false;
+
     private readonly IAccountDataService _accountDataService;
     private readonly IZoneDataService _zoneDataService;
     private readonly ITableDataService _tableDataService;
@@ -43,8 +46,6 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
 
     public ICommand EditCommand { get; }
     public ICommand EnablePasswordEditCommand { get; }
-
-    public event EventHandler NavigateBack;
 
     public AdminAccountEditPageViewModel(
         IAccountDataService accountDataService,
@@ -58,7 +59,6 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         _tableDataService = tableDataService;
         _dialogService = dialogService;
         _mapper = mapper;
-
         Zones = new ObservableCollection<ZoneViewModel>();
         Tables = new ObservableCollection<TableViewModel>();
         Roles = new ObservableCollection<string> { "Admin", "Kitchen", "Cashier", "Client" };
@@ -66,13 +66,15 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         EditCommand = new AsyncRelayCommand(UpdateAccountAsync, CanEditAccount);
         EnablePasswordEditCommand = new RelayCommand(EnablePasswordEdit);
 
-        this.PropertyChanged += (s, e) =>
+        this.PropertyChanged += OnPropertyChanged;
+    }
+
+    private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(Form.ZoneId) && Form.ZoneId.HasValue)
         {
-            if (e.PropertyName == nameof(Form.ZoneId) && Form.ZoneId.HasValue)
-            {
-                _ = LoadTablesAsync(Form.ZoneId.Value);
-            }
-        };
+            _ = LoadTablesAsync(Form.ZoneId.Value);
+        }
     }
 
     private void EnablePasswordEdit()
@@ -101,6 +103,11 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         }
     }
 
+    public void NavigateBack()
+    {
+        App.GetService<INavigationService>().GoBack();
+    }
+
     public async Task UpdateAccountAsync()
     {
         ValidateForm();
@@ -125,7 +132,7 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
             await _accountDataService.UpdateAccountAsync(Account.UserId, request);
 
             await _dialogService.ShowSuccessDialog("Account updated successfully.", "Success");
-            NavigateBack?.Invoke(this, EventArgs.Empty);
+            NavigateBack();
         }
         catch (Exception ex)
         {
@@ -185,7 +192,7 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         }
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public async Task OnNavigatedTo(object parameter)
     {
         if (parameter is AccountViewModel account)
         {
@@ -217,7 +224,17 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         }
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
+        Dispose();
+        return Task.CompletedTask;
+    }
+
+
+    public void Dispose()
+    {
+        if (_isDisposed) return;
+        _isDisposed = true;
+        this.PropertyChanged -= OnPropertyChanged;
     }
 }

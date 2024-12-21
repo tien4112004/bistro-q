@@ -14,52 +14,77 @@
         <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     </UserControl.Resources>
 
-    <Grid x:Name="SingleProductGrid"
-          Margin="8" Padding="4"
-          HorizontalAlignment="Stretch"
-          VerticalAlignment="Stretch"
-          Width="232">
+    <!-- Product Card -->
+    <Grid
+       x:Name="SingleProductGrid"
+       Width="232"
+       Margin="8"
+       Padding="4"
+       HorizontalAlignment="Stretch"
+       VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
-            <RowDefinition Height="160" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="160"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
-        <Image Source="{x:Bind Product.ImageUrl, Mode=OneWay}" 
-               Grid.Row="0" 
-               Stretch="Uniform" />
-        
-        <StackPanel Grid.Row="1" Margin="0,8">
-            <TextBlock Margin="2,6,0,0"
-               Text="{x:Bind Product.Name, Mode=OneWay}"    
+
+        <!-- Product Image -->
+        <Image
+           Grid.Row="0"
+           Source="{x:Bind Product.ImageUrl, Mode=OneWay}"
+           Stretch="Uniform"/>
+
+        <!-- Product Info -->
+        <StackPanel
+           Grid.Row="1"
+           Margin="0,8">
+            <TextBlock
+               Margin="2,6,0,0"
+               Text="{x:Bind Product.Name, Mode=OneWay}"
                FontSize="18"
-               Style="{StaticResource SubtitleTextBlockStyle}" />
+               Style="{StaticResource SubtitleTextBlockStyle}"/>
+
+            <!-- Price and Unit -->
             <TextBlock Margin="0,4,0,0">
-                <Run Text="{x:Bind Product.Price, Mode=OneWay, Converter={StaticResource NumberToCurreny}}" FontSize="16" FontWeight="SemiBold" />
-                <Run Text=" / " FontSize="12" Foreground="{ThemeResource TextFillColorTertiary}" />
-                <Run Text="{x:Bind Product.Unit, Mode=OneWay}" FontSize="12" Foreground="{StaticResource TextFillColorTertiary}" />
+               <Run
+                   Text="{x:Bind Product.Price, Mode=OneWay, Converter={StaticResource NumberToCurreny}}"
+                   FontSize="16"
+                   FontWeight="SemiBold"/>
+               <Run
+                   Text=" / "
+                   FontSize="12"
+                   Foreground="{ThemeResource TextFillColorTertiary}"/>
+               <Run
+                   Text="{x:Bind Product.Unit, Mode=OneWay}"
+                   FontSize="12"
+                   Foreground="{ThemeResource TextFillColorTertiary}"/>
             </TextBlock>
             <TextBlock 
                 x:Name="ProductDescriptionTextBlock"
                 Text="{x:Bind Product.Price, Mode=OneWay, Converter={StaticResource NumberToCurreny}}"
                 Style="{StaticResource BodyTextBlockStyle}"
                 Visibility="{x:Bind HasDiscountPrice, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
-                Foreground="{StaticResource TextFillColorSecondary}"
+                Foreground="{ThemeResource TextFillColorSecondary}"
                 Margin="0,4,0,4"
                 TextDecorations="Strikethrough" />
         </StackPanel>
-        
-        <StackPanel x:Name="QuantityControls" Grid.Row="2" 
-                    Orientation="Horizontal" 
-                    VerticalAlignment="Stretch"
-                    HorizontalAlignment="Center">
-            <Button x:Uid="AddItemButton" 
-                    Margin="0,0,0,0"
-                    Padding="16,8"
-                    Style="{StaticResource AccentButtonStyle}"
-                    FontWeight="SemiBold"
-                    Click="AddToCartButton_Click"
-                    CommandParameter="{x:Bind}" />
+
+        <!-- Add to Cart Button -->
+        <StackPanel
+            x:Name="QuantityControls"
+            Grid.Row="2"
+            Orientation="Horizontal"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Center">
+            <Button
+                x:Uid="AddItemButton"
+                Style="{ThemeResource AccentButtonStyle}"
+                Click="AddToCartButton_Click"
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited"
+                CommandParameter="{x:Bind}"
+                Padding="16,8"
+                FontWeight="SemiBold"/>
         </StackPanel>
     </Grid>
 </UserControl>

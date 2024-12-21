@@ -1,11 +1,9 @@
-using System.Diagnostics.CodeAnalysis;
-
-using BistroQ.Presentation.Contracts.Services;
+﻿using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Helpers;
-
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BistroQ.Presentation.Services;
 
@@ -64,7 +62,7 @@ public class NavigationService : INavigationService
         }
     }
 
-    public bool GoBack()
+    public async Task<bool> GoBack()
     {
         if (CanGoBack)
         {
@@ -72,7 +70,7 @@ public class NavigationService : INavigationService
             _frame.GoBack();
             if (vmBeforeNavigation is INavigationAware navigationAware)
             {
-                navigationAware.OnNavigatedFrom();
+                await navigationAware.OnNavigatedFrom();
             }
 
             return true;
@@ -81,7 +79,7 @@ public class NavigationService : INavigationService
         return false;
     }
 
-    public bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false)
+    public async Task<bool> NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false)
     {
         var pageType = _pageService.GetPageType(pageKey);
 
@@ -95,7 +93,7 @@ public class NavigationService : INavigationService
                 _lastParameterUsed = parameter;
                 if (vmBeforeNavigation is INavigationAware navigationAware)
                 {
-                    navigationAware.OnNavigatedFrom();
+                    await navigationAware.OnNavigatedFrom();
                 }
             }
 
@@ -105,7 +103,7 @@ public class NavigationService : INavigationService
         return false;
     }
 
-    private void OnNavigated(object sender, NavigationEventArgs e)
+    private async void OnNavigated(object sender, NavigationEventArgs e)
     {
         if (sender is Frame frame)
         {
@@ -117,7 +115,7 @@ public class NavigationService : INavigationService
 
             if (frame.GetPageViewModel() is INavigationAware navigationAware)
             {
-                navigationAware.OnNavigatedTo(e.Parameter);
+                await navigationAware.OnNavigatedTo(e.Parameter);
             }
 
             Navigated?.Invoke(sender, e);

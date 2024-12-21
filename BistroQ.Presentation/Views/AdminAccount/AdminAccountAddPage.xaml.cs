@@ -1,5 +1,8 @@
-﻿using BistroQ.Presentation.ViewModels.AdminAccount;
+﻿using BistroQ.Presentation.Helpers;
+using BistroQ.Presentation.ViewModels.AdminAccount;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 
 namespace BistroQ.Presentation.Views.AdminAccount;
 
@@ -13,28 +16,17 @@ public sealed partial class AdminAccountAddPage : Page
         ViewModel = App.GetService<AdminAccountAddPageViewModel>();
         this.DataContext = ViewModel;
 
-        this.Loaded += AdminAccountAddPage_Loaded;
-        ViewModel.NavigateBack += OnNavigateBack;
-
-        Unloaded += (s, e) =>
-        {
-            ViewModel.NavigateBack -= OnNavigateBack;
-        };
-    }
-
-    private async void AdminAccountAddPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        await ViewModel.LoadZonesAsync();
+        this.Unloaded += (s, e) => ViewModel.Dispose();
     }
 
     private void AdminAccountAddPage_CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        Frame.GoBack();
+        ViewModel.NavigateBack();
     }
 
     private void OnNavigateBack(object sender, EventArgs e)
     {
-        Frame.GoBack();
+        ViewModel.NavigateBack();
     }
 
     private void AccountAddPage_UsernameTextBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
@@ -60,5 +52,15 @@ public sealed partial class AdminAccountAddPage : Page
     private void AccountAddPage_TableComboBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
     {
         ViewModel.Form.ResetError(nameof(ViewModel.Form.TableId));
+    }
+
+    private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Hand);
+    }
+
+    private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
     }
 }

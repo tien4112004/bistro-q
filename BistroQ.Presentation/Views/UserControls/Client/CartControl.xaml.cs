@@ -1,16 +1,17 @@
 ﻿
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Windows.Input;
-using BistroQ.Domain.Models.Entities;
+using BistroQ.Presentation.Helpers;
 using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Client;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows.Input;
 
 namespace BistroQ.Presentation.Views.UserControls.Client;
 
@@ -37,6 +38,15 @@ public sealed partial class CartControl : UserControl, INotifyPropertyChanged
         }
 
         RemoveProductFromCartCommand = new RelayCommand<OrderItemViewModel>(RemoveProductFromCart);
+
+        this.Unloaded += (s, e) =>
+        {
+            ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+            if (ViewModel.CartItems != null)
+            {
+                ViewModel.CartItems.CollectionChanged -= CartItems_CollectionChanged;
+            }
+        };
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -78,7 +88,7 @@ public sealed partial class CartControl : UserControl, INotifyPropertyChanged
         App.GetService<IMessenger>().Send(new OrderRequestedMessage(orderItems));
         Debug.WriteLine("[Debug] Order clicked");
     }
-    
+
     private void VerticalScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
     {
         const double SCROLL_SPEED = 1.25;
@@ -88,5 +98,15 @@ public sealed partial class CartControl : UserControl, INotifyPropertyChanged
             scrollViewer.VerticalOffset - e.Delta.Translation.Y * SCROLL_SPEED,
             null,
             true);
+    }
+
+    private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Hand);
+    }
+
+    private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
     }
 }

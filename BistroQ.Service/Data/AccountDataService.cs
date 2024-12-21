@@ -19,6 +19,7 @@ public class AccountDataService : IAccountDataService
 
     public async Task<ApiCollectionResponse<IEnumerable<Account>>> GetGridDataAsync(AccountCollectionQueryParams query = null)
     {
+        //await Task.Delay(2000);
         var response = await _apiClient.GetCollectionAsync<IEnumerable<AccountResponse>>("/api/admin/account", query);
         if (response.Success)
         {

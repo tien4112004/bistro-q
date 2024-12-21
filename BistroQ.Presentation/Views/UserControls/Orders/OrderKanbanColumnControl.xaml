@@ -23,7 +23,8 @@
         </Grid.RowDefinitions>
 
         <!-- Column Header -->
-        <Grid Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+        <Grid
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
             BorderThickness="1"
             CornerRadius="8,8,0,0"
@@ -33,23 +34,29 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Horizontal"
-                        Spacing="8" 
-                        VerticalAlignment="Center" 
-                        Padding="10,0,0,0">
-                <BitmapIcon Width="20" 
-                            Foreground="{StaticResource TextBoxForegroundHeaderThemeBrush}" 
-                            VerticalAlignment="Center"
-                            UriSource="{x:Bind TitleIconPath}"/>
+            <!-- Title with Icon -->
+            <StackPanel
+                Grid.Column="0"
+                Orientation="Horizontal"
+                Spacing="8" 
+                VerticalAlignment="Center" 
+                Padding="10,0,0,0">
+                <BitmapIcon
+                    Width="20"
+                    Foreground="{ThemeResource TextBoxForegroundHeaderThemeBrush}"
+                    VerticalAlignment="Center"
+                    UriSource="{x:Bind TitleIconPath}"/>
                 <TextBlock
                     Text="{x:Bind Title}"
-                    Foreground="{StaticResource TextBoxForegroundHeaderThemeBrush}"
+                    Foreground="{ThemeResource TextBoxForegroundHeaderThemeBrush}"
                     Style="{StaticResource SubtitleTextBlockStyle}"/>
             </StackPanel>
 
-            <TextBlock Grid.Column="1"
-                       VerticalAlignment="Center"
-                    Style="{StaticResource BodyTextBlockStyle}">
+            <!-- Item Count -->
+            <TextBlock
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Style="{StaticResource BodyTextBlockStyle}">
                 <Run Text="Amount: " FontWeight="Bold"/>
                 <Run Text="{x:Bind ViewModel.Items.Count, Mode=OneWay}"/>
             </TextBlock>
@@ -58,28 +65,30 @@
         <!-- Items List -->
         <customLV:KitchenListView
             Grid.Row="1"
+            x:Name="ItemsList"
             ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
-            SelectionChanged="CustomListView_SelectionChanged"
-            Tag="{x:Bind Title, Mode=OneWay}"
             SelectedItems="{x:Bind ViewModel.SelectedItems, Mode=TwoWay}"
-            AllowDrop="True"
+            Tag="{x:Bind Title, Mode=OneWay}"
             SelectionMode="Multiple"
+            SelectionChanged="CustomListView_SelectionChanged"
+            AllowDrop="True"
             CanDragItems="True"
             CanReorderItems="True"
-            Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
-            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
             DragItemsStarting="ListView_DragItemsStarting"
             DragOver="ListView_DragOver"
             Drop="ListView_Drop"
+            Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
             BorderThickness="1"
             CornerRadius="0,0,8,8"
             Padding="8">
+
+            <!-- Item Container Style -->
             <customLV:KitchenListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
-                    <Setter Property="TabNavigation" Value="Local"/>
                     <Setter Property="IsHoldingEnabled" Value="True"/>
+                    <Setter Property="TabNavigation" Value="Local"/>
                     <Setter Property="Margin" Value="4"/>
                     <Setter Property="Template">
                         <Setter.Value>
@@ -120,6 +129,7 @@
                 </Style>
             </customLV:KitchenListView.ItemContainerStyle>
 
+            <!-- Item Template -->
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="vm:OrderItemViewModel">
                     <Grid Padding="0,8">
@@ -128,49 +138,61 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Grid Grid.Column="0" Width="100" Height="100" Margin="10,0">
-                            <Image Source="{x:Bind Product.ImageUrl, Mode=OneWay}"
-                                   Width="100" Height="100"
-                                   Stretch="UniformToFill"/>
-                            <ProgressRing 
-                                 IsActive="False"
-                                 Width="32" 
-                                 Height="32"/>
+                        <!-- Product Image -->
+                        <Grid
+                            Grid.Column="0"
+                            Width="100"
+                            Height="100"
+                            Margin="10,0">
+                            <Image
+                                Source="{x:Bind Product.ImageUrl, Mode=OneWay}"
+                                Width="100"
+                                Height="100"
+                                Stretch="UniformToFill"/>
+                            <ProgressRing
+                                IsActive="False"
+                                Width="32"
+                                Height="32"/>
                         </Grid>
 
-                        <Grid Grid.Column="1" Padding="16,0,0,0" >
+                        <!-- Product Details -->
+                        <Grid
+                            Grid.Column="1"
+                            Padding="16,0,0,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
+                            <!-- Time and Table Info -->
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <StackPanel Grid.Column="0" 
-                                            Orientation="Horizontal" 
-                                              Spacing="4">
-                                    <FontIcon Glyph="&#xE121;" 
-                                              FontSize="16"/>
-                                    <TextBlock 
-                                        Text="{x:Bind CreatedAt, Mode=OneWay,
-                                               Converter={StaticResource DateTimeToTimeOnly}, ConverterParameter=HH:mm}"
+                                <StackPanel
+                                    Grid.Column="0"
+                                    Orientation="Horizontal"
+                                    Spacing="4">
+                                    <FontIcon
+                                        Glyph="&#xE121;"
+                                        FontSize="16"/>
+                                    <TextBlock
+                                        Text="{x:Bind CreatedAt, Mode=OneWay, Converter={StaticResource DateTimeToTimeOnly}, ConverterParameter=HH:mm}"
                                         Style="{ThemeResource CaptionTextBlockStyle}"
                                         VerticalAlignment="Center"
-                                        Margin="0,-1,0,0"
-                                               />
+                                        Margin="0,-1,0,0"/>
                                 </StackPanel>
 
-                                <Border Grid.Column="1"
-                                        Background="{ThemeResource CyanBaseColor}"
-                                        CornerRadius="4"
-                                        Padding="12,4">
-                                    <TextBlock 
-                                        Foreground="{StaticResource TextOnAccentAAFillColorPrimaryBrush}"
+                                <Border
+                                    Grid.Column="1"
+                                    Background="{ThemeResource CyanBaseColor}"
+                                    CornerRadius="4"
+                                    Padding="12,4">
+                                    <TextBlock
+                                        Foreground="{ThemeResource TextOnAccentAAFillColorPrimaryBrush}"
                                         FontWeight="SemiBold">
                                         <Run Text="Table"/>
                                         <Run Text="{x:Bind Table.Number, Mode=OneWay}"/>
@@ -178,8 +200,12 @@
                                 </Border>
                             </Grid>
 
-                            <StackPanel Grid.Row="1" Margin="0,4,0,0" Spacing="8">
-                                <TextBlock 
+                            <!-- Product Name and Quantity -->
+                            <StackPanel
+                                Grid.Row="1"
+                                Margin="0,4,0,0"
+                                Spacing="8">
+                                <TextBlock
                                     Style="{ThemeResource SubtitleTextBlockStyle}"
                                     Text="{x:Bind Product.Name, Mode=OneWay}"
                                     TextWrapping="Wrap"
@@ -190,18 +216,21 @@
                                 </TextBlock>
                             </StackPanel>
 
-                            <Grid Grid.Row="2" Margin="0,8,0,0"
-                                  BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
-                                  BorderThickness="0,1,0,0"
-                                  Padding="0,8,0,0">
-                                <Border 
+                            <!-- Zone Info -->
+                            <Grid
+                                Grid.Row="2"
+                                Margin="0,8,0,0"
+                                BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                                BorderThickness="0,1,0,0"
+                                Padding="0,8,0,0">
+                                <Border
                                     Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}"
                                     CornerRadius="4"
                                     HorizontalAlignment="Left"
                                     Padding="12,4">
-                                    <TextBlock 
+                                    <TextBlock
                                         Foreground="{ThemeResource TextFillColorPrimary}"
-                                        Text="{x:Bind Table.ZoneName, Mode=OneWay}" />
+                                        Text="{x:Bind Table.ZoneName, Mode=OneWay}"/>
                                 </Border>
                             </Grid>
                         </Grid>

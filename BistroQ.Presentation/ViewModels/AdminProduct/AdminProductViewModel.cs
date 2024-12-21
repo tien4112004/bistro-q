@@ -13,6 +13,7 @@ using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels;
@@ -20,7 +21,9 @@ namespace BistroQ.Presentation.ViewModels;
 public partial class AdminProductViewModel :
     ObservableRecipient,
     INavigationAware,
-    IDisposable
+    IDisposable,
+    IRecipient<PageSizeChangedMessage>,
+    IRecipient<CurrentPageChangedMessage>
 {
     private readonly IDialogService _dialogService;
     private readonly INavigationService _navigationService;
@@ -30,6 +33,7 @@ public partial class AdminProductViewModel :
 
     [ObservableProperty]
     private AdminProductState _state = new();
+    private bool _isDisposed = false;
 
     public IRelayCommand AddCommand { get; }
     public IRelayCommand EditCommand { get; }
@@ -58,23 +62,7 @@ public partial class AdminProductViewModel :
         SortCommand = new RelayCommand<(string column, string direction)>(ExecuteSortCommand);
         SearchCommand = new RelayCommand(ExecuteSearchCommand);
 
-        RegisterMessengers();
-    }
-
-    private void RegisterMessengers()
-    {
-        _messenger.Register<PageSizeChangedMessage>(this, async (r, m) =>
-        {
-            State.Query.Size = m.NewPageSize;
-            State.ReturnToFirstPage();
-            await LoadDataAsync();
-        });
-
-        _messenger.Register<CurrentPageChangedMessage>(this, async (r, m) =>
-        {
-            State.Query.Page = m.NewCurrentPage;
-            await LoadDataAsync();
-        });
+        _messenger.RegisterAll(this);
     }
 
     private void StatePropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -86,20 +74,20 @@ public partial class AdminProductViewModel :
         }
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public async Task OnNavigatedTo(object parameter)
     {
-        State.Reset();
         await LoadDataAsync();
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
-        State.SelectedProduct = null;
-        State.Reset();
+        Dispose();
+        return Task.CompletedTask;
     }
 
     private async Task LoadDataAsync()
     {
+        if (State.IsLoading || _isDisposed) return;
         try
         {
             State.IsLoading = true;
@@ -115,6 +103,7 @@ public partial class AdminProductViewModel :
         }
         catch (Exception ex)
         {
+            Debug.WriteLine(ex.StackTrace);
             await _dialogService.ShowErrorDialog(ex.Message, "Error");
         }
         finally
@@ -194,13 +183,30 @@ public partial class AdminProductViewModel :
         _ = LoadDataAsync();
     }
 
+
     public void Dispose()
     {
+        if (_isDisposed) return;
+        _isDisposed = true;
+
         if (State != null)
         {
             State.PropertyChanged -= StatePropertyChanged;
         }
 
         _messenger.UnregisterAll(this);
+    }
+
+    public void Receive(PageSizeChangedMessage message)
+    {
+        State.Query.Size = message.NewPageSize;
+        State.ReturnToFirstPage();
+        _ = LoadDataAsync();
+    }
+
+    public void Receive(CurrentPageChangedMessage message)
+    {
+        State.Query.Page = message.NewCurrentPage;
+        _ = LoadDataAsync();
     }
 }

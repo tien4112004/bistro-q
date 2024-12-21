@@ -41,11 +41,12 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
         Zones = new ObservableCollection<ZoneViewModel>();
 
         EditCommand = new AsyncRelayCommand(UpdateTableAsync, CanEditTable);
-
-        LoadZonesAsync().ConfigureAwait(false);
     }
 
-    public event EventHandler NavigateBack;
+    public void NavigateBack()
+    {
+        App.GetService<INavigationService>().GoBack();
+    }
 
     public async Task UpdateTableAsync()
     {
@@ -65,7 +66,7 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
             await _tableDataService.UpdateTableAsync(Table.TableId.Value, Request);
 
             await _dialogService.ShowSuccessDialog("Table updated successfully.", "Success");
-            NavigateBack?.Invoke(this, EventArgs.Empty);
+            NavigateBack();
         }
         catch (Exception ex)
         {
@@ -82,8 +83,10 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
         return !IsProcessing;
     }
 
-    public void OnNavigatedTo(object parameter)
+    public async Task OnNavigatedTo(object parameter)
     {
+        await LoadZonesAsync();
+
         if (parameter is TableViewModel selectedTable)
         {
             Table = selectedTable;
@@ -106,7 +109,8 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
         }
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
+        return Task.CompletedTask;
     }
 }

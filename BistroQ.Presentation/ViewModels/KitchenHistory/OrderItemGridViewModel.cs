@@ -23,6 +23,7 @@ public partial class OrderItemGridViewModel :
     private readonly IMapper _mapper;
     private readonly IOrderItemDataService _dataService;
     private readonly IDialogService _dialogService;
+    private bool _isDisposed;
 
     [ObservableProperty]
     private OrderItemGridState _state = new();
@@ -40,8 +41,9 @@ public partial class OrderItemGridViewModel :
         _messenger.RegisterAll(this);
     }
 
-    public async void LoadItemsAsync()
+    public async Task LoadItemsAsync()
     {
+        if (State.IsLoading || _isDisposed) return;
         try
         {
             State.IsLoading = true;
@@ -80,7 +82,7 @@ public partial class OrderItemGridViewModel :
     public void Receive(CurrentPageChangedMessage message)
     {
         State.Query.Page = message.NewCurrentPage;
-        LoadItemsAsync();
+        _ = LoadItemsAsync();
     }
 
     public void Receive(OrderGridStatusChangedMessage message)
@@ -88,18 +90,21 @@ public partial class OrderItemGridViewModel :
         State.Reset();
         State.Query.Status = message.Status.ToString();
         State.ReturnToFirstPage();
-        LoadItemsAsync();
+        _ = LoadItemsAsync();
     }
 
     public void Receive(PageSizeChangedMessage message)
     {
         State.Query.Size = message.NewPageSize;
         State.ReturnToFirstPage();
-        LoadItemsAsync();
+        _ = LoadItemsAsync();
     }
 
     public void Dispose()
     {
+        if (_isDisposed) return;
+        _isDisposed = true;
+
         _messenger.UnregisterAll(this);
     }
 }

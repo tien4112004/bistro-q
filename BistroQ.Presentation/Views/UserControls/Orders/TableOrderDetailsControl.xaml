@@ -17,72 +17,83 @@
         <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     </UserControl.Resources>
 
-
-    <Grid Padding="10,10">
+    <Grid
+        Padding="10,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Padding="10,5,10,20">
+        <!-- Header -->
+        <Grid
+            Grid.Row="0"
+            Padding="10,5,10,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Order Detail"  
-                FontSize="16"
-                Grid.Column="0"
-                FontWeight="Bold"
-                />
 
-            <StackPanel Orientation="Horizontal" Grid.Column="1" Spacing="10">
-                <FontIcon Glyph="&#xE823;" FontFamily="Segoe Fluent Icons"
+            <TextBlock
+                Grid.Column="0"
+                Text="Order Detail"
+                FontSize="16"
+                FontWeight="Bold"/>
+
+            <!-- Timer Display -->
+            <StackPanel
+                Grid.Column="1"
+                Orientation="Horizontal"
+                Spacing="10">
+                <FontIcon
+                    Glyph="&#xE823;"
+                    FontFamily="Segoe Fluent Icons"
                     FontWeight="Bold"
-                    FontSize="14"
-                    />
-                <TextBlock FontSize="13"
-                           Text="{x:Bind ViewModel.Timer.FormattedTime, Mode=OneWay}"
-                           />
+                    FontSize="14"/>
+                <TextBlock
+                    Text="{x:Bind ViewModel.Timer.FormattedTime, Mode=OneWay}"
+                    FontSize="13"/>
             </StackPanel>
         </Grid>
 
+        <!-- Loading Indicator -->
         <xamlControl:ProgressRing
-                    Grid.Row="1"    
-                    IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
-                    Foreground="{StaticResource AccentFillColorDefaultBrush}"
-                    Width="40"
-                    Height="40"/>
+            Grid.Row="1"    
+            IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+            Foreground="{ThemeResource AccentFillColorDefaultBrush}"
+            Width="40"
+            Height="40"/>
 
-        <Grid Grid.Row="1"
-              Visibility="{x:Bind ViewModel.IsLoading, 
-                            Mode=OneWay, 
-                            Converter={StaticResource BoolToVisibility}, 
-                            ConverterParameter=invert}">            
+        <!-- Content Area -->
+        <Grid
+            Grid.Row="1"
+            Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-
-
-            <ScrollViewer Grid.Row="0"
+            <ScrollViewer
+                Grid.Row="0"
                 VerticalAlignment="Stretch"
                 VerticalScrollMode="Enabled"
                 VerticalScrollBarVisibility="Hidden"
                 ManipulationMode="System,TranslateY"
                 ManipulationDelta="VerticalScrollViewer_ManipulationDelta">
 
-                <StackPanel VerticalAlignment="Stretch" >
+                <StackPanel VerticalAlignment="Stretch">
+                    <!-- Status Messages -->
                     <TextBlock
                         Text="This table is currently available!"
-                        Foreground="{StaticResource SystemFillColorSuccessBrush}"
+                        Foreground="{ThemeResource SuccessBaseColor}"
                         Visibility="{x:Bind ViewModel.DoesNotHaveOrder, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
+
                     <TextBlock
-                        Foreground="{StaticResource SystemFillColorCriticalBrush}"
                         Text="This table haven't ordered any product!"
+                        Foreground="{ThemeResource ErrorBaseColor}"
                         Visibility="{x:Bind ViewModel.DoesNotHaveOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
 
+                    <!-- Order Items Grid -->
                     <controls:DataGrid
                         x:Name="OrderItemsGrid"
                         AutoGenerateColumns="False"
@@ -90,23 +101,24 @@
                         IsTapEnabled="False"
                         IsDoubleTapEnabled="False"
                         IsReadOnly="True"
-                        Visibility="{x:Bind ViewModel.HasOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
-                        ItemsSource="{x:Bind ViewModel.Order.OrderItems, Mode=OneWay}">
+                        ItemsSource="{x:Bind ViewModel.Order.OrderItems, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.HasOrderDetail, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
                         <controls:DataGrid.Resources>
-                            <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                            <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent"/>
                         </controls:DataGrid.Resources>
+
                         <controls:DataGrid.Columns>
-                            <controls:DataGridTextColumn 
-                                Header="Product Name" 
+                            <controls:DataGridTextColumn
+                                Header="Product Name"
                                 Binding="{Binding Product.Name}"
                                 Width="*"/>
-                            <controls:DataGridTextColumn 
-                                Header="Price" 
-                                Binding="{Binding Product.Price, Converter={StaticResource NumberToCurreny}}" 
+                            <controls:DataGridTextColumn
+                                Header="Price"
+                                Binding="{Binding Product.Price, Converter={StaticResource NumberToCurreny}}"
                                 Width="Auto"/>
-                            <controls:DataGridTextColumn 
-                                Header="Quantity" 
-                                Binding="{Binding Quantity}" 
+                            <controls:DataGridTextColumn
+                                Header="Quantity"
+                                Binding="{Binding Quantity}"
                                 Width="Auto"/>
                             <controls:DataGridTextColumn
                                 Header="Total"
@@ -114,15 +126,15 @@
                                 Width="Auto"/>
                         </controls:DataGrid.Columns>
                     </controls:DataGrid>
-
                 </StackPanel>
             </ScrollViewer>
 
-            <orderControls:TableBillSummaryControl Grid.Row="1"
-                                                   ButtonText="Checkout"
-                                                   Total="{x:Bind ViewModel.Order.TotalAmount, Mode=OneWay}" 
-                                                   CheckoutRequested="{x:Bind ViewModel.CheckoutRequestedCommand, Mode=OneWay}" />
+            <!-- Bill Summary -->
+            <orderControls:TableBillSummaryControl
+                Grid.Row="1"
+                ButtonText="Checkout"
+                Total="{x:Bind ViewModel.Order.TotalAmount, Mode=OneWay}"
+                CheckoutRequested="{x:Bind ViewModel.CheckoutRequestedCommand, Mode=OneWay}"/>
         </Grid>
     </Grid>
-
 </UserControl>

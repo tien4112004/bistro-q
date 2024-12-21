@@ -5,77 +5,188 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" 
+    xmlns:skeleton="using:BistroQ.Presentation.Controls.Skeleton"
+    xmlns:converter="using:BistroQ.Presentation.Converters"
     xmlns:local="using:BistroQ.Presentation.Views.UserControls"
     mc:Ignorable="d">
+    
+    
+    <!-- Page Resources -->
+    <Page.Resources>
+        <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </Page.Resources>
 
+    <!-- Main Content Area Grid -->
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" HorizontalAlignment="Stretch">
+
+        <!-- Search and Action Buttons -->
+        <Grid 
+            Grid.Row="0" 
+            HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <AutoSuggestBox PlaceholderText="Search for a category"
+
+            <!-- Search Box -->
+            <AutoSuggestBox 
+                PlaceholderText="Search for a category"
                 Text="{x:Bind ViewModel.State.SearchText, Mode=TwoWay}"
                 QueryIcon="Find"
                 QuerySubmitted="Control2_QuerySubmitted"
                 SuggestionChosen="Control2_SuggestionChosen"
                 Width="300"
                 HorizontalAlignment="Left"/>
-            <StackPanel x:Name="AdminCategoryPage_Buttons" Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
-                <Button Style="{StaticResource AccentButtonStyle}" Command="{x:Bind ViewModel.AddCommand}" Width="120" Margin="0,0,8,0">
+
+            <!-- Action Buttons -->
+            <StackPanel 
+                x:Name="AdminCategoryPage_Buttons" 
+                Orientation="Horizontal" 
+                Grid.Column="1" 
+                HorizontalAlignment="Right">
+                <!-- Add Button -->
+                <Button 
+                    Style="{StaticResource AccentButtonStyle}" 
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    Command="{x:Bind ViewModel.AddCommand}" 
+                    Width="120" 
+                    Margin="0,0,8,0">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE710;" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock x:Uid="AdminCategory_DataGrid_AddNewButtonText" Margin="8,0,0,0" />
+                            <FontIcon 
+                                Glyph="&#xE710;" 
+                                FontFamily="Segoe MDL2 Assets" />
+                            <TextBlock 
+                                x:Uid="AdminCategory_DataGrid_AddNewButtonText" 
+                                Margin="8,0,0,0" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Button Command="{x:Bind ViewModel.EditCommand}" Width="120" Margin="0,0,8,0">
+
+                <!-- Edit Button -->
+                <Button 
+                    Command="{x:Bind ViewModel.EditCommand}" 
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    Width="120" 
+                    Margin="0,0,8,0">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE70F;" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock Text="Edit" Margin="8,0,0,0" />
+                            <FontIcon 
+                                Glyph="&#xE70F;" 
+                                FontFamily="Segoe MDL2 Assets" />
+                            <TextBlock 
+                                Text="Edit" 
+                                Margin="8,0,0,0" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Button Command="{x:Bind ViewModel.DeleteCommand}" Width="120" Margin="0,0,8,0">
+
+                <!-- Delete Button -->
+                <Button 
+                    Command="{x:Bind ViewModel.DeleteCommand}" 
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    Width="120" 
+                    Margin="0,0,8,0">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE74D;" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock Text="Delete" Margin="8,0,0,0" />
+                            <FontIcon 
+                                Glyph="&#xE74D;" 
+                                FontFamily="Segoe MDL2 Assets" />
+                            <TextBlock 
+                                Text="Delete" 
+                                Margin="8,0,0,0" />
                         </StackPanel>
                     </Button.Content>
                 </Button>
             </StackPanel>
         </Grid>
+
+        <!-- Loading Overlay -->
+        <Grid 
+            x:Name="LoadingOverlay"
+            Grid.Row="1"
+            Visibility="{x:Bind ViewModel.State.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+            <ListView 
+                IsHitTestVisible="False"
+                SelectionMode="None">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Margin" Value="8"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Grid 
+                                        Height="52" 
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        CornerRadius="8"
+                                        Padding="12,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <skeleton:RectangleSkeleton Width="40" Height="16"/>
+                                        <skeleton:RectangleSkeleton Grid.Column="1" Width="200" Height="16"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListViewItem/>
+                <ListViewItem/>
+                <ListViewItem/>
+                <ListViewItem/>
+                <ListViewItem/>
+            </ListView>
+        </Grid>
+
+        <!-- Data Grid -->
         <controls:DataGrid
             x:Name="AdminCategoryDataGrid"
+            Grid.Row="1"
             AutoGenerateColumns="False"
             GridLinesVisibility="Horizontal"
+            Visibility="{x:Bind ViewModel.State.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
             ItemsSource="{x:Bind ViewModel.State.Source, Mode=OneWay}"
             SelectedItem="{x:Bind ViewModel.State.SelectedCategory, Mode=TwoWay}"
-            Grid.Row="1"
             Sorting="ViewModel_AdminCategoryDataGrid_Sorting">
             <controls:DataGrid.Resources>
-                <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
+                <SolidColorBrush 
+                    x:Key="DataGridColumnHeaderBackgroundColor" 
+                    Color="Transparent" />
             </controls:DataGrid.Resources>
             <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Binding="{Binding CategoryId}" 
-                                           x:Uid="AdminCategory_DataGrid_Column_Id" 
-                                           CanUserResize="False"
-                                           IsReadOnly="True"
-                                           Tag="CategoryId" />
-                <controls:DataGridTextColumn Binding="{Binding Name}" 
-                                           x:Uid="AdminCategory_DataGrid_Column_Name" 
-                                           IsReadOnly="True" MinWidth="300"
-                                           Tag="Name" />
+                <!-- Category ID Column -->
+                <controls:DataGridTextColumn 
+                    x:Uid="AdminCategory_DataGrid_Column_Id" 
+                    Binding="{Binding CategoryId}" 
+                    CanUserResize="False"
+                    IsReadOnly="True"
+                    Tag="CategoryId" />
+
+                <!-- Category Name Column -->
+                <controls:DataGridTextColumn 
+                    x:Uid="AdminCategory_DataGrid_Column_Name" 
+                    Binding="{Binding Name}" 
+                    IsReadOnly="True" 
+                    MinWidth="300"
+                    Tag="Name" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
-        <local:PaginationControl Grid.Row="2" Margin="0,0,0,24" />
+
+        <!-- Pagination -->
+        <local:PaginationControl 
+            Grid.Row="2" 
+            Margin="0,0,0,24" />
     </Grid>
 </Page>

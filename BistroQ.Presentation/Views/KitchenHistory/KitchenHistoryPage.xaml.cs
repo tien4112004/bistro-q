@@ -41,6 +41,11 @@ public sealed partial class KitchenHistoryPage : Page
         }
 
         var type = _statusItems[Segmented.SelectedIndex].Status;
+
+        if (ViewModel.OrderItemGridViewModel.State.Query.Status == type.ToString())
+        {
+            return;
+        }
         App.GetService<IMessenger>().Send(new OrderGridStatusChangedMessage(type));
     }
 }
