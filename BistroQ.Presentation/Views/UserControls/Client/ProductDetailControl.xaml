@@ -16,8 +16,8 @@
     </UserControl.Resources>
 
     <ScrollView Width="480">
-        <StackPanel Padding="8" Margin="0,0,0,16">
-            <Image Source="{x:Bind ViewModel.ImageUrl}" Height="250" Margin="0,0,0,20" />
+        <StackPanel Padding="8" Margin="0,0,0,16" Width="464">
+            <Image Source="{x:Bind ViewModel.ImageUrl}" Height="240" Margin="0,0,0,20" />
             <TextBlock Text="{x:Bind ViewModel.Name}" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,4" />
             <TextBlock Margin="0,4,0,20">
                <Run
@@ -33,7 +33,6 @@
                    FontSize="16"
                    Foreground="{ThemeResource TextFillColorTertiary}"/>
             </TextBlock>
-            <TextBlock Text="Nutrition Facts" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,8"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -49,45 +48,53 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="0" Grid.Column="0">
+                    <TextBlock Text="Nutrition Facts" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="1" Grid.Column="0">
                         <TextBlock Text="Calories" FontSize="16" FontWeight="Bold"          
                                    Margin="4,0,0,0" Padding="4" />
                     </Border>
-                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="0" Grid.Column="1">
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="1" Grid.Column="1">
                         <TextBlock Text="{x:Bind ViewModel.NutritionFact.Calories}" FontSize="16" 
                                    Margin="4,0,0,0" Padding="4" />
                     </Border>
-                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="1" Grid.Column="0">
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="2" Grid.Column="0">
                         <TextBlock Text="Fat" FontSize="16" FontWeight="Bold" 
                                    Margin="4,0,0,0" Padding="4" />
                     </Border>
-                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="1" Grid.Column="1">
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="2" Grid.Column="1">
                         <TextBlock Text="{x:Bind ViewModel.NutritionFact.Fat}" FontSize="16" 
                                    Margin="4,0,0,0" Padding="4" />
                     </Border>
-                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="2" Grid.Column="0">
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="3" Grid.Column="0">
                         <TextBlock Text="Fiber" FontSize="16" FontWeight="Bold" 
                                    Margin="4,0,0,0" Padding="4" />
                     </Border>
-                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="2" Grid.Column="1">
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="3" Grid.Column="1">
                         <TextBlock Text="{x:Bind ViewModel.NutritionFact.Fiber}" FontSize="16" 
                                    Margin="4,0,0,0" Padding="4" />
                     </Border>
-                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="3" Grid.Column="0">
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="4" Grid.Column="0">
                         <TextBlock Text="Protein" FontSize="16" FontWeight="Bold" 
                                    Margin="4,0,0,0" Padding="4" />
                     </Border>
-                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="3" Grid.Column="1">
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="4" Grid.Column="1">
                         <TextBlock Text="{x:Bind ViewModel.NutritionFact.Protein}" FontSize="16" 
                                    Margin="4,0,0,0" Padding="4" />
                     </Border>
                 </Grid>
-                <lvc:PieChart BorderThickness="1" BorderBrush="White"   
-                    Series="{x:Bind ChartViewModel.Series, Mode=OneWay}" 
-                    Background="White" Foreground="White"
-                    Grid.Column="1" Width="200" Height="200">
-                </lvc:PieChart>
+                <ItemContainer Grid.Column="1">
+                    <lvc:PieChart 
+                        x:Name="Chart"
+                        Series="{x:Bind ChartViewModel.Series, Mode=OneWay}"
+                        Width="200" 
+                        Height="200"
+                        Margin="8"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                    </lvc:PieChart>
+                </ItemContainer>
             </Grid>
         </StackPanel>
     </ScrollView>

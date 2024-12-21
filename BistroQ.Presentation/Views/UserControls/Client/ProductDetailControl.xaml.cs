@@ -15,29 +15,23 @@ public sealed partial class ProductDetailControl : UserControl
     {
         this.InitializeComponent();
         ViewModel = product;
+        DataContext = this;
         ChartViewModel = new PieChartViewModel(product.NutritionFact);
+        //Chart.Series = ChartViewModel.Series;
+
+        var series = ChartViewModel.Series;
+        System.Diagnostics.Debug.WriteLine($"Series count: {series.Count()}");
+        foreach (var s in series)
+        {
+            System.Diagnostics.Debug.WriteLine($"Values: {string.Join(", ", (s as PieSeries<double>)?.Values ?? Array.Empty<double>())}");
+        }
     }
 
     public class PieChartViewModel
     {
         public IEnumerable<ISeries> Series { get; set; }
-
         public PieChartViewModel(NutritionFactViewModel nutritionFact)
         {
-            //Series = new[] {
-            //    double.TryParse(nutritionFact?.Calories, out var calories) ? calories : 0,
-            //    double.TryParse(nutritionFact?.Fiber, out var fiber) ? fiber : 0,
-            //    double.TryParse(nutritionFact?.Fat, out var fat) ? fat : 0,
-            //    double.TryParse(nutritionFact?.Protein, out var protein) ? protein : 0,
-            //}.AsPieSeries((value, series) =>
-            //{
-            //    series.MaxRadialColumnWidth = 60;
-            //});
-
-            //        Series = new[] { 2, 4, 1, 4, 3 }.AsPieSeries((value, series) =>
-            //{
-            //    series.MaxRadialColumnWidth = 60;
-            //});
             Series = new ISeries[]
             {
                 new PieSeries<double> { Values = new double[] { double.TryParse(nutritionFact?.Calories, out var calories) ? calories : 0 }, Name = "Calories" },
