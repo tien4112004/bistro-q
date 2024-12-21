@@ -35,7 +35,7 @@
         <DataTemplate
             x:Key="SingleProductDataTemplate"
             x:DataType="entities:ProductViewModel">
-            <local:SingleProductControl Product="{x:Bind Mode=OneWay}"/>
+            <local:SingleProductControl Product="{x:Bind Mode=OneWay}" ProductClicked="SingleProductControl_ProductClicked"/>
         </DataTemplate>
     </UserControl.Resources>
 

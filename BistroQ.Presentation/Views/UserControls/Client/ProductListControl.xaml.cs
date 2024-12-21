@@ -1,4 +1,5 @@
-﻿using BistroQ.Presentation.Helpers;
+﻿using BistroQ.Presentation.Contracts.Services;
+using BistroQ.Presentation.Helpers;
 using BistroQ.Presentation.ViewModels.Client;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.Messaging;
@@ -80,5 +81,27 @@ public sealed partial class ProductListControl : UserControl
     private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
     {
         (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
+    }
+
+    private async void SingleProductControl_ProductClicked(object sender, ProductViewModel e)
+    {
+        var _dialogService = App.GetService<IDialogService>();
+
+        if (_dialogService != null)
+        {
+            var productDetailControl = new ProductDetailControl(e);
+            var productDetailDialog = new ContentDialog
+            {
+                Content = productDetailControl,
+                Title = e.Name,
+                CloseButtonText = "Close",
+                PrimaryButtonText = "Add to cart",
+            };
+            await _dialogService.ShowDialogAsync(productDetailDialog);
+            //if (dialogResult == DialogResult.OK)
+            //{
+            //    // Handle the dialog result if needed
+            //}
+        }
     }
 }
