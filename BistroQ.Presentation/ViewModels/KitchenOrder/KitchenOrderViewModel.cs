@@ -54,12 +54,13 @@ public partial class KitchenOrderViewModel :
         _messenger.RegisterAll(this);
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
         Dispose();
+        return Task.CompletedTask;
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public async Task OnNavigatedTo(object parameter)
     {
         PendingColumnVM.ColumnType = KitchenColumnType.Pending;
         await PendingColumnVM.LoadItems(OrderItemStatus.Pending);

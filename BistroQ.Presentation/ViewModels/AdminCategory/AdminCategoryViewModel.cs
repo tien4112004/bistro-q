@@ -73,14 +73,15 @@ public partial class AdminCategoryViewModel :
         }
     }
 
-    public void OnNavigatedTo(object parameter)
+    public async Task OnNavigatedTo(object parameter)
     {
-        _ = LoadDataAsync();
+        await LoadDataAsync();
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
         Dispose();
+        return Task.CompletedTask;
     }
 
     private async Task LoadDataAsync()

@@ -78,16 +78,18 @@ public partial class AdminCategoryEditPageViewModel : ObservableRecipient, INavi
         return !Form.HasErrors && !IsProcessing;
     }
 
-    public void OnNavigatedTo(object parameter)
+    public Task OnNavigatedTo(object parameter)
     {
         if (parameter is CategoryViewModel selectedCategory)
         {
             Category = selectedCategory;
             Form.Name = Category?.Name ?? string.Empty;
         }
+        return Task.CompletedTask;
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
+        return Task.CompletedTask;
     }
 }

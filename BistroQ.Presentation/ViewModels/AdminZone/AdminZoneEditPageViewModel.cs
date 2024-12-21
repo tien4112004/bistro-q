@@ -75,13 +75,14 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
         }
     }
 
-    public void OnNavigatedTo(object parameter)
+    public Task OnNavigatedTo(object parameter)
     {
         if (parameter is ZoneViewModel selectedZone)
         {
             Zone = selectedZone;
             Form.Name = Zone?.Name ?? string.Empty;
         }
+        return Task.CompletedTask;
     }
 
     public bool CanUpdate()
@@ -89,7 +90,8 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
         return !Form.HasErrors && !IsProcessing;
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
+        return Task.CompletedTask;
     }
 }

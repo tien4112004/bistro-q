@@ -59,7 +59,6 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         _tableDataService = tableDataService;
         _dialogService = dialogService;
         _mapper = mapper;
-
         Zones = new ObservableCollection<ZoneViewModel>();
         Tables = new ObservableCollection<TableViewModel>();
         Roles = new ObservableCollection<string> { "Admin", "Kitchen", "Cashier", "Client" };
@@ -193,7 +192,7 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         }
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public async Task OnNavigatedTo(object parameter)
     {
         if (parameter is AccountViewModel account)
         {
@@ -225,9 +224,10 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         }
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
         Dispose();
+        return Task.CompletedTask;
     }
 
 

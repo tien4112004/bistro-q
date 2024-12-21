@@ -26,7 +26,7 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
     {
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public async Task OnNavigatedTo(object parameter)
     {
         try
         {
@@ -52,8 +52,9 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
         _ = ProductListViewModel.LoadProductAsync();
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
         OrderCartViewModel.Dispose();
+        return Task.CompletedTask;
     }
 }

@@ -77,11 +77,11 @@ public sealed partial class ShellPage : Page
         return keyboardAccelerator;
     }
 
-    private static void OnKeyboardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+    private static async void OnKeyboardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
     {
         var navigationService = App.GetService<INavigationService>();
 
-        var result = navigationService.GoBack();
+        var result = await navigationService.GoBack();
 
         args.Handled = result;
     }

@@ -1,7 +1,6 @@
 ﻿using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos.Zones;
 using BistroQ.Presentation.Contracts.Services;
-using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -9,7 +8,7 @@ using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminZone;
 
-public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigationAware
+public partial class AdminZoneAddPageViewModel : ObservableRecipient
 {
     [ObservableProperty]
     private bool _isProcessing = false;
@@ -74,14 +73,5 @@ public partial class AdminZoneAddPageViewModel : ObservableRecipient, INavigatio
         {
             IsProcessing = false;
         }
-    }
-
-    public void OnNavigatedTo(object parameter)
-    {
-    }
-
-    public void OnNavigatedFrom()
-    {
-        //
     }
 }

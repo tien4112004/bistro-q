@@ -173,14 +173,15 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient, INaviga
         }
     }
 
-    public void OnNavigatedTo(object parameter)
+    public async Task OnNavigatedTo(object parameter)
     {
-        _ = LoadZonesAsync();
+        await LoadZonesAsync();
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
         Dispose();
+        return Task.CompletedTask;
     }
 
     public void Dispose()

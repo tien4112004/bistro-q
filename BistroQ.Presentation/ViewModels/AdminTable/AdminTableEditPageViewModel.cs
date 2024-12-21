@@ -83,9 +83,9 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
         return !IsProcessing;
     }
 
-    public void OnNavigatedTo(object parameter)
+    public async Task OnNavigatedTo(object parameter)
     {
-        _ = LoadZonesAsync();
+        await LoadZonesAsync();
 
         if (parameter is TableViewModel selectedTable)
         {
@@ -109,7 +109,8 @@ public partial class AdminTableEditPageViewModel : ObservableRecipient, INavigat
         }
     }
 
-    public void OnNavigatedFrom()
+    public Task OnNavigatedFrom()
     {
+        return Task.CompletedTask;
     }
 }
