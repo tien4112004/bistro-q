@@ -47,6 +47,7 @@ public partial class OrderCartViewModel :
     public ICommand StartOrderCommand { get; }
     public ICommand CancelOrderCommand { get; }
     public ICommand OrderStartedCommand { get; set; }
+    public ICommand EditPeopleCountCommand { get; }
 
     public OrderCartViewModel(IOrderDataService orderDataService, IMapper mapper, IMessenger messenger)
     {
@@ -57,6 +58,7 @@ public partial class OrderCartViewModel :
         StartOrderCommand = new AsyncRelayCommand(StartOrder);
         CancelOrderCommand = new RelayCommand(CancelOrder);
         dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+        EditPeopleCountCommand = new AsyncRelayCommand(EditPeopleCount);
 
         CartItems.CollectionChanged += CartItems_CollectionChanged;
     }
@@ -115,6 +117,12 @@ public partial class OrderCartViewModel :
 
         ErrorMessage = string.Empty;
         IsOrdering = false;
+    }
+
+    private async Task EditPeopleCount()
+    {
+        _orderDataService.ChangePeopleCountAsync(Order.PeopleCount);
+        return;
     }
 
     // CartItemChanged

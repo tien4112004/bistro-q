@@ -85,4 +85,19 @@ public class OrderDataService : IOrderDataService
         throw new Exception(response.Message);
     }
 
+    public async Task ChangePeopleCountAsync(int peopleCount)
+    {
+
+        var request = new
+        {
+            PeopleCount = peopleCount,
+        };
+        var response = await _apiClient.PatchAsync<Order>($"api/Client/Order/PeopleCount", request);
+        if (response.Success)
+        {
+            return;
+        }
+
+        throw new Exception(response.Message);
+    }
 }

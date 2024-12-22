@@ -17,11 +17,13 @@
             <NumberBox x:Uid="NutritionPagePeopleCountNumberBox" 
                        Margin="0,0,8,0"
                        Value="{x:Bind ViewModel.Order.PeopleCount, Mode=TwoWay}"
-                       IsEnabled="False"
+                       IsEnabled="True"
+                       Minimum="1"
                        Grid.Column="0"></NumberBox>
             <Button x:Uid="NutritionPageEditPeopleCountButton" 
                     Style="{StaticResource AccentButtonStyle}"
-                    IsEnabled="False"
+                    IsEnabled="True"
+                    Command="{x:Bind ViewModel.EditPeopleCountCommand}"
                     VerticalAlignment="Bottom"
                     Grid.Column="1" />
         </Grid>

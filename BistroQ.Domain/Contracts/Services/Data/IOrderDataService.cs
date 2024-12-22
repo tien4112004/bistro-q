@@ -8,6 +8,8 @@ public interface IOrderDataService
 
     Task<Order?> GetOrderAsync();
 
+    Task ChangePeopleCountAsync(int peopleCount);
+
     Task DeleteOrderAsync();
 
     Task<Order> GetOrderByCashierAsync(int tableId);
@@ -15,4 +17,6 @@ public interface IOrderDataService
     Task<IEnumerable<Order>> GetCurrentOrdersByCashierAsync();
 
     Task<IEnumerable<OrderItem>> CreateOrderItems(IEnumerable<OrderItem> cart);
+
+
 }
