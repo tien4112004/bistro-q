@@ -94,7 +94,7 @@ public sealed partial class ProductListControl : UserControl
             var productDetailDialog = new ContentDialog
             {
                 Content = productDetailControl,
-                Title = e.Name,
+                Title = "Product Detail",
                 CloseButtonText = "Close",
                 PrimaryButtonText = "Add to cart",
                 DefaultButton = ContentDialogButton.Primary

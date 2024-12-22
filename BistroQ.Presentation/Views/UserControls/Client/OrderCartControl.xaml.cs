@@ -75,7 +75,6 @@ public sealed partial class OrderCartControl :
 
     public void Receive(OrderSucceededMessage message)
     {
-        Thread.Sleep(200);
         OrderCartSelector.SelectedItem = SelectorBarItemOrder;
     }
 

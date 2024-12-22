@@ -7,6 +7,7 @@ using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.UI.Dispatching;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -55,6 +56,7 @@ public partial class OrderCartViewModel :
         messenger.RegisterAll(this);
         StartOrderCommand = new AsyncRelayCommand(StartOrder);
         CancelOrderCommand = new RelayCommand(CancelOrder);
+        dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         CartItems.CollectionChanged += CartItems_CollectionChanged;
     }
@@ -190,20 +192,23 @@ public partial class OrderCartViewModel :
         }
     }
 
-    public void Receive(OrderRequestedMessage message)
+    public async void Receive(OrderRequestedMessage message)
     {
         try
         {
             var cart = CartItems.Select(item => _mapper.Map<OrderItem>(item)).ToList();
-            _orderDataService.CreateOrderItems(cart);
-            CartItems.Clear();
-            _messenger.Send(new OrderSucceededMessage());
+
+            await _orderDataService.CreateOrderItems(cart);
+            dispatcherQueue.TryEnqueue(() =>
+            {
+                CartItems.Clear();
+                _messenger.Send(new OrderSucceededMessage());
+            });
         }
         catch (Exception e)
         {
             Debug.WriteLine(e.Message);
         }
-        Debug.WriteLine("[Debug] Order requested message received, number of items: " + message.OrderItems.Count());
     }
 
     public void Receive(CheckoutRequestedMessage message)
@@ -216,4 +221,6 @@ public partial class OrderCartViewModel :
         CartItems.CollectionChanged -= CartItems_CollectionChanged;
         _messenger.UnregisterAll(this);
     }
+
+    private DispatcherQueue dispatcherQueue;
 }
