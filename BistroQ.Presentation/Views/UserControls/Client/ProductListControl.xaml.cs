@@ -1,5 +1,6 @@
 ﻿using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Helpers;
+using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Client;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.Messaging;
@@ -98,11 +99,11 @@ public sealed partial class ProductListControl : UserControl
                 PrimaryButtonText = "Add to cart",
                 DefaultButton = ContentDialogButton.Primary
             };
-            await _dialogService.ShowDialogAsync(productDetailDialog);
-            //if (dialogResult == DialogResult.OK)
-            //{
-            //    // Handle the dialog result if needed
-            //}
+            var dialogResult = await _dialogService.ShowDialogAsync(productDetailDialog);
+            if (dialogResult == ContentDialogResult.Primary)
+            {
+                _messenger.Send(new AddProductToCartMessage(e));
+            }
         }
     }
 }

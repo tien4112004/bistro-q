@@ -7,5 +7,5 @@ public interface IDialogService
     Task<ContentDialogResult> ShowConfirmDeleteDialog();
     Task ShowSuccessDialog(string message, string title);
     Task ShowErrorDialog(string message, string title);
-    Task ShowDialogAsync(ContentDialog dialog);
+    Task<ContentDialogResult> ShowDialogAsync(ContentDialog dialog);
 }

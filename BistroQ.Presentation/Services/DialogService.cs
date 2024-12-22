@@ -55,11 +55,11 @@ public class DialogService : IDialogService
         await ShowDialogCoreAsync(dialog);
     }
 
-    public async Task ShowDialogAsync(ContentDialog dialog)
+    public async Task<ContentDialogResult> ShowDialogAsync(ContentDialog dialog)
     {
         dialog.XamlRoot = _xamlRoot;
 
-        await ShowDialogCoreAsync(dialog);
+        return await ShowDialogCoreAsync(dialog);
     }
 
     private async Task<ContentDialogResult> ShowDialogCoreAsync(ContentDialog dialog)

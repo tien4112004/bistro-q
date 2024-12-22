@@ -5,7 +5,6 @@ using LiveChartsCore.SkiaSharpView.WinUI;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using System.Reflection;
 
 namespace BistroQ.Presentation.Views.UserControls.Client;
 
@@ -48,23 +47,6 @@ public sealed partial class ProductDetailControl : UserControl
             VerticalAlignment = VerticalAlignment.Center
         };
         ChartContainer.Child = pieChart;
-    }
-
-    private void LoadSkiaSharpHarfBuzz()
-    {
-        var assemblyName = "SkiaSharp.HarfBuzz";
-        var assembly = Assembly.Load(new AssemblyName(assemblyName));
-        if (assembly == null)
-        {
-            throw new Exception($"Failed to load assembly: {assemblyName}");
-        }
-
-        assemblyName = "SkiaSharp.HarfBuzzSharp";
-        var assembly2 = Assembly.Load(new AssemblyName(assemblyName));
-        if (assembly2 == null)
-        {
-            throw new Exception($"Failed to load assembly: {assemblyName}");
-        }
     }
 
     public class PieChartViewModel
