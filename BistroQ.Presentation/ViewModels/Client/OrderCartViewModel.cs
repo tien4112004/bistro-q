@@ -38,8 +38,18 @@ public partial class OrderCartViewModel :
     [ObservableProperty]
     private string _errorMessage = string.Empty;
 
-    [ObservableProperty]
-    private NutritionFact _orderNutritionFact;
+    #region NutritionFacts
+    public double CaloriesPercentage => Order.TotalCalories / 2000.0 * 100;
+
+    public double ProteinPercentage => Order.TotalProtein / 50.0 * 100;
+
+    public double FatPercentage => Order.TotalFat / 70.0 * 100;
+
+    public double FiberPercentage => Order.TotalFiber / 25.0 * 100;
+
+    public double CarbohydratesPercentage => Order.TotalCarbohydrates / 300.0 * 100;
+    #endregion
+
 
     public decimal TotalCart => CartItems.Sum(x => x.Total.Value);
 

@@ -45,14 +45,14 @@
                 </SelectorBarItem.Icon>
             </SelectorBarItem>
 
-            <!-- Order Tab -->
+            <!-- Nutrition Tab -->
             <SelectorBarItem
                 x:Name="SelectorBarItemNutrition"
                 Text="Nutrition"
                 PointerEntered="Button_PointerEntered"
                 PointerExited="Button_PointerExited">
                 <SelectorBarItem.Icon>
-                    <FontIcon Glyph="&#xE81C;"/>
+                    <FontIcon Glyph="&#xEB4A;"/>
                 </SelectorBarItem.Icon>
             </SelectorBarItem>
         </SelectorBar>

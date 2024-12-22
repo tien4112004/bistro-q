@@ -34,6 +34,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0">
@@ -45,10 +46,11 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <ProgressBar x:Name="CaloriesProgressBar" 
-                                 Value="100" 
+                                 Value="{x:Bind ViewModel.CaloriesPercentage, Mode=OneWay}" 
                                  Grid.Column="0" />
-                    <TextBlock Text="100%" 
+                    <TextBlock Text="{x:Bind ViewModel.CaloriesPercentage, Mode=OneWay}" 
                                VerticalAlignment="Center" 
+                               Width="80"
                                Margin="8,0,0,0" 
                                Grid.Column="1" />
                 </Grid>
@@ -64,10 +66,11 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <ProgressBar x:Name="ProteinProgressBar" 
-                                 Value="100" 
+                                 Value="{x:Bind ViewModel.ProteinPercentage, Mode=OneWay}" 
                                  Grid.Column="0" />
-                    <TextBlock Text="100%" 
+                    <TextBlock Text="{x:Bind ViewModel.ProteinPercentage, Mode=OneWay}" 
                                VerticalAlignment="Center" 
+                               Width="80"
                                Margin="8,0,0,0" 
                                Grid.Column="1" />
                 </Grid>
@@ -82,10 +85,11 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <ProgressBar x:Name="FatProgressBar" 
-                                 Value="100" 
+                                 Value="{x:Bind ViewModel.FatPercentage, Mode=OneWay}" 
                                  Grid.Column="0" />
-                    <TextBlock Text="100%" 
+                    <TextBlock Text="{x:Bind ViewModel.FatPercentage, Mode=OneWay}" 
                                VerticalAlignment="Center" 
+                               Width="80"
                                Margin="8,0,0,0" 
                                Grid.Column="1" />
                 </Grid>
@@ -100,10 +104,30 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <ProgressBar x:Name="FiberProgressBar" 
-                                 Value="100" 
+                                 Value="{x:Bind ViewModel.FiberPercentage, Mode=OneWay}" 
                                  Grid.Column="0" />
-                    <TextBlock Text="100%" 
+                    <TextBlock Text="{x:Bind ViewModel.FiberPercentage, Mode=OneWay}" 
                                VerticalAlignment="Center" 
+                               Width="80"
+                               Margin="8,0,0,0" 
+                               Grid.Column="1" />
+                </Grid>
+            </StackPanel>
+
+            <StackPanel Grid.Row="4">
+                <TextBlock Text="Carbohydrates" 
+                           Margin="0,0,0,8" />
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ProgressBar x:Name="CarbohydratesProgressBar" 
+                                 Value="{x:Bind ViewModel.CarbohydratesPercentage, Mode=OneWay}" 
+                                 Grid.Column="0" />
+                    <TextBlock Text="{x:Bind ViewModel.CarbohydratesPercentage, Mode=OneWay}" 
+                               VerticalAlignment="Center" 
+                               Width="80"
                                Margin="8,0,0,0" 
                                Grid.Column="1" />
                 </Grid>

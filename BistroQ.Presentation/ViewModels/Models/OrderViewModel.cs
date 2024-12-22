@@ -29,17 +29,17 @@ public partial class OrderViewModel : ObservableObject
     public ObservableCollection<OrderItemViewModel> OrderItems { get; } = new();
 
     [ObservableProperty]
-    private decimal _totalCalories;
+    private double _totalCalories;
 
     [ObservableProperty]
-    private decimal _totalProtein;
+    private double _totalProtein;
 
     [ObservableProperty]
-    private decimal _totalFat;
+    private double _totalFat;
 
     [ObservableProperty]
-    private decimal _totalFiber;
+    private double _totalFiber;
 
     [ObservableProperty]
-    private decimal _totalCarbohydrates;
+    private double _totalCarbohydrates;
 }
