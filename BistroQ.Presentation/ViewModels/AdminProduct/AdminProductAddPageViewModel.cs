@@ -46,6 +46,7 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
         _dialogService = dialogService;
         _mapper = mapper;
         Categories = new ObservableCollection<CategoryViewModel>();
+        LoadCategoriesAsync();
 
         AddCommand = new AsyncRelayCommand(AddProductAsync);
     }

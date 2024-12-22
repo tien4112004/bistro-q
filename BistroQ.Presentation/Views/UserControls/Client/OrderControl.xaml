@@ -37,10 +37,9 @@
                 <!-- Product Image -->
                 <Image
                     Grid.Column="0"
-                    Source="https://imageplaceholder.net/64"
+                    Source="{x:Bind Product.ImageUrl}"
                     Width="64"
                     Height="64"
-                    Stretch="Fill"
                     Margin="0,0,12,0"/>
 
                 <!-- Product Details -->

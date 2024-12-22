@@ -86,7 +86,6 @@ public sealed partial class CartControl : UserControl, INotifyPropertyChanged
 
         var orderItems = ViewModel.CartItems.ToList();
         App.GetService<IMessenger>().Send(new OrderRequestedMessage(orderItems));
-        Debug.WriteLine("[Debug] Order clicked");
     }
 
     private void VerticalScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)

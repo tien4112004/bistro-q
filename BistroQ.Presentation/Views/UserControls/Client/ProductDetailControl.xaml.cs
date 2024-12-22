@@ -40,9 +40,9 @@ public sealed partial class ProductDetailControl : UserControl
         var pieChart = new PieChart
         {
             Series = ChartViewModel.Series,
-            Width = 216,
-            Height = 216,
-            Margin = new Thickness(8),
+            Width = 192,
+            Height = 192,
+            Margin = new Thickness(4),
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };

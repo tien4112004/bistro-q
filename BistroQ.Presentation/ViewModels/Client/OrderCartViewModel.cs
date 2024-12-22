@@ -187,7 +187,7 @@ public partial class OrderCartViewModel :
                 ProductId = product.ProductId,
                 Product = product,
                 Quantity = 1,
-                PriceAtPurchase = product.Price
+                PriceAtPurchase = (product.DiscountPrice != 0 ? product.DiscountPrice : product.Price)
             });
         }
     }

@@ -109,7 +109,7 @@
                                    Margin="4,0,0,0" Padding="4" />
                     </Border>
                 </Grid>
-                <Border Grid.Column="1" x:Name="ChartContainer" Width="224" Height="224" />
+                <Border Grid.Column="1" x:Name="ChartContainer" Width="232" Height="232" />
             </Grid>
         </StackPanel>
     </ScrollView>

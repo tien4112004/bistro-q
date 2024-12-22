@@ -47,6 +47,7 @@ public class DialogService : IDialogService
     {
         var dialog = new ContentDialog
         {
+            XamlRoot = _xamlRoot,
             Title = title,
             Content = message,
             CloseButtonText = "OK"
