@@ -20,8 +20,9 @@ public class Order
 
     public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
-    public decimal? TotalCalories { get; set; }
-    public decimal? TotalProtein { get; set; }
-    public decimal? TotalFat { get; set; }
-    public decimal? TotalFiber { get; set; }
+    public double? TotalCalories { get; set; }
+    public double? TotalProtein { get; set; }
+    public double? TotalFat { get; set; }
+    public double? TotalFiber { get; set; }
+    public double? TotalCarbohydrates { get; set; }
 }

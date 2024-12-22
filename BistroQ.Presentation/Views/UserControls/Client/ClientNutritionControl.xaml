@@ -5,9 +5,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BistroQ.Presentation.Views.UserControls.Client"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:converters="using:BistroQ.Presentation.Converters"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <converters:ProgressBarValueToColorConverter x:Key="ProgressBarValueToColor" />
+    </UserControl.Resources>
+    
     <StackPanel Padding="12">
         <Grid Margin="0,0,0,40">
             <Grid.ColumnDefinitions>
@@ -47,6 +52,7 @@
                     </Grid.ColumnDefinitions>
                     <ProgressBar x:Name="CaloriesProgressBar" 
                                  Value="{x:Bind ViewModel.CaloriesPercentage, Mode=OneWay}" 
+                                 Foreground="{x:Bind ViewModel.CaloriesPercentage, Mode=OneWay, Converter={StaticResource ProgressBarValueToColor}}"
                                  Grid.Column="0" />
                     <TextBlock Text="{x:Bind ViewModel.CaloriesPercentage, Mode=OneWay}" 
                                VerticalAlignment="Center" 
@@ -67,6 +73,7 @@
                     </Grid.ColumnDefinitions>
                     <ProgressBar x:Name="ProteinProgressBar" 
                                  Value="{x:Bind ViewModel.ProteinPercentage, Mode=OneWay}" 
+                                 Foreground="{x:Bind ViewModel.ProteinPercentage, Mode=OneWay, Converter={StaticResource ProgressBarValueToColor}}"
                                  Grid.Column="0" />
                     <TextBlock Text="{x:Bind ViewModel.ProteinPercentage, Mode=OneWay}" 
                                VerticalAlignment="Center" 
@@ -86,6 +93,7 @@
                     </Grid.ColumnDefinitions>
                     <ProgressBar x:Name="FatProgressBar" 
                                  Value="{x:Bind ViewModel.FatPercentage, Mode=OneWay}" 
+                                 Foreground="{x:Bind ViewModel.FatPercentage, Mode=OneWay, Converter={StaticResource ProgressBarValueToColor}}"
                                  Grid.Column="0" />
                     <TextBlock Text="{x:Bind ViewModel.FatPercentage, Mode=OneWay}" 
                                VerticalAlignment="Center" 
@@ -104,7 +112,8 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <ProgressBar x:Name="FiberProgressBar" 
-                                 Value="{x:Bind ViewModel.FiberPercentage, Mode=OneWay}" 
+                                 Value="{x:Bind ViewModel.FiberPercentage, Mode=OneWay}"
+                                 Foreground="{x:Bind ViewModel.FiberPercentage, Mode=OneWay, Converter={StaticResource ProgressBarValueToColor}}"
                                  Grid.Column="0" />
                     <TextBlock Text="{x:Bind ViewModel.FiberPercentage, Mode=OneWay}" 
                                VerticalAlignment="Center" 
@@ -124,6 +133,7 @@
                     </Grid.ColumnDefinitions>
                     <ProgressBar x:Name="CarbohydratesProgressBar" 
                                  Value="{x:Bind ViewModel.CarbohydratesPercentage, Mode=OneWay}" 
+                                 Foreground="{x:Bind ViewModel.CarbohydratesPercentage, Mode=OneWay, Converter={StaticResource ProgressBarValueToColor}}"
                                  Grid.Column="0" />
                     <TextBlock Text="{x:Bind ViewModel.CarbohydratesPercentage, Mode=OneWay}" 
                                VerticalAlignment="Center" 
