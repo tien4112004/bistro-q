@@ -462,4 +462,7 @@
   <data name="NutritionPagePeopleCountNumberBox/Header" xml:space="preserve">
     <value>Number of people</value>
   </data>
+  <data name="ProductAddPage_CarbohydratesInput/Header" xml:space="preserve">
+    <value>Carbohydrates</value>
+  </data>
 </root>

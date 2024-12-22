@@ -23,6 +23,7 @@ public class AddProductForm : ValidatorBase
     public double Fat { get; set; }
     public double Fiber { get; set; }
     public double Protein { get; set; }
+    public double Carbohydrates { get; set; }
 
     public FileWrapper? ImageFile { get; set; }
 
@@ -123,6 +124,17 @@ public class AddProductForm : ValidatorBase
         });
     }
 
+    public void AddProductCarbohydratesValidator()
+    {
+        AddValidator(nameof(Carbohydrates), (value) =>
+        {
+            return value.Validate(
+                v => ValidationRules.DecimalRules.NotEmpty(v, "Carbohydrates"),
+                v => ValidationRules.DecimalRules.Min(v, 0, "Carbohydrates")
+            ).Where(r => !r.IsValid).ToList();
+        });
+    }
+
     public override void ValidateAll()
     {
         ValidateProperty(nameof(Name), Name);
@@ -133,5 +145,6 @@ public class AddProductForm : ValidatorBase
         ValidateProperty(nameof(Fat), Fat);
         ValidateProperty(nameof(Fiber), Fiber);
         ValidateProperty(nameof(Protein), Protein);
+        ValidateProperty(nameof(Carbohydrates), Carbohydrates);
     }
 }

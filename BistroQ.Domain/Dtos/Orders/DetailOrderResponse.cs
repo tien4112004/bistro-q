@@ -19,4 +19,9 @@ public class DetailOrderResponse
     public int? TableId { get; set; }
 
     public List<OrderItemWithProductResponse> OrderItems { get; set; } = new List<OrderItemWithProductResponse>();
+
+    public decimal? TotalCalories { get; set; }
+    public decimal? TotalFat { get; set; }
+    public decimal? TotalFiber { get; set; }
+    public decimal? TotalProtein { get; set; }
 }

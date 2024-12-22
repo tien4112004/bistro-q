@@ -15,4 +15,7 @@ public partial class NutritionFactViewModel : ObservableObject
 
     [ObservableProperty]
     private string? _protein;
+
+    [ObservableProperty]
+    private string? _carbohydrates;
 }

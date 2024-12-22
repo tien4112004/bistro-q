@@ -80,7 +80,8 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
                 Calories = Form.Calories,
                 Fat = Form.Fat,
                 Fiber = Form.Fiber,
-                Protein = Form.Protein
+                Protein = Form.Protein,
+                Carbohydrates = Form.Carbohydrates,
             };
 
             await _productDataService.CreateProductAsync(request,

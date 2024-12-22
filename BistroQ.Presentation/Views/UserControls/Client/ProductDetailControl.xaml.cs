@@ -59,7 +59,8 @@ public sealed partial class ProductDetailControl : UserControl
                 new PieSeries<double> { Values = new double[] { double.TryParse(nutritionFact?.Calories, out var calories) ? calories : 0 }, Name = "Calories" },
                 new PieSeries<double> { Values = new double[] { double.TryParse(nutritionFact?.Fat, out var fat) ? fat : 0 }, Name = "Fat" },
                 new PieSeries<double> { Values = new double[] { double.TryParse(nutritionFact?.Fiber, out var fiber) ? fiber : 0 }, Name = "Fiber" },
-                new PieSeries<double> { Values = new double[] { double.TryParse(nutritionFact?.Protein, out var protein) ? protein : 0 }, Name = "Protein" }
+                new PieSeries<double> { Values = new double[] { double.TryParse(nutritionFact?.Protein, out var protein) ? protein : 0 }, Name = "Protein" },
+                new PieSeries<double> { Values = new double[] { double.TryParse(nutritionFact?.Carbohydrates, out var carbohydrates) ? carbohydrates : 0 }, Name = "Carbohydrates" }
             };
         }
     }

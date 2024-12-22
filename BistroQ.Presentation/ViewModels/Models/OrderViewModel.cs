@@ -27,4 +27,19 @@ public partial class OrderViewModel : ObservableObject
     private int? _tableId;
 
     public ObservableCollection<OrderItemViewModel> OrderItems { get; } = new();
+
+    [ObservableProperty]
+    private decimal _totalCalories;
+
+    [ObservableProperty]
+    private decimal _totalProtein;
+
+    [ObservableProperty]
+    private decimal _totalFat;
+
+    [ObservableProperty]
+    private decimal _totalFiber;
+
+    [ObservableProperty]
+    private decimal _totalCarbohydrates;
 }

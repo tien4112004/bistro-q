@@ -38,6 +38,9 @@ public partial class OrderCartViewModel :
     [ObservableProperty]
     private string _errorMessage = string.Empty;
 
+    [ObservableProperty]
+    private NutritionFact _orderNutritionFact;
+
     public decimal TotalCart => CartItems.Sum(x => x.Total.Value);
 
     public ObservableCollection<OrderItemViewModel> CartItems { get; set; } = new ObservableCollection<OrderItemViewModel>();
@@ -82,6 +85,7 @@ public partial class OrderCartViewModel :
         IsOrdering = true;
 
         SeparateOrdersByStatus();
+        //LoadOrderNutritionFact();
     }
 
     private async Task StartOrder()
@@ -176,6 +180,11 @@ public partial class OrderCartViewModel :
         OnPropertyChanged(nameof(IsProcessingItemsEmpty));
         OnPropertyChanged(nameof(IsCompletedItemsEmpty));
     }
+
+    //private void LoadOrderNutritionFact()
+    //{
+    //    OrderNutritionFact.Calories = CartItems.Sum(i => i.Product.NutritionFact.Calories) 
+    //}
 
     public bool IsProcessingItemsEmpty => !ProcessingItems.Any();
     public bool IsCompletedItemsEmpty => !CompletedItems.Any();

@@ -11,4 +11,5 @@ public class UpdateProductRequest
     public double Fat { get; set; }
     public double Fiber { get; set; }
     public double Protein { get; set; }
+    public double Carbohydrates { get; set; }
 }

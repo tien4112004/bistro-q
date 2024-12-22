@@ -65,10 +65,11 @@
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="136"/>
                         <ColumnDefinition Width="60"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -106,6 +107,14 @@
                     </Border>
                     <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="4" Grid.Column="1">
                         <TextBlock Text="{x:Bind ViewModel.NutritionFact.Protein}" FontSize="16" 
+                                   Margin="4,0,0,0" Padding="4" />
+                    </Border>
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="5" Grid.Column="0">
+                        <TextBlock Text="Carbohydrates" FontSize="16" FontWeight="Bold" 
+                                   Margin="4,0,0,0" Padding="4" />
+                    </Border>
+                    <Border BorderBrush="Gray" BorderThickness="1" Grid.Row="5" Grid.Column="1">
+                        <TextBlock Text="{x:Bind ViewModel.NutritionFact.Carbohydrates}" FontSize="16" 
                                    Margin="4,0,0,0" Padding="4" />
                     </Border>
                 </Grid>
