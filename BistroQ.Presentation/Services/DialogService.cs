@@ -72,8 +72,6 @@ public class DialogService : IDialogService
 
         _currentDialogCts = new CancellationTokenSource();
 
-        dialog.XamlRoot = _xamlRoot;
-
         await _semaphore.WaitAsync();
         try
         {

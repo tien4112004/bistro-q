@@ -21,7 +21,8 @@
        Margin="8"
        Padding="4"
        HorizontalAlignment="Stretch"
-       VerticalAlignment="Stretch">
+       VerticalAlignment="Stretch"
+       PointerPressed="SingleProductGrid_PointerPressed">
         <Grid.RowDefinitions>
             <RowDefinition Height="160"/>
             <RowDefinition Height="*"/>
@@ -80,6 +81,7 @@
                 x:Uid="AddItemButton"
                 Style="{ThemeResource AccentButtonStyle}"
                 Click="AddToCartButton_Click"
+                PointerPressed="AddToCartButton_PointerPressed"
                 PointerEntered="Button_PointerEntered"
                 PointerExited="Button_PointerExited"
                 CommandParameter="{x:Bind}"

@@ -29,7 +29,6 @@ public sealed partial class SingleProductControl : UserControl
     {
         this.InitializeComponent();
         if (!HasDiscountPrice) ProductDescriptionTextBlock.Text = "";
-        this.Tapped += SingleProductControl_Tapped;
     }
 
     // public event EventHandler<ProductViewModel> AddProductToCart;
@@ -54,8 +53,13 @@ public sealed partial class SingleProductControl : UserControl
         (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
     }
 
-    private void SingleProductControl_Tapped(object sender, TappedRoutedEventArgs e)
+    private void SingleProductGrid_PointerPressed(object sender, PointerRoutedEventArgs e)
     {
         ProductClicked?.Invoke(this, Product);
+    }
+
+    private void AddToCartButton_PointerPressed(object sender, PointerRoutedEventArgs e)
+    {
+        e.Handled = true;
     }
 }

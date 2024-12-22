@@ -1,7 +1,11 @@
 ﻿using BistroQ.Presentation.ViewModels.Models;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.WinUI;
+using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System.Reflection;
 
 namespace BistroQ.Presentation.Views.UserControls.Client;
 
@@ -11,19 +15,55 @@ public sealed partial class ProductDetailControl : UserControl
 
     public PieChartViewModel ChartViewModel { get; set; }
 
+    private readonly DispatcherQueue dispatcherQueue;
+
     public ProductDetailControl(ProductViewModel product)
     {
         this.InitializeComponent();
-        ViewModel = product;
-        DataContext = this;
-        ChartViewModel = new PieChartViewModel(product.NutritionFact);
-        //Chart.Series = ChartViewModel.Series;
+        dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
-        var series = ChartViewModel.Series;
-        System.Diagnostics.Debug.WriteLine($"Series count: {series.Count()}");
-        foreach (var s in series)
+        ViewModel = product;
+        ChartViewModel = new PieChartViewModel(product.NutritionFact);
+
+        this.Loaded += UserControl_Loaded;
+    }
+
+    private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        dispatcherQueue.TryEnqueue(() =>
         {
-            System.Diagnostics.Debug.WriteLine($"Values: {string.Join(", ", (s as PieSeries<double>)?.Values ?? Array.Empty<double>())}");
+            AddChart();
+        });
+    }
+
+    private void AddChart()
+    {
+        var pieChart = new PieChart
+        {
+            Series = ChartViewModel.Series,
+            Width = 216,
+            Height = 216,
+            Margin = new Thickness(8),
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        ChartContainer.Child = pieChart;
+    }
+
+    private void LoadSkiaSharpHarfBuzz()
+    {
+        var assemblyName = "SkiaSharp.HarfBuzz";
+        var assembly = Assembly.Load(new AssemblyName(assemblyName));
+        if (assembly == null)
+        {
+            throw new Exception($"Failed to load assembly: {assemblyName}");
+        }
+
+        assemblyName = "SkiaSharp.HarfBuzzSharp";
+        var assembly2 = Assembly.Load(new AssemblyName(assemblyName));
+        if (assembly2 == null)
+        {
+            throw new Exception($"Failed to load assembly: {assemblyName}");
         }
     }
 

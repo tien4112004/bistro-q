@@ -36,7 +36,7 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
                     <Grid.ColumnDefinitions>
@@ -84,17 +84,9 @@
                                    Margin="4,0,0,0" Padding="4" />
                     </Border>
                 </Grid>
-                <ItemContainer Grid.Column="1">
-                    <lvc:PieChart 
-                        x:Name="Chart"
-                        Series="{x:Bind ChartViewModel.Series, Mode=OneWay}"
-                        Width="200" 
-                        Height="200"
-                        Margin="8"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                    </lvc:PieChart>
-                </ItemContainer>
+                <Border Grid.Column="1" x:Name="ChartContainer">
+
+                </Border>
             </Grid>
         </StackPanel>
     </ScrollView>

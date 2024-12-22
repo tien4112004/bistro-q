@@ -73,6 +73,7 @@ public partial class App : Application
 
         LiveCharts.Configure(config =>
             config
+                .UseDefaults()
                 .AddSkiaSharp()
                 .AddDefaultMappers()
                 .AddDarkTheme()
