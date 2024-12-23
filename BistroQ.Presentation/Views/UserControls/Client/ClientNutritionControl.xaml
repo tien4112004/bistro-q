@@ -54,11 +54,14 @@
                                  Value="{x:Bind ViewModel.CaloriesPercentage, Mode=OneWay}" 
                                  Foreground="{x:Bind ViewModel.CaloriesPercentage, Mode=OneWay, Converter={StaticResource ProgressBarValueToColor}}"
                                  Grid.Column="0" />
-                    <TextBlock Text="{x:Bind ViewModel.CaloriesPercentage, Mode=OneWay}" 
-                               VerticalAlignment="Center" 
+                    <TextBlock VerticalAlignment="Center" 
                                Width="80"
                                Margin="8,0,0,0" 
-                               Grid.Column="1" />
+                               Grid.Column="1">
+                        <Run Text="{x:Bind ViewModel.Order.TotalCalories, Mode=OneWay}" />
+                        <Run Text="/" />
+                        <Run Text="Limit" />
+                    </TextBlock>
                 </Grid>
             </StackPanel>
 
@@ -75,11 +78,14 @@
                                  Value="{x:Bind ViewModel.ProteinPercentage, Mode=OneWay}" 
                                  Foreground="{x:Bind ViewModel.ProteinPercentage, Mode=OneWay, Converter={StaticResource ProgressBarValueToColor}}"
                                  Grid.Column="0" />
-                    <TextBlock Text="{x:Bind ViewModel.ProteinPercentage, Mode=OneWay}" 
-                               VerticalAlignment="Center" 
+                    <TextBlock VerticalAlignment="Center" 
                                Width="80"
                                Margin="8,0,0,0" 
-                               Grid.Column="1" />
+                               Grid.Column="1">
+                        <Run Text="{x:Bind ViewModel.Order.TotalProtein, Mode=OneWay}" />
+                        <Run Text="/" />
+                        <Run Text="Limit" />
+                    </TextBlock>
                 </Grid>
             </StackPanel>
             
@@ -95,11 +101,14 @@
                                  Value="{x:Bind ViewModel.FatPercentage, Mode=OneWay}" 
                                  Foreground="{x:Bind ViewModel.FatPercentage, Mode=OneWay, Converter={StaticResource ProgressBarValueToColor}}"
                                  Grid.Column="0" />
-                    <TextBlock Text="{x:Bind ViewModel.FatPercentage, Mode=OneWay}" 
-                               VerticalAlignment="Center" 
+                    <TextBlock VerticalAlignment="Center" 
                                Width="80"
                                Margin="8,0,0,0" 
-                               Grid.Column="1" />
+                               Grid.Column="1">
+                        <Run Text="{x:Bind ViewModel.Order.TotalFat, Mode=OneWay}" />
+                        <Run Text="/" />
+                        <Run Text="Limit" />
+                    </TextBlock>
                 </Grid>
             </StackPanel>
             
@@ -115,11 +124,14 @@
                                  Value="{x:Bind ViewModel.FiberPercentage, Mode=OneWay}"
                                  Foreground="{x:Bind ViewModel.FiberPercentage, Mode=OneWay, Converter={StaticResource ProgressBarValueToColor}}"
                                  Grid.Column="0" />
-                    <TextBlock Text="{x:Bind ViewModel.FiberPercentage, Mode=OneWay}" 
-                               VerticalAlignment="Center" 
+                    <TextBlock VerticalAlignment="Center" 
                                Width="80"
                                Margin="8,0,0,0" 
-                               Grid.Column="1" />
+                               Grid.Column="1">
+                        <Run Text="{x:Bind ViewModel.Order.TotalFiber, Mode=OneWay}" />
+                        <Run Text="/" />
+                        <Run Text="Limit" />
+                    </TextBlock>
                 </Grid>
             </StackPanel>
 
@@ -135,11 +147,14 @@
                                  Value="{x:Bind ViewModel.CarbohydratesPercentage, Mode=OneWay}" 
                                  Foreground="{x:Bind ViewModel.CarbohydratesPercentage, Mode=OneWay, Converter={StaticResource ProgressBarValueToColor}}"
                                  Grid.Column="0" />
-                    <TextBlock Text="{x:Bind ViewModel.CarbohydratesPercentage, Mode=OneWay}" 
-                               VerticalAlignment="Center" 
+                    <TextBlock VerticalAlignment="Center" 
                                Width="80"
                                Margin="8,0,0,0" 
-                               Grid.Column="1" />
+                               Grid.Column="1">
+                        <Run Text="{x:Bind ViewModel.Order.TotalCarbohydrates, Mode=OneWay}" />
+                        <Run Text="/" />
+                        <Run Text="Limit" />
+                    </TextBlock>
                 </Grid>
             </StackPanel>
         </Grid>
