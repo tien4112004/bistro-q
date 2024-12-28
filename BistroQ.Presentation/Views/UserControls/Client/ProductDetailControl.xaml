@@ -21,7 +21,7 @@
             <Image Source="{x:Bind ViewModel.ImageUrl}" Height="240" Margin="0,0,0,20" />
             <TextBlock Text="{x:Bind ViewModel.Name}" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,4" />
 
-            <StackPanel Visibility="{x:Bind ViewModel.HasDiscount, Converter={StaticResource BoolToVisibility, }}" Margin="0,0,0,20">
+            <StackPanel Visibility="{x:Bind ViewModel.HasDiscount, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}" Margin="0,0,0,20">
                 <TextBlock Margin="0,4,0,0">
                    <Run
                        Text="{x:Bind ViewModel.Price, Converter={StaticResource NumberToCurreny}}"
@@ -39,7 +39,7 @@
                 <TextBlock TextDecorations="Strikethrough" />
             </StackPanel>
             <StackPanel 
-                Visibility="{x:Bind ViewModel.HasDiscount, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}" Margin="0,0,0,20">
+                Visibility="{x:Bind ViewModel.HasDiscount, Converter={StaticResource BoolToVisibility}}" Margin="0,0,0,20">
                 <TextBlock Margin="0,4,0,4">
                    <Run
                        Text="{x:Bind ViewModel.DiscountPrice, Converter={StaticResource NumberToCurreny}}"
