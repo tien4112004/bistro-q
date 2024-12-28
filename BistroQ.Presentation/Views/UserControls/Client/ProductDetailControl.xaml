@@ -16,7 +16,7 @@
         <converters:ReverseBooleanConverter x:Key="ReverseBool"/>
     </UserControl.Resources>
 
-    <ScrollView Width="480">
+    <ScrollView Width="480" CanDrag="True">
         <StackPanel Padding="8" Margin="0,0,0,16" Width="464">
             <Image Source="{x:Bind ViewModel.ImageUrl}" Height="240" Margin="0,0,0,20" />
             <TextBlock Text="{x:Bind ViewModel.Name}" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,4" />
