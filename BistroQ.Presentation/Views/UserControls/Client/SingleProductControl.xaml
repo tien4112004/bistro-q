@@ -71,7 +71,7 @@
             </StackPanel>
 
             <StackPanel
-                Visibility="{x:Bind Product.NotHasDiscount, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+                Visibility="{x:Bind Product.HasDiscount, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"
                 Grid.Row="1"
                 Margin="0,8">
                 <TextBlock

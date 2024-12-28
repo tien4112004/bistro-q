@@ -32,5 +32,4 @@ public partial class ProductViewModel : ObservableObject
     private NutritionFactViewModel _nutritionFact;
 
     public bool HasDiscount => _discountPrice.Value != 0;
-    public bool NotHasDiscount => !HasDiscount;
 }
