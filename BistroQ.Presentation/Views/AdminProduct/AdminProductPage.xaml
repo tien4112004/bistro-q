@@ -12,6 +12,7 @@
 
     <Page.Resources>
         <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <converter:NumberToCurrencyConverter x:Key="NumberToCurrency" />
     </Page.Resources>
 
     <Grid x:Name="ContentArea">
@@ -211,12 +212,12 @@
                     IsReadOnly="True" Width="200"
                     Tag="CategoryName" />
                 <controls:DataGridTextColumn 
-                    Binding="{Binding Price}" 
+                    Binding="{Binding Price, Converter={StaticResource NumberToCurrency}}" 
                     x:Uid="AdminProduct_DataGrid_Column_Price" 
                     IsReadOnly="True"
                     Tag="Price" />
                 <controls:DataGridTextColumn 
-                    Binding="{Binding DiscountPrice}" 
+                    Binding="{Binding DiscountPrice, Converter={StaticResource NumberToCurrency}}" 
                     x:Uid="AdminProduct_DataGrid_Column_DiscountPrice" 
                     IsReadOnly="True"
                     Tag="DiscountPrice" />

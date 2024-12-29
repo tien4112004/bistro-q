@@ -309,7 +309,6 @@
   <data name="ProductEditPage_PreviewImage/AutomationProperties.Name" xml:space="preserve">
     <value>Product image preview</value>
   </data>
-
   <data name="AdminAccount_DataGrid_Column_UserId/Header" xml:space="preserve">
     <value>User ID</value>
   </data>
@@ -325,7 +324,6 @@
   <data name="AdminAccount_DataGrid_Column_ZoneName/Header" xml:space="preserve">
     <value>Zone</value>
   </data>
-
   <data name="Shell_AdminAccount.Content" xml:space="preserve">
     <value>Manage Accounts</value>
   </data>
@@ -365,7 +363,6 @@
   <data name="AdminAccountAddPage_AddButtonText/Text" xml:space="preserve">
     <value>Add</value>
   </data>
-
   <data name="UserIdTextBox/Header" xml:space="preserve">
     <value>User ID</value>
   </data>
@@ -399,11 +396,6 @@
   <data name="AccountEditPage_EnablePasswordEdit/Content" xml:space="preserve">
     <value>Edit</value>
   </data>
-
-  <data name="CancelButton/Content" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-
   <data name="Shell_CashierTablePage.Content" xml:space="preserve">
     <value>Table</value>
   </data>
@@ -463,5 +455,14 @@
   </data>
   <data name="ProductEditPage_FatInput/Header" xml:space="preserve">
     <value>Fat</value>
+  </data>
+  <data name="NutritionPageEditPeopleCountButton/Content" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="NutritionPagePeopleCountNumberBox/Header" xml:space="preserve">
+    <value>Number of people</value>
+  </data>
+  <data name="ProductAddPage_CarbohydratesInput/Header" xml:space="preserve">
+    <value>Carbohydrates</value>
   </data>
 </root>

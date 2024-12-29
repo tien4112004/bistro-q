@@ -39,7 +39,6 @@ public sealed partial class SingleProductControl : UserControl
 
         if (sender is Button button && button.DataContext is ProductViewModel product)
         {
-            // AddProductToCart?.Invoke(this, product);
             App.GetService<IMessenger>().Send(new AddProductToCartMessage(product));
         }
     }
@@ -52,5 +51,15 @@ public sealed partial class SingleProductControl : UserControl
     private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
     {
         (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
+    }
+
+    private void SingleProductGrid_PointerPressed(object sender, PointerRoutedEventArgs e)
+    {
+        ProductClicked?.Invoke(this, Product);
+    }
+
+    private void AddToCartButton_PointerPressed(object sender, PointerRoutedEventArgs e)
+    {
+        e.Handled = true;
     }
 }

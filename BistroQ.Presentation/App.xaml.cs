@@ -33,6 +33,8 @@ using BistroQ.Service.Common;
 using BistroQ.Service.Data;
 using BistroQ.Service.Http;
 using CommunityToolkit.Mvvm.Messaging;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
@@ -68,6 +70,15 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+
+        LiveCharts.Configure(config =>
+            config
+                .UseDefaults()
+                .AddSkiaSharp()
+                .AddDefaultMappers()
+                .AddDarkTheme()
+                .AddLightTheme()
+        );
 
         Host = Microsoft.Extensions.Hosting.Host.
         CreateDefaultBuilder().
@@ -216,5 +227,6 @@ public partial class App : Application
         base.OnLaunched(args);
 
         new LoginWindow().Activate();
+
     }
 }

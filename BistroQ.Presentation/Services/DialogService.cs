@@ -47,6 +47,7 @@ public class DialogService : IDialogService
     {
         var dialog = new ContentDialog
         {
+            XamlRoot = _xamlRoot,
             Title = title,
             Content = message,
             CloseButtonText = "OK"
@@ -55,11 +56,11 @@ public class DialogService : IDialogService
         await ShowDialogCoreAsync(dialog);
     }
 
-    public async Task ShowDialogAsync(ContentDialog dialog)
+    public async Task<ContentDialogResult> ShowDialogAsync(ContentDialog dialog)
     {
         dialog.XamlRoot = _xamlRoot;
 
-        await ShowDialogCoreAsync(dialog);
+        return await ShowDialogCoreAsync(dialog);
     }
 
     private async Task<ContentDialogResult> ShowDialogCoreAsync(ContentDialog dialog)
@@ -71,8 +72,6 @@ public class DialogService : IDialogService
         }
 
         _currentDialogCts = new CancellationTokenSource();
-
-        dialog.XamlRoot = _xamlRoot;
 
         await _semaphore.WaitAsync();
         try

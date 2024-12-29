@@ -1,4 +1,6 @@
-﻿using BistroQ.Presentation.Helpers;
+﻿using BistroQ.Presentation.Contracts.Services;
+using BistroQ.Presentation.Helpers;
+using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Client;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.Messaging;
@@ -18,6 +20,9 @@ public sealed partial class ProductListControl : UserControl
 
     private IMessenger _messenger = App.GetService<IMessenger>();
 
+    private IDialogService _dialogService;
+
+
     public ProductListViewModel ViewModel
     {
         get => (ProductListViewModel)GetValue(ViewModelProperty);
@@ -31,6 +36,7 @@ public sealed partial class ProductListControl : UserControl
         this.InitializeComponent();
         this.Loaded += ProductListControl_Loaded;
         _messenger.RegisterAll(this);
+        this._dialogService = App.GetService<IDialogService>();
     }
 
     private void ProductListControl_Loaded(object sender, RoutedEventArgs e)
@@ -80,5 +86,23 @@ public sealed partial class ProductListControl : UserControl
     private void Button_PointerExited(object sender, PointerRoutedEventArgs e)
     {
         (sender as UIElement)?.ChangeCursor(CursorType.Arrow);
+    }
+
+    private async void SingleProductControl_ProductClicked(object sender, ProductViewModel e)
+    {
+        var productDetailControl = new ProductDetailControl(e);
+        var productDetailDialog = new ContentDialog
+        {
+            Content = productDetailControl,
+            Title = "Product Detail",
+            CloseButtonText = "Close",
+            PrimaryButtonText = "Add to cart",
+            DefaultButton = ContentDialogButton.Primary
+        };
+        var dialogResult = await _dialogService.ShowDialogAsync(productDetailDialog);
+        if (dialogResult == ContentDialogResult.Primary)
+        {
+            _messenger.Send(new AddProductToCartMessage(e));
+        }
     }
 }

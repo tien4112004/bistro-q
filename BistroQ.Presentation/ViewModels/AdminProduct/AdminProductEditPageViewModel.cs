@@ -75,7 +75,8 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
                 Calories = Form.Calories,
                 Fat = Form.Fat,
                 Fiber = Form.Fiber,
-                Protein = Form.Protein
+                Protein = Form.Protein,
+                Carbohydrates = Form.Carbohydrates,
             };
 
             if (Form.ImageFile != null)
@@ -132,6 +133,7 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
             Form.Fat = double.TryParse(selectedProduct?.NutritionFact?.Fat, out var fat) ? fat : 0.0;
             Form.Fiber = double.TryParse(selectedProduct?.NutritionFact?.Fiber, out var fiber) ? fiber : 0.0;
             Form.Protein = double.TryParse(selectedProduct?.NutritionFact?.Protein, out var protein) ? protein : 0.0;
+            Form.Carbohydrates = double.TryParse(selectedProduct?.NutritionFact?.Carbohydrates, out var carbohydrates) ? carbohydrates : 0.0;
         }
 
         return Task.CompletedTask;

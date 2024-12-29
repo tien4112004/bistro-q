@@ -97,6 +97,11 @@ public sealed partial class AdminProductAddPage : Page
         ViewModel.Form.ResetError(nameof(ViewModel.Form.Calories));
     }
 
+    private void ProductAddPage_CarbohydratesNumberBox_GettingFocus(Microsoft.UI.Xaml.UIElement sender, Microsoft.UI.Xaml.Input.GettingFocusEventArgs args)
+    {
+        ViewModel.Form.ResetError(nameof(ViewModel.Form.Calories));
+    }
+
     private void Button_PointerEntered(object sender, PointerRoutedEventArgs e)
     {
         (sender as UIElement)?.ChangeCursor(CursorType.Hand);

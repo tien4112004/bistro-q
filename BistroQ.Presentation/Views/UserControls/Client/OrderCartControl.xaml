@@ -44,6 +44,17 @@
                     <FontIcon Glyph="&#xE81C;"/>
                 </SelectorBarItem.Icon>
             </SelectorBarItem>
+
+            <!-- Nutrition Tab -->
+            <SelectorBarItem
+                x:Name="SelectorBarItemNutrition"
+                Text="Nutrition"
+                PointerEntered="Button_PointerEntered"
+                PointerExited="Button_PointerExited">
+                <SelectorBarItem.Icon>
+                    <FontIcon Glyph="&#xEB4A;"/>
+                </SelectorBarItem.Icon>
+            </SelectorBarItem>
         </SelectorBar>
 
         <!-- Content Area -->

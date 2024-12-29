@@ -1,4 +1,4 @@
-namespace BistroQ.Domain.Models.Entities;
+﻿namespace BistroQ.Domain.Models.Entities;
 
 public class Order
 {
@@ -19,4 +19,10 @@ public class Order
     public Table? Table { get; set; } = null;
 
     public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+
+    public double? TotalCalories { get; set; }
+    public double? TotalProtein { get; set; }
+    public double? TotalFat { get; set; }
+    public double? TotalFiber { get; set; }
+    public double? TotalCarbohydrates { get; set; }
 }

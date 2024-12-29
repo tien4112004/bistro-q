@@ -46,6 +46,7 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
         _dialogService = dialogService;
         _mapper = mapper;
         Categories = new ObservableCollection<CategoryViewModel>();
+        LoadCategoriesAsync();
 
         AddCommand = new AsyncRelayCommand(AddProductAsync);
     }
@@ -79,7 +80,8 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
                 Calories = Form.Calories,
                 Fat = Form.Fat,
                 Fiber = Form.Fiber,
-                Protein = Form.Protein
+                Protein = Form.Protein,
+                Carbohydrates = Form.Carbohydrates,
             };
 
             await _productDataService.CreateProductAsync(request,

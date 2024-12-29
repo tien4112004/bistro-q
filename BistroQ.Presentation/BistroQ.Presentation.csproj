@@ -36,6 +36,7 @@
     <None Remove="Views\CashierTable\Controls\ZoneOverviewControl.xaml" />
     <None Remove="Views\CashierTable\Controls\ZoneTableGridControl.xaml" />
     <None Remove="Views\KitchenHistory\KitchenHistoryPage.xaml" />
+    <None Remove="Views\UserControls\Client\ClientNutritionControl.xaml" />
     <None Remove="Views\UserControls\Orders\KitchenOrderGridControl.xaml" />
     <None Remove="Views\UserControls\Orders\TableBillSummaryControl.xaml" />
     <None Remove="Views\UserControls\Orders\TableOrderDetailsControl.xaml" />
@@ -52,15 +53,19 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.1.240916" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.1.240916" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
+    <PackageReference Include="LiveChartsCore" Version="2.0.0-rc4.5" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WinUI" Version="2.0.0-rc4.5" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+    <PackageReference Include="SkiaSharp.HarfBuzz" Version="2.88.9-preview.2.2" />
+    <PackageReference Include="SkiaSharp.Views.WinUI" Version="2.88.9-preview.2.2" />
     <PackageReference Include="WinUIEx" Version="2.3.2" />
   </ItemGroup>
 
@@ -72,6 +77,12 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\UserControls\Client\ClientNutritionControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\UserControls\Client\ProductDetailControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\AdminAccount\AdminAccountPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

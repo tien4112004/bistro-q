@@ -7,6 +7,7 @@ using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.UI.Dispatching;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -37,6 +38,19 @@ public partial class OrderCartViewModel :
     [ObservableProperty]
     private string _errorMessage = string.Empty;
 
+    #region NutritionFacts
+    public double CaloriesPercentage => Order.TotalCalories / 2000.0 * 100;
+
+    public double ProteinPercentage => Order.TotalProtein / 50.0 * 100;
+
+    public double FatPercentage => Order.TotalFat / 70.0 * 100;
+
+    public double FiberPercentage => Order.TotalFiber / 25.0 * 100;
+
+    public double CarbohydratesPercentage => Order.TotalCarbohydrates / 300.0 * 100;
+    #endregion
+
+
     public decimal TotalCart => CartItems.Sum(x => x.Total.Value);
 
     public ObservableCollection<OrderItemViewModel> CartItems { get; set; } = new ObservableCollection<OrderItemViewModel>();
@@ -46,6 +60,7 @@ public partial class OrderCartViewModel :
     public ICommand StartOrderCommand { get; }
     public ICommand CancelOrderCommand { get; }
     public ICommand OrderStartedCommand { get; set; }
+    public ICommand EditPeopleCountCommand { get; }
 
     public OrderCartViewModel(IOrderDataService orderDataService, IMapper mapper, IMessenger messenger)
     {
@@ -55,6 +70,8 @@ public partial class OrderCartViewModel :
         messenger.RegisterAll(this);
         StartOrderCommand = new AsyncRelayCommand(StartOrder);
         CancelOrderCommand = new RelayCommand(CancelOrder);
+        dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+        EditPeopleCountCommand = new AsyncRelayCommand(EditPeopleCount);
 
         CartItems.CollectionChanged += CartItems_CollectionChanged;
     }
@@ -78,6 +95,7 @@ public partial class OrderCartViewModel :
         IsOrdering = true;
 
         SeparateOrdersByStatus();
+        //LoadOrderNutritionFact();
     }
 
     private async Task StartOrder()
@@ -113,6 +131,12 @@ public partial class OrderCartViewModel :
 
         ErrorMessage = string.Empty;
         IsOrdering = false;
+    }
+
+    private async Task EditPeopleCount()
+    {
+        _orderDataService.ChangePeopleCountAsync(Order.PeopleCount);
+        return;
     }
 
     // CartItemChanged
@@ -167,6 +191,11 @@ public partial class OrderCartViewModel :
         OnPropertyChanged(nameof(IsCompletedItemsEmpty));
     }
 
+    //private void LoadOrderNutritionFact()
+    //{
+    //    OrderNutritionFact.Calories = CartItems.Sum(i => i.Product.NutritionFact.Calories) 
+    //}
+
     public bool IsProcessingItemsEmpty => !ProcessingItems.Any();
     public bool IsCompletedItemsEmpty => !CompletedItems.Any();
     public void Receive(AddProductToCartMessage message)
@@ -185,25 +214,28 @@ public partial class OrderCartViewModel :
                 ProductId = product.ProductId,
                 Product = product,
                 Quantity = 1,
-                PriceAtPurchase = product.Price
+                PriceAtPurchase = (product.DiscountPrice != 0 ? product.DiscountPrice : product.Price)
             });
         }
     }
 
-    public void Receive(OrderRequestedMessage message)
+    public async void Receive(OrderRequestedMessage message)
     {
         try
         {
             var cart = CartItems.Select(item => _mapper.Map<OrderItem>(item)).ToList();
-            _orderDataService.CreateOrderItems(cart);
-            CartItems.Clear();
-            _messenger.Send(new OrderSucceededMessage());
+
+            await _orderDataService.CreateOrderItems(cart);
+            dispatcherQueue.TryEnqueue(() =>
+            {
+                CartItems.Clear();
+                _messenger.Send(new OrderSucceededMessage());
+            });
         }
         catch (Exception e)
         {
             Debug.WriteLine(e.Message);
         }
-        Debug.WriteLine("[Debug] Order requested message received, number of items: " + message.OrderItems.Count());
     }
 
     public void Receive(CheckoutRequestedMessage message)
@@ -216,4 +248,6 @@ public partial class OrderCartViewModel :
         CartItems.CollectionChanged -= CartItems_CollectionChanged;
         _messenger.UnregisterAll(this);
     }
+
+    private DispatcherQueue dispatcherQueue;
 }

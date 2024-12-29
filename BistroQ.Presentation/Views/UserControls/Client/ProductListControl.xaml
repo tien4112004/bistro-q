@@ -35,7 +35,7 @@
         <DataTemplate
             x:Key="SingleProductDataTemplate"
             x:DataType="entities:ProductViewModel">
-            <local:SingleProductControl Product="{x:Bind Mode=OneWay}"/>
+            <local:SingleProductControl Product="{x:Bind Mode=OneWay}" ProductClicked="SingleProductControl_ProductClicked"/>
         </DataTemplate>
     </UserControl.Resources>
 
@@ -63,12 +63,14 @@
                 HorizontalScrollMode="Enabled"
                 HorizontalScrollBarVisibility="Auto"
                 VerticalScrollMode="Disabled"
+                CanDrag="True"
                 ManipulationMode="System,TranslateX"
                 ManipulationDelta="HorizontalScrollViewer_ManipulationDelta">
                 <ListView
                     ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
                     SelectedItem="{x:Bind ViewModel.SelectedCategory, Mode=TwoWay}"
                     SelectionMode="Single"
+                    CanDrag="True"
                     IsItemClickEnabled="True"
                     SelectionChanged="CategoryList_SelectionChanged">
 

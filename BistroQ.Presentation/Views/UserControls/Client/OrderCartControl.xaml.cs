@@ -61,21 +61,17 @@ public sealed partial class OrderCartControl :
 
     private void OrderCartSelector_SelectionChanged(object sender, SelectorBarSelectionChangedEventArgs e)
     {
-        if (OrderCartSelector.SelectedItem == SelectorBarItemCart)
+        PanelContentControl.Content = OrderCartSelector.SelectedItem switch
         {
-            var cartControl = new CartControl(ViewModel);
-            PanelContentControl.Content = cartControl;
-        }
-        else if (OrderCartSelector.SelectedItem == SelectorBarItemOrder)
-        {
-            var orderControl = new OrderControl(ViewModel);
-            PanelContentControl.Content = orderControl;
-        }
+            var item when item == SelectorBarItemCart => new CartControl(ViewModel),
+            var item when item == SelectorBarItemOrder => new OrderControl(ViewModel),
+            var item when item == SelectorBarItemNutrition => new ClientNutritionControl(ViewModel),
+            _ => new CartControl(ViewModel)
+        };
     }
 
     public void Receive(OrderSucceededMessage message)
     {
-        Thread.Sleep(200);
         OrderCartSelector.SelectedItem = SelectorBarItemOrder;
     }
 
