@@ -1,6 +1,7 @@
 ﻿using BistroQ.Domain.Contracts.Http;
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Contracts.Services.Data;
+using BistroQ.Domain.Contracts.Services.Realtime;
 using BistroQ.Domain.Services.Http;
 using BistroQ.Presentation.Activation;
 using BistroQ.Presentation.Contracts.Services;
@@ -32,6 +33,7 @@ using BistroQ.Service.Auth;
 using BistroQ.Service.Common;
 using BistroQ.Service.Data;
 using BistroQ.Service.Http;
+using BistroQ.Service.Realtime;
 using CommunityToolkit.Mvvm.Messaging;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
@@ -172,6 +174,9 @@ public partial class App : Application
             services.AddScoped<IProductDataService, ProductDataService>();
             services.AddScoped<IDialogService, DialogService>();
             services.AddScoped<IAccountDataService, AccountDataService>();
+
+            // Realtime service
+            services.AddSingleton<ICheckoutRealTimeService, CheckoutRealTimeService>();
 
 
             // Client V&VM
