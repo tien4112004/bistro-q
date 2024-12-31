@@ -7,7 +7,11 @@ using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
 
-public partial class CashierTableViewModel : ObservableObject, INavigationAware, IRecipient<CheckoutRequestedMessage>, IDisposable
+public partial class CashierTableViewModel :
+    ObservableObject,
+    INavigationAware,
+    IRecipient<CompleteCheckoutRequestedMessage>,
+    IDisposable
 {
     public ZoneOverviewViewModel ZoneOverviewVM;
     public ZoneTableGridViewModel ZoneTableGridVM;
@@ -28,7 +32,7 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware,
         TableOrderDetailVM = tableOrderDetailVM;
         _messenger = messenger;
         _checkoutService = checkoutService;
-        _checkoutService.OnNewPayment += (tableId, zoneId) =>
+        _checkoutService.OnNewCheckout += (tableId, zoneId) =>
         {
             Debug.WriteLine($"New payment for table {tableId} in zone {zoneId}");
         };
@@ -48,9 +52,9 @@ public partial class CashierTableViewModel : ObservableObject, INavigationAware,
         await _checkoutService.StopAsync();
     }
 
-    public void Receive(CheckoutRequestedMessage message)
+    public void Receive(CompleteCheckoutRequestedMessage message)
     {
-        _checkoutService.NotifyPaymentCompletedAsync(message.TableId ?? 0, ZoneOverviewVM.SelectedZone.ZoneId ?? 0);
+        _checkoutService.NotifyCheckoutCompletedAsync(message.TableId ?? 0);
     }
 
     public void Dispose()

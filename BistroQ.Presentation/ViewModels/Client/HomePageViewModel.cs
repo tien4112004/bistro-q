@@ -1,16 +1,23 @@
-﻿using BistroQ.Presentation.Contracts.Services;
+﻿using BistroQ.Domain.Contracts.Services.Realtime;
+using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
+using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.Client;
 
-public partial class HomePageViewModel : ObservableRecipient, INavigationAware
+public partial class HomePageViewModel : ObservableRecipient, INavigationAware, IRecipient<CheckoutRequestedMessage>
 {
     public ProductListViewModel ProductListViewModel { get; }
     public OrderCartViewModel OrderCartViewModel { get; }
+
+    private readonly ICheckoutRealTimeService _checkoutService;
+
+    private readonly IMessenger _messenger;
 
     public ICommand AddProductToCartCommand { get; private set; }
 
@@ -18,8 +25,11 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
     {
         ProductListViewModel = App.GetService<ProductListViewModel>();
         OrderCartViewModel = App.GetService<OrderCartViewModel>();
+        _checkoutService = App.GetService<ICheckoutRealTimeService>();
+        _messenger = App.GetService<IMessenger>();
 
         OrderCartViewModel.OrderStartedCommand = new RelayCommand<OrderViewModel>(OnOrderStarted);
+        _messenger.RegisterAll(this);
     }
 
     private void OnOrderStarted(OrderViewModel order)
@@ -30,6 +40,7 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
     {
         try
         {
+            await _checkoutService.StartAsync();
             await OrderCartViewModel.LoadExistingOrderAsync();
         }
         catch (Exception e)
@@ -52,9 +63,16 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware
         _ = ProductListViewModel.LoadProductAsync();
     }
 
+    public void Receive(CheckoutRequestedMessage message)
+    {
+        _checkoutService.NotifyCheckoutRequestedAsync(message.TableId ?? 0);
+    }
+
     public Task OnNavigatedFrom()
     {
         OrderCartViewModel.Dispose();
+        _checkoutService.StopAsync();
+        _messenger.UnregisterAll(this);
         return Task.CompletedTask;
     }
 }

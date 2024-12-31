@@ -70,7 +70,7 @@ public partial class TableOrderDetailViewModel : ObservableObject, IRecipient<Ta
     [RelayCommand]
     public void CheckoutRequestedCommand()
     {
-        _messenger.Send(new CheckoutRequestedMessage(Order.TableId));
+        _messenger.Send(new CompleteCheckoutRequestedMessage(Order.TableId));
     }
 
     public void Receive(TableSelectedMessage message)

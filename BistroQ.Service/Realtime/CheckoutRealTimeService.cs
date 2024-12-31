@@ -1,6 +1,7 @@
 ﻿using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Contracts.Services.Realtime;
 using Microsoft.AspNetCore.SignalR.Client;
+using System.Diagnostics;
 
 namespace BistroQ.Service.Realtime;
 
@@ -10,11 +11,11 @@ public class CheckoutRealTimeService : ICheckoutRealTimeService
 
     private readonly IAuthService _authService;
 
-    public event Action<int> OnPaymentInitiated;
+    public event Action<int> OnCheckoutInitiated;
 
-    public event Action OnPaymentCompleted;
+    public event Action OnCheckoutCompleted;
 
-    public event Action<int, int> OnNewPayment;
+    public event Action<int, int> OnNewCheckout;
 
     public bool IsConnected => _hubConnection.State == HubConnectionState.Connected;
 
@@ -30,16 +31,16 @@ public class CheckoutRealTimeService : ICheckoutRealTimeService
             .Build();
 
         // Shows the payment URL to the client
-        _hubConnection.On<int>("PaymentInitiated", (paymentUrl) =>
-            OnPaymentInitiated?.Invoke(paymentUrl));
+        _hubConnection.On<int>("CheckoutInitiated", (paymentUrl) =>
+            OnCheckoutInitiated?.Invoke(paymentUrl));
 
         // Notifies the client that the payment has been completed
-        _hubConnection.On("PaymentCompleted", () =>
-            OnPaymentCompleted?.Invoke());
+        _hubConnection.On("CheckoutCompleted", () =>
+            OnCheckoutCompleted?.Invoke());
 
-        // Notifies the cashier that a new payment has been requested
-        _hubConnection.On<int, int>("NewPayment", (tableId, zoneId) =>
-            OnNewPayment?.Invoke(tableId, zoneId));
+        // Notifies the cashier that a new checkout has been requested
+        _hubConnection.On<int, int>("NewCheckout", (tableId, zoneId) =>
+            OnNewCheckout?.Invoke(tableId, zoneId));
     }
 
     public async Task StartAsync()
@@ -54,21 +55,35 @@ public class CheckoutRealTimeService : ICheckoutRealTimeService
         if (_hubConnection.State != HubConnectionState.Disconnected)
         {
             await _hubConnection.StopAsync();
-            OnPaymentInitiated = null;
-            OnPaymentCompleted = null;
-            OnNewPayment = null;
+            OnCheckoutInitiated = null;
+            OnCheckoutCompleted = null;
+            OnNewCheckout = null;
         }
     }
 
     // Call by client
-    public async Task NotifyPaymentRequestedAsync(int tableId, int zoneId)
+    public async Task NotifyCheckoutRequestedAsync(int tableId)
     {
-        await _hubConnection.InvokeAsync("InitialPayment", tableId, zoneId);
+        try
+        {
+            await _hubConnection.InvokeAsync("InitiateCheckout", tableId);
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+        }
     }
 
     // Call by cashier
-    public async Task NotifyPaymentCompletedAsync(int tableId, int zoneId)
+    public async Task NotifyCheckoutCompletedAsync(int tableId)
     {
-        await _hubConnection.InvokeAsync("CompletePayment", tableId, zoneId);
+        try
+        {
+            await _hubConnection.InvokeAsync("CompleteCheckout", tableId);
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+        }
     }
 }

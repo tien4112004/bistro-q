@@ -2,12 +2,12 @@
 
 public interface ICheckoutRealTimeService
 {
-    event Action<int> OnPaymentInitiated;
-    event Action OnPaymentCompleted;
-    event Action<int, int> OnNewPayment;
+    event Action<int> OnCheckoutInitiated;
+    event Action OnCheckoutCompleted;
+    event Action<int, int> OnNewCheckout;
 
     Task StartAsync();
     Task StopAsync();
-    Task NotifyPaymentRequestedAsync(int tableId, int zoneId);
-    Task NotifyPaymentCompletedAsync(int tableId, int zoneId);
+    Task NotifyCheckoutRequestedAsync(int tableId);
+    Task NotifyCheckoutCompletedAsync(int tableId);
 }
