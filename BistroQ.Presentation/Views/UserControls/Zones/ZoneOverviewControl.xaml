@@ -25,30 +25,30 @@
 
         <!-- Loading Skeleton -->
         <StackPanel
-        Grid.Column="0"
-        Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
-        Spacing="10"
-        Orientation="Horizontal"
-        Margin="0,10,20,15">
+            Grid.Column="0"
+            Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+            Spacing="10"
+            Orientation="Horizontal"
+            Margin="0,10,20,15">
             <skeleton:RectangleSkeleton
-            Width="500"
-            Height="30"
-            IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}"/>
+                Width="500"
+                Height="30"
+                IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}"/>
         </StackPanel>
 
         <!-- Zone List -->
         <ScrollViewer
-        x:Name="ScrollViewer"
-        Grid.Column="0"
-        HorizontalScrollMode="Enabled"
-        HorizontalScrollBarVisibility="Hidden"
-        ManipulationMode="System,TranslateX"
-        ManipulationDelta="ScrollViewer_ManipulationDelta">
+            x:Name="ScrollViewer"
+            Grid.Column="0"
+            HorizontalScrollMode="Enabled"
+            HorizontalScrollBarVisibility="Hidden"
+            ManipulationMode="System,TranslateX"
+            ManipulationDelta="ScrollViewer_ManipulationDelta">
             <ListView
-            ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
-            SelectedItem="{x:Bind ViewModel.SelectedZone, Mode=TwoWay}"
-            SelectionMode="Single"
-            IsItemClickEnabled="True">
+                ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectedZone, Mode=TwoWay}"
+                SelectionMode="Single"
+                IsItemClickEnabled="True">
 
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -65,32 +65,32 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListViewItem">
                                     <ListViewItemPresenter
-                                    ContentTransitions="{TemplateBinding ContentTransitions}"
-                                    SelectionCheckMarkVisualEnabled="True"
-                                    CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
-                                    CheckBoxBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
-                                    DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
-                                    DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
-                                    FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}"
-                                    FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}"
-                                    PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
-                                    PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
-                                    PointerOverForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
-                                    SelectedBackground="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"
-                                    SelectedForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
-                                    SelectedPointerOverBackground="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"
-                                    PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
-                                    SelectedPressedBackground="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"
-                                    DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
-                                    DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
-                                    ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
-                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                    CornerRadius="10,10,0,0"
-                                    ContentMargin="{TemplateBinding Padding}"
-                                    PointerEntered="Button_PointerEntered"
-                                    PointerExited="Button_PointerExited"   
-                                    CheckMode="Inline"/>
+                                        ContentTransitions="{TemplateBinding ContentTransitions}"
+                                        SelectionCheckMarkVisualEnabled="True"
+                                        CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+                                        CheckBoxBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+                                        DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+                                        DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
+                                        FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}"
+                                        FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                                        PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
+                                        PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
+                                        PointerOverForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
+                                        SelectedBackground="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"
+                                        SelectedForeground="{ThemeResource SystemControlHighlightAltBaseHighBrush}"
+                                        SelectedPointerOverBackground="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"
+                                        PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
+                                        SelectedPressedBackground="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"
+                                        DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                        DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                        ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        CornerRadius="10,10,0,0"
+                                        ContentMargin="{TemplateBinding Padding}"
+                                        PointerEntered="Button_PointerEntered"
+                                        PointerExited="Button_PointerExited"   
+                                        CheckMode="Inline"/>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
@@ -100,8 +100,8 @@
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="model:ZoneViewModel">
                         <TextBlock
-                        Text="{x:Bind Name}"
-                        Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                            Text="{x:Bind Name}"
+                            Style="{ThemeResource BodyStrongTextBlockStyle}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -109,25 +109,25 @@
 
         <!-- Filter Controls -->
         <StackPanel
-        x:Name="ButtonContainer"
-        Grid.Column="2"
-        Orientation="Horizontal"
-        Padding="10,0"
-        Background="Transparent">
+            x:Name="ButtonContainer"
+            Grid.Column="2"
+            Orientation="Horizontal"
+            Padding="10,0"
+            Background="Transparent">
             <controls:Segmented
-            x:Name="Segmented"
-            HorizontalAlignment="Center"
-            SelectedIndex="0"
-            SelectionChanged="Segmented_SelectionChanged"
-            SelectionMode="Single">
+                x:Name="Segmented"
+                HorizontalAlignment="Center"
+                SelectedIndex="0"
+                SelectionChanged="Segmented_SelectionChanged"
+                SelectionMode="Single">
                 <controls:SegmentedItem
-                Content="All State"
-                PointerEntered="Button_PointerEntered"
-                PointerExited="Button_PointerExited"/>
+                    Content="All State"
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"/>
                 <controls:SegmentedItem
-                Content="Occupied"
-                PointerEntered="Button_PointerEntered"
-                PointerExited="Button_PointerExited"/>
+                    Content="Occupied"
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"/>
             </controls:Segmented>
         </StackPanel>
     </Grid>

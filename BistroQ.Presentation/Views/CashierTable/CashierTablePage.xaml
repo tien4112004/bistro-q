@@ -11,68 +11,105 @@
     xmlns:converters="using:BistroQ.Presentation.Converters"
     xmlns:zoneControls="using:BistroQ.Presentation.Views.UserControls.Zones"
     xmlns:orderControls="using:BistroQ.Presentation.Views.UserControls.Orders"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:behaviors="using:CommunityToolkit.WinUI.Behaviors"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     mc:Ignorable="d"
     Background="Transparent">
 
-    <!-- Main Grid Layout -->
-    <Grid 
-        Background="Transparent" 
-        Margin="0,0,0,20">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="7*" />
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="4*" />
-        </Grid.ColumnDefinitions>
-
-        <!-- Left Panel: Zone Information -->
+    <Grid>
+        <!-- Main Grid Layout -->
         <Grid 
-            Background="{ThemeResource DividerStrokeColorDefaultBrush}" 
-            Grid.Column="0" 
-            CornerRadius="10" 
-            Padding="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+            Background="Transparent" 
+            Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
 
-            <!-- Zone Overview -->
+            <!-- Left Panel: Zone Information -->
             <Grid 
-                Grid.Row="0" 
-                Background="Transparent" 
-                Padding="20,0,0,0">
-                <zoneControls:ZoneOverviewControl 
-                    x:Name="ZoneControl" 
-                    ViewModel="{x:Bind ViewModel.ZoneOverviewVM, Mode=OneWay}"/>
+                Background="{ThemeResource DividerStrokeColorDefaultBrush}" 
+                Grid.Column="0" 
+                CornerRadius="10" 
+                Padding="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Zone Overview -->
+                <Grid 
+                    Grid.Row="0" 
+                    Background="Transparent" 
+                    Padding="20,0,0,0">
+                    <zoneControls:ZoneOverviewControl 
+                        x:Name="ZoneControl" 
+                        ViewModel="{x:Bind ViewModel.ZoneOverviewVM, Mode=OneWay}"/>
+                </Grid>
+
+                <!-- Zone Table Grid -->
+                <Border 
+                    Grid.Row="1" 
+                    Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}" 
+                    Margin="4,-3,5,5" 
+                    CornerRadius="10">
+                    <zoneControls:ZoneTableGridControl 
+                        x:Name="GridControl"
+                        ViewModel="{x:Bind ViewModel.ZoneTableGridVM, Mode=OneWay}"/>
+                </Border>
             </Grid>
 
-            <!-- Zone Table Grid -->
+            <!-- Separator -->
+            <Rectangle 
+                Grid.Column="1"
+                Width="0"
+                Margin="6,0"/>
+
+            <!-- Right Panel: Order Details -->
             <Border 
-                Grid.Row="1" 
-                Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}" 
-                Margin="4,-3,5,5" 
-                CornerRadius="10">
-                <zoneControls:ZoneTableGridControl 
-                    x:Name="GridControl"
-                    ViewModel="{x:Bind ViewModel.ZoneTableGridVM, Mode=OneWay}"/>
+                Grid.Column="2" 
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                CornerRadius="10" 
+                BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
+                BorderThickness="4">
+                <orderControls:TableOrderDetailsControl 
+                    Grid.Row="1" 
+                    ViewModel="{x:Bind ViewModel.TableOrderDetailVM, Mode=OneWay}"/>
             </Border>
         </Grid>
 
-        <!-- Separator -->
-        <Rectangle 
-            Grid.Column="1"
-            Width="0"
-            Margin="6,0"/>
-
-        <!-- Right Panel: Order Details -->
-        <Border 
-            Grid.Column="2" 
-            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
-            CornerRadius="10" 
-            BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" 
-            BorderThickness="4">
-            <orderControls:TableOrderDetailsControl 
-                Grid.Row="1" 
-                ViewModel="{x:Bind ViewModel.TableOrderDetailVM, Mode=OneWay}"/>
-        </Border>
+        <Grid 
+            x:Name="NotificationsContainer" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Bottom"
+            Margin="10,10,10,24"
+            CornerRadius="8"
+            MaxWidth="440"
+            Canvas.ZIndex="999">
+            <muxc:InfoBar
+                x:Name="CheckoutNotification"
+                Severity="Success"
+                Background="{ThemeResource SuccessBaseColor}"
+                Foreground="{ThemeResource TextOnAccentFillColorPrimary}"
+                IsOpen="False">
+                <muxc:InfoBar.IconSource>
+                    <FontIconSource Glyph="&#xE73E;"/>
+                </muxc:InfoBar.IconSource>
+                <muxc:InfoBar.Content>
+                    <StackPanel Padding="5,10,5,15" Spacing="5">
+                        <TextBlock x:Name="NotificationTitle" FontWeight="SemiBold" FontSize="16">
+                            New Checkout
+                        </TextBlock>    
+                        <TextBlock x:Name="NotificationText" FontSize="14">
+                            <Run x:Name="PreZoneText"/>
+                            <Run x:Name="ZoneText" FontWeight="SemiBold"/>
+                            <Run x:Name="PostZoneText"/>
+                        </TextBlock>
+                    </StackPanel>
+                </muxc:InfoBar.Content>
+            </muxc:InfoBar>
+        </Grid>
     </Grid>
 </Page>

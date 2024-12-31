@@ -19,6 +19,8 @@ public partial class CashierTableViewModel :
     private readonly IMessenger _messenger;
     private readonly ICheckoutRealTimeService _checkoutService;
 
+    public event EventHandler<(int tableNumber, string zoneName)> NewCheckoutNotification;
+
     public CashierTableViewModel(
         ZoneOverviewViewModel zoneOverview,
         ZoneTableGridViewModel zoneTableGrid,
@@ -32,9 +34,10 @@ public partial class CashierTableViewModel :
         TableOrderDetailVM = tableOrderDetailVM;
         _messenger = messenger;
         _checkoutService = checkoutService;
-        _checkoutService.OnNewCheckout += (tableId, zoneId) =>
+        _checkoutService.OnNewCheckout += (tableId, tableNumber, zoneName) =>
         {
-            Debug.WriteLine($"New payment for table {tableId} in zone {zoneId}");
+            Debug.WriteLine("ABC");
+            NewCheckoutNotification?.Invoke(this, (tableNumber, zoneName));
         };
 
         _messenger.RegisterAll(this);
@@ -61,6 +64,12 @@ public partial class CashierTableViewModel :
     {
         ZoneTableGridVM.Dispose();
         TableOrderDetailVM.Dispose();
+
+        _checkoutService.OnNewCheckout -= (tableId, tableNumber, zoneName) =>
+        {
+            NewCheckoutNotification?.Invoke(this, (tableNumber, zoneName));
+        };
+
         _messenger.UnregisterAll(this);
     }
 }

@@ -4,7 +4,7 @@ public interface ICheckoutRealTimeService
 {
     event Action<int> OnCheckoutInitiated;
     event Action OnCheckoutCompleted;
-    event Action<int, int> OnNewCheckout;
+    event Action<int, int, string> OnNewCheckout;
 
     Task StartAsync();
     Task StopAsync();

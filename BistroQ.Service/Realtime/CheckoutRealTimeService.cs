@@ -1,4 +1,5 @@
-﻿using BistroQ.Domain.Contracts.Services;
+﻿
+using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Contracts.Services.Realtime;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Diagnostics;
@@ -15,7 +16,7 @@ public class CheckoutRealTimeService : ICheckoutRealTimeService
 
     public event Action OnCheckoutCompleted;
 
-    public event Action<int, int> OnNewCheckout;
+    public event Action<int, int, string> OnNewCheckout;
 
     public bool IsConnected => _hubConnection.State == HubConnectionState.Connected;
 
@@ -39,8 +40,8 @@ public class CheckoutRealTimeService : ICheckoutRealTimeService
             OnCheckoutCompleted?.Invoke());
 
         // Notifies the cashier that a new checkout has been requested
-        _hubConnection.On<int, int>("NewCheckout", (tableId, zoneId) =>
-            OnNewCheckout?.Invoke(tableId, zoneId));
+        _hubConnection.On<int, int, string>("NewCheckout", (tableId, tableNumber, zoneName) =>
+            OnNewCheckout?.Invoke(tableId, tableNumber, zoneName));
     }
 
     public async Task StartAsync()

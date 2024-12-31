@@ -9,6 +9,22 @@ public sealed partial class CashierTablePage : Page
     {
         ViewModel = App.GetService<CashierTableViewModel>();
         this.InitializeComponent();
-        this.Unloaded += (s, e) => ViewModel.Dispose();
+        ViewModel.NewCheckoutNotification += OnNewCheckoutNotification;
+        this.Unloaded += (s, e) =>
+        {
+            ViewModel.NewCheckoutNotification -= OnNewCheckoutNotification;
+            ViewModel.Dispose();
+        };
+    }
+
+    private void OnNewCheckoutNotification(object sender, (int tableNumber, string zoneName) checkoutInfo)
+    {
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            PreZoneText.Text = $"Table {checkoutInfo.tableNumber} in zone";
+            ZoneText.Text = checkoutInfo.zoneName;
+            PostZoneText.Text = "has completed checkout";
+            CheckoutNotification.IsOpen = true;
+        });
     }
 }
