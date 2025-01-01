@@ -24,6 +24,12 @@ public sealed partial class TableBillSummaryControl : UserControl
         set => SetValue(ButtonTextProperty, value);
     }
 
+    public bool IsButtonEnabled
+    {
+        get => (bool)GetValue(IsButtonEnabledProperty);
+        set => SetValue(IsButtonEnabledProperty, value);
+    }
+
     public static readonly DependencyProperty TotalProperty =
         DependencyProperty.Register(
             nameof(Total),
@@ -37,6 +43,13 @@ public sealed partial class TableBillSummaryControl : UserControl
             typeof(string),
             typeof(TableBillSummaryControl),
             new PropertyMetadata(null));
+
+    public static readonly DependencyProperty IsButtonEnabledProperty =
+        DependencyProperty.Register(
+            nameof(IsButtonEnabled),
+            typeof(bool),
+            typeof(TableBillSummaryControl),
+            new PropertyMetadata(true));
 
     public event EventHandler CheckoutRequested;
 

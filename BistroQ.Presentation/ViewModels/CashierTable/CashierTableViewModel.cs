@@ -67,6 +67,7 @@ public partial class CashierTableViewModel :
 
         _checkoutService.OnNewCheckout -= (tableId, tableNumber, zoneName) =>
         {
+            _messenger.Send(new TableStateChangedMessage(tableId, CashierTableState.CheckoutPending));
             NewCheckoutNotification?.Invoke(this, (tableNumber, zoneName));
         };
 
