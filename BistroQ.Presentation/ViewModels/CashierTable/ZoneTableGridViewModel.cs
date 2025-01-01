@@ -5,12 +5,16 @@ using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.UI.Dispatching;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
 
-public partial class ZoneTableGridViewModel : ObservableObject, IRecipient<ZoneSelectedMessage>, IDisposable
+public partial class ZoneTableGridViewModel :
+    ObservableObject,
+    IRecipient<ZoneSelectedMessage>,
+    IDisposable
 {
     [ObservableProperty]
     private ObservableCollection<TableViewModel> _tables;
@@ -18,7 +22,7 @@ public partial class ZoneTableGridViewModel : ObservableObject, IRecipient<ZoneS
     [ObservableProperty]
     private TableViewModel _selectedTable;
 
-
+    private readonly DispatcherQueue dispatcherQueue;
     private readonly ITableDataService _tableDataService;
     private readonly IMapper _mapper;
     private readonly IMessenger _messenger;
@@ -28,6 +32,7 @@ public partial class ZoneTableGridViewModel : ObservableObject, IRecipient<ZoneS
         _tableDataService = tableDataService;
         _mapper = mapper;
         _messenger = messenger;
+        dispatcherQueue = DispatcherQueue.GetForCurrentThread();
         messenger.RegisterAll(this);
     }
 

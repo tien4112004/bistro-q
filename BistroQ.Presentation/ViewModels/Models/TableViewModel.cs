@@ -23,10 +23,27 @@ public partial class TableViewModel : ObservableObject
     private int? _seatsCount;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsSpaceOccupied))]
     private bool _isOccupied = false;
 
-    //[ObservableProperty]
-    public bool IsCheckingOut => Number == 5;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsSpaceOccupied))]
+    private bool _isCheckingOut = false;
 
     public bool IsSpaceOccupied => IsOccupied && !IsCheckingOut;
+
+    public TableViewModel Clone()
+    {
+        return new TableViewModel
+        {
+            TableId = TableId,
+            Name = Name,
+            Number = Number,
+            ZoneId = ZoneId,
+            ZoneName = ZoneName,
+            SeatsCount = SeatsCount,
+            IsOccupied = IsOccupied,
+            IsCheckingOut = IsCheckingOut
+        };
+    }
 }

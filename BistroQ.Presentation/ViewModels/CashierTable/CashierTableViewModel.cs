@@ -1,9 +1,9 @@
 ﻿using BistroQ.Domain.Contracts.Services.Realtime;
 using BistroQ.Presentation.Contracts.ViewModels;
+using BistroQ.Presentation.Enums;
 using BistroQ.Presentation.Messages;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
-using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
 
@@ -36,7 +36,7 @@ public partial class CashierTableViewModel :
         _checkoutService = checkoutService;
         _checkoutService.OnNewCheckout += (tableId, tableNumber, zoneName) =>
         {
-            Debug.WriteLine("ABC");
+            _messenger.Send(new TableStateChangedMessage(tableId, CashierTableState.CheckoutPending));
             NewCheckoutNotification?.Invoke(this, (tableNumber, zoneName));
         };
 
