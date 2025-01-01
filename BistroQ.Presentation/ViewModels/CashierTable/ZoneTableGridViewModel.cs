@@ -5,7 +5,6 @@ using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
-using Microsoft.UI.Dispatching;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -22,7 +21,6 @@ public partial class ZoneTableGridViewModel :
     [ObservableProperty]
     private TableViewModel _selectedTable;
 
-    private readonly DispatcherQueue dispatcherQueue;
     private readonly ITableDataService _tableDataService;
     private readonly IMapper _mapper;
     private readonly IMessenger _messenger;
@@ -32,7 +30,6 @@ public partial class ZoneTableGridViewModel :
         _tableDataService = tableDataService;
         _mapper = mapper;
         _messenger = messenger;
-        dispatcherQueue = DispatcherQueue.GetForCurrentThread();
         messenger.RegisterAll(this);
     }
 
@@ -82,6 +79,13 @@ public partial class ZoneTableGridViewModel :
         {
             IsLoading = false;
         }
+    }
+
+    public void UpdateZoneState()
+    {
+        var hasCheckingOutTables = Tables.Any(t => t.IsCheckingOut);
+
+        _messenger.Send(new ZoneStateChangedMessage(SelectedTable.ZoneName, hasCheckingOutTables));
     }
 
     public void Receive(ZoneSelectedMessage message)

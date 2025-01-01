@@ -108,6 +108,7 @@ public sealed partial class ZoneTableGridControl :
             container.Style = styleSelector.SelectStyle(table, container);
 
             container.UpdateLayout();
+            ViewModel.UpdateZoneState();
         });
     }
 }

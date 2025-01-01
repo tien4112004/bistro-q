@@ -6,12 +6,13 @@ using BistroQ.Presentation.Messages;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.UI.Dispatching;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
 
-public partial class ZoneOverviewViewModel : ObservableObject
+public partial class ZoneOverviewViewModel : ObservableObject, IRecipient<ZoneStateChangedMessage>, IDisposable
 {
     [ObservableProperty]
     private ObservableCollection<ZoneViewModel> _zones;
@@ -23,6 +24,7 @@ public partial class ZoneOverviewViewModel : ObservableObject
     private readonly IMessenger _messenger;
     private readonly IZoneDataService _zoneDataService;
     private readonly IMapper _mapper;
+    private readonly DispatcherQueue dispatcherQueue;
 
     [ObservableProperty]
     private bool _isLoading = true;
@@ -32,6 +34,8 @@ public partial class ZoneOverviewViewModel : ObservableObject
         _zoneDataService = zoneDataService;
         _mapper = mapper;
         _messenger = messenger;
+        dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+        _messenger.RegisterAll(this);
     }
 
     /**
@@ -60,7 +64,7 @@ public partial class ZoneOverviewViewModel : ObservableObject
         try
         {
             var zonesData = await TaskHelper.WithMinimumDelay(
-                _zoneDataService.GetZonesAsync(new ZoneCollectionQueryParams()),
+                _zoneDataService.GetZonesByCashierAsync(new ZoneCollectionQueryParams()),
                 200);
 
             var zones = _mapper.Map<IEnumerable<ZoneViewModel>>(zonesData.Data);
@@ -79,5 +83,22 @@ public partial class ZoneOverviewViewModel : ObservableObject
         {
             IsLoading = false;
         }
+    }
+
+    public void Receive(ZoneStateChangedMessage message)
+    {
+        dispatcherQueue.TryEnqueue(() =>
+        {
+            var zone = Zones.FirstOrDefault(z => z.Name == message.ZoneName);
+            if (zone != null)
+            {
+                zone.HasCheckingOutTables = message.HasCheckingoutTables;
+            }
+        });
+    }
+
+    public void Dispose()
+    {
+        _messenger.UnregisterAll(this);
     }
 }

@@ -42,6 +42,7 @@
             Grid.Column="0"
             HorizontalScrollMode="Enabled"
             HorizontalScrollBarVisibility="Hidden"
+            VerticalScrollMode="Disabled"
             ManipulationMode="System,TranslateX"
             ManipulationDelta="ScrollViewer_ManipulationDelta">
             <ListView
@@ -60,6 +61,7 @@
                     <Style TargetType="ListViewItem">
                         <Setter Property="Padding" Value="8,2"/>
                         <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="MinWidth" Value="105" />
                         <Setter Property="HorizontalContentAlignment" Value="Center"/>
                         <Setter Property="Template">
                             <Setter.Value>
@@ -99,9 +101,18 @@
 
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="model:ZoneViewModel">
-                        <TextBlock
-                            Text="{x:Bind Name}"
-                            Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <FontIcon 
+                                Glyph="&#xE73E;"
+                                FontSize="12"
+                                Foreground="{ThemeResource WarningBaseColor}"
+                                VerticalAlignment="Center"
+                                Visibility="{x:Bind HasCheckingOutTables, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
+                            <TextBlock
+                                Text="{x:Bind Name}"
+                                Style="{ThemeResource BodyStrongTextBlockStyle}"
+                                VerticalAlignment="Center"/>
+                        </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

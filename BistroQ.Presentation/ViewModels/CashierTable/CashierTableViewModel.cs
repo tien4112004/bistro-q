@@ -36,6 +36,7 @@ public partial class CashierTableViewModel :
         _checkoutService = checkoutService;
         _checkoutService.OnNewCheckout += (tableId, tableNumber, zoneName) =>
         {
+            _messenger.Send(new ZoneStateChangedMessage(zoneName, true));
             _messenger.Send(new TableStateChangedMessage(tableId, CashierTableState.CheckoutPending));
             NewCheckoutNotification?.Invoke(this, (tableNumber, zoneName));
         };
@@ -69,6 +70,7 @@ public partial class CashierTableViewModel :
 
         _checkoutService.OnNewCheckout -= (tableId, tableNumber, zoneName) =>
         {
+            _messenger.Send(new ZoneStateChangedMessage(zoneName, true));
             _messenger.Send(new TableStateChangedMessage(tableId, CashierTableState.CheckoutPending));
             NewCheckoutNotification?.Invoke(this, (tableNumber, zoneName));
         };
