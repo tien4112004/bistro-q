@@ -23,5 +23,10 @@ public partial class TableViewModel : ObservableObject
     private int? _seatsCount;
 
     [ObservableProperty]
-    private bool? _isOccupied;
+    private bool _isOccupied = false;
+
+    //[ObservableProperty]
+    public bool IsCheckingOut => Number == 5;
+
+    public bool IsSpaceOccupied => IsOccupied && !IsCheckingOut;
 }
