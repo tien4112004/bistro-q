@@ -57,7 +57,9 @@ public partial class CashierTableViewModel :
 
     public void Receive(CompleteCheckoutRequestedMessage message)
     {
-        _checkoutService.NotifyCheckoutCompletedAsync(message.TableId ?? 0);
+        var tableId = message.TableId ?? 0;
+        _checkoutService.NotifyCheckoutCompletedAsync(tableId);
+        _messenger.Send(new TableStateChangedMessage(tableId, CashierTableState.Available));
     }
 
     public void Dispose()

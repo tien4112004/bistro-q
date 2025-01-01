@@ -206,6 +206,10 @@
             <orders:TableBillSummaryControl
                 ButtonText="Request Checkout"
                 VerticalAlignment="Bottom"
+                RequireConfirmation="True"
+                DialogTitle="Confirm Checkout"
+                DialogContent="Are you sure you want to proceed with the checkout?"
+                IsButtonEnabled="True"
                 Total="{x:Bind ViewModel.Order.TotalAmount, Mode=OneWay}"
                 CheckoutRequested="TableBillSummaryControl_CheckoutRequested"/>
         </StackPanel>
