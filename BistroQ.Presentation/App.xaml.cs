@@ -166,18 +166,18 @@ public partial class App : Application
             services.AddTransient<AdminAccountEditPageViewModel>();
 
 
-            services.AddScoped<IZoneDataService, ZoneDataService>();
-            services.AddScoped<ITableDataService, TableDataService>();
-            services.AddScoped<IOrderDataService, OrderDataService>();
-            services.AddScoped<IOrderItemDataService, OrderItemDataService>();
-            services.AddScoped<ICategoryDataService, CategoryDataService>();
-            services.AddScoped<IProductDataService, ProductDataService>();
-            services.AddScoped<IDialogService, DialogService>();
-            services.AddScoped<IAccountDataService, AccountDataService>();
+            services.AddSingleton<IZoneDataService, ZoneDataService>();
+            services.AddSingleton<ITableDataService, TableDataService>();
+            services.AddSingleton<IOrderDataService, OrderDataService>();
+            services.AddSingleton<IOrderItemDataService, OrderItemDataService>();
+            services.AddSingleton<ICategoryDataService, CategoryDataService>();
+            services.AddSingleton<IProductDataService, ProductDataService>();
+            services.AddSingleton<IAccountDataService, AccountDataService>();
 
             // Realtime service
             services.AddSingleton<ICheckoutRealTimeService, CheckoutRealTimeService>();
 
+            services.AddTransient<IDialogService, DialogService>();
 
             // Client V&VM
             services.AddTransient<HomePageViewModel>();

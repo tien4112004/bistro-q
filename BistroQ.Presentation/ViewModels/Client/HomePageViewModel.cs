@@ -1,4 +1,5 @@
-﻿using BistroQ.Domain.Contracts.Services.Realtime;
+﻿using BistroQ.Domain.Contracts.Services;
+using BistroQ.Domain.Contracts.Services.Realtime;
 using BistroQ.Presentation.Contracts.Services;
 using BistroQ.Presentation.Contracts.ViewModels;
 using BistroQ.Presentation.Messages;
@@ -57,6 +58,55 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware, 
             });
         };
 
+        _checkoutService.OnCheckoutCompleted += () =>
+        {
+            _dispatcherQueue.TryEnqueue(async () =>
+            {
+                const int LOGOUT_DELAY_SECONDS = 5;
+                var remainingSeconds = LOGOUT_DELAY_SECONDS;
+                var dialog = new ContentDialog
+                {
+                    Title = "Session Ending",
+                    Content = $"Thank you for dining with us! The application will log out in {remainingSeconds} seconds.",
+                    PrimaryButtonText = "OK",
+                    DefaultButton = ContentDialogButton.Primary
+                };
+
+                var timer = _dispatcherQueue.CreateTimer();
+                timer.Interval = TimeSpan.FromSeconds(1);
+                timer.Tick += (s, e) =>
+                {
+                    remainingSeconds--;
+                    dialog.Content = $"Thank you for dining with us! The application will log out in {remainingSeconds} seconds.";
+
+                    if (remainingSeconds <= 0)
+                    {
+                        timer.Stop();
+                        dialog.Hide();
+                    }
+                };
+                timer.Start();
+
+                _ = _dialogService.ShowDialogAsync(dialog);
+
+                await Task.Delay(TimeSpan.FromSeconds(LOGOUT_DELAY_SECONDS));
+
+                // Logout
+                App.MainWindow.Hide();
+                await App.GetService<IAuthService>().LogoutAsync();
+
+                var size = App.MainWindow.AppWindow.Size;
+                var position = App.MainWindow.AppWindow.Position;
+
+                var loginWindow = new LoginWindow();
+                loginWindow.Activate();
+                loginWindow.MoveAndResize(position.X, position.Y, size.Width, size.Height);
+
+                await Task.Delay(1000);
+                App.MainWindow.Close();
+            });
+        };
+
         OrderCartViewModel.OrderStartedCommand = new RelayCommand<OrderViewModel>(OnOrderStarted);
         _messenger.RegisterAll(this);
     }
@@ -76,7 +126,7 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware, 
         {
             if (e.Message != "Order not found")
             {
-                await App.GetService<IDialogService>().ShowDialogAsync(new Microsoft.UI.Xaml.Controls.ContentDialog
+                await _dialogService.ShowDialogAsync(new ContentDialog
                 {
                     Title = "Error starting order",
                     Content = e.Message,

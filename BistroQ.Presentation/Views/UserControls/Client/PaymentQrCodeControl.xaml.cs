@@ -4,7 +4,6 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Imaging;
 using QRCoder;
-using System.Diagnostics;
 using System.Windows.Input;
 using Windows.Storage.Streams;
 
@@ -69,12 +68,10 @@ public sealed partial class PaymentQrCodeControl : UserControl
 
             var bitmap = new BitmapImage();
             await bitmap.SetSourceAsync(stream);
-            Debug.WriteLine("ABCDEF");
             QRCodeImage.Source = bitmap;
         }
         catch (Exception ex)
         {
-            // Log error or notify user
             QRCodeImage.Source = null;
         }
     }
