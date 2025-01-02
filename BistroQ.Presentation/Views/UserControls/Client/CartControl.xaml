@@ -89,7 +89,7 @@
                 <!-- Product Image -->
                 <Image
                     Grid.Column="0"
-                    Source="https://imageplaceholder.net/64"
+                    Source="{x:Bind Product.ImageUrl, Mode=OneWay}"
                     Width="64"
                     Height="64"
                     Stretch="Fill"

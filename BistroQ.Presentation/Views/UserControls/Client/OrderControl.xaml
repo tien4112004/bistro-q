@@ -134,6 +134,7 @@
                             <Grid>
                                 <TextBlock 
                                     Text="{Binding}" 
+                                    Foreground="{ThemeResource TextOnAccentFillColorPrimary}"
                                     FontWeight="SemiBold" />
                             </Grid>
                         </DataTemplate>
@@ -143,7 +144,7 @@
                         <!-- Empty State -->
                         <TextBlock
                             Text="You have no processing order."
-                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Foreground="{ThemeResource TextFillColorPrimary}"
                             Visibility="{x:Bind ViewModel.IsProcessingItemsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                             Margin="12,0,0,0"/>
 
@@ -177,6 +178,7 @@
                             <Grid>
                                 <TextBlock 
                                     Text="{Binding}" 
+                                    Foreground="{ThemeResource TextOnAccentFillColorPrimary}"
                                     FontWeight="SemiBold" />
                             </Grid>
                         </DataTemplate>
@@ -186,7 +188,7 @@
                         <!-- Empty State -->
                         <TextBlock
                             Text="You have no completed order."
-                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            Foreground="{ThemeResource TextFillColorPrimary}"
                             Visibility="{x:Bind ViewModel.IsCompletedItemsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                             Margin="12,0,0,0"/>
 

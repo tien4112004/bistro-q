@@ -10,12 +10,12 @@
 
     <Grid Background="Black" Opacity="0.85">
         <Border 
-            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            Background="{ThemeResource CardBackgroundFillColorDefault}"
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
             BorderThickness="1"
             CornerRadius="8"
-            MaxWidth="400"
-            MaxHeight="500"
+            MaxWidth="500"
+            MaxHeight="600"
             Padding="24">
 
             <StackPanel Spacing="16" HorizontalAlignment="Center">
@@ -25,8 +25,8 @@
                     HorizontalAlignment="Center"/>
 
                 <Border 
-                    Width="300" 
-                    Height="300" 
+                    Width="400" 
+                    Height="450" 
                     Background="White"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1">
@@ -44,7 +44,7 @@
                     PointerEntered="Button_PointerEntered"
                     PointerExited="Button_PointerExited"
                     Padding="24,8">
-                    <TextBlock Text="Cancel Payment"/>
+                    <TextBlock Text="Cancel Payment" FontWeight="SemiBold"/>
                 </Button>
             </StackPanel>
         </Border>
