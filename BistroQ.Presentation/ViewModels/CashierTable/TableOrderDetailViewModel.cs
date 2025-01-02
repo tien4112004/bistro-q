@@ -100,7 +100,7 @@ public partial class TableOrderDetailViewModel :
 
     public void Receive(TableStateChangedMessage message)
     {
-        dispatcherQueue.TryEnqueue(() =>
+        dispatcherQueue.TryEnqueue(async () =>
         {
             if (message.TableId == Order.TableId)
             {
@@ -114,6 +114,7 @@ public partial class TableOrderDetailViewModel :
                         Timer.Start();
                         break;
                     case CashierTableState.CheckoutPending:
+                        await OnTableChangedAsync(message.TableId);
                         var updatedOrder = Order.Clone();
                         updatedOrder.Status = OrderStatus.Pending;
                         Order = updatedOrder;
