@@ -6,12 +6,21 @@ using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.Client;
 
 public partial class HomePageViewModel : ObservableRecipient, INavigationAware, IRecipient<CheckoutRequestedMessage>
 {
+    [ObservableProperty]
+    private bool _isShowingPayment;
+
+    [ObservableProperty]
+    private string _paymentData;
+
     public ProductListViewModel ProductListViewModel { get; }
     public OrderCartViewModel OrderCartViewModel { get; }
 
@@ -19,14 +28,34 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware, 
 
     private readonly IMessenger _messenger;
 
+    private readonly IDialogService _dialogService;
+
+    private readonly DispatcherQueue _dispatcherQueue;
+
     public ICommand AddProductToCartCommand { get; private set; }
+
+    public ICommand CancelPaymentCommand { get; }
 
     public HomePageViewModel()
     {
         ProductListViewModel = App.GetService<ProductListViewModel>();
         OrderCartViewModel = App.GetService<OrderCartViewModel>();
         _checkoutService = App.GetService<ICheckoutRealTimeService>();
+        _dialogService = App.GetService<IDialogService>();
         _messenger = App.GetService<IMessenger>();
+
+        _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+
+        CancelPaymentCommand = new AsyncRelayCommand(CancelPaymentAsync);
+
+        _checkoutService.OnCheckoutInitiated += (paymentData) =>
+        {
+            _dispatcherQueue.TryEnqueue(() =>
+            {
+                PaymentData = paymentData;
+                IsShowingPayment = true;
+            });
+        };
 
         OrderCartViewModel.OrderStartedCommand = new RelayCommand<OrderViewModel>(OnOrderStarted);
         _messenger.RegisterAll(this);
@@ -74,5 +103,24 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware, 
         _checkoutService.StopAsync();
         _messenger.UnregisterAll(this);
         return Task.CompletedTask;
+    }
+
+    private async Task CancelPaymentAsync()
+    {
+        var dialog = new ContentDialog
+        {
+            Title = "Cancel Payment",
+            Content = "Are you sure you want to cancel this payment?",
+            PrimaryButtonText = "Yes",
+            SecondaryButtonText = "No",
+            SecondaryButtonStyle = Application.Current.Resources["AccentButtonStyle"] as Style
+        };
+
+        var result = await _dialogService.ShowDialogAsync(dialog);
+        if (result == ContentDialogResult.Primary)
+        {
+            IsShowingPayment = false;
+            PaymentData = null;
+        }
     }
 }

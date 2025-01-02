@@ -12,7 +12,7 @@ public class CheckoutRealTimeService : ICheckoutRealTimeService
 
     private readonly IAuthService _authService;
 
-    public event Action<int> OnCheckoutInitiated;
+    public event Action<string> OnCheckoutInitiated;
 
     public event Action OnCheckoutCompleted;
 
@@ -32,12 +32,12 @@ public class CheckoutRealTimeService : ICheckoutRealTimeService
             .Build();
 
         // Shows the payment URL to the client
-        _hubConnection.On<int>("CheckoutInitiated", (paymentUrl) =>
-            OnCheckoutInitiated?.Invoke(paymentUrl));
+        _hubConnection.On<string>("CheckoutInitiated", (paymentData) =>
+                OnCheckoutInitiated?.Invoke(paymentData));
 
         // Notifies the client that the payment has been completed
         _hubConnection.On("CheckoutCompleted", () =>
-            OnCheckoutCompleted?.Invoke());
+                OnCheckoutCompleted?.Invoke());
 
         // Notifies the cashier that a new checkout has been requested
         _hubConnection.On<int, int, string>("NewCheckout", (tableId, tableNumber, zoneName) =>

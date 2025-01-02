@@ -2,7 +2,7 @@
 
 public interface ICheckoutRealTimeService
 {
-    event Action<int> OnCheckoutInitiated;
+    event Action<string> OnCheckoutInitiated;
     event Action OnCheckoutCompleted;
     event Action<int, int, string> OnNewCheckout;
 
