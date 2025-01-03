@@ -104,5 +104,11 @@
                     ViewModel="{x:Bind ViewModel.OrderCartViewModel, Mode=OneWay}" />
             </Border>
         </Grid>
+        <clientusercontrols:PaymentQrCodeControl
+            Grid.RowSpan="999"
+            Grid.ColumnSpan="999"
+            PaymentData="{x:Bind ViewModel.PaymentData, Mode=OneWay}"
+            CancelCommand="{x:Bind ViewModel.CancelPaymentCommand}"
+            Visibility="{x:Bind ViewModel.IsShowingPayment, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
     </Grid>
 </Page>

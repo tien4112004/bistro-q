@@ -41,6 +41,7 @@
         <Button
             Grid.Column="1"
             Content="{x:Bind ButtonText, Mode=OneWay}"
+            IsEnabled="{x:Bind IsButtonEnabled, Mode=OneWay}"
             Click="Button_Click"
             PointerEntered="Button_PointerEntered"
             PointerExited="Button_PointerExited"

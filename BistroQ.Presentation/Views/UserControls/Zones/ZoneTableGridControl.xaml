@@ -15,6 +15,142 @@
 
     <UserControl.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <local:TableItemStyleSelector x:Key="TableItemStyleSelector">
+            <local:TableItemStyleSelector.DefaultStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="Margin" Value="8"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="GridViewItem">
+                                <ListViewItemPresenter
+                                    ContentMargin="0"                      
+                                    ContentTransitions="{TemplateBinding Transitions}"
+                                    SelectedBorderBrush="{ThemeResource FocusStrokeColorOuterBrush}"
+                                    SelectedBorderThickness="3"
+                                    RevealBorderThickness="6"
+                                    Padding="0"
+                                    Margin="0"
+                                    SelectionCheckMarkVisualEnabled="True"
+                                    CheckHintBrush="{ThemeResource ListViewItemCheckHintThemeBrush}"
+                                    CheckSelectingBrush="{ThemeResource ListViewItemCheckSelectingThemeBrush}"
+                                    CheckBrush="{ThemeResource ListViewItemCheckThemeBrush}"
+                                    PointerOverBorderBrush="{ThemeResource FocusStrokeColorOuterBrush}"
+                                    DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+                                    DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
+                                    FocusBorderBrush="{ThemeResource ListViewItemFocusBorderThemeBrush}"
+                                    PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
+                                    PointerOverBackground="{ThemeResource ListViewItemPointerOverBackgroundThemeBrush}"
+                                    SelectedBackground="{ThemeResource AccentAcrylicBackgroundFillColorDefaultBrush}"
+                                    SelectedForeground="{ThemeResource ListViewItemSelectedForegroundThemeBrush}"
+                                    SelectedPointerOverBackground="{ThemeResource AccentAcrylicBackgroundFillColorBaseBrush}"
+                                    SelectedPointerOverBorderBrush="{ThemeResource FocusStrokeColorOuterBrush}"
+                                    DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                    DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                    ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    PointerOverBackgroundMargin="1"
+                                    PointerEntered="Button_PointerEntered"
+                                    PointerExited="Button_PointerExited"   
+                                    CornerRadius="8"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </local:TableItemStyleSelector.DefaultStyle>
+
+            <local:TableItemStyleSelector.OccupiedStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="Margin" Value="8"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Background" Value="{ThemeResource SuccessBaseColor}" />
+                    <Setter Property="Foreground" Value="{ThemeResource TextOnAccentFillColorPrimary}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="GridViewItem">
+                                <ListViewItemPresenter
+                                    ContentMargin="0"
+                                    ContentTransitions="{TemplateBinding Transitions}"
+                                    SelectedBorderBrush="{ThemeResource FocusStrokeColorOuterBrush}"
+                                    SelectedBorderThickness="3"
+                                    RevealBorderThickness="6"
+                                    Padding="0"
+                                    Margin="0"
+                                    SelectionCheckMarkVisualEnabled="True"
+                                    CheckHintBrush="{ThemeResource ListViewItemCheckHintThemeBrush}"
+                                    CheckSelectingBrush="{ThemeResource ListViewItemCheckSelectingThemeBrush}"
+                                    CheckBrush="{ThemeResource ListViewItemCheckThemeBrush}"
+                                    DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+                                    DragForeground="{ThemeResource TextOnAccentFillColorPrimary}"
+                                    PlaceholderBackground="{ThemeResource SuccessBaseColor}"
+                                    PointerOverBackground="{ThemeResource SuccessHoverColor}"
+                                    PointerOverBorderBrush="{ThemeResource FocusStrokeColorOuterBrush}"
+                                    SelectedBackground="{ThemeResource SuccessBaseColor}"
+                                    SelectedForeground="{ThemeResource TextOnAccentFillColorPrimary}"
+                                    SelectedPointerOverBackground="{ThemeResource SuccessHoverColor}"
+                                    SelectedPointerOverBorderBrush="{ThemeResource FocusStrokeColorOuterBrush}"
+                                    DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                    DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                    ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    PointerOverBackgroundMargin="1"
+                                    PointerEntered="Button_PointerEntered"
+                                    PointerExited="Button_PointerExited"   
+                                    CornerRadius="8"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </local:TableItemStyleSelector.OccupiedStyle>
+
+            <local:TableItemStyleSelector.CheckingOutStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="Margin" Value="8"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Background" Value="{ThemeResource WarningBaseColor}" />
+                    <Setter Property="Foreground" Value="{ThemeResource TextOnAccentFillColorPrimary}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="GridViewItem">
+                                <ListViewItemPresenter
+                                    ContentMargin="0"
+                                    ContentTransitions="{TemplateBinding Transitions}"
+                                    SelectedBorderBrush="{ThemeResource FocusStrokeColorOuterBrush}"
+                                    SelectedBorderThickness="3"
+                                    RevealBorderThickness="6"
+                                    Padding="0"
+                                    Margin="0"
+                                    SelectionCheckMarkVisualEnabled="True"
+                                    CheckHintBrush="{ThemeResource ListViewItemCheckHintThemeBrush}"
+                                    CheckSelectingBrush="{ThemeResource ListViewItemCheckSelectingThemeBrush}"
+                                    CheckBrush="{ThemeResource ListViewItemCheckThemeBrush}"
+                                    DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+                                    DragForeground="{ThemeResource TextOnAccentFillColorPrimary}"
+                                    PlaceholderBackground="{ThemeResource WarningBaseColor}"
+                                    PointerOverBackground="{ThemeResource WarningHoverColor}"
+                                    PointerOverBorderBrush="{ThemeResource FocusStrokeColorOuterBrush}"
+                                    SelectedBackground="{ThemeResource WarningBaseColor}"
+                                    SelectedForeground="{ThemeResource TextOnAccentFillColorPrimary}"
+                                    SelectedPointerOverBackground="{ThemeResource WarningHoverColor}"
+                                    SelectedPointerOverBorderBrush="{ThemeResource FocusStrokeColorOuterBrush}"
+                                    DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                    DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                    ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    PointerOverBackgroundMargin="1"
+                                    PointerEntered="Button_PointerEntered"
+                                    PointerExited="Button_PointerExited"   
+                                    CornerRadius="8"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </local:TableItemStyleSelector.CheckingOutStyle>
+        </local:TableItemStyleSelector>
     </UserControl.Resources>
 
     <!-- Main Scrollable Container -->
@@ -93,15 +229,17 @@
                 <TextBlock 
                     FontSize="14"
                     Text="There are no tables in this zone."
-                    Foreground="{ThemeResource WarningBaseColor}"
+                    Foreground="{ThemeResource ErrorBaseColor}"
                     Visibility="{x:Bind ViewModel.HasTables, Mode=OneWay, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}"/>
 
                 <!-- Tables GridView -->
                 <GridView 
+                    x:Name="myGridView"
                     ItemsSource="{x:Bind ViewModel.Tables, Mode=OneWay}" 
                     SelectedItem="{x:Bind ViewModel.SelectedTable, Mode=TwoWay}"
                     IsItemClickEnabled="True"
                     SelectionMode="Single"
+                    ItemContainerStyleSelector="{StaticResource TableItemStyleSelector}"
                     Visibility="{x:Bind ViewModel.HasTables, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                     SelectedIndex="0">
                     <GridView.ItemsPanel>
@@ -110,70 +248,40 @@
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
 
-                    <GridView.ItemContainerStyle>
-                        <Style TargetType="GridViewItem">
-                            <Setter Property="Margin" Value="8"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="Width" Value="120"/>
-                            <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
-                            <Setter Property="Height" Value="120"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="GridViewItem">
-                                        <GridViewItemPresenter
-                                            ContentTransitions="{TemplateBinding Transitions}"
-                                            Padding="{TemplateBinding Padding}"
-                                            SelectionCheckMarkVisualEnabled="True"
-                                            CheckHintBrush="{ThemeResource ListViewItemCheckHintThemeBrush}"
-                                            CheckSelectingBrush="{ThemeResource ListViewItemCheckSelectingThemeBrush}"
-                                            CheckBrush="{ThemeResource ListViewItemCheckThemeBrush}"
-                                            DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
-                                            DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
-                                            FocusBorderBrush="{ThemeResource ListViewItemFocusBorderThemeBrush}"
-                                            PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
-                                            PointerOverBackground="{ThemeResource ListViewItemPointerOverBackgroundThemeBrush}"
-                                            SelectedBorderThickness="{ThemeResource GridViewItemCompactSelectedBorderThemeThickness}"
-                                            SelectedBackground="{ThemeResource AccentAcrylicBackgroundFillColorDefaultBrush}"
-                                            SelectedForeground="{ThemeResource ListViewItemSelectedForegroundThemeBrush}"
-                                            SelectedPointerOverBackground="{ThemeResource AccentAcrylicBackgroundFillColorBaseBrush}"
-                                            DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
-                                            DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
-                                            ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
-                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            PointerOverBackgroundMargin="1"
-                                            PointerEntered="Button_PointerEntered"
-                                            PointerExited="Button_PointerExited"   
-                                            ContentMargin="4"
-                                            CornerRadius="10"/>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </GridView.ItemContainerStyle>
-
                     <!-- Table Item Template -->
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="models:TableViewModel">
-                            <Grid>
+                            <Grid 
+                                CornerRadius="8"
+                                Height="120"
+                                HorizontalAlignment="Center"
+                                Width="120">
                                 <StackPanel 
                                     Spacing="4" 
+                                    HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
-                                    <!-- Occupied Status -->
                                     <StackPanel
                                         Orientation="Horizontal"
                                         Spacing="5">
                                         <FontIcon 
                                             Glyph="&#xE73E;"
-                                            Foreground="{ThemeResource SuccessBaseColor}"
-                                            Visibility="{x:Bind IsOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+                                            Visibility="{x:Bind IsSpaceOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
                                             FontSize="16"
                                             HorizontalAlignment="Center"/>
                                         <TextBlock 
                                             FontSize="12" 
-                                            Visibility="{x:Bind IsOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
-                                            Foreground="{ThemeResource SuccessBaseColor}">
+                                            Visibility="{x:Bind IsSpaceOccupied, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
                                             Occupied!
+                                        </TextBlock>
+                                    </StackPanel>
+
+                                    <StackPanel
+                                        Orientation="Horizontal"
+                                        Spacing="5">
+                                        <TextBlock 
+                                            FontSize="12" 
+                                            Visibility="{x:Bind IsCheckingOut, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                                            Checking Out!
                                         </TextBlock>
                                     </StackPanel>
 

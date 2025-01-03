@@ -7,4 +7,6 @@ public class ZoneResponse
     public string? Name { get; set; }
 
     public int? TableCount { get; set; }
+
+    public bool? HasCheckingOutTables { get; set; }
 }

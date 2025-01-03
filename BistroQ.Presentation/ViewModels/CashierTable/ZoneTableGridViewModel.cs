@@ -10,14 +10,16 @@ using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
 
-public partial class ZoneTableGridViewModel : ObservableObject, IRecipient<ZoneSelectedMessage>, IDisposable
+public partial class ZoneTableGridViewModel :
+    ObservableObject,
+    IRecipient<ZoneSelectedMessage>,
+    IDisposable
 {
     [ObservableProperty]
     private ObservableCollection<TableViewModel> _tables;
 
     [ObservableProperty]
     private TableViewModel _selectedTable;
-
 
     private readonly ITableDataService _tableDataService;
     private readonly IMapper _mapper;
@@ -77,6 +79,13 @@ public partial class ZoneTableGridViewModel : ObservableObject, IRecipient<ZoneS
         {
             IsLoading = false;
         }
+    }
+
+    public void UpdateZoneState()
+    {
+        var hasCheckingOutTables = Tables.Any(t => t.IsCheckingOut);
+
+        _messenger.Send(new ZoneStateChangedMessage(SelectedTable.ZoneName, hasCheckingOutTables));
     }
 
     public void Receive(ZoneSelectedMessage message)

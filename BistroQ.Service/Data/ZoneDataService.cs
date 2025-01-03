@@ -88,5 +88,19 @@ namespace BistroQ.Service.Data
 
             throw new Exception(response.Message);
         }
+
+        public async Task<ApiCollectionResponse<IEnumerable<Zone>>> GetZonesByCashierAsync(ZoneCollectionQueryParams query = null)
+        {
+            var response = await _apiClient.GetCollectionAsync<IEnumerable<ZoneResponse>>("/api/cashier/zones", query);
+
+            if (response.Success)
+            {
+                var zones = _mapper.Map<IEnumerable<Zone>>(response.Data);
+                return new ApiCollectionResponse<IEnumerable<Zone>>
+                    (zones, response.TotalItems, response.CurrentPage, response.TotalPages);
+            }
+
+            throw new Exception("Failed to get zones");
+        }
     }
 }

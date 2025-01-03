@@ -20,7 +20,6 @@ public partial class OrderCartViewModel :
     ObservableRecipient,
     IRecipient<AddProductToCartMessage>,
     IRecipient<OrderRequestedMessage>,
-    IRecipient<CheckoutRequestedMessage>,
     IDisposable
 {
     private readonly IOrderDataService _orderDataService;
@@ -236,11 +235,6 @@ public partial class OrderCartViewModel :
         {
             Debug.WriteLine(e.Message);
         }
-    }
-
-    public void Receive(CheckoutRequestedMessage message)
-    {
-        Debug.WriteLine("[Debug] Checkout requested message received, table to be checked out: " + message.TableId);
     }
 
     public void Dispose()

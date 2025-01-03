@@ -1,4 +1,4 @@
-namespace BistroQ.Domain.Dtos.Tables;
+﻿namespace BistroQ.Domain.Dtos.Tables;
 public class TableResponse
 {
     public int? TableId { get; set; }
@@ -12,4 +12,6 @@ public class TableResponse
     public string? ZoneName { get; set; }
 
     public bool IsOccupied { get; set; }
+
+    public bool IsCheckingOut { get; set; }
 }

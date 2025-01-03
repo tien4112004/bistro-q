@@ -1,0 +1,13 @@
+﻿namespace BistroQ.Domain.Contracts.Services.Realtime;
+
+public interface ICheckoutRealTimeService
+{
+    event Action<string> OnCheckoutInitiated;
+    event Action OnCheckoutCompleted;
+    event Action<int, int, string> OnNewCheckout;
+
+    Task StartAsync();
+    Task StopAsync();
+    Task NotifyCheckoutRequestedAsync(int tableId);
+    Task NotifyCheckoutCompletedAsync(int tableId);
+}

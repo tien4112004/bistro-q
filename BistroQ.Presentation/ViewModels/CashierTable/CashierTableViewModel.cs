@@ -1,51 +1,80 @@
-﻿using BistroQ.Presentation.Contracts.ViewModels;
+﻿using BistroQ.Domain.Contracts.Services.Realtime;
+using BistroQ.Presentation.Contracts.ViewModels;
+using BistroQ.Presentation.Enums;
 using BistroQ.Presentation.Messages;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
-using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.CashierTable;
 
-public partial class CashierTableViewModel : ObservableObject, INavigationAware, IRecipient<CheckoutRequestedMessage>, IDisposable
+public partial class CashierTableViewModel :
+    ObservableObject,
+    INavigationAware,
+    IRecipient<CompleteCheckoutRequestedMessage>,
+    IDisposable
 {
     public ZoneOverviewViewModel ZoneOverviewVM;
     public ZoneTableGridViewModel ZoneTableGridVM;
     public TableOrderDetailViewModel TableOrderDetailVM;
     private readonly IMessenger _messenger;
+    private readonly ICheckoutRealTimeService _checkoutService;
+
+    public event EventHandler<(int tableNumber, string zoneName)> NewCheckoutNotification;
 
     public CashierTableViewModel(
         ZoneOverviewViewModel zoneOverview,
         ZoneTableGridViewModel zoneTableGrid,
         TableOrderDetailViewModel tableOrderDetailVM,
-        IMessenger messenger
+        IMessenger messenger,
+        ICheckoutRealTimeService checkoutService
         )
     {
         ZoneOverviewVM = zoneOverview;
         ZoneTableGridVM = zoneTableGrid;
         TableOrderDetailVM = tableOrderDetailVM;
         _messenger = messenger;
+        _checkoutService = checkoutService;
+        _checkoutService.OnNewCheckout += (tableId, tableNumber, zoneName) =>
+        {
+            _messenger.Send(new ZoneStateChangedMessage(zoneName, true));
+            _messenger.Send(new TableStateChangedMessage(tableId, CashierTableState.CheckoutPending));
+            NewCheckoutNotification?.Invoke(this, (tableNumber, zoneName));
+        };
+
         _messenger.RegisterAll(this);
     }
 
     public async Task OnNavigatedTo(object parameter)
     {
         await ZoneOverviewVM.InitializeAsync();
+        await _checkoutService.StartAsync();
     }
 
-    public Task OnNavigatedFrom()
+    public async Task OnNavigatedFrom()
     {
-        return Task.CompletedTask;
+        Dispose();
+        await _checkoutService.StopAsync();
     }
 
-    public void Receive(CheckoutRequestedMessage message)
+    public void Receive(CompleteCheckoutRequestedMessage message)
     {
-        Debug.WriteLine("Checkout requested");
+        var tableId = message.TableId ?? 0;
+        _checkoutService.NotifyCheckoutCompletedAsync(tableId);
+        _messenger.Send(new TableStateChangedMessage(tableId, CashierTableState.Available));
     }
 
     public void Dispose()
     {
         ZoneTableGridVM.Dispose();
         TableOrderDetailVM.Dispose();
+
+        _checkoutService.OnNewCheckout -= (tableId, tableNumber, zoneName) =>
+        {
+            _messenger.Send(new ZoneStateChangedMessage(zoneName, true));
+            _messenger.Send(new TableStateChangedMessage(tableId, CashierTableState.CheckoutPending));
+            NewCheckoutNotification?.Invoke(this, (tableNumber, zoneName));
+        };
+
         _messenger.UnregisterAll(this);
     }
 }

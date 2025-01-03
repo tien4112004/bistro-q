@@ -1,6 +1,7 @@
 ﻿using BistroQ.Domain.Contracts.Http;
 using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Contracts.Services.Data;
+using BistroQ.Domain.Contracts.Services.Realtime;
 using BistroQ.Domain.Services.Http;
 using BistroQ.Presentation.Activation;
 using BistroQ.Presentation.Contracts.Services;
@@ -32,6 +33,7 @@ using BistroQ.Service.Auth;
 using BistroQ.Service.Common;
 using BistroQ.Service.Data;
 using BistroQ.Service.Http;
+using BistroQ.Service.Realtime;
 using CommunityToolkit.Mvvm.Messaging;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
@@ -164,15 +166,18 @@ public partial class App : Application
             services.AddTransient<AdminAccountEditPageViewModel>();
 
 
-            services.AddScoped<IZoneDataService, ZoneDataService>();
-            services.AddScoped<ITableDataService, TableDataService>();
-            services.AddScoped<IOrderDataService, OrderDataService>();
-            services.AddScoped<IOrderItemDataService, OrderItemDataService>();
-            services.AddScoped<ICategoryDataService, CategoryDataService>();
-            services.AddScoped<IProductDataService, ProductDataService>();
-            services.AddScoped<IDialogService, DialogService>();
-            services.AddScoped<IAccountDataService, AccountDataService>();
+            services.AddSingleton<IZoneDataService, ZoneDataService>();
+            services.AddSingleton<ITableDataService, TableDataService>();
+            services.AddSingleton<IOrderDataService, OrderDataService>();
+            services.AddSingleton<IOrderItemDataService, OrderItemDataService>();
+            services.AddSingleton<ICategoryDataService, CategoryDataService>();
+            services.AddSingleton<IProductDataService, ProductDataService>();
+            services.AddSingleton<IAccountDataService, AccountDataService>();
 
+            // Realtime service
+            services.AddSingleton<ICheckoutRealTimeService, CheckoutRealTimeService>();
+
+            services.AddTransient<IDialogService, DialogService>();
 
             // Client V&VM
             services.AddTransient<HomePageViewModel>();
