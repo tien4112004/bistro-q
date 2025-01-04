@@ -38,18 +38,17 @@ public partial class OrderCartViewModel :
     private string _errorMessage = string.Empty;
 
     #region NutritionFacts
-    public double CaloriesLimit => NutritionalConstants.DAILY_CALORIES / 3.0 * Order.PeopleCount;
-    public double ProteinLimit => NutritionalConstants.DAILY_PROTEIN / 3.0 * Order.PeopleCount;
-    public double FatLimit => NutritionalConstants.DAILY_FAT / 3.0 * Order.PeopleCount;
-    public double FiberLimit => NutritionalConstants.DAILY_FIBER / 3.0 * Order.PeopleCount;
-    public double CarbohydratesLimit => NutritionalConstants.DAILY_CARBOHYDRATES / 3.0 * Order.PeopleCount;
+    public double CaloriesLimit => Math.Round(NutritionalConstants.DAILY_CALORIES / 3.0 * Order.PeopleCount, 0);
+    public double ProteinLimit => Math.Round(NutritionalConstants.DAILY_PROTEIN / 3.0 * Order.PeopleCount, 0);
+    public double FatLimit => Math.Round(NutritionalConstants.DAILY_FAT / 3.0 * Order.PeopleCount, 0);
+    public double FiberLimit => Math.Round(NutritionalConstants.DAILY_FIBER / 3.0 * Order.PeopleCount, 0);
+    public double CarbohydratesLimit => Math.Round(NutritionalConstants.DAILY_CARBOHYDRATES / 3.0 * Order.PeopleCount, 0);
 
     public double CaloriesPercentage => Order.TotalCalories / CaloriesLimit * 100;
     public double ProteinPercentage => Order.TotalProtein / ProteinLimit * 100;
     public double FatPercentage => Order.TotalFat / FatLimit * 100;
     public double FiberPercentage => Order.TotalFiber / FiberLimit * 100;
     public double CarbohydratesPercentage => Order.TotalCarbohydrates / CarbohydratesLimit * 100;
-
     #endregion
 
 

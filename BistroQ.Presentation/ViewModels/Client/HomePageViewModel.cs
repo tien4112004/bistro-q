@@ -139,7 +139,7 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware, 
             OrderCartViewModel.IsLoading = false;
         }
         _ = ProductListViewModel.LoadCategoriesAsync();
-        _ = ProductListViewModel.LoadProductAsync();
+        _ = ProductListViewModel.LoadProductsAsync();
     }
 
     public void Receive(CheckoutRequestedMessage message)
