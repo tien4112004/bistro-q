@@ -81,6 +81,20 @@ public class ProductDataService : IProductDataService
         throw new Exception("Failed to get products");
     }
 
+    public async Task<ApiCollectionResponse<IEnumerable<Product>>> GetRecommendationAsync()
+    {
+        var response = await _apiClient.GetCollectionAsync<IEnumerable<ProductResponse>>("/api/product/recommendations", null);
+
+        if (response.Success)
+        {
+            var products = _mapper.Map<IEnumerable<Product>>(response.Data);
+            return new ApiCollectionResponse<IEnumerable<Product>>
+                (products, response.TotalItems, response.CurrentPage, response.TotalPages);
+        }
+
+        throw new Exception("Failed to get products");
+    }
+
     public async Task<Product> CreateProductAsync(CreateProductRequest request, Stream stream, string fileName, string contentType)
     {
         var files = new Dictionary<string, (Stream Stream, string FileName, string ContentType)>();

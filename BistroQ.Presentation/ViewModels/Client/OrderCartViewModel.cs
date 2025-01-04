@@ -245,3 +245,16 @@ public partial class OrderCartViewModel :
 
     private DispatcherQueue dispatcherQueue;
 }
+
+public static class BaseNutrition
+{
+    public static double Calories = 700;
+
+    public static double Protein = 700;
+
+    public static double Fat = 700;
+
+    public static double Fiber = 700;
+
+    public static double Carbohydrates = 700;
+}
