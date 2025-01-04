@@ -89,7 +89,7 @@
                 <!-- Product Image -->
                 <Image
                     Grid.Column="0"
-                    Source="https://imageplaceholder.net/64"
+                    Source="{x:Bind Product.ImageUrl, Mode=OneWay}"
                     Width="64"
                     Height="64"
                     Stretch="Fill"
@@ -208,6 +208,9 @@
             <orders:TableBillSummaryControl
                 ButtonText="Order"
                 VerticalAlignment="Bottom"
+                RequireConfirmation="True"
+                DialogTitle="Confirm Order"
+                DialogContent="Are you sure you want to order these products?"
                 Total="{x:Bind ViewModel.TotalCart, Mode=OneWay}"
                 CheckoutRequested="TableBillSummaryControl_OrderRequested"/>
         </StackPanel>

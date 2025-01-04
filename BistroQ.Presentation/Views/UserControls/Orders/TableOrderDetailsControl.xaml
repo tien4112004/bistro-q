@@ -133,7 +133,11 @@
             <orderControls:TableBillSummaryControl
                 Grid.Row="1"
                 ButtonText="Checkout"
+                RequireConfirmation="True"
+                DialogTitle="Confirm Checkout"
+                DialogContent="Are you sure you want to proceed with the checkout?"
                 Total="{x:Bind ViewModel.Order.TotalAmount, Mode=OneWay}"
+                IsButtonEnabled="{x:Bind ViewModel.IsCheckoutEnabled, Mode=OneWay}"
                 CheckoutRequested="{x:Bind ViewModel.CheckoutRequestedCommand, Mode=OneWay}"/>
         </Grid>
     </Grid>

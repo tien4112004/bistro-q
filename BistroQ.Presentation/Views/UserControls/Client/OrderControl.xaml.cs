@@ -6,7 +6,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using System.ComponentModel;
-using System.Diagnostics;
 
 namespace BistroQ.Presentation.Views.UserControls.Client;
 
@@ -28,7 +27,6 @@ public sealed partial class OrderControl : UserControl, INotifyPropertyChanged
     private void TableBillSummaryControl_CheckoutRequested(object sender, EventArgs e)
     {
         App.GetService<IMessenger>().Send(new CheckoutRequestedMessage(ViewModel.Order.TableId));
-        Debug.WriteLine("[Debug] Checkout clicked");
     }
 
     private void VerticalScrollViewer_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)

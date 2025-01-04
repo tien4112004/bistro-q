@@ -12,4 +12,5 @@ public interface IZoneDataService
     Task<bool> DeleteZoneAsync(int zoneId);
     Task<ApiCollectionResponse<IEnumerable<Zone>>> GetZonesAsync(ZoneCollectionQueryParams query);
     Task<Zone> GetZoneByIdAsync(int zoneId);
+    Task<ApiCollectionResponse<IEnumerable<Zone>>> GetZonesByCashierAsync(ZoneCollectionQueryParams query = null);
 }

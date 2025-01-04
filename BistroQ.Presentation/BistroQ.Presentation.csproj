@@ -37,6 +37,8 @@
     <None Remove="Views\CashierTable\Controls\ZoneTableGridControl.xaml" />
     <None Remove="Views\KitchenHistory\KitchenHistoryPage.xaml" />
     <None Remove="Views\UserControls\Client\ClientNutritionControl.xaml" />
+    <None Remove="Views\UserControls\Client\PaymentQrCodeControl.xaml" />
+    <None Remove="Views\UserControls\Client\QrCodeControl.xaml" />
     <None Remove="Views\UserControls\Orders\KitchenOrderGridControl.xaml" />
     <None Remove="Views\UserControls\Orders\TableBillSummaryControl.xaml" />
     <None Remove="Views\UserControls\Orders\TableOrderDetailsControl.xaml" />
@@ -54,6 +56,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="CommunityToolkit.WinUI.Behaviors" Version="8.1.240916" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.1.240916" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.1.240916" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
@@ -64,9 +67,11 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
     <PackageReference Include="SkiaSharp.HarfBuzz" Version="2.88.9-preview.2.2" />
     <PackageReference Include="SkiaSharp.Views.WinUI" Version="2.88.9-preview.2.2" />
     <PackageReference Include="WinUIEx" Version="2.3.2" />
+    <PackageReference Include="ZXing.Net" Version="0.16.9" />
   </ItemGroup>
 
   <ItemGroup>
@@ -77,6 +82,12 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\UserControls\Client\PaymentQrCodeControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\UserControls\Client\QrCodeControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\UserControls\Client\ClientNutritionControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

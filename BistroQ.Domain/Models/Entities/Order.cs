@@ -1,4 +1,6 @@
-﻿namespace BistroQ.Domain.Models.Entities;
+﻿using BistroQ.Domain.Enums;
+
+namespace BistroQ.Domain.Models.Entities;
 
 public class Order
 {
@@ -10,7 +12,7 @@ public class Order
 
     public DateTime? EndTime { get; set; }
 
-    public string Status { get; set; }
+    public OrderStatus Status { get; set; }
 
     public int PeopleCount { get; set; }
 
