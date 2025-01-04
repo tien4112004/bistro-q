@@ -38,15 +38,18 @@ public partial class OrderCartViewModel :
     private string _errorMessage = string.Empty;
 
     #region NutritionFacts
-    public double CaloriesPercentage => Order.TotalCalories / 2000.0 * 100;
+    public double CaloriesLimit => NutritionalConstants.DAILY_CALORIES / 3.0 * Order.PeopleCount;
+    public double ProteinLimit => NutritionalConstants.DAILY_PROTEIN / 3.0 * Order.PeopleCount;
+    public double FatLimit => NutritionalConstants.DAILY_FAT / 3.0 * Order.PeopleCount;
+    public double FiberLimit => NutritionalConstants.DAILY_FIBER / 3.0 * Order.PeopleCount;
+    public double CarbohydratesLimit => NutritionalConstants.DAILY_CARBOHYDRATES / 3.0 * Order.PeopleCount;
 
-    public double ProteinPercentage => Order.TotalProtein / 50.0 * 100;
+    public double CaloriesPercentage => Order.TotalCalories / CaloriesLimit * 100;
+    public double ProteinPercentage => Order.TotalProtein / ProteinLimit * 100;
+    public double FatPercentage => Order.TotalFat / FatLimit * 100;
+    public double FiberPercentage => Order.TotalFiber / FiberLimit * 100;
+    public double CarbohydratesPercentage => Order.TotalCarbohydrates / CarbohydratesLimit * 100;
 
-    public double FatPercentage => Order.TotalFat / 70.0 * 100;
-
-    public double FiberPercentage => Order.TotalFiber / 25.0 * 100;
-
-    public double CarbohydratesPercentage => Order.TotalCarbohydrates / 300.0 * 100;
     #endregion
 
 
@@ -246,15 +249,26 @@ public partial class OrderCartViewModel :
     private DispatcherQueue dispatcherQueue;
 }
 
-public static class BaseNutrition
+public static class NutritionalConstants
 {
-    public static double Calories = 700;
+    // Daily recommended values
+    public const double DAILY_CALORIES = 2000;
+    public const double DAILY_PROTEIN = 75;
+    public const double DAILY_CARBOHYDRATES = 300;
+    public const double DAILY_FAT = 70;
+    public const double DAILY_FIBER = 25;
 
-    public static double Protein = 700;
+    // Rating weights (must sum to 1.0)
+    public const double PROTEIN_WEIGHT = 0.3;
+    public const double FAT_WEIGHT = 0.2;
+    public const double CALORIES_WEIGHT = 0.1;
+    public const double FIBER_WEIGHT = 0.2;
+    public const double CARB_WEIGHT = 0.2;
 
-    public static double Fat = 700;
-
-    public static double Fiber = 700;
-
-    public static double Carbohydrates = 700;
+    // Individual deficiency multipliers
+    public const double PROTEIN_DEFICIENCY_MULTIPLIER = 1.0;
+    public const double FAT_DEFICIENCY_MULTIPLIER = 3.0; // Fat is harmful in excess
+    public const double CALORIES_DEFICIENCY_MULTIPLIER = 2.0;
+    public const double FIBER_DEFICIENCY_MULTIPLIER = 0.5;
+    public const double CARB_DEFICIENCY_MULTIPLIER = 2.0;
 }
