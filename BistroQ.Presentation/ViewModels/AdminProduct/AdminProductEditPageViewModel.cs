@@ -13,24 +13,58 @@ using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminProduct;
 
+/// <summary>
+/// ViewModel for editing existing products in the admin interface.
+/// Manages the product editing form, category selection, and image upload functionality.
+/// </summary>
+/// <remarks>
+/// Implements INavigationAware for handling navigation events and uses MVVM pattern
+/// with ObservableRecipient as its base class.
+/// </remarks>
 public partial class AdminProductEditPageViewModel : ObservableRecipient, INavigationAware
 {
-    [ObservableProperty]
-    private bool _isProcessing = false;
-    [ObservableProperty]
-    private AddProductForm _form = new();
-    [ObservableProperty]
-    private string _errorMessage = "";
-
-    public ObservableCollection<CategoryViewModel> Categories;
-
+    #region Private Fields
     private readonly IProductDataService _productDataService;
     private readonly ICategoryDataService _categoryDataService;
     private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
+    #endregion
 
+    #region Observable Properties
+    /// <summary>
+    /// Indicates whether the ViewModel is currently processing a request.
+    /// </summary>
+    [ObservableProperty]
+    private bool _isProcessing = false;
+
+    /// <summary>
+    /// The form containing product editing data including product details and image.
+    /// </summary>
+    [ObservableProperty]
+    private AddProductForm _form = new();
+
+    /// <summary>
+    /// Error message to display when operations fail.
+    /// </summary>
+    [ObservableProperty]
+    private string _errorMessage = "";
+    #endregion
+
+    #region Public Properties
+    /// <summary>
+    /// Collection of available categories for product assignment.
+    /// </summary>
+    public ObservableCollection<CategoryViewModel> Categories;
+    #endregion
+
+    #region Commands
+    /// <summary>
+    /// Command for updating the product details.
+    /// </summary>
     public ICommand UpdateCommand { get; }
+    #endregion
 
+    #region Constructor
     public AdminProductEditPageViewModel(
         IProductDataService productDataService,
         ICategoryDataService categoryDataService,
@@ -45,12 +79,22 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
 
         UpdateCommand = new AsyncRelayCommand(UpdateProductAsync, CanUpdate);
     }
+    #endregion
 
+    #region Public Methods
+    /// <summary>
+    /// Navigates back to the previous page.
+    /// </summary>
     public void NavigateBack()
     {
         App.GetService<INavigationService>().GoBack();
     }
 
+    /// <summary>
+    /// Updates the product using the form data.
+    /// Validates the form, updates the product details and image if provided, and handles any errors.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task UpdateProductAsync()
     {
         Form.ValidateAll();
@@ -99,11 +143,19 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
         }
     }
 
+    /// <summary>
+    /// Determines whether the product can be updated based on form validation and processing state.
+    /// </summary>
+    /// <returns>True if the product can be updated; otherwise, false.</returns>
     public bool CanUpdate()
     {
         return !Form.HasErrors && !IsProcessing;
     }
 
+    /// <summary>
+    /// Loads the list of available categories for product assignment.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task LoadCategoriesAsync()
     {
         var response = await _categoryDataService.GetCategoriesAsync(new CategoryCollectionQueryParams
@@ -118,6 +170,11 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
         }
     }
 
+    /// <summary>
+    /// Handles navigation to this page, initializing the form with the selected product's data.
+    /// </summary>
+    /// <param name="parameter">Navigation parameter containing the product to edit.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public Task OnNavigatedTo(object parameter)
     {
         if (parameter is ProductViewModel selectedProduct)
@@ -139,8 +196,13 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Handles navigation from this page.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public Task OnNavigatedFrom()
     {
         return Task.CompletedTask;
     }
+    #endregion
 }

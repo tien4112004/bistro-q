@@ -18,6 +18,17 @@ using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels;
 
+/// <summary>
+/// ViewModel for managing products in the admin interface.
+/// Handles listing, adding, editing, and deleting products with support for pagination and sorting.
+/// </summary>
+/// <remarks>
+/// Implements multiple interfaces for functionality:
+/// - ObservableRecipient for MVVM pattern
+/// - INavigationAware for page navigation
+/// - IDisposable for resource cleanup
+/// - IRecipient for handling pagination messages
+/// </remarks>
 public partial class AdminProductViewModel :
     ObservableRecipient,
     INavigationAware,
@@ -25,22 +36,52 @@ public partial class AdminProductViewModel :
     IRecipient<PageSizeChangedMessage>,
     IRecipient<CurrentPageChangedMessage>
 {
+    #region Private Fields
     private readonly IDialogService _dialogService;
     private readonly INavigationService _navigationService;
     private readonly IProductDataService _productDataService;
     private readonly IMapper _mapper;
     private readonly IMessenger _messenger;
+    private bool _isDisposed = false;
+    #endregion
 
+    #region Observable Properties
+    /// <summary>
+    /// The state container for product management, including selected product,
+    /// query parameters, and loading state.
+    /// </summary>
     [ObservableProperty]
     private AdminProductState _state = new();
-    private bool _isDisposed = false;
+    #endregion
 
+    #region Commands
+    /// <summary>
+    /// Command to navigate to the add product page.
+    /// </summary>
     public IRelayCommand AddCommand { get; }
-    public IRelayCommand EditCommand { get; }
-    public IAsyncRelayCommand DeleteCommand { get; }
-    public ICommand SortCommand { get; }
-    public ICommand SearchCommand { get; }
 
+    /// <summary>
+    /// Command to navigate to the edit product page.
+    /// </summary>
+    public IRelayCommand EditCommand { get; }
+
+    /// <summary>
+    /// Command to delete the selected product.
+    /// </summary>
+    public IAsyncRelayCommand DeleteCommand { get; }
+
+    /// <summary>
+    /// Command to sort the products grid.
+    /// </summary>
+    public ICommand SortCommand { get; }
+
+    /// <summary>
+    /// Command to search products.
+    /// </summary>
+    public ICommand SearchCommand { get; }
+    #endregion
+
+    #region Constructor
     public AdminProductViewModel(
         INavigationService navigationService,
         IProductDataService productDataService,
@@ -64,7 +105,14 @@ public partial class AdminProductViewModel :
 
         _messenger.RegisterAll(this);
     }
+    #endregion
 
+    #region Event Handlers
+    /// <summary>
+    /// Handles property changes in the ProductState.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">Event arguments containing the property name.</param>
     private void StatePropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(State.SelectedProduct))
@@ -73,18 +121,54 @@ public partial class AdminProductViewModel :
             DeleteCommand.NotifyCanExecuteChanged();
         }
     }
+    #endregion
 
+    #region Navigation Methods
+    /// <summary>
+    /// Handles navigation to this page.
+    /// </summary>
+    /// <param name="parameter">Navigation parameter.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task OnNavigatedTo(object parameter)
     {
         await LoadDataAsync();
     }
 
+    /// <summary>
+    /// Handles navigation from this page.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public Task OnNavigatedFrom()
     {
         Dispose();
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Navigates to the add product page.
+    /// </summary>
+    private void NavigateToAddPage()
+    {
+        _navigationService.NavigateTo(typeof(AdminProductAddPageViewModel).FullName);
+    }
+
+    /// <summary>
+    /// Navigates to the edit product page with the selected product.
+    /// </summary>
+    private void NavigateToEditPage()
+    {
+        if (State.SelectedProduct?.ProductId != null)
+        {
+            _navigationService.NavigateTo(typeof(AdminProductEditPageViewModel).FullName, State.SelectedProduct);
+        }
+    }
+    #endregion
+
+    #region Private Methods
+    /// <summary>
+    /// Loads or reloads the products data grid.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     private async Task LoadDataAsync()
     {
         if (State.IsLoading || _isDisposed) return;
@@ -112,19 +196,10 @@ public partial class AdminProductViewModel :
         }
     }
 
-    private void NavigateToAddPage()
-    {
-        _navigationService.NavigateTo(typeof(AdminProductAddPageViewModel).FullName);
-    }
-
-    private void NavigateToEditPage()
-    {
-        if (State.SelectedProduct?.ProductId != null)
-        {
-            _navigationService.NavigateTo(typeof(AdminProductEditPageViewModel).FullName, State.SelectedProduct);
-        }
-    }
-
+    /// <summary>
+    /// Deletes the selected product after confirmation.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     private async Task DeleteSelectedProductAsync()
     {
         if (State.SelectedProduct?.ProductId == null) return;
@@ -153,6 +228,10 @@ public partial class AdminProductViewModel :
         }
     }
 
+    /// <summary>
+    /// Executes the sort command with the specified parameters.
+    /// </summary>
+    /// <param name="sortParams">Tuple containing column name and sort direction.</param>
     private void ExecuteSortCommand((string column, string direction) sortParams)
     {
         var (column, direction) = sortParams;
@@ -162,6 +241,22 @@ public partial class AdminProductViewModel :
         _ = LoadDataAsync();
     }
 
+    /// <summary>
+    /// Executes the search command.
+    /// </summary>
+    private void ExecuteSearchCommand()
+    {
+        State.ReturnToFirstPage();
+        _ = LoadDataAsync();
+    }
+    #endregion
+
+    #region Public Methods
+    /// <summary>
+    /// Handles the sorting event of the product data grid.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">Event arguments containing the column information.</param>
     public void AdminProductDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
     {
         var column = e.Column;
@@ -177,13 +272,9 @@ public partial class AdminProductViewModel :
         SortCommand.Execute(sortParams);
     }
 
-    private void ExecuteSearchCommand()
-    {
-        State.ReturnToFirstPage();
-        _ = LoadDataAsync();
-    }
-
-
+    /// <summary>
+    /// Performs cleanup of resources used by the ViewModel.
+    /// </summary>
     public void Dispose()
     {
         if (_isDisposed) return;
@@ -197,6 +288,10 @@ public partial class AdminProductViewModel :
         _messenger.UnregisterAll(this);
     }
 
+    /// <summary>
+    /// Handles the page size changed message.
+    /// </summary>
+    /// <param name="message">Message containing the new page size.</param>
     public void Receive(PageSizeChangedMessage message)
     {
         State.Query.Size = message.NewPageSize;
@@ -204,9 +299,14 @@ public partial class AdminProductViewModel :
         _ = LoadDataAsync();
     }
 
+    /// <summary>
+    /// Handles the current page changed message.
+    /// </summary>
+    /// <param name="message">Message containing the new current page.</param>
     public void Receive(CurrentPageChangedMessage message)
     {
         State.Query.Page = message.NewCurrentPage;
         _ = LoadDataAsync();
     }
+    #endregion
 }

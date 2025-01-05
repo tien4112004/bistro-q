@@ -10,23 +10,68 @@ using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminZone;
 
+/// <summary>
+/// ViewModel for editing existing zones in the admin interface.
+/// Handles form validation, zone updates, and navigation.
+/// </summary>
+/// <remarks>
+/// Implements ObservableRecipient for MVVM pattern and INavigationAware for navigation handling.
+/// </remarks>
 public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigationAware
 {
+    #region Public Properties
+    /// <summary>
+    /// Gets or sets the zone being edited.
+    /// </summary>
     public ZoneViewModel Zone { get; set; }
+
+    /// <summary>
+    /// Gets or sets the view model instance.
+    /// </summary>
+    public AdminZoneEditPageViewModel ViewModel;
+
+    /// <summary>
+    /// Gets the command to update the zone.
+    /// </summary>
+    public ICommand UpdateCommand { get; }
+    #endregion
+
+    #region Private Fields
+    /// <summary>
+    /// Flag indicating whether a zone update operation is in progress.
+    /// </summary>
     [ObservableProperty]
     private bool _isProcessing = false;
+
+    /// <summary>
+    /// Form model containing zone edit data with validation.
+    /// </summary>
     [ObservableProperty]
     private AddZoneForm _form = new();
+
+    /// <summary>
+    /// Error message to display when zone update fails.
+    /// </summary>
     [ObservableProperty]
     private string _errorMessage = "";
 
-    public AdminZoneEditPageViewModel ViewModel;
-
+    /// <summary>
+    /// Service for managing zone data operations.
+    /// </summary>
     private readonly IZoneDataService _zoneDataService;
+
+    /// <summary>
+    /// Service for displaying dialog messages to the user.
+    /// </summary>
     private readonly IDialogService _dialogService;
+    #endregion
 
-    public ICommand UpdateCommand { get; }
-
+    #region Constructor
+    /// <summary>
+    /// Initializes a new instance of the AdminZoneEditPageViewModel class.
+    /// </summary>
+    /// <param name="zoneDataService">Service for zone data operations.</param>
+    /// <param name="dialogService">Service for displaying dialogs.</param>
     public AdminZoneEditPageViewModel(IZoneDataService zoneDataService, IDialogService dialogService)
     {
         _zoneDataService = zoneDataService;
@@ -34,12 +79,21 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
 
         UpdateCommand = new AsyncRelayCommand(UpdateZoneAsync);
     }
+    #endregion
 
+    #region Public Methods
+    /// <summary>
+    /// Navigates back to the previous page.
+    /// </summary>
     public void NavigateBack()
     {
         App.GetService<INavigationService>().GoBack();
     }
 
+    /// <summary>
+    /// Asynchronously updates the zone after validating the form data.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task UpdateZoneAsync()
     {
         Form.ValidateAll();
@@ -75,6 +129,20 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
         }
     }
 
+    /// <summary>
+    /// Determines whether a zone can be updated based on form validation and processing state.
+    /// </summary>
+    /// <returns>True if the zone can be updated; otherwise, false.</returns>
+    public bool CanUpdate()
+    {
+        return !Form.HasErrors && !IsProcessing;
+    }
+
+    /// <summary>
+    /// Handles navigation to this page and initializes the form with the selected zone's data.
+    /// </summary>
+    /// <param name="parameter">The navigation parameter containing the selected zone.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public Task OnNavigatedTo(object parameter)
     {
         if (parameter is ZoneViewModel selectedZone)
@@ -85,13 +153,13 @@ public partial class AdminZoneEditPageViewModel : ObservableRecipient, INavigati
         return Task.CompletedTask;
     }
 
-    public bool CanUpdate()
-    {
-        return !Form.HasErrors && !IsProcessing;
-    }
-
+    /// <summary>
+    /// Handles navigation from this page.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public Task OnNavigatedFrom()
     {
         return Task.CompletedTask;
     }
+    #endregion
 }

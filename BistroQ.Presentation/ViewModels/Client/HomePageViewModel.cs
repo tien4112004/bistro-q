@@ -14,29 +14,81 @@ using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.Client;
 
+/// <summary>
+/// ViewModel for the home page of the client application.
+/// Handles product listing, order cart management, and payment processing.
+/// </summary>
+/// <remarks>
+/// Implements:
+/// - ObservableRecipient for MVVM pattern
+/// - INavigationAware for page navigation
+/// - IRecipient for handling checkout messages
+/// </remarks>
 public partial class HomePageViewModel : ObservableRecipient, INavigationAware, IRecipient<CheckoutRequestedMessage>
 {
+    #region Private Fields
+    /// <summary>
+    /// Flag indicating whether the payment UI is currently displayed.
+    /// </summary>
     [ObservableProperty]
     private bool _isShowingPayment;
 
+    /// <summary>
+    /// Payment data received from the checkout service.
+    /// </summary>
     [ObservableProperty]
     private string _paymentData;
 
-    public ProductListViewModel ProductListViewModel { get; }
-    public OrderCartViewModel OrderCartViewModel { get; }
-
+    /// <summary>
+    /// Service for handling real-time checkout operations.
+    /// </summary>
     private readonly ICheckoutRealTimeService _checkoutService;
 
+    /// <summary>
+    /// Messenger service for handling application-wide messages.
+    /// </summary>
     private readonly IMessenger _messenger;
 
+    /// <summary>
+    /// Service for displaying dialogs to the user.
+    /// </summary>
     private readonly IDialogService _dialogService;
 
+    /// <summary>
+    /// Dispatcher queue for handling UI thread operations.
+    /// </summary>
     private readonly DispatcherQueue _dispatcherQueue;
+    #endregion
 
+    #region Public Properties
+    /// <summary>
+    /// ViewModel for managing the product list display.
+    /// </summary>
+    public ProductListViewModel ProductListViewModel { get; }
+
+    /// <summary>
+    /// ViewModel for managing the order cart.
+    /// </summary>
+    public OrderCartViewModel OrderCartViewModel { get; }
+    #endregion
+
+    #region Commands
+    /// <summary>
+    /// Command for adding products to the cart.
+    /// </summary>
     public ICommand AddProductToCartCommand { get; private set; }
 
+    /// <summary>
+    /// Command for canceling the current payment process.
+    /// </summary>
     public ICommand CancelPaymentCommand { get; }
+    #endregion
 
+    #region Constructor
+    /// <summary>
+    /// Initializes a new instance of the HomePageViewModel class.
+    /// Sets up services, commands, and event handlers for checkout process.
+    /// </summary>
     public HomePageViewModel()
     {
         ProductListViewModel = App.GetService<ProductListViewModel>();
@@ -110,11 +162,49 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware, 
         OrderCartViewModel.OrderStartedCommand = new RelayCommand<OrderViewModel>(OnOrderStarted);
         _messenger.RegisterAll(this);
     }
+    #endregion
 
+    #region Private Methods
+    /// <summary>
+    /// Handles the event when a new order is started.
+    /// </summary>
+    /// <param name="order">The order that was started.</param>
     private void OnOrderStarted(OrderViewModel order)
     {
     }
 
+    /// <summary>
+    /// Handles the cancellation of the current payment process.
+    /// Shows a confirmation dialog before canceling.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    private async Task CancelPaymentAsync()
+    {
+        var dialog = new ContentDialog
+        {
+            Title = "Cancel Payment",
+            Content = "Are you sure you want to cancel this payment?",
+            PrimaryButtonText = "Yes",
+            SecondaryButtonText = "No",
+            SecondaryButtonStyle = Application.Current.Resources["AccentButtonStyle"] as Style
+        };
+
+        var result = await _dialogService.ShowDialogAsync(dialog);
+        if (result == ContentDialogResult.Primary)
+        {
+            IsShowingPayment = false;
+            PaymentData = null;
+        }
+    }
+    #endregion
+
+    #region Public Methods
+    /// <summary>
+    /// Handles navigation to this page.
+    /// Initializes checkout service and loads existing order and product data.
+    /// </summary>
+    /// <param name="parameter">Navigation parameter.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task OnNavigatedTo(object parameter)
     {
         try
@@ -142,11 +232,11 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware, 
         _ = ProductListViewModel.LoadProductsAsync();
     }
 
-    public void Receive(CheckoutRequestedMessage message)
-    {
-        _checkoutService.NotifyCheckoutRequestedAsync(message.TableId ?? 0);
-    }
-
+    /// <summary>
+    /// Handles navigation from this page.
+    /// Performs cleanup of resources and stops the checkout service.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public Task OnNavigatedFrom()
     {
         OrderCartViewModel.Dispose();
@@ -155,22 +245,14 @@ public partial class HomePageViewModel : ObservableRecipient, INavigationAware, 
         return Task.CompletedTask;
     }
 
-    private async Task CancelPaymentAsync()
+    /// <summary>
+    /// Handles checkout request messages.
+    /// Notifies the checkout service when a checkout is requested for a table.
+    /// </summary>
+    /// <param name="message">Message containing the table ID for checkout.</param>
+    public void Receive(CheckoutRequestedMessage message)
     {
-        var dialog = new ContentDialog
-        {
-            Title = "Cancel Payment",
-            Content = "Are you sure you want to cancel this payment?",
-            PrimaryButtonText = "Yes",
-            SecondaryButtonText = "No",
-            SecondaryButtonStyle = Application.Current.Resources["AccentButtonStyle"] as Style
-        };
-
-        var result = await _dialogService.ShowDialogAsync(dialog);
-        if (result == ContentDialogResult.Primary)
-        {
-            IsShowingPayment = false;
-            PaymentData = null;
-        }
+        _checkoutService.NotifyCheckoutRequestedAsync(message.TableId ?? 0);
     }
+    #endregion
 }

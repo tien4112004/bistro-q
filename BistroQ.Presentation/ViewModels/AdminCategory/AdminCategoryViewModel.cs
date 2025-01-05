@@ -17,6 +17,17 @@ using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels;
 
+/// <summary>
+/// ViewModel for managing categories in the admin interface.
+/// Handles listing, adding, editing, and deleting categories with support for pagination and sorting.
+/// </summary>
+/// <remarks>
+/// Implements multiple interfaces for navigation, messaging, and resource cleanup:
+/// - ObservableRecipient for MVVM pattern
+/// - INavigationAware for page navigation
+/// - IDisposable for cleanup
+/// - IRecipient for handling pagination messages
+/// </remarks>
 public partial class AdminCategoryViewModel :
     ObservableRecipient,
     INavigationAware,
@@ -24,22 +35,52 @@ public partial class AdminCategoryViewModel :
     IRecipient<PageSizeChangedMessage>,
     IRecipient<CurrentPageChangedMessage>
 {
+    #region Private Fields
     private readonly IDialogService _dialogService;
     private readonly INavigationService _navigationService;
     private readonly ICategoryDataService _categoryDataService;
     private readonly IMapper _mapper;
     private readonly IMessenger _messenger;
     private bool _isDisposed = false;
+    #endregion
 
+    #region Observable Properties
+    /// <summary>
+    /// The state container for category management, including selected category,
+    /// query parameters, and loading state.
+    /// </summary>
     [ObservableProperty]
     private AdminCategoryState state = new();
+    #endregion
 
+    #region Commands
+    /// <summary>
+    /// Command to navigate to the add category page.
+    /// </summary>
     public IRelayCommand AddCommand { get; }
-    public IRelayCommand EditCommand { get; }
-    public IAsyncRelayCommand DeleteCommand { get; }
-    public ICommand SortCommand { get; }
-    public ICommand SearchCommand { get; }
 
+    /// <summary>
+    /// Command to navigate to the edit category page.
+    /// </summary>
+    public IRelayCommand EditCommand { get; }
+
+    /// <summary>
+    /// Command to delete the selected category.
+    /// </summary>
+    public IAsyncRelayCommand DeleteCommand { get; }
+
+    /// <summary>
+    /// Command to sort the categories grid.
+    /// </summary>
+    public ICommand SortCommand { get; }
+
+    /// <summary>
+    /// Command to search categories.
+    /// </summary>
+    public ICommand SearchCommand { get; }
+    #endregion
+
+    #region Constructor
     public AdminCategoryViewModel(
         INavigationService navigationService,
         ICategoryDataService categoryDataService,
@@ -63,7 +104,14 @@ public partial class AdminCategoryViewModel :
 
         _messenger.RegisterAll(this);
     }
+    #endregion
 
+    #region Event Handlers
+    /// <summary>
+    /// Handles property changes in the CategoryState.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">Event arguments containing the property name.</param>
     private void StatePropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(State.SelectedCategory))
@@ -72,18 +120,49 @@ public partial class AdminCategoryViewModel :
             DeleteCommand.NotifyCanExecuteChanged();
         }
     }
+    #endregion
 
+    #region Navigation Methods
+    /// <summary>
+    /// Handles navigation to this page.
+    /// </summary>
+    /// <param name="parameter">Navigation parameter.</param>
     public async Task OnNavigatedTo(object parameter)
     {
         await LoadDataAsync();
     }
 
+    /// <summary>
+    /// Handles navigation from this page.
+    /// </summary>
     public Task OnNavigatedFrom()
     {
         Dispose();
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Navigates to the add category page.
+    /// </summary>
+    private void NavigateToAddPage() =>
+        _navigationService.NavigateTo(typeof(AdminCategoryAddPageViewModel).FullName);
+
+    /// <summary>
+    /// Navigates to the edit category page with the selected category.
+    /// </summary>
+    private void NavigateToEditPage()
+    {
+        if (State.SelectedCategory?.CategoryId != null)
+        {
+            _navigationService.NavigateTo(typeof(AdminCategoryEditPageViewModel).FullName, State.SelectedCategory);
+        }
+    }
+    #endregion
+
+    #region Private Methods
+    /// <summary>
+    /// Loads or reloads the categories data grid.
+    /// </summary>
     private async Task LoadDataAsync()
     {
         if (State.IsLoading || _isDisposed) return;
@@ -111,17 +190,9 @@ public partial class AdminCategoryViewModel :
         }
     }
 
-    private void NavigateToAddPage() =>
-        _navigationService.NavigateTo(typeof(AdminCategoryAddPageViewModel).FullName);
-
-    private void NavigateToEditPage()
-    {
-        if (State.SelectedCategory?.CategoryId != null)
-        {
-            _navigationService.NavigateTo(typeof(AdminCategoryEditPageViewModel).FullName, State.SelectedCategory);
-        }
-    }
-
+    /// <summary>
+    /// Deletes the selected category after confirmation.
+    /// </summary>
     private async Task DeleteSelectedCategoryAsync()
     {
         if (State.SelectedCategory?.CategoryId == null) return;
@@ -150,6 +221,10 @@ public partial class AdminCategoryViewModel :
         }
     }
 
+    /// <summary>
+    /// Executes the sort command with the specified parameters.
+    /// </summary>
+    /// <param name="sortParams">Tuple containing column name and sort direction.</param>
     private void ExecuteSortCommand((string column, string direction) sortParams)
     {
         var (column, direction) = sortParams;
@@ -159,6 +234,22 @@ public partial class AdminCategoryViewModel :
         _ = LoadDataAsync();
     }
 
+    /// <summary>
+    /// Executes the search command.
+    /// </summary>
+    private void ExecuteSearchCommand()
+    {
+        State.ReturnToFirstPage();
+        _ = LoadDataAsync();
+    }
+    #endregion
+
+    #region Public Methods
+    /// <summary>
+    /// Handles the sorting event of the category data grid.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">Event arguments containing the column information.</param>
     public void AdminCategoryDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
     {
         var column = e.Column;
@@ -174,12 +265,9 @@ public partial class AdminCategoryViewModel :
         SortCommand.Execute(sortParams);
     }
 
-    private void ExecuteSearchCommand()
-    {
-        State.ReturnToFirstPage();
-        _ = LoadDataAsync();
-    }
-
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+    /// </summary>
     public void Dispose()
     {
         if (_isDisposed) return;
@@ -192,6 +280,10 @@ public partial class AdminCategoryViewModel :
         _messenger.UnregisterAll(this);
     }
 
+    /// <summary>
+    /// Handles the page size changed message.
+    /// </summary>
+    /// <param name="message">Message containing the new page size.</param>
     public void Receive(PageSizeChangedMessage message)
     {
         State.Query.Size = message.NewPageSize;
@@ -199,9 +291,14 @@ public partial class AdminCategoryViewModel :
         _ = LoadDataAsync();
     }
 
+    /// <summary>
+    /// Handles the current page changed message.
+    /// </summary>
+    /// <param name="message">Message containing the new current page.</param>
     public void Receive(CurrentPageChangedMessage message)
     {
         State.Query.Page = message.NewCurrentPage;
         _ = LoadDataAsync();
     }
+    #endregion
 }

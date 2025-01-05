@@ -12,29 +12,77 @@ using System.Diagnostics;
 
 namespace BistroQ.Presentation.ViewModels.AdminProduct;
 
+/// <summary>
+/// ViewModel for adding new products in the admin interface.
+/// Manages the product creation form, category selection, and image upload.
+/// </summary>
+/// <remarks>
+/// Uses MVVM pattern with ObservableRecipient as its base class for property change notifications
+/// and command handling.
+/// </remarks>
 public partial class AdminProductAddPageViewModel : ObservableRecipient
 {
-    [ObservableProperty]
-    private bool _isProcessing = false;
-    [ObservableProperty]
-    private AddProductForm _form = new();
-    [ObservableProperty]
-    private string _errorMessage = string.Empty;
-
-    partial void OnFormChanged(AddProductForm value)
-    {
-        AddCommand.NotifyCanExecuteChanged();
-    }
-
-    public ObservableCollection<CategoryViewModel> Categories;
-
+    #region Private Fields
     private readonly IProductDataService _productDataService;
     private readonly ICategoryDataService _categoryDataService;
     private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
+    #endregion
 
+    #region Observable Properties
+    /// <summary>
+    /// Indicates whether the ViewModel is currently processing a request.
+    /// </summary>
+    [ObservableProperty]
+    private bool _isProcessing = false;
+
+    /// <summary>
+    /// The form containing product creation data including product details and image.
+    /// </summary>
+    [ObservableProperty]
+    private AddProductForm _form = new();
+
+    /// <summary>
+    /// Error message to display when operations fail.
+    /// </summary>
+    [ObservableProperty]
+    private string _errorMessage = string.Empty;
+    #endregion
+
+    #region Public Properties
+    /// <summary>
+    /// Collection of available categories for product assignment.
+    /// </summary>
+    public ObservableCollection<CategoryViewModel> Categories;
+    #endregion
+
+    #region Commands
+    /// <summary>
+    /// Command for adding a new product.
+    /// </summary>
     public IRelayCommand AddCommand { get; }
+    #endregion
 
+    #region Event Handlers
+    /// <summary>
+    /// Handles changes to the form property.
+    /// Updates the AddCommand's execution state based on form validity.
+    /// </summary>
+    /// <param name="value">The new form value.</param>
+    partial void OnFormChanged(AddProductForm value)
+    {
+        AddCommand.NotifyCanExecuteChanged();
+    }
+    #endregion
+
+    #region Constructor
+    /// <summary>
+    /// Initializes a new instance of the AdminProductAddPageViewModel class.
+    /// </summary>
+    /// <param name="productDataService">Service for product-related operations.</param>
+    /// <param name="categoryDataService">Service for category-related operations.</param>
+    /// <param name="dialogService">Service for showing dialogs.</param>
+    /// <param name="mapper">AutoMapper instance for object mapping.</param>
     public AdminProductAddPageViewModel(
         IProductDataService productDataService,
         ICategoryDataService categoryDataService,
@@ -50,12 +98,22 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
 
         AddCommand = new AsyncRelayCommand(AddProductAsync);
     }
+    #endregion
 
+    #region Public Methods
+    /// <summary>
+    /// Navigates back to the previous page.
+    /// </summary>
     public void NavigateBack()
     {
         App.GetService<INavigationService>().GoBack();
     }
 
+    /// <summary>
+    /// Adds a new product using the form data.
+    /// Validates the form, creates the product with image if provided, and handles any errors.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task AddProductAsync()
     {
         Form.ValidateAll();
@@ -102,6 +160,10 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
         }
     }
 
+    /// <summary>
+    /// Loads the list of available categories for product assignment.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task LoadCategoriesAsync()
     {
         try
@@ -123,4 +185,5 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
             await _dialogService.ShowErrorDialog(ex.Message, "Error");
         }
     }
+    #endregion
 }
