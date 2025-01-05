@@ -178,7 +178,7 @@ public partial class AdminAccountViewModel :
         {
             State.IsLoading = true;
 
-            var result = await _accountDataService.GetGridDataAsync(State.Query);
+            var result = await _accountDataService.GetAccountsAsync(State.Query);
 
             var accounts = _mapper.Map<IEnumerable<AccountViewModel>>(result.Data);
             State.Source = new ObservableCollection<AccountViewModel>(accounts);

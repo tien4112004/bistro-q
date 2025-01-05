@@ -4,15 +4,24 @@ using Newtonsoft.Json;
 
 namespace BistroQ.Service.Http;
 
+/// <summary>
+/// Implements multipart form data handling for API requests, supporting file uploads and JSON content.
+/// Provides methods for POST, PUT, and PATCH operations with multipart/form-data content type.
+/// </summary>
 public class MultipartApiClient : IMultipartApiClient
 {
+    #region Private Fields
     private readonly HttpClient _httpClient;
+    #endregion
 
+    #region Constructor
     public MultipartApiClient(HttpClient httpClient)
     {
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
     }
+    #endregion
 
+    #region Public Methods
     public async Task<ApiResponse<T>> PostMultipartAsync<T>(string url, MultipartFormDataContent content)
     {
         var response = await _httpClient.PostAsync(url, content);
@@ -111,7 +120,15 @@ public class MultipartApiClient : IMultipartApiClient
         var response = await _httpClient.PatchAsync(url, content);
         return await HandleResponse<T>(response);
     }
+    #endregion
 
+    #region Private Methods
+    /// <summary>
+    /// Handles the HTTP response and deserializes it into an API response object.
+    /// </summary>
+    /// <typeparam name="T">The type of the expected response data.</typeparam>
+    /// <param name="response">The HTTP response message to handle.</param>
+    /// <returns>An API response containing data of type <typeparamref name="T"/>.</returns>
     private static async Task<ApiResponse<T>> HandleResponse<T>(HttpResponseMessage response)
     {
         var resultContentString = await response.Content.ReadAsStringAsync();
@@ -143,5 +160,5 @@ public class MultipartApiClient : IMultipartApiClient
             };
         }
     }
-
+    #endregion
 }

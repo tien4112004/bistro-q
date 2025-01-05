@@ -8,19 +8,39 @@ using BistroQ.Domain.Models.Entities;
 
 namespace BistroQ.Service.Data;
 
+/// <summary>
+/// Implementation of product data service that communicates with the API endpoints.
+/// Handles both regular API calls and multipart form data for image uploads.
+/// </summary>
 public class ProductDataService : IProductDataService
 {
+    #region Private Fields
+    /// <summary>
+    /// Client for making standard HTTP requests to the API.
+    /// </summary>
     private readonly IApiClient _apiClient;
-    private readonly IMultipartApiClient _multipartApiClient;
-    private readonly IMapper _mapper;
 
+    /// <summary>
+    /// Client for handling multipart form data requests (file uploads).
+    /// </summary>
+    private readonly IMultipartApiClient _multipartApiClient;
+
+    /// <summary>
+    /// Mapper for converting between DTOs and domain models.
+    /// </summary>
+    private readonly IMapper _mapper;
+    #endregion
+
+    #region Constructor
     public ProductDataService(IApiClient apiClient, IMapper mapper, IMultipartApiClient multipartApiClient)
     {
         _apiClient = apiClient;
         _mapper = mapper;
         _multipartApiClient = multipartApiClient;
     }
+    #endregion
 
+    #region Public Methods
     public async Task<ApiCollectionResponse<IEnumerable<Product>>> GetGridDataAsync(ProductCollectionQueryParams query = null)
     {
         var response = await _apiClient.GetCollectionAsync<IEnumerable<ProductResponse>>("/api/admin/product", query);
@@ -128,4 +148,5 @@ public class ProductDataService : IProductDataService
         }
         throw new Exception(response.Message);
     }
+    #endregion
 }

@@ -6,20 +6,35 @@ using BistroQ.Domain.Models.Entities;
 
 namespace BistroQ.Service.Data;
 
+/// <summary>
+/// Implementation of account data service that communicates with the API endpoints.
+/// Uses AutoMapper for data mapping between DTOs and domain models.
+/// </summary>
 public class AccountDataService : IAccountDataService
 {
+    #region Private Fields
+    /// <summary>
+    /// Client for making HTTP requests to the API.
+    /// </summary>
     private readonly IApiClient _apiClient;
-    private readonly IMapper _mapper;
 
+    /// <summary>
+    /// Mapper for converting between DTOs and domain models.
+    /// </summary>
+    private readonly IMapper _mapper;
+    #endregion
+
+    #region Constructor
     public AccountDataService(IApiClient apiClient, IMapper mapper)
     {
         _apiClient = apiClient;
         _mapper = mapper;
     }
+    #endregion
 
-    public async Task<ApiCollectionResponse<IEnumerable<Account>>> GetGridDataAsync(AccountCollectionQueryParams query = null)
+    #region Public Methods
+    public async Task<ApiCollectionResponse<IEnumerable<Account>>> GetAccountsAsync(AccountCollectionQueryParams query = null)
     {
-        //await Task.Delay(2000);
         var response = await _apiClient.GetCollectionAsync<IEnumerable<AccountResponse>>("/api/admin/account", query);
         if (response.Success)
         {
@@ -74,4 +89,5 @@ public class AccountDataService : IAccountDataService
 
         return true;
     }
+    #endregion
 }
