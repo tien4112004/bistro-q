@@ -2,32 +2,118 @@
 
 namespace BistroQ.Presentation.Models;
 
+/// <summary>
+/// Represents a form for adding new product with comprehensive validation rules.
+/// Inherits from ValidatorBase to provide validation functionality.
+/// </summary>
 public class AddProductForm : ValidatorBase
 {
+    #region Public Properties
+    /// <summary>
+    /// Gets or sets the unique identifier of the product.
+    /// Optional property that can be null.
+    /// </summary>
+    public int? ProductId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the name of the product.
+    /// Validated for non-empty and minimum length (2 chars).
+    /// </summary>
+    public string Name { get; set; }
+
+    /// <summary>
+    /// Gets or sets the category ID of the product.
+    /// Validated for non-empty value.
+    /// </summary>
+    public int CategoryId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the price of the product.
+    /// Validated for non-empty and minimum value (0).
+    /// </summary>
+    public decimal Price { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unit of measurement for the product.
+    /// Validated for non-empty and minimum length (1 char).
+    /// </summary>
+    public string Unit { get; set; }
+
+    /// <summary>
+    /// Gets or sets the discounted price of the product.
+    /// Optional property validated for minimum value (0).
+    /// </summary>
+    public decimal? DiscountPrice { get; set; }
+
+    /// <summary>
+    /// Gets or sets the URL of the product image.
+    /// Optional property that can be null.
+    /// </summary>
+    public string? ImageUrl { get; set; }
+
+    /// <summary>
+    /// Gets or sets the caloric content of the product.
+    /// Validated for non-empty and minimum value (0).
+    /// </summary>
+    public double Calories { get; set; }
+
+    /// <summary>
+    /// Gets or sets the fat content of the product.
+    /// Validated for non-empty and minimum value (0).
+    /// </summary>
+    public double Fat { get; set; }
+
+    /// <summary>
+    /// Gets or sets the fiber content of the product.
+    /// Validated for non-empty and minimum value (0).
+    /// </summary>
+    public double Fiber { get; set; }
+
+    /// <summary>
+    /// Gets or sets the protein content of the product.
+    /// Validated for non-empty and minimum value (0).
+    /// </summary>
+    public double Protein { get; set; }
+
+    /// <summary>
+    /// Gets or sets the carbohydrate content of the product.
+    /// Validated for non-empty and minimum value (0).
+    /// </summary>
+    public double Carbohydrates { get; set; }
+
+    /// <summary>
+    /// Gets or sets the file wrapper for the product image.
+    /// Optional property that can be null.
+    /// </summary>
+    public FileWrapper? ImageFile { get; set; }
+    #endregion
+
+    #region Constructor
+    /// <summary>
+    /// Initializes a new instance of the AddProductForm class.
+    /// Sets up all required validators for product properties.
+    /// </summary>
     public AddProductForm()
     {
         AddProductNameValidator();
         AddProductUnitValidator();
         AddProductPriceValidator();
         AddProductCategoryValidator();
+        AddProductDiscountPriceValidator();
+        AddProductCaloriesValidator();
+        AddProductFatValidator();
+        AddProductFiberValidator();
+        AddProductProteinValidator();
+        AddProductCarbohydratesValidator();
     }
+    #endregion
 
-    public int? ProductId { get; set; }
-    public string Name { get; set; }
-    public int CategoryId { get; set; }
-    public decimal Price { get; set; }
-    public string Unit { get; set; }
-    public decimal? DiscountPrice { get; set; }
-    public string? ImageUrl { get; set; }
-    public double Calories { get; set; }
-    public double Fat { get; set; }
-    public double Fiber { get; set; }
-    public double Protein { get; set; }
-    public double Carbohydrates { get; set; }
-
-    public FileWrapper? ImageFile { get; set; }
-
-    public void AddProductCategoryValidator()
+    #region Private Methods
+    /// <summary>
+    /// Adds validation rules for the CategoryId property.
+    /// Validates that the category ID is not empty.
+    /// </summary>
+    private void AddProductCategoryValidator()
     {
         AddValidator(nameof(CategoryId), (value) =>
         {
@@ -37,7 +123,11 @@ public class AddProductForm : ValidatorBase
         });
     }
 
-    public void AddProductNameValidator()
+    /// <summary>
+    /// Adds validation rules for the Name property.
+    /// Validates that the product name is not empty and has minimum length of 2 characters.
+    /// </summary>
+    private void AddProductNameValidator()
     {
         AddValidator(nameof(Name), (value) =>
         {
@@ -48,7 +138,11 @@ public class AddProductForm : ValidatorBase
         });
     }
 
-    public void AddProductUnitValidator()
+    /// <summary>
+    /// Adds validation rules for the Unit property.
+    /// Validates that the unit is not empty and has minimum length of 1 character.
+    /// </summary>
+    private void AddProductUnitValidator()
     {
         AddValidator(nameof(Unit), (value) =>
         {
@@ -59,7 +153,11 @@ public class AddProductForm : ValidatorBase
         });
     }
 
-    public void AddProductPriceValidator()
+    /// <summary>
+    /// Adds validation rules for the Price property.
+    /// Validates that the price is not empty and is not negative.
+    /// </summary>
+    private void AddProductPriceValidator()
     {
         AddValidator(nameof(Price), (value) =>
         {
@@ -70,7 +168,11 @@ public class AddProductForm : ValidatorBase
         });
     }
 
-    public void AddProductDiscountPriceValidator()
+    /// <summary>
+    /// Adds validation rules for the DiscountPrice property.
+    /// Validates that the discount price is not negative.
+    /// </summary>
+    private void AddProductDiscountPriceValidator()
     {
         AddValidator(nameof(DiscountPrice), (value) =>
         {
@@ -80,7 +182,11 @@ public class AddProductForm : ValidatorBase
         });
     }
 
-    public void AddProductCaloriesValidator()
+    /// <summary>
+    /// Adds validation rules for the Calories property.
+    /// Validates that the calories value is not empty and is not negative.
+    /// </summary>
+    private void AddProductCaloriesValidator()
     {
         AddValidator(nameof(Calories), (value) =>
         {
@@ -91,7 +197,11 @@ public class AddProductForm : ValidatorBase
         });
     }
 
-    public void AddProductFatValidator()
+    /// <summary>
+    /// Adds validation rules for the Fat property.
+    /// Validates that the fat content is not empty and is not negative.
+    /// </summary>
+    private void AddProductFatValidator()
     {
         AddValidator(nameof(Fat), (value) =>
         {
@@ -102,7 +212,11 @@ public class AddProductForm : ValidatorBase
         });
     }
 
-    public void AddProductFiberValidator()
+    /// <summary>
+    /// Adds validation rules for the Fiber property.
+    /// Validates that the fiber content is not empty and is not negative.
+    /// </summary>
+    private void AddProductFiberValidator()
     {
         AddValidator(nameof(Fiber), (value) =>
         {
@@ -113,7 +227,11 @@ public class AddProductForm : ValidatorBase
         });
     }
 
-    public void AddProductProteinValidator()
+    /// <summary>
+    /// Adds validation rules for the Protein property.
+    /// Validates that the protein content is not empty and is not negative.
+    /// </summary>
+    private void AddProductProteinValidator()
     {
         AddValidator(nameof(Protein), (value) =>
         {
@@ -124,7 +242,11 @@ public class AddProductForm : ValidatorBase
         });
     }
 
-    public void AddProductCarbohydratesValidator()
+    /// <summary>
+    /// Adds validation rules for the Carbohydrates property.
+    /// Validates that the carbohydrates content is not empty and is not negative.
+    /// </summary>
+    private void AddProductCarbohydratesValidator()
     {
         AddValidator(nameof(Carbohydrates), (value) =>
         {
@@ -134,7 +256,17 @@ public class AddProductForm : ValidatorBase
             ).Where(r => !r.IsValid).ToList();
         });
     }
+    #endregion
 
+    #region Public Methods
+    /// <summary>
+    /// Validates all properties of the form.
+    /// Executes validation rules for all required product properties.
+    /// </summary>
+    /// <remarks>
+    /// This method overrides the base ValidateAll method to provide
+    /// form-specific validation logic for product data.
+    /// </remarks>
     public override void ValidateAll()
     {
         ValidateProperty(nameof(Name), Name);
@@ -147,4 +279,5 @@ public class AddProductForm : ValidatorBase
         ValidateProperty(nameof(Protein), Protein);
         ValidateProperty(nameof(Carbohydrates), Carbohydrates);
     }
+    #endregion
 }

@@ -1,8 +1,12 @@
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
 
 namespace BistroQ.Presentation.Converters;
 
+/// <summary>
+/// Converter that transforms boolean values to Visibility enumeration values.
+/// Supports inversion of the conversion through a parameter.
+/// </summary>
 public class BooleanToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)

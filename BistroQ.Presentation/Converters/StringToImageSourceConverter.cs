@@ -2,6 +2,11 @@
 using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace BistroQ.Presentation.Converters;
+
+/// <summary>
+/// Converter that transforms string URLs or file paths into ImageSource objects.
+/// Supports both web URLs and local file paths, handling various error cases gracefully.
+/// </summary>
 public class StringToImageSourceConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)

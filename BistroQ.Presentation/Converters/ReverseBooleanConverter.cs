@@ -1,7 +1,11 @@
-using Microsoft.UI.Xaml.Data;
+﻿using Microsoft.UI.Xaml.Data;
 
 namespace BistroQ.Presentation.Converters;
 
+/// <summary>
+/// Converter that inverts boolean values.
+/// Useful for scenarios where the opposite of a boolean property is needed.
+/// </summary>
 public class ReverseBooleanConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)

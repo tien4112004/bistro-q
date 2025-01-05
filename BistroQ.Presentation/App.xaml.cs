@@ -177,7 +177,7 @@ public partial class App : Application
             // Realtime service
             services.AddSingleton<ICheckoutRealTimeService, CheckoutRealTimeService>();
 
-            services.AddTransient<IDialogService, DialogService>();
+            services.AddSingleton<IDialogService, DialogService>();
 
             // Client V&VM
             services.AddTransient<HomePageViewModel>();

@@ -3,6 +3,10 @@ using System.Globalization;
 
 namespace BistroQ.Presentation.Converters;
 
+/// <summary>
+/// Converter that transforms numeric values to Vietnamese currency format (VND)
+/// using the vi-VN culture settings.
+/// </summary>
 public class NumberToCurrencyConverter : IValueConverter
 {
     private readonly CultureInfo _vietnameseCulture;
