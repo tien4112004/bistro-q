@@ -72,11 +72,11 @@ public partial class AdminProductEditPageViewModel : ObservableRecipient, INavig
                 Unit = Form.Unit,
                 DiscountPrice = Form.DiscountPrice,
                 CategoryId = Form.CategoryId,
-                Calories = Form.Calories,
-                Fat = Form.Fat,
-                Fiber = Form.Fiber,
-                Protein = Form.Protein,
-                Carbohydrates = Form.Carbohydrates,
+                Calories = (decimal)Form.Calories,
+                Fat = (decimal)Form.Fat,
+                Fiber = (decimal)Form.Fiber,
+                Protein = (decimal)Form.Protein,
+                Carbohydrates = (decimal)Form.Carbohydrates,
             };
 
             if (Form.ImageFile != null)

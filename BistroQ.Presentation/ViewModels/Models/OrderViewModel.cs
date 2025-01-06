@@ -30,19 +30,19 @@ public partial class OrderViewModel : ObservableObject
     public ObservableCollection<OrderItemViewModel> OrderItems { get; set; } = new();
 
     [ObservableProperty]
-    private double _totalCalories;
+    private decimal _totalCalories;
 
     [ObservableProperty]
-    private double _totalProtein;
+    private decimal _totalProtein;
 
     [ObservableProperty]
-    private double _totalFat;
+    private decimal _totalFat;
 
     [ObservableProperty]
-    private double _totalFiber;
+    private decimal _totalFiber;
 
     [ObservableProperty]
-    private double _totalCarbohydrates;
+    private decimal _totalCarbohydrates;
 
     public OrderViewModel Clone()
     {

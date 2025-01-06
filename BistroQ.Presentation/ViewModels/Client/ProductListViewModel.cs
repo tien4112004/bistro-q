@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BistroQ.Domain.Contracts.Services.Data;
+using BistroQ.Domain.Dtos;
 using BistroQ.Domain.Dtos.Products;
+using BistroQ.Domain.Models.Entities;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -60,7 +62,7 @@ public partial class ProductListViewModel : ObservableRecipient
     private async Task ChangeCategory(CategoryViewModel category)
     {
         SelectedCategory = category;
-        await LoadProductAsync();
+        await LoadProductsAsync();
         OnPropertyChanged(nameof(Products));
     }
 
@@ -74,25 +76,39 @@ public partial class ProductListViewModel : ObservableRecipient
         {
             Name = "All",
         };
-        Debug.WriteLine(allCategory.CategoryId);
-        Categories = new List<CategoryViewModel> { allCategory }.Concat(categories).ToList();
+        var recommendedCategory = new CategoryViewModel
+        {
+            Name = "Recommended",
+        };
+
+        Categories = new List<CategoryViewModel> { recommendedCategory, allCategory }.Concat(categories).ToList();
         IsLoadingCategory = false;
     }
 
-    public async Task LoadProductAsync()
+    public async Task LoadProductsAsync()
     {
         try
         {
             _page = 1;
             Products.Clear();
             IsLoadingProduct = true;
-            var query = new ProductCollectionQueryParams
-            {
-                CategoryId = SelectedCategory?.CategoryId ?? null,
-                Size = 12,
-            };
 
-            var response = await _productService.GetProductsAsync(query);
+            ApiCollectionResponse<IEnumerable<Product>> response;
+
+            if (SelectedCategory?.Name == "Recommended")
+            {
+                response = await _productService.GetRecommendationAsync();
+            }
+            else
+            {
+                var query = new ProductCollectionQueryParams
+                {
+                    CategoryId = SelectedCategory?.CategoryId ?? null,
+                    Size = 12,
+                };
+                response = await _productService.GetProductsAsync(query);
+            }
+
             var products = _mapper.Map<IEnumerable<ProductViewModel>>(response.Data);
             Products = new ObservableCollection<ProductViewModel>(products);
             CanLoadMore = products.Count() == 12;

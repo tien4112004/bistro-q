@@ -8,7 +8,7 @@ public partial class DecimalToDoubleConverter : IValueConverter
     {
         if (value is decimal d)
         {
-            return (double)d;
+            return decimal.ToDouble(d);
         }
 
         return 0.0;
@@ -34,8 +34,6 @@ public partial class DecimalToDoubleConverter : IValueConverter
                 return (decimal)result;
             }
         }
-        return 0m;
-
         return 0m;
     }
 }

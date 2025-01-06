@@ -110,7 +110,7 @@ public sealed partial class TableBillSummaryControl : UserControl
             Content = DialogContent ?? "Are you sure you want to proceed with checkout?",
             PrimaryButtonText = "Yes",
             CloseButtonText = "No",
-            DefaultButton = ContentDialogButton.Close
+            DefaultButton = ContentDialogButton.Primary
         };
 
         var result = await _dialogService.ShowDialogAsync(dialog);

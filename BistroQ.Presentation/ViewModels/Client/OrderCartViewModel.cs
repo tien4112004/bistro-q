@@ -38,15 +38,17 @@ public partial class OrderCartViewModel :
     private string _errorMessage = string.Empty;
 
     #region NutritionFacts
-    public double CaloriesPercentage => Order.TotalCalories / 2000.0 * 100;
+    public decimal CaloriesLimit => Math.Round(NutritionalConstants.DAILY_CALORIES / 3m * Order.PeopleCount, 0);
+    public decimal ProteinLimit => Math.Round(NutritionalConstants.DAILY_PROTEIN / 3m * Order.PeopleCount, 0);
+    public decimal FatLimit => Math.Round(NutritionalConstants.DAILY_FAT / 3m * Order.PeopleCount, 0);
+    public decimal FiberLimit => Math.Round(NutritionalConstants.DAILY_FIBER / 3m * Order.PeopleCount, 0);
+    public decimal CarbohydratesLimit => Math.Round(NutritionalConstants.DAILY_CARBOHYDRATES / 3m * Order.PeopleCount, 0);
 
-    public double ProteinPercentage => Order.TotalProtein / 50.0 * 100;
-
-    public double FatPercentage => Order.TotalFat / 70.0 * 100;
-
-    public double FiberPercentage => Order.TotalFiber / 25.0 * 100;
-
-    public double CarbohydratesPercentage => Order.TotalCarbohydrates / 300.0 * 100;
+    public double CaloriesPercentage => CalculatePercentage(Order.TotalCalories, CaloriesLimit);
+    public double ProteinPercentage => CalculatePercentage(Order.TotalProtein, ProteinLimit);
+    public double FatPercentage => CalculatePercentage(Order.TotalFat, FatLimit);
+    public double FiberPercentage => CalculatePercentage(Order.TotalFiber, FiberLimit);
+    public double CarbohydratesPercentage => CalculatePercentage(Order.TotalCarbohydrates, CarbohydratesLimit);
     #endregion
 
 
@@ -94,7 +96,6 @@ public partial class OrderCartViewModel :
         IsOrdering = true;
 
         SeparateOrdersByStatus();
-        //LoadOrderNutritionFact();
     }
 
     private async Task StartOrder()
@@ -134,7 +135,8 @@ public partial class OrderCartViewModel :
 
     private async Task EditPeopleCount()
     {
-        _orderDataService.ChangePeopleCountAsync(Order.PeopleCount);
+        await _orderDataService.ChangePeopleCountAsync(Order.PeopleCount);
+        LoadExistingOrderAsync();
         return;
     }
 
@@ -190,11 +192,6 @@ public partial class OrderCartViewModel :
         OnPropertyChanged(nameof(IsCompletedItemsEmpty));
     }
 
-    //private void LoadOrderNutritionFact()
-    //{
-    //    OrderNutritionFact.Calories = CartItems.Sum(i => i.Product.NutritionFact.Calories) 
-    //}
-
     public bool IsProcessingItemsEmpty => !ProcessingItems.Any();
     public bool IsCompletedItemsEmpty => !CompletedItems.Any();
     public void Receive(AddProductToCartMessage message)
@@ -244,4 +241,37 @@ public partial class OrderCartViewModel :
     }
 
     private DispatcherQueue dispatcherQueue;
+
+    private double CalculatePercentage(decimal value, decimal limit)
+    {
+        if (limit == 0)
+        {
+            return 100.0;
+        }
+        return decimal.ToDouble(value / limit * 100);
+    }
+}
+
+public static class NutritionalConstants
+{
+    // Daily recommended values
+    public const decimal DAILY_CALORIES = 2000m;
+    public const decimal DAILY_PROTEIN = 75m;
+    public const decimal DAILY_CARBOHYDRATES = 300m;
+    public const decimal DAILY_FAT = 70m;
+    public const decimal DAILY_FIBER = 25m;
+
+    // Rating weights (must sum to 1.0)
+    public const decimal PROTEIN_WEIGHT = 0.3m;
+    public const decimal FAT_WEIGHT = 0.2m;
+    public const decimal CALORIES_WEIGHT = 0.1m;
+    public const decimal FIBER_WEIGHT = 0.2m;
+    public const decimal CARB_WEIGHT = 0.2m;
+
+    // Individual deficiency multipliers
+    public const decimal PROTEIN_DEFICIENCY_MULTIPLIER = 1.0m;
+    public const decimal FAT_DEFICIENCY_MULTIPLIER = 3.0m; // Fat is harmful in excess
+    public const decimal CALORIES_DEFICIENCY_MULTIPLIER = 2.0m;
+    public const decimal FIBER_DEFICIENCY_MULTIPLIER = 0.5m;
+    public const decimal CARB_DEFICIENCY_MULTIPLIER = 2.0m;
 }

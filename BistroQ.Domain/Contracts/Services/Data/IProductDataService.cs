@@ -17,4 +17,6 @@ public interface IProductDataService
     Task<Product> UpdateProductImageAsync(int productId, Stream Stream, string FileName, string ContentType);
 
     Task<bool> DeleteProductAsync(int productId);
+
+    Task<ApiCollectionResponse<IEnumerable<Product>>> GetRecommendationAsync();
 }
