@@ -135,7 +135,8 @@ public partial class OrderCartViewModel :
 
     private async Task EditPeopleCount()
     {
-        _orderDataService.ChangePeopleCountAsync(Order.PeopleCount);
+        await _orderDataService.ChangePeopleCountAsync(Order.PeopleCount);
+        LoadExistingOrderAsync();
         return;
     }
 
