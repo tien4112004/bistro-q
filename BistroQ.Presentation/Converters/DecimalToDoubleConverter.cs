@@ -35,7 +35,5 @@ public partial class DecimalToDoubleConverter : IValueConverter
             }
         }
         return 0m;
-
-        return 0m;
     }
 }
