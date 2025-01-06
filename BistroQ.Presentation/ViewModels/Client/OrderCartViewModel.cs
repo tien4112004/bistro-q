@@ -44,11 +44,11 @@ public partial class OrderCartViewModel :
     public decimal FiberLimit => Math.Round(NutritionalConstants.DAILY_FIBER / 3m * Order.PeopleCount, 0);
     public decimal CarbohydratesLimit => Math.Round(NutritionalConstants.DAILY_CARBOHYDRATES / 3m * Order.PeopleCount, 0);
 
-    public double CaloriesPercentage => decimal.ToDouble(Order.TotalCalories / CaloriesLimit * 100);
-    public double ProteinPercentage => decimal.ToDouble(Order.TotalProtein / ProteinLimit * 100);
-    public double FatPercentage => decimal.ToDouble(Order.TotalFat / FatLimit * 100);
-    public double FiberPercentage => decimal.ToDouble(Order.TotalFiber / FiberLimit * 100);
-    public double CarbohydratesPercentage => decimal.ToDouble(Order.TotalCarbohydrates / CarbohydratesLimit * 100);
+    public double CaloriesPercentage => CalculatePercentage(Order.TotalCalories, CaloriesLimit);
+    public double ProteinPercentage => CalculatePercentage(Order.TotalProtein, ProteinLimit);
+    public double FatPercentage => CalculatePercentage(Order.TotalFat, FatLimit);
+    public double FiberPercentage => CalculatePercentage(Order.TotalFiber, FiberLimit);
+    public double CarbohydratesPercentage => CalculatePercentage(Order.TotalCarbohydrates, CarbohydratesLimit);
     #endregion
 
 
@@ -96,7 +96,6 @@ public partial class OrderCartViewModel :
         IsOrdering = true;
 
         SeparateOrdersByStatus();
-        //LoadOrderNutritionFact();
     }
 
     private async Task StartOrder()
@@ -192,11 +191,6 @@ public partial class OrderCartViewModel :
         OnPropertyChanged(nameof(IsCompletedItemsEmpty));
     }
 
-    //private void LoadOrderNutritionFact()
-    //{
-    //    OrderNutritionFact.Calories = CartItems.Sum(i => i.Product.NutritionFact.Calories) 
-    //}
-
     public bool IsProcessingItemsEmpty => !ProcessingItems.Any();
     public bool IsCompletedItemsEmpty => !CompletedItems.Any();
     public void Receive(AddProductToCartMessage message)
@@ -246,6 +240,15 @@ public partial class OrderCartViewModel :
     }
 
     private DispatcherQueue dispatcherQueue;
+
+    private double CalculatePercentage(decimal value, decimal limit)
+    {
+        if (limit == 0)
+        {
+            return 100.0;
+        }
+        return decimal.ToDouble(value / limit * 100);
+    }
 }
 
 public static class NutritionalConstants
