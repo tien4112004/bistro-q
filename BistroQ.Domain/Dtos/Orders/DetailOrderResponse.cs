@@ -20,9 +20,9 @@ public class DetailOrderResponse
 
     public List<OrderItemWithProductResponse> OrderItems { get; set; } = new List<OrderItemWithProductResponse>();
 
-    public double? TotalCalories { get; set; }
-    public double? TotalFat { get; set; }
-    public double? TotalFiber { get; set; }
-    public double? TotalProtein { get; set; }
-    public double? TotalCarbohydrates { get; set; }
+    public decimal? TotalCalories { get; set; }
+    public decimal? TotalFat { get; set; }
+    public decimal? TotalFiber { get; set; }
+    public decimal? TotalProtein { get; set; }
+    public decimal? TotalCarbohydrates { get; set; }
 }

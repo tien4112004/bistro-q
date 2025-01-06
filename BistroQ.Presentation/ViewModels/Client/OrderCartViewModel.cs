@@ -83,52 +83,52 @@ public partial class OrderCartViewModel :
     /// <summary>
     /// Gets the calculated calories limit based on daily recommended value and people count
     /// </summary>
-    public double CaloriesLimit => Math.Round(NutritionalConstants.DAILY_CALORIES / 3.0 * Order.PeopleCount, 0);
+    public decimal CaloriesLimit => Math.Round(NutritionalConstants.DAILY_CALORIES / 3m * Order.PeopleCount, 0);
 
     /// <summary>
     /// Gets the calculated protein limit based on daily recommended value and people count
     /// </summary>
-    public double ProteinLimit => Math.Round(NutritionalConstants.DAILY_PROTEIN / 3.0 * Order.PeopleCount, 0);
+    public decimal ProteinLimit => Math.Round(NutritionalConstants.DAILY_PROTEIN / 3m * Order.PeopleCount, 0);
 
     /// <summary>
     /// Gets the calculated fat limit based on daily recommended value and people count
     /// </summary>
-    public double FatLimit => Math.Round(NutritionalConstants.DAILY_FAT / 3.0 * Order.PeopleCount, 0);
+    public decimal FatLimit => Math.Round(NutritionalConstants.DAILY_FAT / 3m * Order.PeopleCount, 0);
 
     /// <summary>
     /// Gets the calculated fiber limit based on daily recommended value and people count
     /// </summary>
-    public double FiberLimit => Math.Round(NutritionalConstants.DAILY_FIBER / 3.0 * Order.PeopleCount, 0);
+    public decimal FiberLimit => Math.Round(NutritionalConstants.DAILY_FIBER / 3m * Order.PeopleCount, 0);
 
     /// <summary>
     /// Gets the calculated carbohydrates limit based on daily recommended value and people count
     /// </summary>
-    public double CarbohydratesLimit => Math.Round(NutritionalConstants.DAILY_CARBOHYDRATES / 3.0 * Order.PeopleCount, 0);
+    public decimal CarbohydratesLimit => Math.Round(NutritionalConstants.DAILY_CARBOHYDRATES / 3m * Order.PeopleCount, 0);
 
     /// <summary>
     /// Gets the percentage of calories relative to the daily limit
     /// </summary>
-    public double CaloriesPercentage => Order.TotalCalories / CaloriesLimit * 100;
+    public double CaloriesPercentage => CalculatePercentage(Order.TotalCalories, CaloriesLimit);
 
     /// <summary>
     /// Gets the percentage of protein relative to the daily limit
     /// </summary>
-    public double ProteinPercentage => Order.TotalProtein / ProteinLimit * 100;
+    public double ProteinPercentage => CalculatePercentage(Order.TotalProtein, ProteinLimit);
 
     /// <summary>
     /// Gets the percentage of fat relative to the daily limit
     /// </summary>
-    public double FatPercentage => Order.TotalFat / FatLimit * 100;
+    public double FatPercentage => CalculatePercentage(Order.TotalFat, FatLimit);
 
     /// <summary>
     /// Gets the percentage of fiber relative to the daily limit
     /// </summary>
-    public double FiberPercentage => Order.TotalFiber / FiberLimit * 100;
+    public double FiberPercentage => CalculatePercentage(Order.TotalFiber, FiberLimit);
 
     /// <summary>
     /// Gets the percentage of carbohydrates relative to the daily limit
     /// </summary>
-    public double CarbohydratesPercentage => Order.TotalCarbohydrates / CarbohydratesLimit * 100;
+    public double CarbohydratesPercentage => CalculatePercentage(Order.TotalCarbohydrates, CarbohydratesLimit);
     #endregion
 
     #region Collections and Commands
@@ -330,7 +330,8 @@ public partial class OrderCartViewModel :
     /// </summary>
     private async Task EditPeopleCount()
     {
-        _orderDataService.ChangePeopleCountAsync(Order.PeopleCount);
+        await _orderDataService.ChangePeopleCountAsync(Order.PeopleCount);
+        LoadExistingOrderAsync();
         return;
     }
 
@@ -393,6 +394,21 @@ public partial class OrderCartViewModel :
         OnPropertyChanged(nameof(IsProcessingItemsEmpty));
         OnPropertyChanged(nameof(IsCompletedItemsEmpty));
     }
+
+    /// <summary>
+    /// Calculates the percentage of a value relative to a limit
+    /// </summary>
+    /// <param name="value">The current value</param>
+    /// <param name="limit">The maximum limit</param>
+    /// <returns>The percentage as a double</returns>
+    private double CalculatePercentage(decimal value, decimal limit)
+    {
+        if (limit == 0)
+        {
+            return 100.0;
+        }
+        return decimal.ToDouble(value / limit * 100);
+    }
     #endregion
 }
 
@@ -402,23 +418,23 @@ public partial class OrderCartViewModel :
 public static class NutritionalConstants
 {
     // Daily recommended values
-    public const double DAILY_CALORIES = 2000;
-    public const double DAILY_PROTEIN = 75;
-    public const double DAILY_CARBOHYDRATES = 300;
-    public const double DAILY_FAT = 70;
-    public const double DAILY_FIBER = 25;
+    public const decimal DAILY_CALORIES = 2000m;
+    public const decimal DAILY_PROTEIN = 75m;
+    public const decimal DAILY_CARBOHYDRATES = 300m;
+    public const decimal DAILY_FAT = 70m;
+    public const decimal DAILY_FIBER = 25m;
 
     // Rating weights (must sum to 1.0)
-    public const double PROTEIN_WEIGHT = 0.3;
-    public const double FAT_WEIGHT = 0.2;
-    public const double CALORIES_WEIGHT = 0.1;
-    public const double FIBER_WEIGHT = 0.2;
-    public const double CARB_WEIGHT = 0.2;
+    public const decimal PROTEIN_WEIGHT = 0.3m;
+    public const decimal FAT_WEIGHT = 0.2m;
+    public const decimal CALORIES_WEIGHT = 0.1m;
+    public const decimal FIBER_WEIGHT = 0.2m;
+    public const decimal CARB_WEIGHT = 0.2m;
 
     // Individual deficiency multipliers
-    public const double PROTEIN_DEFICIENCY_MULTIPLIER = 1.0;
-    public const double FAT_DEFICIENCY_MULTIPLIER = 3.0; // Fat is harmful in excess
-    public const double CALORIES_DEFICIENCY_MULTIPLIER = 2.0;
-    public const double FIBER_DEFICIENCY_MULTIPLIER = 0.5;
-    public const double CARB_DEFICIENCY_MULTIPLIER = 2.0;
+    public const decimal PROTEIN_DEFICIENCY_MULTIPLIER = 1.0m;
+    public const decimal FAT_DEFICIENCY_MULTIPLIER = 3.0m; // Fat is harmful in excess
+    public const decimal CALORIES_DEFICIENCY_MULTIPLIER = 2.0m;
+    public const decimal FIBER_DEFICIENCY_MULTIPLIER = 0.5m;
+    public const decimal CARB_DEFICIENCY_MULTIPLIER = 2.0m;
 }

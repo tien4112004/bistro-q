@@ -135,11 +135,11 @@ public partial class AdminProductAddPageViewModel : ObservableRecipient
                 Price = Form.Price,
                 Unit = Form.Unit,
                 DiscountPrice = Form.DiscountPrice,
-                Calories = Form.Calories,
-                Fat = Form.Fat,
-                Fiber = Form.Fiber,
-                Protein = Form.Protein,
-                Carbohydrates = Form.Carbohydrates,
+                Calories = (decimal)Form.Calories,
+                Fat = (decimal)Form.Fat,
+                Fiber = (decimal)Form.Fiber,
+                Protein = (decimal)Form.Protein,
+                Carbohydrates = (decimal)Form.Carbohydrates,
             };
 
             await _productDataService.CreateProductAsync(request,

@@ -64,31 +64,31 @@ public partial class OrderViewModel : ObservableObject
     /// Gets or sets the total calories for all items
     /// </summary>
     [ObservableProperty]
-    private double _totalCalories;
+    private decimal _totalCalories;
 
     /// <summary>
     /// Gets or sets the total protein content
     /// </summary>
     [ObservableProperty]
-    private double _totalProtein;
+    private decimal _totalProtein;
 
     /// <summary>
     /// Gets or sets the total fat content
     /// </summary>
     [ObservableProperty]
-    private double _totalFat;
+    private decimal _totalFat;
 
     /// <summary>
     /// Gets or sets the total fiber content
     /// </summary>
     [ObservableProperty]
-    private double _totalFiber;
+    private decimal _totalFiber;
 
     /// <summary>
     /// Gets or sets the total carbohydrates content
     /// </summary>
     [ObservableProperty]
-    private double _totalCarbohydrates;
+    private decimal _totalCarbohydrates;
 
     /// <summary>
     /// Creates a deep copy of the order

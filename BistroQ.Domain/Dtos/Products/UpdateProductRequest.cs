@@ -7,9 +7,9 @@ public class UpdateProductRequest
     public decimal? DiscountPrice { get; set; }
     public string Unit { get; set; }
     public int? CategoryId { get; set; }
-    public double Calories { get; set; }
-    public double Fat { get; set; }
-    public double Fiber { get; set; }
-    public double Protein { get; set; }
-    public double Carbohydrates { get; set; }
+    public decimal Calories { get; set; }
+    public decimal Fat { get; set; }
+    public decimal Fiber { get; set; }
+    public decimal Protein { get; set; }
+    public decimal Carbohydrates { get; set; }
 }
