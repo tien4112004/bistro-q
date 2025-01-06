@@ -16,26 +16,39 @@ using System.Windows.Input;
 
 namespace BistroQ.Presentation.ViewModels.AdminAccount;
 
+/// <summary>
+/// View model for the admin account editing page. Handles the logic for modifying existing admin accounts
+/// and managing related data such as zones and tables.
+/// </summary>
+/// <remarks>
+/// This class implements INavigationAware for navigation handling and IDisposable for resource cleanup.
+/// It uses the MVVM pattern with ObservableRecipient as its base class.
+/// </remarks>
 public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavigationAware, IDisposable
 {
+    #region Public Fields
+    /// <summary>
+    /// Collection of available zones in the system.
+    /// </summary>
     public ObservableCollection<ZoneViewModel> Zones;
+
+    /// <summary>
+    /// Collection of available tables in the selected zone.
+    /// </summary>
     public ObservableCollection<TableViewModel> Tables;
+
+    /// <summary>
+    /// Collection of available user roles in the system.
+    /// </summary>
     public ObservableCollection<string> Roles;
 
+    /// <summary>
+    /// The account being edited.
+    /// </summary>
     public AccountViewModel Account { get; set; }
+    #endregion
 
-    [ObservableProperty]
-    private AddAccountForm _form = new();
-
-    [ObservableProperty]
-    private bool _isProcessing = false;
-
-    [ObservableProperty]
-    private bool _isPasswordEditEnabled = false;
-
-    [ObservableProperty]
-    private bool _isTableSelectionEnabled = false;
-
+    #region Private Fields
     private bool _isDisposed = false;
 
     private readonly IAccountDataService _accountDataService;
@@ -43,10 +56,47 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
     private readonly ITableDataService _tableDataService;
     private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
+    #endregion
 
+    #region Observable Properties
+    /// <summary>
+    /// The form containing account editing data.
+    /// </summary>
+    [ObservableProperty]
+    private AddAccountForm _form = new();
+
+    /// <summary>
+    /// Indicates whether the view model is currently processing a request.
+    /// </summary>
+    [ObservableProperty]
+    private bool _isProcessing = false;
+
+    /// <summary>
+    /// Indicates whether password editing is enabled.
+    /// </summary>
+    [ObservableProperty]
+    private bool _isPasswordEditEnabled = false;
+
+    /// <summary>
+    /// Indicates whether table selection is enabled in the UI.
+    /// </summary>
+    [ObservableProperty]
+    private bool _isTableSelectionEnabled = false;
+    #endregion
+
+    #region Commands
+    /// <summary>
+    /// Command for updating the account details.
+    /// </summary>
     public ICommand EditCommand { get; }
-    public ICommand EnablePasswordEditCommand { get; }
 
+    /// <summary>
+    /// Command for enabling password editing.
+    /// </summary>
+    public ICommand EnablePasswordEditCommand { get; }
+    #endregion
+
+    #region Constructor
     public AdminAccountEditPageViewModel(
         IAccountDataService accountDataService,
         IZoneDataService zoneDataService,
@@ -68,7 +118,14 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
 
         this.PropertyChanged += OnPropertyChanged;
     }
+    #endregion
 
+    #region Event Handlers
+    /// <summary>
+    /// Handles property changes in the view model.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">Event arguments containing the property name.</param>
     private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(Form.ZoneId) && Form.ZoneId.HasValue)
@@ -76,17 +133,29 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
             _ = LoadTablesAsync(Form.ZoneId.Value);
         }
     }
+    #endregion
 
+    #region Private Methods
+    /// <summary>
+    /// Enables password editing functionality.
+    /// </summary>
     private void EnablePasswordEdit()
     {
         IsPasswordEditEnabled = true;
     }
 
+    /// <summary>
+    /// Determines whether the account can be edited based on current state.
+    /// </summary>
+    /// <returns>True if the account can be edited; otherwise, false.</returns>
     private bool CanEditAccount()
     {
         return !IsProcessing && !Form.HasErrors;
     }
 
+    /// <summary>
+    /// Validates the form fields before submission.
+    /// </summary>
     private void ValidateForm()
     {
         if (Form.Password != null)
@@ -102,12 +171,21 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
             Form.ValidateProperty(nameof(Form.TableId), Form.TableId);
         }
     }
+    #endregion
 
+    #region Public Methods
+    /// <summary>
+    /// Navigates back to the previous page.
+    /// </summary>
     public void NavigateBack()
     {
         App.GetService<INavigationService>().GoBack();
     }
 
+    /// <summary>
+    /// Updates the account with the provided form data.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task UpdateAccountAsync()
     {
         ValidateForm();
@@ -145,6 +223,10 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         }
     }
 
+    /// <summary>
+    /// Loads the list of available zones.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task LoadZonesAsync()
     {
         try
@@ -167,6 +249,11 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         }
     }
 
+    /// <summary>
+    /// Loads the tables for a specific zone.
+    /// </summary>
+    /// <param name="zoneId">The ID of the zone to load tables for.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task LoadTablesAsync(int zoneId)
     {
         try
@@ -192,6 +279,11 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         }
     }
 
+    /// <summary>
+    /// Handles navigation to this page.
+    /// </summary>
+    /// <param name="parameter">Navigation parameter containing the account to edit.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task OnNavigatedTo(object parameter)
     {
         if (parameter is AccountViewModel account)
@@ -224,17 +316,24 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         }
     }
 
+    /// <summary>
+    /// Handles navigation from this page.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public Task OnNavigatedFrom()
     {
         Dispose();
         return Task.CompletedTask;
     }
 
-
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+    /// </summary>
     public void Dispose()
     {
         if (_isDisposed) return;
         _isDisposed = true;
         this.PropertyChanged -= OnPropertyChanged;
     }
+    #endregion
 }

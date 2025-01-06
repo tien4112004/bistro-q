@@ -7,17 +7,38 @@ using BistroQ.Domain.Models.Entities;
 
 namespace BistroQ.Service.Data;
 
+/// <summary>
+/// Implementation of order item data service that communicates with the API endpoints.
+/// Handles kitchen-specific operations with AutoMapper for data transformation.
+/// </summary>
 public class OrderItemDataService : IOrderItemDataService
 {
+    #region Private Fields
+    /// <summary>
+    /// Client for making HTTP requests to the API.
+    /// </summary>
     private readonly IApiClient _apiClient;
-    private readonly IMapper _mapper;
 
+    /// <summary>
+    /// Mapper for converting between DTOs and domain models.
+    /// </summary>
+    private readonly IMapper _mapper;
+    #endregion
+
+    #region Constructor
+    /// <summary>
+    /// Initializes a new instance of the OrderItemDataService.
+    /// </summary>
+    /// <param name="apiClient">Client for making API requests</param>
+    /// <param name="mapper">Mapper for data transformation</param>
     public OrderItemDataService(IApiClient apiClient, IMapper mapper)
     {
         _apiClient = apiClient;
         _mapper = mapper;
     }
+    #endregion
 
+    #region Public Methods
     public async Task<IEnumerable<OrderItem>> BulkUpdateOrderItemsStatusAsync(IEnumerable<string> orderItemIds, OrderItemStatus status)
     {
         var response = await _apiClient.PatchAsync<IEnumerable<DetailOrderItemResponse>>("api/Kitchen/Order/Status",
@@ -92,4 +113,5 @@ public class OrderItemDataService : IOrderItemDataService
 
         throw new Exception(response.Message);
     }
+    #endregion
 }

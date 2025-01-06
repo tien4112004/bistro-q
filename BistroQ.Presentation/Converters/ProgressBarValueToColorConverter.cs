@@ -4,6 +4,10 @@ using Microsoft.UI.Xaml.Media;
 
 namespace BistroQ.Presentation.Converters;
 
+/// <summary>
+/// Converter that changes the color of a progress bar based on its value,
+/// displaying a critical color when the progress reaches or exceeds 100%.
+/// </summary>
 public class ProgressBarValueToColorConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)

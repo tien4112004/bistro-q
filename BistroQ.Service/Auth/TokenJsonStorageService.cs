@@ -1,8 +1,14 @@
-using BistroQ.Domain.Contracts.Services;
+﻿using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos;
 
 namespace BistroQ.Service.Auth;
 
+/// <summary>
+/// A JSON-based storage service for authentication tokens, implementing the <see cref="ITokenStorageService"/> interface.
+/// This service stores access and refresh tokens in a JSON format, providing methods to save, retrieve,
+/// and clear tokens. This approach may be useful for scenarios where tokens need to be persisted
+/// in a lightweight, human-readable format.
+/// </summary>
 public class TokenJsonStorageService : ITokenStorageService
 {
     private readonly IFileService _fileService;

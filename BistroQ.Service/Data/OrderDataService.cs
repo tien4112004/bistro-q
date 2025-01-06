@@ -5,17 +5,38 @@ using BistroQ.Domain.Models.Entities;
 
 namespace BistroQ.Service.Data;
 
+/// <summary>
+/// Implementation of order data service that communicates with the API endpoints.
+/// Handles both client and cashier order operations with AutoMapper for data transformation.
+/// </summary>
 public class OrderDataService : IOrderDataService
 {
+    #region Private Fields
+    /// <summary>
+    /// Client for making HTTP requests to the API.
+    /// </summary>
     private readonly IApiClient _apiClient;
-    private readonly IMapper _mapper;
 
+    /// <summary>
+    /// Mapper for converting between DTOs and domain models.
+    /// </summary>
+    private readonly IMapper _mapper;
+    #endregion
+
+    #region Constructor
+    /// <summary>
+    /// Initializes a new instance of the OrderDataService.
+    /// </summary>
+    /// <param name="apiClient">Client for making API requests</param>
+    /// <param name="mapper">Mapper for data transformation</param>
     public OrderDataService(IApiClient apiClient, IMapper mapper)
     {
         _apiClient = apiClient;
         _mapper = mapper;
     }
+    #endregion
 
+    #region Public Methods
     public async Task<Order> CreateOrderAsync()
     {
         var response = await _apiClient.PostAsync<DetailOrderResponse>("api/Client/Order", null);
@@ -100,4 +121,5 @@ public class OrderDataService : IOrderDataService
 
         throw new Exception(response.Message);
     }
+    #endregion
 }

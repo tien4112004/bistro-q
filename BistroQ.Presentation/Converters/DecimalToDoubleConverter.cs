@@ -2,6 +2,10 @@
 
 namespace BistroQ.Presentation.Converters;
 
+/// <summary>
+/// Converter that handles conversion between decimal and double data types while maintaining precision
+/// and handling edge cases like null values and out-of-range numbers.
+/// </summary>
 public partial class DecimalToDoubleConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)

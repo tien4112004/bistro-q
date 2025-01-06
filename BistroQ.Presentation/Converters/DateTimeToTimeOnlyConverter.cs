@@ -2,6 +2,9 @@
 
 namespace BistroQ.Presentation.Converters;
 
+/// <summary>
+/// Converter that transforms DateTime values to formatted time strings based on the provided format parameter.
+/// </summary>
 public class DateTimeToTimeOnlyConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)

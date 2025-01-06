@@ -1,6 +1,7 @@
-using BistroQ.Domain.Dtos;
+﻿using BistroQ.Domain.Dtos;
 
 namespace BistroQ.Domain.Contracts.Services;
+
 /// <summary>
 /// Provides methods for securely storing and retrieving authentication tokens, including access and refresh tokens.
 /// </summary>
@@ -44,5 +45,4 @@ public interface ITokenStorageService
     /// </summary>
     /// <returns>User's role</returns>
     Task<string> GetRoleAsync();
-
 }

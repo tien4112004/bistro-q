@@ -1,15 +1,21 @@
-using BistroQ.Domain.Contracts.Services;
+﻿using BistroQ.Domain.Contracts.Services;
 using BistroQ.Domain.Dtos;
 using BistroQ.Domain.Models.Exceptions;
 
 namespace BistroQ.Service.Auth;
 
 /// <summary>
-/// A JSON-based storage service for authentication tokens, implementing the <see cref="ITokenStorageService"/> interface.
-/// This service stores access and refresh tokens in a JSON format, providing methods to save, retrieve,
-/// and clear tokens. This approach may be useful for scenarios where tokens need to be persisted
-/// in a lightweight, human-readable format.
+/// Implements authentication and authorization services, handling user login, token management,
+/// and authentication state. This service acts as a bridge between the client application
+/// and the authentication API endpoints.
 /// </summary>
+/// <remarks>
+/// This service:
+/// - Manages user authentication state
+/// - Handles token refresh and storage
+/// - Provides authentication status checks
+/// - Coordinates with the token storage service for persistence
+/// </remarks>
 public class AuthService : IAuthService
 {
     private readonly IPublicApiClient _apiClient;

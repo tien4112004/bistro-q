@@ -1,26 +1,31 @@
-using BistroQ.Presentation.Validation;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BistroQ.Presentation.Validation;
 
 namespace BistroQ.Presentation.Models;
 
+/// <summary>
+/// Represents a login form with validation capabilities.
+/// Inherits from ValidatorBase to provide validation functionality.
+/// </summary>
 public class LoginForm : ValidatorBase
 {
-    public LoginForm()
-    {
-        AddUsernameValidator();
-        AddPasswordValidator();
-    }
-
+    #region Private Fields
+    /// <summary>
+    /// Backing field for Username property.
+    /// </summary>
     private string _username = string.Empty;
-    private string _password = string.Empty;
 
+    /// <summary>
+    /// Backing field for Password property.
+    /// </summary>
+    private string _password = string.Empty;
+    #endregion
+
+    #region Public Properties
+    /// <summary>
+    /// Gets or sets the username for login.
+    /// Validated for non-empty and minimum length (3 chars).
+    /// Triggers validation and property change notification on set.
+    /// </summary>
     public string Username
     {
         get => _username;
@@ -35,6 +40,11 @@ public class LoginForm : ValidatorBase
         }
     }
 
+    /// <summary>
+    /// Gets or sets the password for login.
+    /// Validated for non-empty value.
+    /// Triggers validation and property change notification on set.
+    /// </summary>
     public string Password
     {
         get => _password;
@@ -48,8 +58,28 @@ public class LoginForm : ValidatorBase
             }
         }
     }
+    #endregion
 
-    public void AddUsernameValidator()
+    #region Constructor
+    /// <summary>
+    /// Initializes a new instance of the LoginForm class.
+    /// Sets up validators for username and password.
+    /// </summary>
+    public LoginForm()
+    {
+        AddUsernameValidator();
+        AddPasswordValidator();
+    }
+    #endregion
+
+    #region Private Methods
+    /// <summary>
+    /// Adds validation rules for the Username property.
+    /// Validates that the username:
+    /// - Is not empty
+    /// - Has minimum length of 3 characters
+    /// </summary>
+    private void AddUsernameValidator()
     {
         AddValidator(nameof(Username), (value) =>
         {
@@ -60,7 +90,13 @@ public class LoginForm : ValidatorBase
         });
     }
 
-    public void AddPasswordValidator() {
+    /// <summary>
+    /// Adds validation rules for the Password property.
+    /// Validates that the password:
+    /// - Is not empty
+    /// </summary>
+    private void AddPasswordValidator()
+    {
         AddValidator(nameof(Password), (value) =>
         {
             return value.Validate(
@@ -68,10 +104,21 @@ public class LoginForm : ValidatorBase
             ).Where(r => !r.IsValid).ToList();
         });
     }
+    #endregion
 
+    #region Public Methods
+    /// <summary>
+    /// Validates all properties of the form.
+    /// Executes validation rules for Username and Password.
+    /// </summary>
+    /// <remarks>
+    /// This method overrides the base ValidateAll method to provide
+    /// form-specific validation logic.
+    /// </remarks>
     public override void ValidateAll()
     {
         ValidateProperty(nameof(Username), Username);
         ValidateProperty(nameof(Password), Password);
     }
+    #endregion
 }
