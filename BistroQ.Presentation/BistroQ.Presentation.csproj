@@ -26,6 +26,7 @@
     <None Remove="Views\AdminCategory\AdminCategoryAddPage.xaml" />
     <None Remove="Views\AdminCategory\AdminCategoryEditPage.xaml" />
     <None Remove="Views\AdminCategory\AdminCategoryPage.xaml" />
+    <None Remove="Views\AdminDashboard\AdminDashboardPage.xaml" />
     <None Remove="Views\AdminProduct\AdminProductAddPage.xaml" />
     <None Remove="Views\AdminProduct\AdminProductEditPage.xaml" />
     <None Remove="Views\AdminProduct\AdminProductPage.xaml" />
@@ -82,6 +83,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\AdminDashboard\AdminDashboardPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\UserControls\Client\PaymentQrCodeControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

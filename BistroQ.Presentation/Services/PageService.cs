@@ -12,6 +12,7 @@ using BistroQ.Presentation.ViewModels.KitchenOrder;
 using BistroQ.Presentation.Views;
 using BistroQ.Presentation.Views.AdminAccount;
 using BistroQ.Presentation.Views.AdminCategory;
+using BistroQ.Presentation.Views.AdminDashboard;
 using BistroQ.Presentation.Views.AdminProduct;
 using BistroQ.Presentation.Views.AdminTable;
 using BistroQ.Presentation.Views.AdminZone;
@@ -54,6 +55,8 @@ public class PageService : IPageService
         Configure<AdminAccountViewModel, AdminAccountPage>();
         Configure<AdminAccountAddPageViewModel, AdminAccountAddPage>();
         Configure<AdminAccountEditPageViewModel, AdminAccountEditPage>();
+
+        Configure<AdminDashboardViewModel, AdminDashboardPage>();
 
         Configure<KitchenOrderViewModel, KitchenOrderPage>();
         Configure<KitchenHistoryViewModel, KitchenHistoryPage>();

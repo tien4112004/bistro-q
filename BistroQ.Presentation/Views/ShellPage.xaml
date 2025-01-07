@@ -48,6 +48,17 @@
                 
                 <!-- Admin Section -->
                 <NavigationViewItem
+                    x:Uid="Shell_AdminDashboard"
+                    Tag="Admin"
+                    PointerEntered="Button_PointerEntered"
+                    PointerExited="Button_PointerExited"
+                    helpers:NavigationHelper.NavigateTo="BistroQ.Presentation.ViewModels.AdminDashboardViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xECA5;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItem
                     x:Uid="Shell_AdminZone"
                     Tag="Admin"
                     PointerEntered="Button_PointerEntered"

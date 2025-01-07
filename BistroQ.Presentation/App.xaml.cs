@@ -22,6 +22,7 @@ using BistroQ.Presentation.ViewModels.KitchenOrder.Strategies;
 using BistroQ.Presentation.Views;
 using BistroQ.Presentation.Views.AdminAccount;
 using BistroQ.Presentation.Views.AdminCategory;
+using BistroQ.Presentation.Views.AdminDashboard;
 using BistroQ.Presentation.Views.AdminProduct;
 using BistroQ.Presentation.Views.AdminTable;
 using BistroQ.Presentation.Views.AdminZone;
@@ -164,6 +165,8 @@ public partial class App : Application
             services.AddTransient<AdminAccountAddPageViewModel>();
             services.AddTransient<AdminAccountEditPage>();
             services.AddTransient<AdminAccountEditPageViewModel>();
+            services.AddTransient<AdminDashboardViewModel>();
+            services.AddTransient<AdminDashboardPage>();
 
 
             services.AddSingleton<IZoneDataService, ZoneDataService>();

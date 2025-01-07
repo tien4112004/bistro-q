@@ -465,4 +465,7 @@
   <data name="ProductAddPage_CarbohydratesInput/Header" xml:space="preserve">
     <value>Carbohydrates</value>
   </data>
+  <data name="Shell_AdminDashboard.Content" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
 </root>
