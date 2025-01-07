@@ -9,6 +9,7 @@ using BistroQ.Presentation.Models;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Dispatching;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -56,6 +57,7 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
     private readonly ITableDataService _tableDataService;
     private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
+    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
     #endregion
 
     #region Observable Properties
@@ -76,6 +78,12 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
     /// </summary>
     [ObservableProperty]
     private bool _isPasswordEditEnabled = false;
+
+    [ObservableProperty]
+    private string? _selectedRole;
+
+    [ObservableProperty]
+    private bool _isZoneSelectionEnabled = false;
 
     /// <summary>
     /// Indicates whether table selection is enabled in the UI.
@@ -131,6 +139,28 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         if (e.PropertyName == nameof(Form.ZoneId) && Form.ZoneId.HasValue)
         {
             _ = LoadTablesAsync(Form.ZoneId.Value);
+        }
+        else if (e.PropertyName == nameof(SelectedRole))
+        {
+            Form.Role = SelectedRole;
+            if (SelectedRole != "Client")
+            {
+                Form.TableId = null;
+                Form.ZoneId = null;
+            }
+
+            _dispatcherQueue.TryEnqueue(() =>
+            {
+                if (SelectedRole == "Client")
+                {
+                    IsZoneSelectionEnabled = true;
+                }
+                else
+                {
+                    IsTableSelectionEnabled = false;
+                    IsZoneSelectionEnabled = false;
+                }
+            });
         }
     }
     #endregion
@@ -197,7 +227,7 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
 
         try
         {
-            IsProcessing = true;
+            _dispatcherQueue.TryEnqueue(() => IsProcessing = true);
 
             var request = new UpdateAccountRequest
             {
@@ -206,6 +236,7 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
                 Password = Form.Password,
                 TableId = Form.TableId
             };
+
 
             await _accountDataService.UpdateAccountAsync(Account.UserId, request);
 
@@ -219,7 +250,7 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
         }
         finally
         {
-            IsProcessing = false;
+            _dispatcherQueue.TryEnqueue(() => IsProcessing = false);
         }
     }
 
@@ -270,12 +301,12 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
             {
                 Tables.Add(table);
             }
-            IsTableSelectionEnabled = true;
+            _dispatcherQueue.TryEnqueue(() => IsTableSelectionEnabled = true);
         }
         catch (Exception ex)
         {
             await _dialogService.ShowErrorDialog(ex.Message, "Error");
-            IsTableSelectionEnabled = false;
+            _dispatcherQueue.TryEnqueue(() => IsTableSelectionEnabled = false);
         }
     }
 
@@ -294,24 +325,33 @@ public partial class AdminAccountEditPageViewModel : ObservableRecipient, INavig
             if (Account.TableId != null)
             {
                 await LoadTablesAsync(account.ZoneId ?? 0);
-                Form = new AddAccountForm
+                _dispatcherQueue.TryEnqueue(() =>
                 {
-                    Username = account.Username,
-                    Role = account.Role,
-                    TableId = account.TableId,
-                    Password = null,
-                    ZoneId = account.ZoneId
-                };
-                IsTableSelectionEnabled = true;
+                    Form = new AddAccountForm
+                    {
+                        Username = account.Username,
+                        Role = account.Role,
+                        TableId = account.TableId,
+                        Password = null,
+                        ZoneId = account.ZoneId
+                    };
+                    SelectedRole = account.Role;
+                    IsZoneSelectionEnabled = true;
+                    IsTableSelectionEnabled = true;
+                });
             }
             else
             {
-                Form = new AddAccountForm
+                _dispatcherQueue.TryEnqueue(() =>
                 {
-                    Username = account.Username,
-                    Role = account.Role,
-                };
-                IsTableSelectionEnabled = false;
+                    Form = new AddAccountForm
+                    {
+                        Username = account.Username,
+                        Role = account.Role,
+                    };
+                    IsZoneSelectionEnabled = false;
+                    IsTableSelectionEnabled = false;
+                });
             }
         }
     }

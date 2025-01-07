@@ -100,7 +100,7 @@
                     PointerExited="Button_PointerExited"
                     GettingFocus="AccountEditPage_RoleComboBox_GettingFocus"
                     ItemsSource="{x:Bind ViewModel.Roles}"
-                    SelectedValue="{x:Bind ViewModel.Form.Role, Mode=TwoWay}"
+                    SelectedValue="{x:Bind ViewModel.SelectedRole, Mode=TwoWay}"
                     Width="300" />
                 <TextBlock 
                     Text="{x:Bind ViewModel.Form.Errors, 
@@ -120,6 +120,7 @@
                     PointerExited="Button_PointerExited"
                     GettingFocus="AccountEditPage_ZoneComboBox_GettingFocus"
                     ItemsSource="{x:Bind ViewModel.Zones, Mode=OneWay}"
+                    IsEnabled="{x:Bind ViewModel.IsZoneSelectionEnabled, Mode=OneWay}"
                     DisplayMemberPath="Name"
                     SelectedValuePath="ZoneId"
                     SelectedValue="{x:Bind ViewModel.Form.ZoneId, Mode=TwoWay}"

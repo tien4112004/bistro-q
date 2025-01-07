@@ -9,6 +9,7 @@ using BistroQ.Presentation.Models;
 using BistroQ.Presentation.ViewModels.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Dispatching;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -33,6 +34,7 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient, INaviga
     private readonly ITableDataService _tableDataService;
     private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
+    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
     #endregion
 
     #region Observable Properties
@@ -48,6 +50,9 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient, INaviga
     [ObservableProperty]
     private AddAccountForm _form = new();
 
+    [ObservableProperty]
+    private bool _isZoneSelectionEnabled = false;
+
     /// <summary>
     /// Indicates whether table selection is enabled in the UI.
     /// </summary>
@@ -59,6 +64,9 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient, INaviga
     /// </summary>
     [ObservableProperty]
     private int? _selectedZoneId;
+
+    [ObservableProperty]
+    private string? _selectedRole;
 
     /// <summary>
     /// Collection of available zones.
@@ -129,9 +137,29 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient, INaviga
                 await LoadTablesAsync(SelectedZoneId.Value);
             }
             catch (Exception ex)
+
             {
                 Debug.WriteLine(ex.StackTrace);
             }
+        }
+        else if (e.PropertyName == nameof(SelectedRole))
+        {
+            Form.Role = SelectedRole;
+            _dispatcherQueue.TryEnqueue(() =>
+            {
+                if (SelectedRole == "Client")
+                {
+                    IsZoneSelectionEnabled = true;
+                }
+                else
+                {
+                    Form.TableId = null;
+                    Form.ZoneId = null;
+                    SelectedZoneId = null;
+                    IsTableSelectionEnabled = false;
+                    IsZoneSelectionEnabled = false;
+                }
+            });
         }
     }
     #endregion
@@ -160,7 +188,7 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient, INaviga
 
         try
         {
-            IsProcessing = true;
+            _dispatcherQueue.TryEnqueue(() => IsProcessing = true);
 
             var request = new CreateAccountRequest
             {
@@ -181,7 +209,7 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient, INaviga
         }
         finally
         {
-            IsProcessing = false;
+            _dispatcherQueue.TryEnqueue(() => IsProcessing = false);
         }
     }
 
@@ -232,12 +260,13 @@ public partial class AdminAccountAddPageViewModel : ObservableRecipient, INaviga
             {
                 Tables.Add(table);
             }
-            IsTableSelectionEnabled = true;
+
+            _dispatcherQueue.TryEnqueue(() => IsTableSelectionEnabled = true);
         }
         catch (Exception ex)
         {
             await _dialogService.ShowErrorDialog(ex.Message, "Error");
-            IsTableSelectionEnabled = false;
+            _dispatcherQueue.TryEnqueue(() => IsTableSelectionEnabled = false);
         }
     }
 
